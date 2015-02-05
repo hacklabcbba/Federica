@@ -6,7 +6,7 @@ import code.lib.RogueMetaRecord
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{MongoListField, DateField, ObjectIdRefField, ObjectIdPk}
 import net.liftweb.record.field.{BooleanField, StringField}
-import code.model.resource.Environment
+import code.model.resource.Room
 
 class Reserve private() extends MongoRecord[Reserve] with ObjectIdPk[Reserve]{
 
@@ -21,7 +21,7 @@ class Reserve private() extends MongoRecord[Reserve] with ObjectIdPk[Reserve]{
   object user extends ObjectIdRefField(this, User)
   object proposal extends ObjectIdRefField(this, Proposal)
   object date extends DateField(this)
-  object environment extends MongoListField[Reserve, Environment](this)
+  object environment extends MongoListField[Reserve, Room](this)
   //uncoment when module package will be done
   //object packages extends MongoListField[Reserve, Package](this)
   //uncoment when module resource will be done

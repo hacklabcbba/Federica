@@ -7,9 +7,9 @@ import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.ObjectIdPk
 import net.liftweb.record.field.{BooleanField, IntField, StringField}
 
-class Environment private() extends MongoRecord[Environment] with ObjectIdPk[Environment]{
+class Room private() extends MongoRecord[Room] with ObjectIdPk[Room]{
 
-  override def meta = Environment
+  override def meta = Room
 
   object name extends StringField(this, 500)
   object description extends StringField(this, 500)
@@ -21,4 +21,4 @@ class Environment private() extends MongoRecord[Environment] with ObjectIdPk[Env
 
 }
 
-object Environment extends Environment with RogueMetaRecord[Environment]
+object Room extends Room with RogueMetaRecord[Room]
