@@ -15,9 +15,7 @@ class Reserve private() extends MongoRecord[Reserve] with ObjectIdPk[Reserve]{
   object name extends StringField(this, 500)
   object description extends StringField(this, 500)
   object email extends StringField(this, 500)
-  object isWorkshop extends BooleanField(this, false)
   object code extends StringField(this, 50)
-
   object user extends ObjectIdRefField(this, User)
   object proposal extends ObjectIdRefField(this, Proposal)
   object date extends DateField(this)

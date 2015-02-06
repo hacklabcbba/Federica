@@ -7,9 +7,9 @@ import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{ObjectIdRefField, ObjectIdPk}
 import net.liftweb.record.field.{DecimalField, StringField}
 
-class QuoteEnvironment private() extends MongoRecord[QuoteEnvironment] with ObjectIdPk[QuoteEnvironment]{
+class RoomQuote private() extends MongoRecord[RoomQuote] with ObjectIdPk[RoomQuote]{
 
-  override def meta = QuoteEnvironment
+  override def meta = RoomQuote
 
   object consumer extends ObjectIdRefField(this, Consumer)
   object feature extends StringField(this, 200)
@@ -18,4 +18,4 @@ class QuoteEnvironment private() extends MongoRecord[QuoteEnvironment] with Obje
 
 }
 
-object QuoteEnvironment extends QuoteEnvironment with RogueMetaRecord[QuoteEnvironment]
+object RoomQuote extends RoomQuote with RogueMetaRecord[RoomQuote]
