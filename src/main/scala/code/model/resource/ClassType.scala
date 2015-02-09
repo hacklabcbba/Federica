@@ -4,5 +4,5 @@ package resource
 
 object ClassType extends Enumeration {
   type ClassType = Value
-  val RoomType, PackageType = Value
+  val RoomType, PackageType, EquipmentType = Value
 }

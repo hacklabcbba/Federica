@@ -4,5 +4,5 @@ package resource
 
 object CostType extends Enumeration {
   type CostType = Value
-  val RoomCost, PackageCost = Value
+  val RoomCost, PackageCost, EquipmentCost = Value
 }
