@@ -2,14 +2,15 @@ package code
 package model
 package resource
 
-import code.lib.RogueMetaRecord
 import net.liftweb.mongodb.record.MongoRecord
-import net.liftweb.mongodb.record.field.ObjectIdPk
+import net.liftweb.mongodb.record.field.{ObjectIdRefField, ObjectIdPk}
+import net.liftweb.record.field.StringField
 
-class Resource private() extends MongoRecord[Resource] with ObjectIdPk[Resource]{
+trait Resource[T <: MongoRecord[T]] extends MongoRecord[T] with ObjectIdPk[T] {
+  this: T =>
 
-  override def meta = Resource
+  object name extends StringField(this.asInstanceOf[T], 500)
+  object description extends StringField(this.asInstanceOf[T], 500)
+  object cost extends ObjectIdRefField(this.asInstanceOf[T], ConcreteQuote)
 
 }
-
-object Resource extends Resource with RogueMetaRecord[Resource]
