@@ -27,7 +27,7 @@ class PackageSpec extends BaseMongoSessionWordSpec {
       quotePackage.validate.length should equal (0)
       quotePackage.save(false)
 
-      val packageResourse = PackageClass.createRecord
+      val packageResourse = ResourcePackage.createRecord
         .name("DIGITAL ROOM LAB + 10 PCs + DATA DISPLAY")
         .description("The contributions for use discount is only valid if payment of at least 40% of the contribution " +
         "is made, before the workshop")
