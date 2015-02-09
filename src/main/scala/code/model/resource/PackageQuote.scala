@@ -5,13 +5,13 @@ package resource
 import code.lib.RogueMetaRecord
 import net.liftweb.record.field.EnumNameField
 
-class RoomQuote private() extends Quote[RoomQuote] {
+class PackageQuote private() extends Quote[PackageQuote] {
 
-  override def meta = RoomQuote
+  override def meta = PackageQuote
 
   object costType extends EnumNameField(this, CostType)
 }
 
-object RoomQuote extends RoomQuote with RogueMetaRecord[RoomQuote] {
+object PackageQuote extends PackageQuote with RogueMetaRecord[PackageQuote] {
   override def collectionName = "quote"
 }
