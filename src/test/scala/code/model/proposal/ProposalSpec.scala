@@ -3,6 +3,8 @@ package model
 package proposal
 
 import code.model.project._
+import net.liftweb.record.field.StringField
+import net.liftweb.mongodb.record.field.ObjectIdRefField
 
 class ProposalSpec extends BaseMongoSessionWordSpec {
 
@@ -18,7 +20,6 @@ class ProposalSpec extends BaseMongoSessionWordSpec {
       }
 
       city.validate.length should equal (0)
-
       city.save(false)
 
       val country = Country.createRecord
@@ -30,24 +31,52 @@ class ProposalSpec extends BaseMongoSessionWordSpec {
       }
 
       country.validate.length should equal (0)
-
       country.save(false)
 
+
+      /* Action line test
+      */
+      val actionLine = ActionLine.createRecord
+        .name("Action Line: Desarrollo Barrial")
+        .description("descripcion Desarrollo Barrial")
+
+      val errsActionLine = actionLine.validate
+      if (errsActionLine.length > 1) {
+        fail("Validation error: " + errsActionLine.mkString(", "))
+      }
+      actionLine.validate.length should equal (0)
+      actionLine.save(false)
+
+      /* Program test */
+      val process = createProcess
+
+      val program = Program.createRecord
+        .name("Programa nro1")
+        .description("Descripcion del programa")
+        .process(process.id.get)
+
+      val errsProgram = program.validate
+      if (errsProgram.length > 1) {
+        fail("Validation error: " + errsProgram.mkString(", "))
+      }
+      program.validate.length should equal (0)
+      program.save(false)
+
+
+      /* Area test */
       val area = Area.createRecord
         .name(" Visual crafts")
         .description("Martadero Areas")
         .email("visual@gmail.com")
-        .isWorkshop(true)
         .code("ARV")
 
       val errsArea = area.validate
       if (errsArea.length > 1) {
         fail("Validation error: " + errsArea.mkString(", "))
       }
-
       area.validate.length should equal (0)
-
       area.save(false)
+
 
       val proposal = Proposal.createRecord
         .description("Include information about recent international progress in the field of the research, and the " +
@@ -74,5 +103,39 @@ class ProposalSpec extends BaseMongoSessionWordSpec {
       proposal.save(false)
 
     }
+  }
+
+  def createProcess:Process = {
+
+    val responsible = createResponsible
+
+    val process = Process.createRecord
+      .name("Proceso nro1")
+      .description("Descripcion del proceso 1")
+      .goal("Objetivo")
+      .responsible(responsible.id.get)
+      .history("Historia del proceso")
+
+    val errsList = process.validate
+    if (errsList.length > 1) {
+      fail("Validation error: " + errsList.mkString(", "))
+    }
+    process.validate.length should equal (0)
+    process.save(false)
+    process
+  }
+
+  def createResponsible:Organizer = {
+    val organizer = Organizer.createRecord
+      .name("Juan")
+      .lastName("Perez")
+
+    val errsList = organizer.validate
+    if (errsList.length > 1) {
+      fail("Validation error: " + errsList.mkString(", "))
+    }
+    organizer.validate.length should equal (0)
+    organizer.save(false)
+    organizer
   }
 }

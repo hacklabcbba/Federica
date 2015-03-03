@@ -21,7 +21,6 @@ class ActivitySpec extends BaseMongoSessionWordSpec {
       val area1 = Area.createRecord
         .code("ARV")
         .description("")
-        .isWorkshop(true)
         .name("Visual and graphic design")
 
       area1.validate.length should equal (0)
@@ -30,7 +29,6 @@ class ActivitySpec extends BaseMongoSessionWordSpec {
       val area2 = Area.createRecord
         .code("LET")
         .description("")
-        .isWorkshop(true)
         .name("Arts and Literature")
 
       area2.validate.length should equal (0)
@@ -46,17 +44,16 @@ class ActivitySpec extends BaseMongoSessionWordSpec {
 
       val quoteRoom = RoomQuote.createRecord
         .costType(RoomCost)
-        .cost(280)
-        .characteristics("Weekly (10% OFF)")
         .parameter("10 hrs. week")
+        .cost(280.01)
+        .characteristics("Weekly (10% OFF)")
+
         .consumer(consumer.id.get)
 
       quoteRoom.validate.length should equal (0)
       quoteRoom.save(false)
 
       val room = Room.createRecord
-        .description("Include information about recent international progress in the field of the research, and the " +
-        "relationship of this proposal to work in the field generally")
         .capacity(300)
         .state("Available")
         .name("Trozadero")
@@ -64,6 +61,8 @@ class ActivitySpec extends BaseMongoSessionWordSpec {
         .plane("plane.jpg")
         .classType(RoomType)
         .cost(quoteRoom.id.get)
+        .description("Include information about recent international progress in the field of the research, and the " +
+        "relationship of this proposal to work in the field generally")
 
       val errsRoom = room.validate
       if (errsRoom.length > 1) {
@@ -75,8 +74,8 @@ class ActivitySpec extends BaseMongoSessionWordSpec {
 
       val quotePackage = RoomQuote.createRecord
         .costType(PackageCost)
-        .cost(280.00)
-        .characteristics("Weekly (10% OFF)")
+        .cost(280.01)
+        //.characteristics("Weekly (10% OFF)")
         .parameter("10 hrs. week")
         .consumer(consumer.id.get)
 
@@ -144,6 +143,7 @@ class ActivitySpec extends BaseMongoSessionWordSpec {
 
       schedule.validate.length should equal (0)
       schedule.save(false)
+
 
       val activityType = ActivityType.createRecord
         .name("exhibition")

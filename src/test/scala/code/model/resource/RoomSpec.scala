@@ -14,7 +14,6 @@ class RoomSpec extends BaseMongoSessionWordSpec {
       val area1 = Area.createRecord
         .code("ARV")
         .description("")
-        .isWorkshop(true)
         .name("Visual and graphic design")
 
       area1.validate.length should equal (0)
@@ -23,7 +22,6 @@ class RoomSpec extends BaseMongoSessionWordSpec {
       val area2 = Area.createRecord
         .code("LET")
         .description("")
-        .isWorkshop(true)
         .name("Arts and Literature")
 
       area2.validate.length should equal (0)

@@ -2,7 +2,7 @@ package code
 package model
 package event
 
-import java.util.Calendar
+import java.util.{Date, Calendar}
 
 import code.model.project._
 import net.liftweb.common.Box
@@ -70,8 +70,10 @@ class EventSpec extends BaseMongoSessionWordSpec {
       }
 
       organizer.validate.length should equal (0)
-
       organizer.save(false)
+
+      val eType1 =  createEventType("festival")
+      val eType2 =  createEventType("concierto")
 
       val event = Event.createRecord
         .description("Include information about recent international progress in the field of the research, and the " +
@@ -90,5 +92,18 @@ class EventSpec extends BaseMongoSessionWordSpec {
       event.save(false)
 
     }
+  }
+
+  def createEventType(name:String): EventType = {
+    val eventType = EventType.createRecord
+      .name(name)
+
+    val errsList = eventType.validate
+    if (errsList.length > 1) {
+      fail("Validation error: " + errsList.mkString(", "))
+    }
+    eventType.validate.length should equal (0)
+    eventType.save(false)
+    eventType
   }
 }
