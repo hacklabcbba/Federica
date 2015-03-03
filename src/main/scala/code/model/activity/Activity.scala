@@ -19,6 +19,7 @@ class Activity private() extends MongoRecord[Activity] with ObjectIdPk[Activity]
   object image extends StringField(this, 100)
   object rooms extends MongoListField[Activity, Room](this)
   object packages extends MongoListField[Activity, ResourcePackage](this)
+  object activity extends ObjectIdRefField(this, Activity)
 }
 
 object Activity extends Activity with RogueMetaRecord[Activity]
