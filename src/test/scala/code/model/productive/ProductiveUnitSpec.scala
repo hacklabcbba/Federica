@@ -4,7 +4,7 @@ package productive
 
 class ProductiveUnitSpec extends BaseMongoSessionWordSpec {
 
-  "Proposal" should {
+  "Productive Unit" should {
     "create, validate, save, and retrieve properly" in {
 
       val productive = ProductiveUnit.createRecord
