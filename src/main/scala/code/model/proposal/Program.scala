@@ -14,7 +14,6 @@ class Program private () extends MongoRecord[Program] with ObjectIdPk[Program]{
 
   object name extends StringField(this, 500)
   object description extends StringField(this, 500)
-  object process extends ObjectIdRefField(this, Process)
 }
 
 object Program extends Program with RogueMetaRecord[Program]

@@ -48,12 +48,10 @@ class ProposalSpec extends BaseMongoSessionWordSpec {
       actionLine.save(false)
 
       /* Program test */
-      val process = createProcess
 
       val program = Program.createRecord
         .name("Programa nro1")
         .description("Descripcion del programa")
-        .process(process.id.get)
 
       val errsProgram = program.validate
       if (errsProgram.length > 1) {
