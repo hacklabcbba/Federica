@@ -1,4 +1,6 @@
-package code.model.proposal
+package code
+package model
+package proposal
 
 import code.lib.RogueMetaRecord
 import net.liftweb.mongodb.record.field.{ObjectIdRefListField, ObjectIdRefField, ObjectIdPk}

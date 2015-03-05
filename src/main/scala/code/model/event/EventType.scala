@@ -1,4 +1,6 @@
-package code.model.event
+package code
+package model
+package event
 
 import code.lib.RogueMetaRecord
 import net.liftweb.mongodb.record.MongoRecord

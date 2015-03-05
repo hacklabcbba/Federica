@@ -12,6 +12,7 @@ import code.model.resource._
 import net.liftweb.common.Box
 import net.liftweb.util.Helpers._
 import code.model.activity.ActivityType._
+import org.joda.time.DateTime
 
 class ActivitySpec extends BaseMongoSessionWordSpec {
 
@@ -62,7 +63,7 @@ class ActivitySpec extends BaseMongoSessionWordSpec {
         .classType(RoomType)
         .cost(quoteRoom.id.get)
         .description("Include information about recent international progress in the field of the research, and the " +
-        "relationship of this proposal to work in the field generally")
+          "relationship of this proposal to work in the field generally")
 
       val errsRoom = room.validate
       if (errsRoom.length > 1) {
@@ -82,10 +83,11 @@ class ActivitySpec extends BaseMongoSessionWordSpec {
       quotePackage.validate.length should equal (0)
       quotePackage.save(false)
 
-      val packageResourse = ResourcePackage.createRecord
+      val packageResourse = ResourcePackage
+        .createRecord
         .name("DIGITAL ROOM LAB + 10 PCs + DATA DISPLAY")
         .description("The contributions for use discount is only valid if payment of at least 40% of the contribution " +
-        "is made, before the workshop")
+          "is made, before the workshop")
         .comboName("PACKAGE FOR WORKSHOPS IN THE DIGITAL LAB")
         .classType(PackageType)
         .cost(quotePackage.id.get)
@@ -98,14 +100,10 @@ class ActivitySpec extends BaseMongoSessionWordSpec {
       packageResourse.validate.length should equal (0)
       packageResourse.save(false)
 
-      val dateFormat : java.text.DateFormat = new java.text.SimpleDateFormat("dd-MM-yyyy")
-      val date : Box[java.util.Date] = tryo {
-        val calendar = Calendar.getInstance()
-        calendar.setTime(dateFormat.parse("20-05-2001"))
-        calendar.getTime
-      }
+      val date: DateTime = new DateTime(2001, 5, 20, 0, 0, 0, 0)
 
-      val city = City.createRecord
+      val city = City
+        .createRecord
         .name("Cochabamba")
 
       val errsCity = city.validate
@@ -117,7 +115,8 @@ class ActivitySpec extends BaseMongoSessionWordSpec {
 
       city.save(false)
 
-      val country = Country.createRecord
+      val country = Country
+        .createRecord
         .name("Bolivia")
 
       val errsCountry = country.validate
@@ -129,9 +128,10 @@ class ActivitySpec extends BaseMongoSessionWordSpec {
 
       country.save(false)
 
-      val schedule = Schedule.createRecord
-        .startDate(date)
-        .endDate(date)
+      val schedule = Schedule
+        .createRecord
+        .startDate(date.toDate)
+        .endDate(date.toDate)
         .city(city.id.get)
         .country(country.id.get)
         .description("Inauguration")
@@ -145,13 +145,15 @@ class ActivitySpec extends BaseMongoSessionWordSpec {
       schedule.save(false)
 
 
-      val activityType = ActivityType.createRecord
+      val activityType = ActivityType
+        .createRecord
         .name("exhibition")
 
       activityType.validate.length should equal (0)
       activityType.save(false)
 
-      val activity = Activity.createRecord
+      val activity = Activity
+        .createRecord
         .activityType(activityType.id.get)
         .cost(25.22)
         .description("Children's Day")

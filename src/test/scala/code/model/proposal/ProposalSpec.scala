@@ -11,7 +11,8 @@ class ProposalSpec extends BaseMongoSessionWordSpec {
   "Proposal" should {
     "create, validate, save, and retrieve properly" in {
 
-      val city = City.createRecord
+      val city = City
+        .createRecord
         .name("Cochabamba")
 
       val errsCity = city.validate
@@ -22,7 +23,8 @@ class ProposalSpec extends BaseMongoSessionWordSpec {
       city.validate.length should equal (0)
       city.save(false)
 
-      val country = Country.createRecord
+      val country = Country
+        .createRecord
         .name("Bolivia")
 
       val errsCountry = country.validate
@@ -36,7 +38,8 @@ class ProposalSpec extends BaseMongoSessionWordSpec {
 
       /* Action line test
       */
-      val actionLine = ActionLine.createRecord
+      val actionLine = ActionLine
+        .createRecord
         .name("Action Line: Desarrollo Barrial")
         .description("descripcion Desarrollo Barrial")
 
@@ -49,7 +52,8 @@ class ProposalSpec extends BaseMongoSessionWordSpec {
 
       /* Program test */
 
-      val program = Program.createRecord
+      val program = Program
+        .createRecord
         .name("Programa nro1")
         .description("Descripcion del programa")
 
@@ -62,7 +66,8 @@ class ProposalSpec extends BaseMongoSessionWordSpec {
 
 
       /* Area test */
-      val area = Area.createRecord
+      val area = Area
+        .createRecord
         .name(" Visual crafts")
         .description("Martadero Areas")
         .email("visual@gmail.com")
@@ -76,7 +81,8 @@ class ProposalSpec extends BaseMongoSessionWordSpec {
       area.save(false)
 
 
-      val proposal = Proposal.createRecord
+      val proposal = Proposal
+        .createRecord
         .description("Include information about recent international progress in the field of the research, and the " +
         "relationship of this proposal to work in the field generally")
         .review("Link phases of the research plan/approach with the anticipated timeline")
@@ -103,11 +109,12 @@ class ProposalSpec extends BaseMongoSessionWordSpec {
     }
   }
 
-  def createProcess:Process = {
+  def createProcess: Process = {
 
     val responsible = createResponsible
 
-    val process = Process.createRecord
+    val process = Process
+      .createRecord
       .name("Proceso nro1")
       .description("Descripcion del proceso 1")
       .goal("Objetivo")
@@ -124,7 +131,8 @@ class ProposalSpec extends BaseMongoSessionWordSpec {
   }
 
   def createResponsible:Organizer = {
-    val organizer = Organizer.createRecord
+    val organizer = Organizer
+      .createRecord
       .name("Juan")
       .lastName("Perez")
 

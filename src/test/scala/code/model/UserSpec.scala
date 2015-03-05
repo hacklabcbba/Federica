@@ -7,7 +7,8 @@ class UserSpec extends BaseMongoSessionWordSpec {
 
       val userPass = "testpass1"
       // create a new User instance
-      val newUser = User.createRecord
+      val newUser = User
+        .createRecord
         .email("test@liftweb.net")
 
       newUser.password(userPass)
@@ -35,7 +36,8 @@ class UserSpec extends BaseMongoSessionWordSpec {
 
       val userPass = "testpass2"
       // create a new User instance
-      val newUser = User.createRecord
+      val newUser = User
+        .createRecord
         .email("test2@liftweb.net")
         .name("Test2")
         .username("Test2")
