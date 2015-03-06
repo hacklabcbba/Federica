@@ -4,8 +4,6 @@ package proposal
 
 import code.model.activity.ActivityType
 import code.model.project._
-import net.liftweb.record.field.StringField
-import net.liftweb.mongodb.record.field.ObjectIdRefField
 
 class ProposalSpec extends BaseMongoSessionWordSpec {
 
