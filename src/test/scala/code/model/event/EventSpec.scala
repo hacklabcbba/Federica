@@ -2,18 +2,20 @@ package code
 package model
 package event
 
-import java.util.Calendar
+import java.util.{Date, Calendar}
 
 import code.model.project._
 import net.liftweb.common.Box
 import net.liftweb.util.Helpers._
+import org.joda.time.DateTime
 
 class EventSpec extends BaseMongoSessionWordSpec {
 
   "Event" should {
     "create, validate, save, and retrieve properly" in {
 
-      val city = City.createRecord
+      val city = City
+        .createRecord
         .name("Cochabamba")
 
       val errsCity = city.validate
@@ -25,7 +27,8 @@ class EventSpec extends BaseMongoSessionWordSpec {
 
       city.save(false)
 
-      val country = Country.createRecord
+      val country = Country
+        .createRecord
         .name("Bolivia")
 
       val errsCountry = country.validate
@@ -37,16 +40,12 @@ class EventSpec extends BaseMongoSessionWordSpec {
 
       country.save(false)
 
-      val dateFormat : java.text.DateFormat = new java.text.SimpleDateFormat("dd-MM-yyyy")
-      val date : Box[java.util.Date] = tryo {
-        val calendar = Calendar.getInstance()
-        calendar.setTime(dateFormat.parse("20-05-2001"))
-        calendar.getTime
-      }
+      val date: DateTime = new DateTime(2001, 5, 20, 0, 0, 0, 0)
 
-      val schedule = Schedule.createRecord
-        .startDate(date)
-        .endDate(date)
+      val schedule = Schedule
+        .createRecord
+        .startDate(date.toDate)
+        .endDate(date.toDate)
         .city(city.id.get)
         .country(country.id.get)
         .description("Inauguration")
@@ -60,7 +59,8 @@ class EventSpec extends BaseMongoSessionWordSpec {
 
       schedule.save(false)
 
-      val organizer = Organizer.createRecord
+      val organizer = Organizer
+        .createRecord
         .name("Jonh")
         .lastName("Smith")
 
@@ -70,10 +70,13 @@ class EventSpec extends BaseMongoSessionWordSpec {
       }
 
       organizer.validate.length should equal (0)
-
       organizer.save(false)
 
-      val event = Event.createRecord
+      val eType1 =  createEventType("festival")
+      val eType2 =  createEventType("concierto")
+
+      val event = Event
+        .createRecord
         .description("Include information about recent international progress in the field of the research, and the " +
         "relationship of this proposal to work in the field generally")
         .name("Big History Project")
@@ -90,5 +93,19 @@ class EventSpec extends BaseMongoSessionWordSpec {
       event.save(false)
 
     }
+  }
+
+  def createEventType(name:String): EventType = {
+    val eventType = EventType
+      .createRecord
+      .name(name)
+
+    val errsList = eventType.validate
+    if (errsList.length > 1) {
+      fail("Validation error: " + errsList.mkString(", "))
+    }
+    eventType.validate.length should equal (0)
+    eventType.save(false)
+    eventType
   }
 }
