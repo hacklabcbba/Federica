@@ -4,6 +4,8 @@ package proposal
 
 import code.model.activity.ActivityType
 import code.model.project._
+import net.liftweb.record.field.StringField
+import net.liftweb.mongodb.record.field.ObjectIdRefField
 
 class ProposalSpec extends BaseMongoSessionWordSpec {
 
@@ -14,8 +16,11 @@ class ProposalSpec extends BaseMongoSessionWordSpec {
       val country = createCountry
       val area = createArea
       val activity = createActivityType
+      val actionLine = createActionLine
+      val program = createProgram
 
-      val proposal = Proposal.createRecord
+      val proposal = Proposal
+        .createRecord
         .description("Include information about recent international progress in the field of the research, and the " +
         "relationship of this proposal to work in the field generally")
         .review("Link phases of the research plan/approach with the anticipated timeline")
@@ -42,6 +47,23 @@ class ProposalSpec extends BaseMongoSessionWordSpec {
       proposal.save(false)
 
     }
+  }
+
+  def createProgram = {
+    /* Program test */
+
+    val program = Program
+      .createRecord
+      .name("Programa nro1")
+      .description("Descripcion del programa")
+
+    val errsProgram = program.validate
+    if (errsProgram.length > 1) {
+      fail("Validation error: " + errsProgram.mkString(", "))
+    }
+    program.validate.length should equal (0)
+    program.save(false)
+
   }
 
   def createCity = {
@@ -93,7 +115,6 @@ class ProposalSpec extends BaseMongoSessionWordSpec {
       .name(" Visual crafts")
       .description("Martadero Areas")
       .email("visual@gmail.com")
-      .isWorkshop(true)
       .code("ARV")
 
     val errsArea = area.validate
@@ -101,7 +122,38 @@ class ProposalSpec extends BaseMongoSessionWordSpec {
       fail("Validation error: " + errsArea.mkString(", "))
     }
 
-    area.validate.length should equal (0)
+    area.validate.length should equal(0)
     area.save(false)
+  }
+
+  def createResponsible:Organizer = {
+    val organizer = Organizer
+      .createRecord
+      .name("Juan")
+      .lastName("Perez")
+
+    val errsList = organizer.validate
+    if (errsList.length > 1) {
+      fail("Validation error: " + errsList.mkString(", "))
+    }
+    organizer.validate.length should equal (0)
+    organizer.save(false)
+    organizer
+  }
+
+  def createActionLine = {
+    /* Action line test
+        */
+    val actionLine = ActionLine
+      .createRecord
+      .name("Action Line: Desarrollo Barrial")
+      .description("descripcion Desarrollo Barrial")
+
+    val errsActionLine = actionLine.validate
+    if (errsActionLine.length > 1) {
+      fail("Validation error: " + errsActionLine.mkString(", "))
+    }
+    actionLine.validate.length should equal (0)
+    actionLine.save(false)
   }
 }

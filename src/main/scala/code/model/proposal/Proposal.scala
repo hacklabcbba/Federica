@@ -21,7 +21,7 @@ class Proposal private () extends MongoRecord[Proposal] with ObjectIdPk[Proposal
   object city extends ObjectIdRefField(this, City)
   object country extends ObjectIdRefField(this, Country)
   object area extends ObjectIdRefField(this, Area)
-  //To do when merge object productiveUnit extends ObjectIdRefField(this, ProductiveUnit)
+  object productiveUnit extends ObjectIdRefField(this, ProductiveUnit)
   object isAproved extends BooleanField(this, false)
   object currentDate extends DateTimeField(this)
   object activityType extends ObjectIdRefField(this, ActivityType)

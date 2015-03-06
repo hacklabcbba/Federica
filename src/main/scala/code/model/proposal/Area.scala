@@ -14,7 +14,6 @@ class Area private () extends MongoRecord[Area] with ObjectIdPk[Area]{
   object name extends StringField(this, 500)
   object description extends StringField(this, 500)
   object email extends StringField(this, 500)
-  object isWorkshop extends BooleanField(this, false)
   object code extends StringField(this, 50)
 }
 
