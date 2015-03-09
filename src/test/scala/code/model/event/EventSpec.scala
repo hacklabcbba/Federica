@@ -46,8 +46,6 @@ class EventSpec extends BaseMongoSessionWordSpec {
         .createRecord
         .startDate(date.toDate)
         .endDate(date.toDate)
-        .city(city.id.get)
-        .country(country.id.get)
         .description("Inauguration")
 
       val errsSchedule = country.validate
@@ -75,13 +73,15 @@ class EventSpec extends BaseMongoSessionWordSpec {
       val eType1 =  createEventType("festival")
       val eType2 =  createEventType("concierto")
 
+      val dateInfoList = createDateInfoList
+
       val event = Event
         .createRecord
-        .description("Include information about recent international progress in the field of the research, and the " +
-        "relationship of this proposal to work in the field generally")
+        .eventNumber(1000)
         .name("Big History Project")
-        .responsible(organizer.id.get)
-        .schedule(schedule :: Nil)
+        .description("Include information about recent international progress in the field of the research, and the " +
+          "relationship of this proposal to work in the field generally")
+        .schedule()
 
       val errsEvent = event.validate
       if (errsEvent.length > 1) {
@@ -107,5 +107,44 @@ class EventSpec extends BaseMongoSessionWordSpec {
     eventType.validate.length should equal (0)
     eventType.save(false)
     eventType
+  }
+
+  def createDateInfoList: DateInfoList = {
+
+    val date1: DateTime = new DateTime(2015, 3, 10, 0, 0, 0, 0)
+    val date2: DateTime = new DateTime(2015, 3, 11, 0, 0, 0, 0)
+    val date3: DateTime = new DateTime(2015, 3, 12, 0, 0, 0, 0)
+
+    val itemList1 = createDateInfo(date1)
+    val itemList2 = createDateInfo(date2)
+    val itemList3 = createDateInfo(date3)
+
+    val dateInfoList = DateInfoList
+      .createRecord
+      itemList(itemList1 :: itemList2)
+      .isCorrelative(true)
+      .isAtSameHour(true)
+
+    val eventType = EventType
+      .createRecord
+      .name(name)
+
+    val errsList = eventType.validate
+    if (errsList.length > 1) {
+      fail("Validation error: " + errsList.mkString(", "))
+    }
+    eventType.validate.length should equal (0)
+    eventType.save(false)
+    eventType
+  }
+
+  def createDateInfo(date: DateTime): DateInfo = {
+
+    val dateInfo = DateInfo
+      .createRecord
+      .date(date.toDate)
+      .description("Description de la fecha")
+      .startHour()
+    .
   }
 }
