@@ -84,7 +84,6 @@ class ProcessSpec extends BaseMongoSessionWordSpec {
           "interested in economic history, the history of economic thought, and political and cultural histories of economic life. ")
         .name("Big History Project")
         .responsible(organizer.id.get)
-        .schedule(schedule :: Nil)
 
       val errsProcess = process.validate
       if (errsProcess.length > 1) {
