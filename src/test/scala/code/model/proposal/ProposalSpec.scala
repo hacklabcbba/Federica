@@ -2,84 +2,20 @@ package code
 package model
 package proposal
 
+import code.model.activity.ActivityType
 import code.model.project._
-import net.liftweb.record.field.StringField
-import net.liftweb.mongodb.record.field.ObjectIdRefField
 
 class ProposalSpec extends BaseMongoSessionWordSpec {
 
   "Proposal" should {
     "create, validate, save, and retrieve properly" in {
 
-      val city = City
-        .createRecord
-        .name("Cochabamba")
-
-      val errsCity = city.validate
-      if (errsCity.length > 1) {
-        fail("Validation error: " + errsCity.mkString(", "))
-      }
-
-      city.validate.length should equal (0)
-      city.save(false)
-
-      val country = Country
-        .createRecord
-        .name("Bolivia")
-
-      val errsCountry = country.validate
-      if (errsCountry.length > 1) {
-        fail("Validation error: " + errsCountry.mkString(", "))
-      }
-
-      country.validate.length should equal (0)
-      country.save(false)
-
-
-      /* Action line test
-      */
-      val actionLine = ActionLine
-        .createRecord
-        .name("Action Line: Desarrollo Barrial")
-        .description("descripcion Desarrollo Barrial")
-
-      val errsActionLine = actionLine.validate
-      if (errsActionLine.length > 1) {
-        fail("Validation error: " + errsActionLine.mkString(", "))
-      }
-      actionLine.validate.length should equal (0)
-      actionLine.save(false)
-
-      /* Program test */
-
-      val program = Program
-        .createRecord
-        .name("Programa nro1")
-        .description("Descripcion del programa")
-
-      val errsProgram = program.validate
-      if (errsProgram.length > 1) {
-        fail("Validation error: " + errsProgram.mkString(", "))
-      }
-      program.validate.length should equal (0)
-      program.save(false)
-
-
-      /* Area test */
-      val area = Area
-        .createRecord
-        .name(" Visual crafts")
-        .description("Martadero Areas")
-        .email("visual@gmail.com")
-        .code("ARV")
-
-      val errsArea = area.validate
-      if (errsArea.length > 1) {
-        fail("Validation error: " + errsArea.mkString(", "))
-      }
-      area.validate.length should equal (0)
-      area.save(false)
-
+      val city = createCity
+      val country = createCountry
+      val area = createArea
+      val activity = createActivityType
+      val actionLine = createActionLine
+      val program = createProgram
 
       val proposal = Proposal
         .createRecord
@@ -93,6 +29,8 @@ class ProposalSpec extends BaseMongoSessionWordSpec {
         "interested in economic history, the history of economic thought, and political and cultural histories of economic life. ")
         .name("Big History Project")
         .state("In review")
+        .isAproved(false)
+        .activityType(activity.id.get)
         .city(city.id.get)
         .country(country.id.get)
         .area(area.id.get)
@@ -109,25 +47,81 @@ class ProposalSpec extends BaseMongoSessionWordSpec {
     }
   }
 
-  def createProcess: Process = {
+  def createProgram = {
+    /* Program test */
 
-    val responsible = createResponsible
-
-    val process = Process
+    val program = Program
       .createRecord
-      .name("Proceso nro1")
-      .description("Descripcion del proceso 1")
-      .goal("Objetivo")
-      .responsible(responsible.id.get)
-      .history("Historia del proceso")
+      .name("Programa nro1")
+      .description("Descripcion del programa")
 
-    val errsList = process.validate
-    if (errsList.length > 1) {
-      fail("Validation error: " + errsList.mkString(", "))
+    val errsProgram = program.validate
+    if (errsProgram.length > 1) {
+      fail("Validation error: " + errsProgram.mkString(", "))
     }
-    process.validate.length should equal (0)
-    process.save(false)
-    process
+    program.validate.length should equal (0)
+    program.save(false)
+
+  }
+
+  def createCity = {
+    val city = City
+      .createRecord
+      .name("Cochabamba")
+
+    val errsCity = city.validate
+    if (errsCity.length > 1) {
+      fail("Validation error: " + errsCity.mkString(", "))
+    }
+
+    city.validate.length should equal (0)
+    city.save(false)
+    city
+  }
+
+  def createCountry = {
+    val country = Country
+      .createRecord
+      .name("Bolivia")
+
+    val errsCountry = country.validate
+    if (errsCountry.length > 1) {
+      fail("Validation error: " + errsCountry.mkString(", "))
+    }
+
+    country.validate.length should equal (0)
+    country.save(false)
+  }
+
+  def createActivityType = {
+    val activityType = ActivityType
+      .createRecord
+      .name("Proyection")
+
+    val errsActivity = activityType.validate
+    if (errsActivity.length > 1) {
+      fail("Validation error: " + errsActivity.mkString(", "))
+    }
+
+    activityType.validate.length should equal (0)
+    activityType.save(false)
+  }
+
+  def createArea = {
+    val area = Area
+      .createRecord
+      .name(" Visual crafts")
+      .description("Martadero Areas")
+      .email("visual@gmail.com")
+      .code("ARV")
+
+    val errsArea = area.validate
+    if (errsArea.length > 1) {
+      fail("Validation error: " + errsArea.mkString(", "))
+    }
+
+    area.validate.length should equal(0)
+    area.save(false)
   }
 
   def createResponsible:Organizer = {
@@ -143,5 +137,21 @@ class ProposalSpec extends BaseMongoSessionWordSpec {
     organizer.validate.length should equal (0)
     organizer.save(false)
     organizer
+  }
+
+  def createActionLine = {
+    /* Action line test
+        */
+    val actionLine = ActionLine
+      .createRecord
+      .name("Action Line: Desarrollo Barrial")
+      .description("descripcion Desarrollo Barrial")
+
+    val errsActionLine = actionLine.validate
+    if (errsActionLine.length > 1) {
+      fail("Validation error: " + errsActionLine.mkString(", "))
+    }
+    actionLine.validate.length should equal (0)
+    actionLine.save(false)
   }
 }
