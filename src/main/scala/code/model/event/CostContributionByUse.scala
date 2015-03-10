@@ -1,4 +1,6 @@
-package code.model.event
+package code
+package model
+package event
 
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.record.field.{StringField, BooleanField}

@@ -1,4 +1,6 @@
-package code.model.event
+package code
+package model
+package event
 
 import code.model.project.{Organizer, Schedule}
 import net.liftweb.mongodb.record.MongoRecord
