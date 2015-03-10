@@ -111,18 +111,18 @@ class EventSpec extends BaseMongoSessionWordSpec {
 
   def createDateInfoList: DateInfoList = {
 
-    val date1: DateTime = new DateTime(2015, 3, 10, 0, 0, 0, 0)
-    val date2: DateTime = new DateTime(2015, 3, 11, 0, 0, 0, 0)
-    val date3: DateTime = new DateTime(2015, 3, 12, 0, 0, 0, 0)
+    val date1: DateTime = new DateTime(2015, 3, 10, 15, 0, 0, 0)
+    val date2: DateTime = new DateTime(2015, 3, 10, 18, 0, 0, 0)
+    val date3: DateTime = new DateTime(2015, 3, 11, 18, 0, 0, 0)
+    val date4: DateTime = new DateTime(2015, 3, 11, 21, 0, 0, 0)
 
-    val itemList1 = createDateInfo(date1)
-    val itemList2 = createDateInfo(date2)
-    val itemList3 = createDateInfo(date3)
+    val itemList1 = createDateInfo(date1, date2)
+    val itemList2 = createDateInfo(date3, date4)
 
     val dateInfoList = DateInfoList
       .createRecord
-      itemList(itemList1 :: itemList2)
       .isCorrelative(true)
+      itemList(itemList1 :: itemList2 :: Nil)
       .isAtSameHour(true)
 
     val eventType = EventType
@@ -138,13 +138,20 @@ class EventSpec extends BaseMongoSessionWordSpec {
     eventType
   }
 
-  def createDateInfo(date: DateTime): DateInfo = {
+  def createDateInfo(startDate: DateTime, endDate: DateTime): DateInfo = {
 
     val dateInfo = DateInfo
       .createRecord
-      .date(date.toDate)
+      .startDate(startDate.toDate)
+      .endDate(startDate.toDate)
       .description("Description de la fecha")
-      .startHour()
-    .
+
+    val errsList = dateInfo.validate
+    if (errsList.length > 1) {
+      fail("Validation error: " + errsList.mkString(", "))
+    }
+    dateInfo.validate.length should equal (0)
+    dateInfo.save(false)
+    dateInfo
   }
 }
