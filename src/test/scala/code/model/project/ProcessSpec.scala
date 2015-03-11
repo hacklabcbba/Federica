@@ -43,8 +43,8 @@ class ProcessSpec extends BaseMongoSessionWordSpec {
 
       val schedule = Schedule
         .createRecord
-        .startDate(date.toDate)
-        .endDate(date.toDate)
+        .begins(date.toDate)
+        .ends(date.toDate)
         .city(city.id.get)
         .country(country.id.get)
         .description("Inauguration")

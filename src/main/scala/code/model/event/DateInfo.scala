@@ -11,8 +11,8 @@ import net.liftweb.mongodb.record.field.{ObjectIdRefField, ObjectIdRefListField,
 class DateInfo private() extends MongoRecord[DateInfo] with ObjectIdPk[DateInfo]{
 
   override def meta = DateInfo
-  object startDate extends DateField(this)
-  object endDate extends DateField(this)
+  object begins extends DateField(this)
+  object ends extends DateField(this)
   object description extends StringField(this, "")
 }
 

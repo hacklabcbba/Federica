@@ -50,8 +50,8 @@ class EventSpec extends BaseMongoSessionWordSpec {
 
       val schedule = Schedule
         .createRecord
-        .startDate(date.toDate)
-        .endDate(date.toDate)
+        .begins(date.toDate)
+        .ends(date.toDate)
         .description("Inauguration")
 
       val errsSchedule = country.validate
@@ -182,12 +182,12 @@ class EventSpec extends BaseMongoSessionWordSpec {
     dateInfoList
   }
 
-  def createDateInfo(desc: String, startDate: DateTime, endDate: DateTime): DateInfo = {
+  def createDateInfo(desc: String, begins: DateTime, ends: DateTime): DateInfo = {
 
     val dateInfo = DateInfo
       .createRecord
-      .startDate(startDate.toDate)
-      .endDate(startDate.toDate)
+      .begins(begins.toDate)
+      .ends(begins.toDate)
       .description(desc)
 
     val errsList = dateInfo.validate
