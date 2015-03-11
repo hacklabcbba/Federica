@@ -8,12 +8,12 @@ import net.liftweb.mongodb.record.field.{ObjectIdRefListField, ObjectIdPk}
 import code.lib.RogueMetaRecord
 
 
-class Gallery private() extends MongoRecord[Gallery] with ObjectIdPk[Gallery]{
+class PressNotes private() extends MongoRecord[PressNotes] with ObjectIdPk[PressNotes]{
 
-  override def meta = Gallery
+  override def meta = PressNotes
 
   object title extends StringField(this, "")
-  object itemList extends ObjectIdRefListField(this, GalleryItem)
+  object article extends ObjectIdRefListField(this, PressArticle)
 }
-object Gallery extends Gallery with RogueMetaRecord[Gallery]{
+object PressNotes extends PressNotes with RogueMetaRecord[PressNotes]{
 }

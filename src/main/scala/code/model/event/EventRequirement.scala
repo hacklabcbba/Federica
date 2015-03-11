@@ -10,7 +10,7 @@ import code.lib.RogueMetaRecord
 class EventRequirement private() extends MongoRecord[EventRequirement] with ObjectIdPk[EventRequirement]{
 
   override def meta = EventRequirement
-  object requirement extends StringField(this, "")
+  object title extends StringField(this, "")
   object isOptional extends BooleanField(this, true)
 }
 

@@ -114,15 +114,15 @@ class EventSpec extends BaseMongoSessionWordSpec {
         .shortDescription("descripcion corta")
         .activities(activity1.id.get :: activity2.id.get :: Nil)
         .description("descripcion larga")
-        .requirementsList(req1.id.get :: req2.id.get :: Nil)
-        .expositor(user1.id.get :: Nil)
-        .organizer(user1.id.get :: Nil)
-        .handler(user1.id.get :: Nil)
-        .sponsor(user1.id.get :: Nil)
-        .support(user1.id.get :: Nil)
-        .collaborator(user1.id.get :: Nil)
-        .pressRoom(user1.id.get :: Nil)
-        .goals("objetivo 1")
+        .requirements(req1.id.get :: req2.id.get :: Nil)
+        .expositors(user1.id.get :: Nil)
+        .organizers(user1.id.get :: Nil)
+        .handlers(user1.id.get :: Nil)
+        .sponsors(user1.id.get :: Nil)
+        .supports(user1.id.get :: Nil)
+        .collaborators(user1.id.get :: Nil)
+        .pressRoom(user1.id.get)
+        .goal("objetivo 1")
         .quote("cupo para 12 personas")
         .tools("alicate, desarmador")
         .supplies(" cinta aislante, fosforos")
@@ -163,14 +163,14 @@ class EventSpec extends BaseMongoSessionWordSpec {
     val date3: DateTime = new DateTime(2015, 3, 11, 18, 0, 0, 0)
     val date4: DateTime = new DateTime(2015, 3, 11, 21, 0, 0, 0)
 
-    val itemList1 = createDateInfo("description1", date1, date2)
-    val itemList2 = createDateInfo("description2", date3, date4)
+    val items1 = createDateInfo("description1", date1, date2)
+    val items2 = createDateInfo("description2", date3, date4)
 
     val dateInfoList = DateInfoList
       .createRecord
       .isCorrelative(true)
       .isAtSameHour(true)
-      .itemList(itemList1.id.get :: itemList2.id.get :: Nil)
+      .items(items1.id.get :: items2.id.get :: Nil)
 
 
     val errsList = dateInfoList.validate
@@ -452,7 +452,7 @@ class EventSpec extends BaseMongoSessionWordSpec {
 
     val req = EventRequirement
       .createRecord
-      .requirement(reqTitle)
+      .title(reqTitle)
       .isOptional(isOptional)
 
     val errorsList = req.validate

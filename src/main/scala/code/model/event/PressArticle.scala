@@ -8,15 +8,15 @@ import net.liftweb.record.field.{BinaryField, StringField, BooleanField}
 import net.liftweb.mongodb.record.MongoRecord
 
 
-class GalleryItem private() extends MongoRecord[GalleryItem] with ObjectIdPk[GalleryItem]{
+class PressArticle private() extends MongoRecord[PressArticle] with ObjectIdPk[PressArticle]{
 
-  override def meta = GalleryItem
+  override def meta = PressArticle
   object title extends StringField(this, "")
   object file extends BinaryField(this)
   object notes extends StringField(this, "")
 }
 
-object GalleryItem extends GalleryItem with RogueMetaRecord[GalleryItem]{
+object PressArticle extends PressArticle with RogueMetaRecord[PressArticle]{
 }
 
 
