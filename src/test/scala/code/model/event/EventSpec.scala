@@ -2,89 +2,32 @@ package code
 package model
 package event
 
-import java.util.{Date, Calendar}
-
 import code.model.project._
 import org.joda.time.DateTime
 import code.model.proposal.{Program, ActionLine, Area}
 import code.model.resource.{ResourcePackage, Room, RoomQuote, Consumer}
-import net.liftweb.mongodb.record.field.{ObjectIdRefField, ObjectIdRefListField}
 import code.model.activity.{ActivityType, Activity}
 import code.model.resource.CostType._
 import code.model.resource.ClassType._
 import code.model.productive.ProductiveUnit
-import net.liftweb.record.field.StringField
 
 class EventSpec extends BaseMongoSessionWordSpec {
 
   "Event" should {
     "create, validate, save, and retrieve properly" in {
 
-      val city = City
-        .createRecord
-        .name("Cochabamba")
+      val city = createCity("Cbba")
+      val country = createCountry("Bolivia")
+      val schedule = createSchedule
 
-      val errsCity = city.validate
-      if (errsCity.length > 1) {
-        fail("Validation error: " + errsCity.mkString(", "))
-      }
-
-      city.validate.length should equal (0)
-
-      city.save(false)
-
-      val country = Country
-        .createRecord
-        .name("Bolivia")
-
-      val errsCountry = country.validate
-      if (errsCountry.length > 1) {
-        fail("Validation error: " + errsCountry.mkString(", "))
-      }
-
-      country.validate.length should equal (0)
-
-      country.save(false)
-
-      val date: DateTime = new DateTime(2001, 5, 20, 0, 0, 0, 0)
-
-      val schedule = Schedule
-        .createRecord
-        .begins(date.toDate)
-        .ends(date.toDate)
-        .description("Inauguration")
-
-      val errsSchedule = country.validate
-      if (errsSchedule.length > 1) {
-        fail("Validation error: " + errsSchedule.mkString(", "))
-      }
-
-      schedule.validate.length should equal (0)
-
-      schedule.save(false)
-
-      val organizer = Organizer
-        .createRecord
-        .name("Jonh")
-        .lastName("Smith")
-
-      val errsOrganizer = organizer.validate
-      if (errsOrganizer.length > 1) {
-        fail("Validation error: " + errsOrganizer.mkString(", "))
-      }
-
-      organizer.validate.length should equal (0)
-      organizer.save(false)
-
+      val organizer = createOrganizer("Jhon", "Smith")
       val eType1 =  createEventType("festival")
       val eType2 =  createEventType("concierto")
 
-      val dateInfoList = createDateInfoList
       val costInfo = createCostInfo
       val area = createArea
       val program = createProgram
       val productiveUnit = createProductiveUnit
-
 
       val activity1 = createActivity("actividad1", "descripcion1", eType1)
       val activity2 = createActivity("actividad2", "descripcion2", eType2)
@@ -102,7 +45,7 @@ class EventSpec extends BaseMongoSessionWordSpec {
         .name("Big History Project")
         .description("Include information about recent international progress in the field of the research, and the " +
           "relationship of this proposal to work in the field generally")
-        .schedule(dateInfoList.id.get)
+        .schedule(schedule.id.get)
         .costInfo(costInfo.id.get)
         .eventTypes(eType1.id.get:: eType2.id.get :: Nil)
         .area(area.id.get)
@@ -156,47 +99,52 @@ class EventSpec extends BaseMongoSessionWordSpec {
     eventType
   }
 
-  def createDateInfoList: DateInfoList = {
+  def createSchedule: Schedule = {
 
     val date1: DateTime = new DateTime(2015, 3, 10, 15, 0, 0, 0)
-    val date2: DateTime = new DateTime(2015, 3, 10, 18, 0, 0, 0)
-    val date3: DateTime = new DateTime(2015, 3, 11, 18, 0, 0, 0)
-    val date4: DateTime = new DateTime(2015, 3, 11, 21, 0, 0, 0)
+    val date2: DateTime = new DateTime(2015, 3, 11, 18, 0, 0, 0)
+    val date3: DateTime = new DateTime(2015, 3, 12, 18, 0, 0, 0)
+    val date4: DateTime = new DateTime(2015, 3, 18, 21, 0, 0, 0)
 
-    val items1 = createDateInfo("description1", date1, date2)
-    val items2 = createDateInfo("description2", date3, date4)
+    val items1 = createScheduleItem("description1", date1, date2)
+    val items2 = createScheduleItem("description2", date3, date4)
 
-    val dateInfoList = DateInfoList
+    val schedule = Schedule
       .createRecord
       .isCorrelative(true)
       .isAtSameHour(true)
       .items(items1.id.get :: items2.id.get :: Nil)
 
 
-    val errsList = dateInfoList.validate
+    val errsList = schedule.validate
     if (errsList.length > 1) {
       fail("Validation error: " + errsList.mkString(", "))
     }
-    dateInfoList.validate.length should equal (0)
-    dateInfoList.save(false)
-    dateInfoList
+    schedule.validate.length should equal (0)
+    schedule.save(false)
+    schedule
   }
 
-  def createDateInfo(desc: String, begins: DateTime, ends: DateTime): DateInfo = {
+  def createScheduleItem(desc: String, begins: DateTime, ends: DateTime): ScheduleItem = {
 
-    val dateInfo = DateInfo
+    val city = createCity("Cbba")
+    val country = createCountry("Bolivia")
+
+    val scheduleItem = ScheduleItem
       .createRecord
       .begins(begins.toDate)
       .ends(begins.toDate)
       .description(desc)
+      .city(city.id.get)
+      .country(country.id.get)
 
-    val errsList = dateInfo.validate
+    val errsList = scheduleItem.validate
     if (errsList.length > 1) {
       fail("Validation error: " + errsList.mkString(", "))
     }
-    dateInfo.validate.length should equal (0)
-    dateInfo.save(false)
-    dateInfo
+    scheduleItem.validate.length should equal (0)
+    scheduleItem.save(false)
+    scheduleItem
   }
 
   def createArea: Area = {
@@ -264,8 +212,8 @@ class EventSpec extends BaseMongoSessionWordSpec {
       .activityType(activityType.id.get)
       .description(desc)
       .name(name)
-      .rooms(room :: Nil)
-      .packages(packageResource :: Nil)
+      .rooms(room.id.get :: Nil)
+      .packages(packageResource.id.get :: Nil)
 
     val errsActivity= activity.validate
     if (errsActivity.length > 1) {
@@ -461,5 +409,21 @@ class EventSpec extends BaseMongoSessionWordSpec {
     }
     req.validate.length should equal (0)
     req.save(false)
+  }
+
+  def createOrganizer(name: String, lastname: String): Organizer = {
+
+    val organizer = Organizer
+      .createRecord
+      .name(name)
+      .lastName(lastname)
+
+    val errsOrganizer = organizer.validate
+    if (errsOrganizer.length > 1) {
+      fail("Validation error: " + errsOrganizer.mkString(", "))
+    }
+
+    organizer.validate.length should equal (0)
+    organizer.save(false)
   }
 }

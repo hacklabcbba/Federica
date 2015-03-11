@@ -17,7 +17,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
 
   object eventNumber extends LongField(this)
   object name extends StringField(this, 200)
-  object schedule extends ObjectIdRefField(this, DateInfoList)
+  object schedule extends ObjectIdRefField(this, Schedule)
   object costInfo extends ObjectIdRefField(this, CostInfo)
   object eventTypes extends ObjectIdRefListField(this, EventType)
   object area extends ObjectIdRefField(this, Area)

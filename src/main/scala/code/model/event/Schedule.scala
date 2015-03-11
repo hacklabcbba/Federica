@@ -9,16 +9,16 @@ import code.lib.RogueMetaRecord
 import net.liftweb.common.Empty
 
 
-class DateInfoList private() extends MongoRecord[DateInfoList] with ObjectIdPk[DateInfoList]{
+class Schedule private() extends MongoRecord[Schedule] with ObjectIdPk[Schedule]{
 
-  override def meta = DateInfoList
+  override def meta = Schedule
 
-  object items extends ObjectIdRefListField(this, DateInfo)
+  object items extends ObjectIdRefListField(this, ScheduleItem)
   object isCorrelative extends BooleanField(this, false)
   object isAtSameHour extends BooleanField(this, false)
 }
 
-object DateInfoList extends DateInfoList with RogueMetaRecord[DateInfoList]{
+object Schedule extends Schedule with RogueMetaRecord[Schedule]{
 
   def getLiteralDate: String = {
     ""
