@@ -16,7 +16,6 @@ class Process private() extends MongoRecord[Process] with ObjectIdPk[Process]{
   object description extends StringField(this, 500)
   object responsible extends ObjectIdRefField(this, Organizer)
   object history extends StringField(this, 1000)
-  object schedule extends MongoListField[Process, Schedule](this)
 
 }
 

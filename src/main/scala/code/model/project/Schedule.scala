@@ -11,8 +11,8 @@ class Schedule private() extends MongoRecord[Schedule] with ObjectIdPk[Schedule]
 
   override def meta = Schedule
 
-  object startDate extends DateField(this)
-  object endDate extends DateField(this)
+  object begins extends DateField(this)
+  object ends extends DateField(this)
   object description extends StringField(this, 500)
   object city extends ObjectIdRefField(this, City)
   object country extends ObjectIdRefField(this, Country)

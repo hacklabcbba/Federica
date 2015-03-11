@@ -13,6 +13,7 @@ import net.liftweb.common.Box
 import net.liftweb.util.Helpers._
 import code.model.activity.ActivityType._
 import org.joda.time.DateTime
+import code.model.event.CostInfo
 
 class ActivitySpec extends BaseMongoSessionWordSpec {
 
@@ -130,8 +131,8 @@ class ActivitySpec extends BaseMongoSessionWordSpec {
 
       val schedule = Schedule
         .createRecord
-        .startDate(date.toDate)
-        .endDate(date.toDate)
+        .begins(date.toDate)
+        .ends(date.toDate)
         .city(city.id.get)
         .country(country.id.get)
         .description("Inauguration")
@@ -152,10 +153,12 @@ class ActivitySpec extends BaseMongoSessionWordSpec {
       activityType.validate.length should equal (0)
       activityType.save(false)
 
+      val costInfo = createCostInfo
+
       val activity = Activity
         .createRecord
         .activityType(activityType.id.get)
-        .cost(25.22)
+        .costInfo(costInfo.id.get)
         .description("Children's Day")
         .name("Children's Day")
         .rooms(room :: Nil)
@@ -171,5 +174,21 @@ class ActivitySpec extends BaseMongoSessionWordSpec {
       activity.save(false)
 
     }
+  }
+
+  def createCostInfo: CostInfo = {
+
+    val costInfo = CostInfo
+      .createRecord
+      .cost(100.00)
+      .currency("Bs")
+      .description("Para cubrir los costos de herramientas e insumos principalmente. Se aceptan becados.")
+
+    val errorsList = costInfo.validate
+    if (errorsList.length > 1) {
+      fail("Validation error: " + errorsList.mkString(", "))
+    }
+    costInfo.validate.length should equal (0)
+    costInfo.save(false)
   }
 }

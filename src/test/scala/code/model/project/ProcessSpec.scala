@@ -43,8 +43,8 @@ class ProcessSpec extends BaseMongoSessionWordSpec {
 
       val schedule = Schedule
         .createRecord
-        .startDate(date.toDate)
-        .endDate(date.toDate)
+        .begins(date.toDate)
+        .ends(date.toDate)
         .city(city.id.get)
         .country(country.id.get)
         .description("Inauguration")
@@ -84,7 +84,6 @@ class ProcessSpec extends BaseMongoSessionWordSpec {
           "interested in economic history, the history of economic thought, and political and cultural histories of economic life. ")
         .name("Big History Project")
         .responsible(organizer.id.get)
-        .schedule(schedule :: Nil)
 
       val errsProcess = process.validate
       if (errsProcess.length > 1) {
