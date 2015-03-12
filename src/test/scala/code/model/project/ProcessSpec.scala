@@ -2,7 +2,6 @@ package code
 package model
 package project
 
-import code.model.event.{RangeType, Schedule}
 import org.joda.time.DateTime
 
 class ProcessSpec extends BaseMongoSessionWordSpec {
