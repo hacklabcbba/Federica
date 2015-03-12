@@ -1,6 +1,7 @@
 package code
 package model
 
+import com.mongodb.WriteConcern
 import lib.RogueMetaRecord
 
 import org.bson.types.ObjectId
@@ -188,3 +189,22 @@ object User extends User with ProtoAuthUserMeta[User] with RogueMetaRecord[User]
 }
 
 case class LoginCredentials(email: String, isRememberMe: Boolean = false)
+
+object SystemUser {
+  private val username = "admin"
+  private val email = "info@genso.com.bo"
+
+  lazy val user: User = User.findByUsername(username) openOr {
+    //User.save
+    User.createRecord
+      .name(MongoAuth.siteName.vend)
+      .username(username)
+      .email(email)
+      .locale("es_BO")
+      .timezone("America/La_Paz")
+      .verified(true)
+      .password("asdf1234", true) // TODO: set me
+      .save(WriteConcern.SAFE)
+  }
+}
+

@@ -10,7 +10,7 @@ import util._
 import util.Helpers._
 
 import code.config._
-import code.model.User
+import code.model.{SystemUser, User}
 
 import net.liftmodules.extras.{Gravatar, LiftExtras}
 import net.liftmodules.mongoauth.MongoAuth
@@ -30,8 +30,8 @@ class Boot extends Loggable {
     MongoAuth.authUserMeta.default.set(User)
     MongoAuth.loginTokenAfterUrl.default.set(Site.password.url)
     MongoAuth.siteName.default.set("Federica")
-    MongoAuth.systemEmail.default.set("help@localhost.com")
-    MongoAuth.systemUsername.default.set("Federica")
+    MongoAuth.systemEmail.default.set(SystemUser.user.email.get)
+    MongoAuth.systemUsername.default.set(SystemUser.user.name.get)
 
     // For S.loggedIn_? and TestCond.loggedIn/Out builtin snippet
     LiftRules.loggedInTest = Full(() => User.isLoggedIn)
