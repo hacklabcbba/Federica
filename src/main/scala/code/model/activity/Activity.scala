@@ -5,9 +5,10 @@ package activity
 import code.lib.RogueMetaRecord
 import code.model.resource._
 import net.liftweb.mongodb.record.MongoRecord
-import net.liftweb.mongodb.record.field.{ObjectIdRefListField, ObjectIdRefField, MongoListField, ObjectIdPk}
+import net.liftweb.mongodb.record.field._
 import net.liftweb.record.field.{DecimalField, EnumNameField, StringField}
 import code.model.event.CostInfo
+import org.joda.time.DateTime
 
 class Activity private() extends MongoRecord[Activity] with ObjectIdPk[Activity]{
 
@@ -21,6 +22,7 @@ class Activity private() extends MongoRecord[Activity] with ObjectIdPk[Activity]
   object rooms extends ObjectIdRefListField(this, Room)
   object equipments extends ObjectIdRefField(this, Equipment)
   object packages extends ObjectIdRefListField(this, ResourcePackage)
+  object date extends DateField(this)
 }
 
 object Activity extends Activity with RogueMetaRecord[Activity]

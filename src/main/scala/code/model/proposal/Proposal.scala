@@ -10,6 +10,8 @@ import code.model.resource.Resource
 import net.liftweb.mongodb.record.field.{MongoListField, ObjectIdPk, ObjectIdRefField}
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.record.field.{EnumNameField, DateTimeField, BooleanField, StringField}
+import org.joda.time.DateTime
+import code.model.event.RangeType
 
 class Proposal private () extends MongoRecord[Proposal] with ObjectIdPk[Proposal] {
   override def meta = Proposal
@@ -31,6 +33,8 @@ class Proposal private () extends MongoRecord[Proposal] with ObjectIdPk[Proposal
   object dateInit extends DateTimeField(this)
   object dateEnd extends DateTimeField(this)
   object reserveType extends EnumNameField(this, ReserveType)
+  object rangeType extends EnumNameField(this, RangeType)
+  object dateRange extends MongoListField[Proposal, DateTime](this)
 }
 
 object Proposal extends Proposal with RogueMetaRecord[Proposal]

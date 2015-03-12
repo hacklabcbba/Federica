@@ -8,7 +8,7 @@ import code.model.resource.ClassType._
 import code.model.resource.CostType._
 import code.model.resource._
 import org.joda.time.DateTime
-import code.model.event.{ScheduleItem, Schedule, CostInfo}
+import code.model.event.{Schedule, RangeType, CostInfo}
 
 class ActivitySpec extends BaseMongoSessionWordSpec {
 
@@ -109,6 +109,8 @@ class ActivitySpec extends BaseMongoSessionWordSpec {
 
       val costInfo = createCostInfo
 
+      val date1: DateTime = new DateTime(2015, 3, 10, 15, 0, 0, 0)
+
       val activity = Activity
         .createRecord
         .activityType(activityType.id.get)
@@ -117,6 +119,7 @@ class ActivitySpec extends BaseMongoSessionWordSpec {
         .name("Children's Day")
         .rooms(room.id.get :: Nil)
         .packages(packageResourse.id.get :: Nil)
+        .date(date1.toDate)
 
       val errsActivity= activity.validate
       if (errsActivity.length > 1) {
@@ -146,6 +149,7 @@ class ActivitySpec extends BaseMongoSessionWordSpec {
     costInfo.save(false)
   }
 
+
   def createSchedule: Schedule = {
 
     val date1: DateTime = new DateTime(2015, 3, 10, 15, 0, 0, 0)
@@ -153,14 +157,11 @@ class ActivitySpec extends BaseMongoSessionWordSpec {
     val date3: DateTime = new DateTime(2015, 3, 12, 18, 0, 0, 0)
     val date4: DateTime = new DateTime(2015, 3, 18, 21, 0, 0, 0)
 
-    val items1 = createScheduleItem("description1", date1, date2)
-    val items2 = createScheduleItem("description2", date3, date4)
-
     val schedule = Schedule
       .createRecord
-      .isCorrelative(true)
       .isAtSameHour(true)
-      .items(items1.id.get :: items2.id.get :: Nil)
+      .dateRange(date1 :: date2 :: date3 :: date4 :: Nil)
+      .rangeType(RangeType.ContinuousInterval)
 
 
     val errsList = schedule.validate
@@ -172,27 +173,6 @@ class ActivitySpec extends BaseMongoSessionWordSpec {
     schedule
   }
 
-  def createScheduleItem(desc: String, begins: DateTime, ends: DateTime): ScheduleItem = {
-
-    val city = createCity("Cbba")
-    val country = createCountry("Bolivia")
-
-    val scheduleItem = ScheduleItem
-      .createRecord
-      .begins(begins.toDate)
-      .ends(begins.toDate)
-      .description(desc)
-      .city(city.id.get)
-      .country(country.id.get)
-
-    val errsList = scheduleItem.validate
-    if (errsList.length > 1) {
-      fail("Validation error: " + errsList.mkString(", "))
-    }
-    scheduleItem.validate.length should equal (0)
-    scheduleItem.save(false)
-    scheduleItem
-  }
 
   def createCity(name: String) = {
     val city = City

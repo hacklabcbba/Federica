@@ -106,15 +106,11 @@ class EventSpec extends BaseMongoSessionWordSpec {
     val date3: DateTime = new DateTime(2015, 3, 12, 18, 0, 0, 0)
     val date4: DateTime = new DateTime(2015, 3, 18, 21, 0, 0, 0)
 
-    val items1 = createScheduleItem("description1", date1, date2)
-    val items2 = createScheduleItem("description2", date3, date4)
-
     val schedule = Schedule
       .createRecord
-      .isCorrelative(true)
       .isAtSameHour(true)
-      .items(items1.id.get :: items2.id.get :: Nil)
-
+      .dateRange(date1 :: date2 :: date3 :: date4 :: Nil)
+      .rangeType(RangeType.ContinuousInterval)
 
     val errsList = schedule.validate
     if (errsList.length > 1) {
@@ -123,28 +119,6 @@ class EventSpec extends BaseMongoSessionWordSpec {
     schedule.validate.length should equal (0)
     schedule.save(false)
     schedule
-  }
-
-  def createScheduleItem(desc: String, begins: DateTime, ends: DateTime): ScheduleItem = {
-
-    val city = createCity("Cbba")
-    val country = createCountry("Bolivia")
-
-    val scheduleItem = ScheduleItem
-      .createRecord
-      .begins(begins.toDate)
-      .ends(begins.toDate)
-      .description(desc)
-      .city(city.id.get)
-      .country(country.id.get)
-
-    val errsList = scheduleItem.validate
-    if (errsList.length > 1) {
-      fail("Validation error: " + errsList.mkString(", "))
-    }
-    scheduleItem.validate.length should equal (0)
-    scheduleItem.save(false)
-    scheduleItem
   }
 
   def createArea: Area = {
@@ -207,6 +181,8 @@ class EventSpec extends BaseMongoSessionWordSpec {
     val packageResource = createPackageResource
     val room = createRoom
 
+    val date1: DateTime = new DateTime(2015, 3, 10, 15, 0, 0, 0)
+
     val activity = Activity
       .createRecord
       .activityType(activityType.id.get)
@@ -214,6 +190,7 @@ class EventSpec extends BaseMongoSessionWordSpec {
       .name(name)
       .rooms(room.id.get :: Nil)
       .packages(packageResource.id.get :: Nil)
+      .date(date1.toDate)
 
     val errsActivity= activity.validate
     if (errsActivity.length > 1) {
