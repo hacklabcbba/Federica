@@ -21,11 +21,11 @@ class Schedule private() extends MongoRecord[Schedule] with ObjectIdPk[Schedule]
 
 object Schedule extends Schedule with RogueMetaRecord[Schedule]{
 
-  def getLiteralDate: String = {
+  def literalDate: String = {
     ""
   }
 
-  def getLiteralHour: String = {
+  def literalHour: String = {
     ""
   }
 }
