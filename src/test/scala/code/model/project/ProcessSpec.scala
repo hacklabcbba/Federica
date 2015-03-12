@@ -2,10 +2,6 @@ package code
 package model
 package project
 
-import java.util.Calendar
-import net.liftweb.common.Box
-import net.liftweb.util.Helpers._
-import org.joda.time
 import org.joda.time.DateTime
 
 class ProcessSpec extends BaseMongoSessionWordSpec {
