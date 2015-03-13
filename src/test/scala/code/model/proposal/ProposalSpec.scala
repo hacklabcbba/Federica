@@ -4,6 +4,8 @@ package proposal
 
 import code.model.activity.ActivityType
 import code.model.project._
+import code.model.event.RangeType
+import org.joda.time.DateTime
 
 class ProposalSpec extends BaseMongoSessionWordSpec {
 
@@ -16,6 +18,11 @@ class ProposalSpec extends BaseMongoSessionWordSpec {
       val activity = createActivityType
       val actionLine = createActionLine
       val program = createProgram
+
+      val date1: DateTime = new DateTime(2015, 3, 10, 15, 0, 0, 0)
+      val date2: DateTime = new DateTime(2015, 3, 11, 18, 0, 0, 0)
+      val date3: DateTime = new DateTime(2015, 3, 12, 18, 0, 0, 0)
+      val date4: DateTime = new DateTime(2015, 3, 18, 21, 0, 0, 0)
 
       val proposal = Proposal
         .createRecord
@@ -34,6 +41,8 @@ class ProposalSpec extends BaseMongoSessionWordSpec {
         .city(city.id.get)
         .country(country.id.get)
         .area(area.id.get)
+        .dateRange(date1 :: date2 :: date3 :: date4 :: Nil)
+        .rangeType(RangeType.ContinuousInterval)
 
       val errsProposal = proposal.validate
       if (errsProposal.length > 1) {

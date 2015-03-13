@@ -2,18 +2,13 @@ package code
 package model
 package activity
 
-import java.util.Calendar
-
-import code.model.project.{Country, City, Schedule}
+import code.model.project.{Country, City}
 import code.model.proposal.Area
 import code.model.resource.ClassType._
 import code.model.resource.CostType._
 import code.model.resource._
-import net.liftweb.common.Box
-import net.liftweb.util.Helpers._
-import code.model.activity.ActivityType._
 import org.joda.time.DateTime
-import code.model.event.CostInfo
+import code.model.event.{Schedule, RangeType, CostInfo}
 
 class ActivitySpec extends BaseMongoSessionWordSpec {
 
@@ -101,50 +96,9 @@ class ActivitySpec extends BaseMongoSessionWordSpec {
       packageResourse.validate.length should equal (0)
       packageResourse.save(false)
 
-      val date: DateTime = new DateTime(2001, 5, 20, 0, 0, 0, 0)
-
-      val city = City
-        .createRecord
-        .name("Cochabamba")
-
-      val errsCity = city.validate
-      if (errsCity.length > 1) {
-        fail("Validation error: " + errsCity.mkString(", "))
-      }
-
-      city.validate.length should equal (0)
-
-      city.save(false)
-
-      val country = Country
-        .createRecord
-        .name("Bolivia")
-
-      val errsCountry = country.validate
-      if (errsCountry.length > 1) {
-        fail("Validation error: " + errsCountry.mkString(", "))
-      }
-
-      country.validate.length should equal (0)
-
-      country.save(false)
-
-      val schedule = Schedule
-        .createRecord
-        .begins(date.toDate)
-        .ends(date.toDate)
-        .city(city.id.get)
-        .country(country.id.get)
-        .description("Inauguration")
-
-      val errsSchedule = country.validate
-      if (errsSchedule.length > 1) {
-        fail("Validation error: " + errsSchedule.mkString(", "))
-      }
-
-      schedule.validate.length should equal (0)
-      schedule.save(false)
-
+      val city = createCity("Cochabamba")
+      val country = createCountry("Bolivia")
+      val schedule = createSchedule
 
       val activityType = ActivityType
         .createRecord
@@ -155,14 +109,17 @@ class ActivitySpec extends BaseMongoSessionWordSpec {
 
       val costInfo = createCostInfo
 
+      val date1: DateTime = new DateTime(2015, 3, 10, 15, 0, 0, 0)
+
       val activity = Activity
         .createRecord
         .activityType(activityType.id.get)
         .costInfo(costInfo.id.get)
         .description("Children's Day")
         .name("Children's Day")
-        .rooms(room :: Nil)
-        .packages(packageResourse :: Nil)
+        .rooms(room.id.get :: Nil)
+        .packages(packageResourse.id.get :: Nil)
+        .date(date1.toDate)
 
       val errsActivity= activity.validate
       if (errsActivity.length > 1) {
@@ -190,5 +147,59 @@ class ActivitySpec extends BaseMongoSessionWordSpec {
     }
     costInfo.validate.length should equal (0)
     costInfo.save(false)
+  }
+
+
+  def createSchedule: Schedule = {
+
+    val date1: DateTime = new DateTime(2015, 3, 10, 15, 0, 0, 0)
+    val date2: DateTime = new DateTime(2015, 3, 11, 18, 0, 0, 0)
+    val date3: DateTime = new DateTime(2015, 3, 12, 18, 0, 0, 0)
+    val date4: DateTime = new DateTime(2015, 3, 18, 21, 0, 0, 0)
+
+    val schedule = Schedule
+      .createRecord
+      .isAtSameHour(true)
+      .dateRange(date1 :: date2 :: date3 :: date4 :: Nil)
+      .rangeType(RangeType.ContinuousInterval)
+
+
+    val errsList = schedule.validate
+    if (errsList.length > 1) {
+      fail("Validation error: " + errsList.mkString(", "))
+    }
+    schedule.validate.length should equal (0)
+    schedule.save(false)
+    schedule
+  }
+
+
+  def createCity(name: String) = {
+    val city = City
+      .createRecord
+      .name(name)
+
+    val errsCity = city.validate
+    if (errsCity.length > 1) {
+      fail("Validation error: " + errsCity.mkString(", "))
+    }
+
+    city.validate.length should equal (0)
+    city.save(false)
+    city
+  }
+
+  def createCountry(name: String) = {
+    val country = Country
+      .createRecord
+      .name(name)
+
+    val errsCountry = country.validate
+    if (errsCountry.length > 1) {
+      fail("Validation error: " + errsCountry.mkString(", "))
+    }
+
+    country.validate.length should equal (0)
+    country.save(false)
   }
 }

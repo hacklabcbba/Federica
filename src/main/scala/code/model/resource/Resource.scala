@@ -5,6 +5,7 @@ package resource
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{ObjectIdRefField, ObjectIdPk}
 import net.liftweb.record.field.StringField
+import code.model.resource
 
 trait Resource[T <: MongoRecord[T]] extends MongoRecord[T] with ObjectIdPk[T] {
   this: T =>
