@@ -1,57 +1,96 @@
 package code
 package snippet
 
-import com.mongodb.QueryBuilder
-import net.liftweb.mongodb.{Skip, Limit}
+import code.lib.request.request._
+import net.liftweb.common.Full
+import net.liftweb.http.js.JsCmd
+import net.liftweb.http.js.JsCmds._
 import net.liftweb.http.{SHtml, PaginatorSnippet, StatefulSnippet}
 import code.model.productive.ProductiveUnit
 import net.liftweb.util._
 import Helpers._
-import net.liftweb.http.S._
-import scala.xml.NodeSeq
 
-object SProductiveUnit extends StatefulSnippet with PaginatorSnippet[ProductiveUnit] {
+object SProductiveUnit {
 
-  var dispatch: DispatchIt = {
-    case "showAll" => showAll _
-    case "editForm" => editForm _
-    case "paginate" => paginate _
+  var addProductiveUnit = ProductiveUnit.createRecord
+
+  def addForm = {
+    "data-name=name" #> addProductiveUnit.name.toForm &
+    "data-name=description" #> addProductiveUnit.description.toForm &
+    "data-name=administrator" #> addProductiveUnit.administrator.toForm &
+    "data-name=area" #> addProductiveUnit.area.toForm &
+    "data-name=program" #> addProductiveUnit.program.toForm &
+    "data-name=productiveType" #> addProductiveUnit.productiveType.toForm &
+    "data-name=add" #> SHtml.ajaxButton("Guardar" ,() => save)
   }
 
-  var editingProductiveUnit = ProductiveUnit.createRecord
-
-  def editForm(xhtml:NodeSeq): NodeSeq = {
-    ( "#editfirstname" #> editingProductiveUnit.name.toForm &
-      "#editlastname" #> editingProductiveUnit.description.toForm &
-      "#editcompany" #> editingProductiveUnit.administrator.toForm &
-      "#editposition" #> editingProductiveUnit.area.toForm &
-      "#editposition1" #> editingProductiveUnit.program.toForm &
-      "#editposition2" #> editingProductiveUnit.productiveType.toForm &
-      "type=submit" #> SHtml.submit(?("Save") ,() => save )).apply(xhtml)
+  def editForm = {
+    val editProductiveUnit: ProductiveUnit = productiveRequestVar.get.dmap(ProductiveUnit.createRecord)(p => p)
+    "data-name=name" #> editProductiveUnit.name.toForm &
+    "data-name=description" #> editProductiveUnit.description.toForm &
+    "data-name=administrator" #> editProductiveUnit.administrator.toForm &
+    "data-name=area" #> editProductiveUnit.area.toForm &
+    "data-name=program" #> editProductiveUnit.program.toForm &
+    "data-name=productiveType" #> editProductiveUnit.productiveType.toForm &
+    "data-name=edit" #> SHtml.ajaxButton("Guardar" ,() => update(editProductiveUnit))
   }
 
-  def showAll(xhtml:NodeSeq): NodeSeq = {
-    page.flatMap(productive => {
-      (".firstname *" #> productive.name &
-        ".lastname *" #> productive.description &
-        ".company *" #> productive.administrator &
-        ".position *" #> productive.area ).apply(xhtml)
+  def showAll = {
+    "data-name=list" #> page.map(productive => {
+      "data-name=checkbox *" #> customCheckbox(productive) &
+      "data-name=name *" #> productive.name &
+      "data-name=administrator *" #> productive.administrator.toString &
+      "data-name=area *" #> productive.area.toString &
+      "data-name=program *" #> productive.program.toString &
+      "data-name=type *" #> productive.productiveType.get.toString &
+      "data-name=edit *" #> SHtml.ajaxButton("Editar", () => RedirectTo("/productive/edit", () => productiveRequestVar.set(Full(productive))))
+    }) &
+    "data-name=add" #> SHtml.ajaxButton("Agregar", () => RedirectTo("/productive/add")) &
+    "data-name=delete" #> SHtml.ajaxButton("Eliminar", () => {
+       val listToDelete = productiveDeleteRequestVar.get
+       RedirectTo("/productive/productives", () => delete(listToDelete))
     })
   }
 
-  override def itemsPerPage = 2
+  def customCheckbox(item: ProductiveUnit) = {
+    SHtml.ajaxCheckbox(false, b => {
+      println("checke: " + b +  " item, " + item)
+      updateDeleteList(b, item)
+    }, "class" -> "checkbox-list")
+  }
 
-  override def count = ProductiveUnit.count
+  def updateDeleteList(value: Boolean, productive: ProductiveUnit): JsCmd = value match {
+    case true =>
+      productiveDeleteRequestVar.set(productive :: productiveDeleteRequestVar.is)
+      println("productivedelet : " + productiveDeleteRequestVar.get)
+      Noop
+    case false =>
+      productiveDeleteRequestVar.set(productiveDeleteRequestVar.is.filter(b => b.id != productive.id))
+      println("productiveNot delete : " + productiveDeleteRequestVar.get)
+      Noop
+  }
 
-  override def page = ProductiveUnit.findAll(QueryBuilder.start().get(),Limit(itemsPerPage),Skip(curPage * itemsPerPage))
+  def page = ProductiveUnit.findAll
 
-  def save={
-    editingProductiveUnit.save(true)
+  def save = {
+    addProductiveUnit.save(true)
     redirectToHome
   }
 
+  def update(productiveUnit: ProductiveUnit) = {
+    productiveUnit.update
+    redirectToHome
+  }
+
+  def delete(items: List[ProductiveUnit]) = {
+    println("delete list: " + items)
+    items.map(productive => {
+      productive.delete_!
+    })
+  }
+
   def redirectToHome={
-    editingProductiveUnit = ProductiveUnit.createRecord
-    redirectTo("/neeluser")
+    addProductiveUnit = ProductiveUnit.createRecord
+    RedirectTo("/productive/productives")
   }
 }

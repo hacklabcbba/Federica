@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Federica">
-    <meta name="Copyright" content="Copyright Federica 2013. All Rights Reserved.">
+    <meta name="Copyright" content="Copyright Federica 2015. All Rights Reserved.">
 
     <!-- css -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/styles.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -21,6 +22,8 @@
     <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
     <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
     -->
+
+
   </head>
   <body>
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -43,5 +46,18 @@
     <div id="content" class="container"></div><!-- /container -->
     <!-- javascript -->
     <script src="/js/script.js"></script>
+    <script type="text/javascript">
+
+        $(function() {
+            $(document).on("click", "input:checkbox#checkbox-all", function() {
+                $('.checkbox-list').each(function(i,v) {
+                    if($(v).is(":checked") != $('input:checkbox#checkbox-all').is(":checked")){
+                        $(v).click();
+                    }
+                });
+            });
+        });
+
+    </script>
   </body>
 </html>

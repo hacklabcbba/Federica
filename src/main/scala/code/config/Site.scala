@@ -8,6 +8,7 @@ import common._
 import http.S
 import sitemap._
 import sitemap.Loc._
+import code.lib.menu.ProductiveUnitMenu
 
 import net.liftmodules.mongoauth.Locs
 
@@ -41,7 +42,6 @@ object Site extends Locs {
   val account = MenuLoc(Menu.i("Account") / "settings" / "account" >> SettingsGroup >> RequireLoggedIn)
   val editProfile = MenuLoc(Menu("EditProfile", "Profile") / "settings" / "profile" >> SettingsGroup >> RequireLoggedIn)
   val register = MenuLoc(Menu.i("Register") / "register" >> RequireNotLoggedIn)
-  val productive = MenuLoc(Menu.i("Productive") / "productive" /"productive" >> RequireLoggedIn >> TopBarGroup)
 
   private def menus = List(
     home.menu,
@@ -53,7 +53,9 @@ object Site extends Locs {
     account.menu,
     password.menu,
     editProfile.menu,
-    productive.menu,
+    ProductiveUnitMenu.menuAdd.menu,
+    ProductiveUnitMenu.menuEdit.menu,
+    ProductiveUnitMenu.menuList.menu,
     Menu.i("Error") / "error" >> Hidden,
     Menu.i("404") / "404" >> Hidden,
     Menu.i("Throw") / "throw"  >> EarlyResponse(() => throw new Exception("This is only a test."))
