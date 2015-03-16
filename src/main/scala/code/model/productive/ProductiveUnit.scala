@@ -17,23 +17,28 @@ class ProductiveUnit private () extends MongoRecord[ProductiveUnit] with ObjectI
   override def meta = ProductiveUnit
 
   object name extends StringField(this, 500) {
-    override def toForm = Full(SHtml.ajaxText(value, (s: String) => {set(s); Noop}))
+    override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
+      set(s)
+      Noop
+    }))
   }
 
   object description extends StringField(this, 500){
-    override def toForm = Full(SHtml.ajaxText(value, (s: String) => {set(s); Noop}))
+    override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
+      set(s)
+      Noop
+    }))
   }
   object administrator extends ObjectIdRefField(this, User) {
     override def toString = {
       User.find(get).dmap("")(_.name.get)
     }
-    val listUsers = User.findAll.map(u => u.id.get.toString -> u.name.get)
-    val defaultUser = Full(User.currentUser.dmap("")(_.name.get))
+    val listUsers = User.findAll.map(u => u).toSeq
+    val defaultUser = User.currentUser
 
     override def toForm = {
-      Full(SHtml.ajaxSelect(listUsers, defaultUser, (u: String) => {
-        println("selected: " + u)
-        set(new ObjectId(u))
+      Full(SHtml.ajaxSelectElem(listUsers, defaultUser)(u => {
+        set(u.id.get)
         Noop
       }))
     }
@@ -44,12 +49,11 @@ class ProductiveUnit private () extends MongoRecord[ProductiveUnit] with ObjectI
   object area extends ObjectIdRefField(this, Area) {
     override def optional_? = true
     override def toString = Area.find(get).dmap("")(_.name.get)
-    val listAreas = Area.findAll.map(u => u.id.get.toString -> u.name.get)
-    val defaultArea = Full(Area.findAll.headOption.getOrElse(Area.createRecord).name.get)
+    val listAreas = Area.findAll.map(a => a)
+    val defaultArea = Area.findAll.headOption
     override def toForm = {
-      Full(SHtml.ajaxSelect(listAreas, defaultArea, (u: String) => {
-        println("selected: " + u)
-        set(new ObjectId(u))
+      Full(SHtml.ajaxSelectElem(listAreas, defaultArea)(a => {
+        set(a.id.get)
         Noop
       }))
     }
@@ -60,13 +64,12 @@ class ProductiveUnit private () extends MongoRecord[ProductiveUnit] with ObjectI
 
     override def toString = Program.find(get).dmap("")(_.name.get)
 
-    val listProgram = Program.findAll.map(u => u.id.get.toString -> u.name.get)
-    val defaultProgram= Full(Program.findAll.headOption.getOrElse(Program.createRecord).name.get)
+    val listProgram = Program.findAll.map(p => p)
+    val defaultProgram= Program.findAll.headOption
 
     override def toForm = {
-      Full(SHtml.ajaxSelect(listProgram, defaultProgram, (u: String) => {
-        println("selected: " + u)
-        set(new ObjectId(u))
+      Full(SHtml.ajaxSelectElem(listProgram, defaultProgram)(p => {
+        set(p.id.get)
         Noop
       }))
     }

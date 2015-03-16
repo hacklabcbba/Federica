@@ -12,16 +12,16 @@ import Helpers._
 
 object SProductiveUnit {
 
-  var addProductiveUnit = ProductiveUnit.createRecord
 
   def addForm = {
+    var addProductiveUnit = ProductiveUnit.createRecord
     "data-name=name" #> addProductiveUnit.name.toForm &
     "data-name=description" #> addProductiveUnit.description.toForm &
     "data-name=administrator" #> addProductiveUnit.administrator.toForm &
     "data-name=area" #> addProductiveUnit.area.toForm &
     "data-name=program" #> addProductiveUnit.program.toForm &
     "data-name=productiveType" #> addProductiveUnit.productiveType.toForm &
-    "data-name=add" #> SHtml.ajaxButton("Guardar" ,() => save)
+    "data-name=add" #> SHtml.ajaxButton("Guardar" ,() => save(addProductiveUnit))
   }
 
   def editForm = {
@@ -72,7 +72,7 @@ object SProductiveUnit {
 
   def page = ProductiveUnit.findAll
 
-  def save = {
+  def save(addProductiveUnit: ProductiveUnit) = {
     addProductiveUnit.save(true)
     redirectToHome
   }
@@ -90,7 +90,6 @@ object SProductiveUnit {
   }
 
   def redirectToHome={
-    addProductiveUnit = ProductiveUnit.createRecord
     RedirectTo("/productive/productives")
   }
 }

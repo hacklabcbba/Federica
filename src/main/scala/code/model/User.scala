@@ -70,6 +70,8 @@ class User private () extends ProtoAuthUser[User] with ObjectIdPk[User] {
   }
 
   def whenCreated: DateTime = new DateTime(id.get.getDate)
+
+  override def toString = name.get
 }
 
 object User extends User with ProtoAuthUserMeta[User] with RogueMetaRecord[User] with Loggable {
@@ -204,7 +206,7 @@ object SystemUser {
       .timezone("America/La_Paz")
       .verified(true)
       .password("asdf1234", true) // TODO: set me
-      .save(WriteConcern.SAFE)
+      .save(true)
   }
 }
 
