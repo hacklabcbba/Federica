@@ -165,11 +165,11 @@ object UserLogin extends Loggable {
     }
 
     "#id_email [value]" #> User.loginCredentials.is.email &
-    "#id_password" #> SHtml.password(password, password = _) &
-    "#no_password" #> radios(0) &
-    "#yes_password" #> radios(1) &
-    "name=remember" #> SHtml.checkbox(remember, remember = _) &
-    "#id_submit" #> SHtml.hidden(doSubmit)
+      "#id_password" #> SHtml.password(password, password = _) &
+      "#no_password" #> radios(0) &
+      "#yes_password" #> radios(1) &
+      "name=remember" #> SHtml.checkbox(remember, remember = _) &
+      "#id_submit" #> SHtml.hidden(doSubmit)
   }
 }
 

@@ -16,6 +16,8 @@ class Program private () extends MongoRecord[Program] with ObjectIdPk[Program]{
 
   object name extends StringField(this, 500)
   object description extends StringField(this, 500)
+
+  override def toString = name.get
 }
 
 object Program extends Program with RogueMetaRecord[Program]

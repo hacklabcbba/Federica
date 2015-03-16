@@ -15,6 +15,8 @@ class Area private () extends MongoRecord[Area] with ObjectIdPk[Area]{
   object description extends StringField(this, 500)
   object email extends StringField(this, 500)
   object code extends StringField(this, 50)
+
+  override def toString = name.get
 }
 
 object Area extends Area with RogueMetaRecord[Area]

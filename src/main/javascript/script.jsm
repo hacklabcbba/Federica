@@ -5,7 +5,7 @@ libs/jquery.bsFormAlerts.min.js
 libs/liftAjax.js
 
 # bootstrap
-libs/bootstrap-3.0.2.min.js
+libs/bootstrap.min.js
 
 # app
 App.js
