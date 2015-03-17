@@ -48,7 +48,7 @@
     <!-- javascript -->
     <script src="/js/script.js"></script>
 
-    <script src="/js/select2/select2.js" type="javascript1.2"></script>
+    <script src="/js/select2/select2.js" language="JavaScript1.2" type="javascript1.2"></script>
     <script type="text/javascript">
 
         $(function() {
@@ -59,9 +59,12 @@
                     }
                 });
             });
+            $(document).ready(function() {
+                $(".select2").select2({ allowClear: true});
+            });
         });
 
-        $(".select2").select2({ allowClear: true});
+
 
     </script>
   </body>
