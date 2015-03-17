@@ -2,6 +2,7 @@ package code
 package model
 package project
 
+import code.model.event.{Schedule, RangeType}
 import org.joda.time.DateTime
 
 class ProcessSpec extends BaseMongoSessionWordSpec {
@@ -39,20 +40,6 @@ class ProcessSpec extends BaseMongoSessionWordSpec {
 
       val schedule = createSchedule
 
-      val organizer = Organizer
-        .createRecord
-        .name("Jonh")
-        .lastName("Smith")
-
-      val errsOrganizer = organizer.validate
-      if (errsOrganizer.length > 1) {
-        fail("Validation error: " + errsOrganizer.mkString(", "))
-      }
-
-      organizer.validate.length should equal (0)
-
-      organizer.save(false)
-
       val process = Process
         .createRecord
         .description("Include information about recent international progress in the field of the research, and the " +
@@ -64,7 +51,6 @@ class ProcessSpec extends BaseMongoSessionWordSpec {
           "economic changes is extraordinarily great, the Project seeks to provide support for young historians who are " +
           "interested in economic history, the history of economic thought, and political and cultural histories of economic life. ")
         .name("Big History Project")
-        .responsible(organizer.id.get)
 
       val errsProcess = process.validate
       if (errsProcess.length > 1) {

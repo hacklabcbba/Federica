@@ -6,7 +6,7 @@ import code.lib.RogueMetaRecord
 import code.model.project._
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field._
-import net.liftweb.record.field.{LongField, DecimalField, StringField}
+import net.liftweb.record.field.{EnumNameField, LongField, DecimalField, StringField}
 import code.model.proposal.{ActionLine, Area, Program}
 import code.model.activity.{Activity, ActivityType}
 import code.model.productive.ProductiveUnit
@@ -33,11 +33,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
   object description extends StringField(this, 1000)
   object requirements extends ObjectIdRefListField(this, EventRequirement)
 
-  object expositors extends ObjectIdRefListField(this, User)
-  object organizers extends ObjectIdRefListField(this, User)
-  object handlers extends ObjectIdRefListField(this, User)
-  object sponsors extends ObjectIdRefListField(this, User)
-  object supports extends ObjectIdRefListField(this, User)
+  object organizers extends ObjectIdRefField(this, User)
   object collaborators extends ObjectIdRefListField(this, User)
   object pressRoom extends ObjectIdRefField(this, PressNotes)
 
@@ -48,9 +44,14 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
   object registration extends StringField(this, "")
 
   object costContributionByUse extends ObjectIdRefField(this, CostContributionByUse)
-  //object schedule extends MongoListField[Event, Schedule](this)
   object process extends ObjectIdRefField(this, Process)
   object actionLines extends ObjectIdRefListField(this, ActionLine)
+  object state extends EnumNameField(this, StateType)
 }
 
 object Event extends Event with RogueMetaRecord[Event]
+
+object StateType extends Enumeration {
+  type StateType = Value
+  val Aproved, Rejected, Draft = Value
+}
