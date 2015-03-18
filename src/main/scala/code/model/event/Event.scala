@@ -11,10 +11,12 @@ import net.liftweb.record.field.{TextareaField, LongField, DecimalField, StringF
 import code.model.proposal.{ActionLine, Area, Program}
 import code.model.activity.{Activity, ActivityType}
 import code.model.productive.ProductiveUnit
-import net.liftweb.common.Box
+import net.liftweb.common.{Empty, Box}
 import scala.xml.Elem
 import net.liftweb.http.SHtml
+import net.liftweb.http.js.JsCmds._
 import code.model.event.EventType
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.Any
 
 class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
 
@@ -25,9 +27,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
   object schedule extends ObjectIdRefField(this, Schedule)
   object costInfo extends ObjectIdRefField(this, CostInfo)
   object eventTypes extends ObjectIdRefListField(this, EventType){
-
-     def defaultValueBox5: List[EventType] = Nil
-
+    def currentValue: List[EventType] = Nil
     def availableOptions = {
       val list = (EventType.createRecord.name("Taller") -> "Taller") ::
         (EventType.createRecord.name("Presentation") -> "Presentation") :: Nil
@@ -35,14 +35,35 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
     }
     override def toForm: Box[Elem] = {
       tryo(SHtml.multiSelectObj(availableOptions,
-        defaultValueBox5,
+        currentValue,
         (list : List[EventType]) => set(list.map(_.id.get)),
-        "class" -> "select2"
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione uno o varios tipos de evento.."
       ))
     }
   }
 
-  object area extends ObjectIdRefField(this, Area)
+  object area extends ObjectIdRefField(this, Area){
+    /*
+    override def defaultValueBox = valueBox
+    def availableOptions = Area.findAll.toList.map(s => s).toSeq
+    override def toForm = {
+      tryo(SHtml.ajaxSelectElem( availableOptions, defaultValueBox)(a => {set(a)})
+      )
+    }*/
+
+      override def defaultValueBox: Box[MyType] = valueBox
+      def availableOptions: Seq[(Area,String)] = {
+        val list = (Area.createRecord.name("Area1") -> "Area1") ::
+          (Area.createRecord.name("Area2") -> "Area2") :: Nil
+        list.toSeq
+      }
+      override def toForm: Box[Elem] = {
+        tryo(SHtml.selectObj(availableOptions, defaultValueBox, s => {
+          set(s)
+        }))
+      }
+  }
   object program extends ObjectIdRefField(this, Program)
   object productiveUnit extends ObjectIdRefField(this, ProductiveUnit){
     override def optional_? = true
