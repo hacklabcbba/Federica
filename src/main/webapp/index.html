@@ -1,20 +1,247 @@
-<div data-lift="surround?with=base-wrap;at=content">
-  <lift:head>
-    <title data-lift="Menu.title">Federica: %*%</title>
-  </lift:head>
-  <div class="main-content">
-    <div data-lift="Notices"></div>
-    <div class="jumbotron">
-      <div class="inner">
-        <h1>Federica</h1>
-        <p>
-          <span data-lift="HelloWorld">
-          Welcome to your Lift app at <span id="time">Time goes here</span>
-          </span>
-        </p>
-        <p><span data-lift="Menu.item?name=About;donthide=true;linktoself=true;a:class=btn primary large">Learn More &raquo;</span></p>
-      </div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+		<link href="css/gs_styles.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+
+	<!-- SIDEBAR RIGHT -->
+  <nav class="gs-sidebar-right">
+    <ul class="gs-nav-right main-menu nav" id="menu">
+      
+      <!--Include your navigation here-->
+      <!-- <span class="text-left"><a href="#" id="nav-close">x</a></span> -->
+      <li>
+	      <form class="gs-form-right">
+	        <div class="form-group">
+	          <input type="text" class="form-control" placeholder="Search">
+	        </div>
+	      </form>
+      </li>
+			<li>
+			  <a href="#">Menu 1 <span class="glyphicon arrow"></span></a>
+			  <ul>
+			      <li><a href="#">item 1.1</a></li>
+			      <li><a href="#">item 1.2</a></li>
+			      <li><a href="#">item 1.4</a></li>
+			  </ul>
+			</li>
+			<li>
+			  <a href="#">Menu 1 <span class="glyphicon arrow"></span></a>
+			  <ul>
+			      <li><a href="#">item 1.1</a></li>
+			      <li><a href="#">item 1.2</a></li>
+			      <li><a href="#">item 1.4</a></li>
+			  </ul>
+			</li>
+    </ul>
+  </nav>
+	<!-- SIDEBAR RIGHT --> 
+
+
+
+
+	<!-- NAVBAR -->
+	<header class="navbar navbar-default navbar-fixed-top gs-navbar">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand" href="#">
+	        <img alt="Brand" src="img/logo.png">
+	      </a>
+	    </div>
+
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <ul class="nav navbar-nav navbar-right">
+	        <li>
+	        	<a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">
+		        	Quienes Somos
+		        	<span class="caret"></span>
+	        	</a>
+						<ul role="menu" class="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+	        </li>
+	        <li>
+	        	<a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">
+		        	Areas
+		        	<span class="caret"></span>
+	        	</a>
+						<ul role="menu" class="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+	        </li>
+	        <li>
+	        	<a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">
+		        	Programas
+		        	<span class="caret"></span>
+	        	</a>
+						<ul role="menu" class="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+	        </li>
+	        <li>
+	        	<a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">
+		        	Principios
+		        	<span class="caret"></span>
+	        	</a>
+						<ul role="menu" class="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+	        </li>
+	        <li>
+	        	<a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">
+		        	Conexiones
+		        	<span class="caret"></span>
+	        	</a>
+						<ul role="menu" class="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+	        </li>
+	        <li>
+	        	<a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">
+		        	Proyecciones
+		        	<span class="caret"></span>
+	        	</a>
+						<ul role="menu" class="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+	        </li>
+	        <li>
+	        	<a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">
+		        	Fondart
+		        	<span class="caret"></span>
+	        	</a>
+						<ul role="menu" class="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+	        </li>
+	        <li>
+	        	<a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">
+		        	Apoyo
+		        	<span class="caret"></span>
+	        	</a>
+						<ul role="menu" class="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+	        </li>
+	        <li>
+			      <button id="nav-expander" type="button" class="navbar-toggle">
+			        <span class="sr-only">Toggle navigation</span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			      </button>
+	        </li>
+	      </ul>
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</header>
+
+	<!-- Content -->
+  <div class="jumbotron">
+    <div class="container">
+      <h1>Hello, world!</h1>
+      <p>This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+      <p><a class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
     </div>
   </div>
-  <span data-lift="embed?what=/templates-hidden/parts/footer"></span>
-</div>
+	<!-- Content -->
+
+
+    <!-- Javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"><\/script>')</script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/jquery.navgoco.js"></script>
+    <script src="js/metisMenu.js"></script>
+    
+    <script>
+    $(document).ready(function(){												
+       
+       //Navigation Menu Slider
+        $('#nav-expander').on('click',function(e){
+      		e.preventDefault();
+      		$('body').toggleClass('nav-expanded');
+      	});
+      	$('#nav-close').on('click',function(e){
+      		e.preventDefault();
+      		$('body').removeClass('nav-expanded');
+      	});
+      	
+      	// Metis MEnu
+		    $(function () {
+		        $('#menu').metisMenu();
+		    });
+
+
+      	// Initialize navgoco with default options
+        $(".main-menu").navgoco({
+            caret: '<span class="glyphicon glyphicon-menu-right"></span>',
+            accordion: false,
+            openClass: 'open',
+            save: true,
+            cookie: {
+                name: 'navgoco',
+                expires: false,
+                path: '/'
+            },
+            slide: {
+                duration: 300,
+                easing: 'swing'
+            }
+        });
+  
+        	
+      });
+      </script>
+  </body>
+</html>
