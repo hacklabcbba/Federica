@@ -158,27 +158,27 @@ body.nav-expanded {
 	color: #fff;
 	text-transform: uppercase;
 }
-.gs-nav-right.nav li.open a, 
+.gs-nav-right.nav li.active a, 
 .gs-nav-right.nav li > a:hover,
-.gs-nav-right.nav li.open > a:focus, 
-.gs-nav-right.nav li.open > a:hover {
+.gs-nav-right.nav li.active > a:focus, 
+.gs-nav-right.nav li.active > a:hover {
 	background-color: #111111 !important;
 }
-.gs-nav-right.nav.main-menu li.open > a {
+.gs-nav-right.nav.main-menu li.active > a {
 	border-bottom: 1px solid #181A1E;
 }
-.gs-nav-right.nav.main-menu li.open > ul {
+.gs-nav-right.nav.main-menu li.active > ul {
 	box-shadow: 0 0 5px #000 inset;
 	padding: 0;
 }
-.gs-nav-right.nav.main-menu li.open > ul li a {
+.gs-nav-right.nav.main-menu li.active > ul li a {
 	padding: 5px 15px;
 	display: block;
 	font-size: 12px;
 	background-color: #1F2126
 }
-.gs-nav-right.nav.main-menu li.open > ul li a:hover,
-.gs-nav-right.nav.main-menu li.open > ul li a:focus {
+.gs-nav-right.nav.main-menu li.active > ul li a:hover,
+.gs-nav-right.nav.main-menu li.active > ul li a:focus {
 	background-color: #24262B;
 }
 .gs-form-right .form-control {

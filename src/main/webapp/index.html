@@ -10,6 +10,7 @@
     <!-- Bootstrap -->
     <link href="css/bootstrap.css" rel="stylesheet">
 		<link href="css/gs_styles.css" rel="stylesheet">
+		<link href="css/metisMenu.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -34,7 +35,7 @@
 	      </form>
       </li>
 			<li>
-			  <a href="#">Menu 1 <span class="glyphicon arrow"></span></a>
+			  <a href="#"><span class="glyphicon glyphicon-menu-right"></span> Menu 1 </a>
 			  <ul>
 			      <li><a href="#">item 1.1</a></li>
 			      <li><a href="#">item 1.2</a></li>
@@ -42,7 +43,7 @@
 			  </ul>
 			</li>
 			<li>
-			  <a href="#">Menu 1 <span class="glyphicon arrow"></span></a>
+			  <a href="#"><span class="glyphicon glyphicon-menu-right"></span> Menu 2 </a>
 			  <ul>
 			      <li><a href="#">item 1.1</a></li>
 			      <li><a href="#">item 1.2</a></li>
@@ -198,14 +199,13 @@
     <!-- Javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"><\/script>')</script>
+    <script src="js/jquery-2.1.3.min.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/jquery.navgoco.js"></script>
     <script src="js/metisMenu.js"></script>
     
     <script>
-    $(document).ready(function(){												
+								
        
        //Navigation Menu Slider
         $('#nav-expander').on('click',function(e){
@@ -217,31 +217,13 @@
       		$('body').removeClass('nav-expanded');
       	});
       	
+
+      	// Initialize navgoco with default options        	
+
       	// Metis MEnu
 		    $(function () {
 		        $('#menu').metisMenu();
 		    });
-
-
-      	// Initialize navgoco with default options
-        $(".main-menu").navgoco({
-            caret: '<span class="glyphicon glyphicon-menu-right"></span>',
-            accordion: false,
-            openClass: 'open',
-            save: true,
-            cookie: {
-                name: 'navgoco',
-                expires: false,
-                path: '/'
-            },
-            slide: {
-                duration: 300,
-                easing: 'swing'
-            }
-        });
-  
-        	
-      });
       </script>
   </body>
 </html>
