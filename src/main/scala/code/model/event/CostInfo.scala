@@ -2,7 +2,6 @@ package code
 package model
 package event
 
-import code.model.project.{Organizer, Schedule}
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field._
 import net.liftweb.record.field.{LongField, DecimalField, StringField}
