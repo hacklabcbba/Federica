@@ -33,7 +33,9 @@
 /*------------------------------------*\
     $ELEMENTS
 \*------------------------------------*/
-
+body {
+  padding-top: 50px;. 
+}
 
 
 /*------------------------------------*\
@@ -53,18 +55,20 @@
 .gs-navbar.navbar-default {
 	background-color: #fff;
 	border: none;
+	margin-bottom: 0;
+	box-shadow: 0 0 7px -5px #333333;
 }
 .gs-navbar .navbar-brand {
-	padding: 0 15px;
+	padding: 3px 3px 0 100px;
 }
+
 .gs-navbar.navbar-default .nav > li > a{
 	text-transform: uppercase;
 	color: #1a1a1a;
-	font-size: 10px;
+	font-size: 12px;
 	padding-left: 5px;
 	padding-right: 5px;
 }
-
 .gs-navbar .caret::after {
     content: "/";
     display: inline-block;
@@ -77,42 +81,12 @@
 
 
 
-
 /*------------------------------------*\
     $SIDEBAR RIGHT
 \*------------------------------------*/
 
-a.nav-expander {
-  color: #FFFFFF;
-  display: block;
-  font-size: 15px;
-  font-weight: 400;
-  height: 50px;
-  margin-right: 0;
-  padding: 1em 1.6em 2em;
-  position: absolute;
-  right: 0;
-  text-decoration: none;
-  text-transform: uppercase;
-  top: 0;
-  transition: right 0.3s ease-in-out 0s;
-  width: 130px;
-  z-index: 12;
-
-  transition: right 0.3s ease-in-out 0s;
-  -webkit-transition: right 0.3s ease-in-out 0s;
-  -moz-transition: right 0.3s ease-in-out 0s;
-  -o-transition: right 0.3s ease-in-out 0s;
-
-}
-a.nav-expander:hover {
-  cursor: pointer;
-}
-a.nav-expander.fixed {
-  position: fixed;
-}
 .gs-sidebar-right {
-  background: #2d2f33;
+  background-color: #222222;
   display: block;
   height: 100%;
   overflow: auto;
@@ -149,119 +123,118 @@ body.nav-expanded {
 }
 
 .gs-nav-right {
-	padding: 30px 15px;
-}
-.gs-nav-right > li {
-	margin-bottom: 5px;
+	padding: 30px 0;
 }
 .gs-nav-right li a {
 	color: #fff;
+	font-size: 15px;
 	text-transform: uppercase;
+	font-weight: bold;
 }
-.gs-nav-right.nav li.active a, 
+.gs-nav-right.nav li.active > a, 
 .gs-nav-right.nav li > a:hover,
 .gs-nav-right.nav li.active > a:focus, 
 .gs-nav-right.nav li.active > a:hover {
-	background-color: #111111 !important;
+	background-color: #111111;
+}
+.gs-nav-right.nav li.active {
+	border-bottom: 1px solid #333;
 }
 .gs-nav-right.nav.main-menu li.active > a {
-	border-bottom: 1px solid #181A1E;
+	border-bottom: 1px solid #222;
 }
 .gs-nav-right.nav.main-menu li.active > ul {
 	box-shadow: 0 0 5px #000 inset;
 	padding: 0;
 }
+.gs-nav-right.nav.main-menu li > ul li a,
 .gs-nav-right.nav.main-menu li.active > ul li a {
-	padding: 5px 15px;
-	display: block;
+	padding: 7px 15px 7px 44px;
 	font-size: 12px;
-	background-color: #1F2126
 }
-.gs-nav-right.nav.main-menu li.active > ul li a:hover,
-.gs-nav-right.nav.main-menu li.active > ul li a:focus {
-	background-color: #24262B;
+.gs-nav-right.nav.main-menu li.active > ul li a:hover {
+	background-color: rgba(17, 17, 17, 0.6)
+}
+.gs-form-right .form-group:before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin: 8px;
+  background: url("../img/search.png");
+  background-repeat: no-repeat;
+  position: absolute;
 }
 .gs-form-right .form-control {
-	background-color: #2D2F33;
+	background-color: #222222;
 	border-color: #bbb;
 	color: #fff;
-}
-.gs-form-right {
-	margin-left: 15px;
+  padding-left: 30px;
+  border-width: 2px;
 }
 .gs-form-right .form-control:focus {
-	box-shadow: none;
+	box-shadow: 0 0 5px -1px #ffffff;
 	border-color: #fff;
 	border-width: 2px;
 }
-
-.main-menu a .caret {
-	width: 0;
-	height: 0;
-	display: inline-block;
-	vertical-align: top;
-	border-top: 4px solid #4f5963;
-	border-right: 4px solid transparent;
-	border-left: 4px solid transparent;
-	content: "";
-    margin-top: 8px;
+.gs-form-right {
+	margin: 0 15px;
 }
-.main-menu a:hover .caret {
-	border-top-color: #4f5963;
+.gs-nav-right .gs-right-arrow,
+.gs-nav-right li.active a .gs-right-arrow,
+.gs-first-nav .gs-right-arrow {
+  display: inline-block;
+  line-height: 1;
+  position: relative;
+  top: 5px;
+  width: 22px;
+  height: 22px;
+  margin-right: 5px;
 }
-.main-menu li.open > a > .caret {
-	border-top: none;
-	border-bottom: 4px solid #4f5963;
-	border-right: 4px solid transparent;
-	border-left: 4px solid transparent;
+.gs-nav-right .gs-right-arrow {
+  background-image: url("../img/right-arrow.png");
 }
-.main-menu li.open > a:hover > .caret {
-	border-bottom-color: #4f5963;
+.gs-first-nav .gs-right-arrow {
+  background-image: url("../img/left-arrow.png");
 }
-
-/*.main-menu li > a > span.glyphicon {
-  float: right;
-  margin: 0.1em 1.7em -0.1em 0;
-  opacity: 0;
-  -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
-  -o-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
-
+.gs-nav-right li.active a .gs-right-arrow {
+  background-image: url("../img/right-arrow-active.png");
 }
-.main-menu li > a:hover > span.glyphicon {
-  float: right;
-  margin: 0.1em 0.8em -0.1em 0;
-  opacity: 1;
-}*/
-
-.glyphicon.glyphicon-menu-right {
-	float: left;
-	padding-right: 5px;
+.gs-first-nav li.active a .gs-right-arrow {
+  background-image: url("../img/left-arrow-active.png");
 }
-
-
-
-/*CUSTOM*/
-
 .gs-navbar #nav-expander.navbar-toggle .icon-bar {
   background-color: #bbb;
+}
+#nav-expander2 {
+	padding: 10px 15px;
+	border-radius: 0;
+}
+#nav-expander2 .icon-bar {
+	background-color: #bbb;
+}
+#nav-expander2:hover .icon-bar {
+	background-color: #fff
+}
+.gs-navbar #nav-expander.navbar-toggle:hover .icon-bar {
+	box-shadow: 0 0 10px 1px #ffffff;
 }
 .gs-navbar #nav-expander.navbar-toggle {
   border: none;
 }
 .gs-navbar .navbar-right li #nav-expander {
-    background-color: #333333;
-    border: medium none;
-    border-radius: 0;
-    padding: 18px 7px;
-    margin-left: 15px;
+  background-color: #222;
+  border: medium none;
+  border-radius: 0;
+  padding: 18px 7px;
+  margin-left: 15px;
 }
 .gs-navbar .navbar-right li #nav-expander:hover,
 .gs-navbar .navbar-right li #nav-expander:focus {
-  background-color: #2D2F33;
-    box-shadow: 0 0 5px #000 inset;
+  background-color: #000;
+  box-shadow: 0 0 5px #000 inset;
 }
+#nav-expander2,
 .gs-navbar .navbar-right .navbar-toggle {
   display: block;
   margin: 0;
@@ -274,10 +247,122 @@ body.nav-expanded {
 
 
 
+/*------------------------------------*\
+    $SIDEBAR LEFT
+\*------------------------------------*/
+.gs-sidebar-left {
+	position: fixed;
+	background-color: #222222;
+	height: 100%;
+	box-shadow: 0 0 7px -2px #333333;
+	z-index: 2;
+}
+.gs-sidebar-left .gs-sec-nav li {
+	height: 45px;
+}
+.gs-sidebar-left .gs-sec-nav li a {
+	opacity: 0.6;
+}
+.gs-sidebar-left .nav li a:hover {
+	opacity: 1
+}
+.gs-sidebar-left-label {
+  color: #fff;
+  font-size: 12px;
+  padding: 13px 3px;
+  position: absolute;
+  left: 60px;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+  top: 0;
+  text-transform: capitalize;
+}
+.gs-first-nav {
+	float: left;
+	background-color: #eaeaea;
+	height: 100%;
+	width: 0;
+	overflow: hidden;
+	transition: width .8s ease-in-out
+}
+.gs-first-nav li a,
+.gs-first-nav li.active ul li > a {
+	color: #666;
+	text-transform: uppercase;
+	font-weight: 700;
+	border-bottom: 1px solid transparent
+}
+.gs-first-nav li.active > a,
+.gs-first-nav li a:hover {
+	color: #000;
+}
+.gs-first-nav li.active > a {
+	box-shadow: 0 10px 10px -14px #999999;
+}
+.gs-first-nav li > a {
+	font-size: 13px;
+}
+.gs-first-nav li ul li > a,
+.gs-first-nav li.active ul li > a {
+	list-style: none;
+	text-transform: uppercase;
+	font-size: 10px;
+	padding: 7px 15px 7px 44px;
+}
+.gs-first-nav li.active ul {
+	border: 1px solid #DBDBDB;
+	box-shadow: 0 -10px 10px -14px #999999 inset;
+}
+.gs-first-nav li.active ul li > a:hover {
+	background-color: #E2E2E2;
+}
+.gs-sec-nav {
+	float: right;
+	box-shadow: -15px -16px 5px -15px #333333;
+	height: 100%
+}
+.gs-sec-nav li {
+	position: relative;
+}
+.gs-sec-nav li:last-child {
+  bottom: 47px;
+  position: absolute;
+  right: 0;
+  width: 57px;
+}
+.nav-expanded2 .gs-first-nav {
+	width: 15em;
+}
+.gs-first-nav form {
+	padding: 10px;
+}
+
+
+/*------------------------------------*\
+    $CONTENT
+\*------------------------------------*/
+
+.columns {
+  height: 100%;
+  position: fixed;
+  background-color: #eee;
+}
 
 
 
+/*------------------------------------*\
+    $TABS
+\*------------------------------------*/
 
+
+.tabs-left > li, 
+.tabs-right > li {
+	float: none;
+}
+
+.tabs-right > li.active > a {
+	opacity: 1;
+	background-color: #111;
+}
 
 
 
