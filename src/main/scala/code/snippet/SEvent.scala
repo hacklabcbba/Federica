@@ -23,6 +23,12 @@ object SEvent {
     "data-name=process *" #> e.process.toForm &
     "data-name=actionLines *" #> e.actionLines.toForm &
     "data-name=productiveUnit *" #> e.productiveUnit.toForm &
+    "data-name=expositors *" #> e.expositors.toForm &
+    "data-name=organizer *" #> e.organizer.toForm &
+    "data-name=handlers *" #> e.handlers.toForm &
+    "data-name=sponsors *" #> e.sponsors.toForm &
+    "data-name=supports *" #> e.supports.toForm &
+    "data-name=collaborators *" #> e.collaborators.toForm &
     "data-name=city *" #> e.city.toForm &
     "data-name=country *" #> e.country.toForm &
     "data-name=place *" #> e.place.toForm &
@@ -34,7 +40,7 @@ object SEvent {
     "data-name=supplies *" #> e.supplies.toForm &
     "data-name=registration *" #> e.registration.toForm &
     "data-name=costContributionByUse *" #> e.costContributionByUse.toForm &
-    "data-name=add *" #> SHtml.ajaxButton("Guardar" ,() => save(e))
+    "data-name=add" #> SHtml.ajaxButton("Guardar" ,() => save(e))
   }
 
   def editForm = {
@@ -99,7 +105,7 @@ object SEvent {
     })
   }
 
-  def redirectToHome={
-    RedirectTo("/event/list")
+  def redirectToHome = {
+    RedirectTo("/event/events")
   }
 }
