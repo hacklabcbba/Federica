@@ -241,6 +241,10 @@ body.nav-expanded {
 .gs-sidebar-left {
   left: -15em;
   transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.3s ease-in-out;
 }
 .nav-expanded2 .gs-sidebar-left {
   left: 0
@@ -294,6 +298,10 @@ body.nav-expanded {
 	box-shadow: 0 0 7px -2px #333333;
 	z-index: 5;
 	transition: all 0.7s ease 0s;
+	-moz-transition: all 0.7s ease 0s;
+	-ms-transition: all 0.7s ease 0s;
+	-o-transition: all 0.7s ease 0s;
+	-webkit-transition: all 0.7s ease 0s;
 	top: 50px;
 }
 .gs-sidebar-left .gs-sec-nav li {
