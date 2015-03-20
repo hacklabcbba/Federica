@@ -22,19 +22,26 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
 
   override def meta = Event
 
-  object eventNumber extends LongField(this)
+  object eventNumber extends StringField(this, 200){
+    override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
+      set(s)
+      Noop
+    }))
+  }
 
-  object name extends StringField(this, 200)
+  object name extends StringField(this, 200){
+    override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
+      set(s)
+      Noop
+    }))
+  }
 
   object schedule extends ObjectIdRefField(this, Schedule){
     override def toString = {
       Schedule.find(this.value).getOrElse(Schedule.createRecord) + ""
     }
   }
-  /*
-  * val sched = Schedule.find("_id", new ObjectId(this.value))
-      println(sched)
-  * */
+
   object costInfo extends ObjectIdRefField(this, CostInfo)
 
   object eventTypes extends ObjectIdRefListField(this, EventType){
@@ -157,7 +164,12 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
     }
   }
 
-  object place extends StringField(this, "")
+  object place extends StringField(this, 500){
+    override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
+      set(s)
+      Noop
+    }))
+  }
 
   object shortDescription extends TextareaField(this, 1000){
     override def toForm = {
@@ -195,95 +207,102 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
       User.findAll.map(p => p -> p.name.get).toList
 
     override def toForm: Box[Elem] = {
-      Full(SHtml.multiSelectObj(
-      availableOptions,
-      currentValue,
-      {(list: List[User]) => set(list.map(_.id.get))},
-      "class" -> "select2 form-control",
-      "data-placeholder" -> "Seleccione uno o varios tipos de evento.."
-      ))
-    }
-  }
-
-  object organizer extends ObjectIdRefField(this, User){
-
-    def currentValue = User.currentUser
-    def availableOptions: List[(User, String)] =
-      User.findAll.map(p => p -> p.name.get).toList
-
-    override def toForm: Box[Elem] = {
-      Full(SHtml.selectObj(availableOptions, currentValue,{(u: User) => {
-          set(u.id.get)
-          Noop
-        }},
+      Full(SHtml.multiSelectObj(availableOptions, currentValue,{(list: List[User]) =>
+        set(list.map(_.id.get))
+        },
         "class" -> "select2 form-control",
         "data-placeholder" -> "Seleccione uno o varios tipos de evento.."
       ))
     }
   }
 
-  object handlers extends ObjectIdRefListField(this, User){
-    def currentValue = User.currentUser.getOrElse(User.createRecord) :: Nil
-    def availableOptions: List[(User, String)] =
-      User.findAll.map(p => p -> p.name.get).toList
-
+  object organizer extends ObjectIdRefField(this, User){
+    override def toString = {
+      User.find(get).dmap("Indefinido..")(_.name.get)
+    }
+    override def defaultValue = User.currentUser.getOrElse(User.createRecord).id.get
     override def toForm: Box[Elem] = {
-      Full(SHtml.multiSelectObj(
-      availableOptions,
-      currentValue,
-      {(list: List[User]) => set(list.map(_.id.get))},
-      "class" -> "select2 form-control",
-      "data-placeholder" -> "Seleccione uno o varios tipos de evento.."
+      Full(SHtml.selectObj(availableOptions, currentValue, {(u: User) => {
+          set(u.id.get)
+        }},
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione quien organiza este evento.."
       ))
     }
+    def currentValue = User.currentUser
+    def availableOptions = User.findAll.map(p => p -> p.name.get).toSeq
+  }
+
+  object handlers extends ObjectIdRefListField(this, User){
+    override def toString = {
+      User.findAll(this.get).map(_.name.get).mkString(", ")
+    }
+
+    override def toForm: Box[Elem] = {
+      Full(SHtml.multiSelectObj(availableOptions, currentValue, {(list: List[User]) =>
+        set(list.map(_.id.get))
+        },
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione uno o varios gestionadores.."
+      ))
+    }
+    override def defaultValue = User.currentUser.getOrElse(User.createRecord).id.get :: Nil
+    def currentValue = User.currentUser.getOrElse(User.createRecord) :: Nil
+    def availableOptions = User.findAll.map(p => p -> p.name.get).toSeq
   }
 
   object sponsors extends ObjectIdRefListField(this, User){
-    def currentValue = User.currentUser.getOrElse(User.createRecord) :: Nil
-    def availableOptions: List[(User, String)] =
-      User.findAll.map(p => p -> p.name.get).toList
+    override def toString = {
+      User.findAll(this.get).map(_.name.get).mkString(", ")
+    }
 
     override def toForm: Box[Elem] = {
-      Full(SHtml.multiSelectObj(
-      availableOptions,
-      currentValue,
-      {(list: List[User]) => set(list.map(_.id.get))},
+      Full(SHtml.multiSelectObj(availableOptions, currentValue, {(list: List[User]) =>
+        set(list.map(_.id.get))
+      },
       "class" -> "select2 form-control",
-      "data-placeholder" -> "Seleccione uno o varios tipos de evento.."
+      "data-placeholder" -> "Seleccione uno o varios auspiciadores.."
       ))
     }
+    override def defaultValue = User.currentUser.getOrElse(User.createRecord).id.get :: Nil
+    def currentValue = User.currentUser.getOrElse(User.createRecord) :: Nil
+    def availableOptions = User.findAll.map(p => p -> p.name.get).toSeq
   }
 
   object supports extends ObjectIdRefListField(this, User){
-    def currentValue = User.currentUser.getOrElse(User.createRecord) :: Nil
-    def availableOptions: List[(User, String)] =
-      User.findAll.map(p => p -> p.name.get).toList
+    override def toString = {
+      User.findAll(this.get).map(_.name.get).mkString(", ")
+    }
 
     override def toForm: Box[Elem] = {
-      Full(SHtml.multiSelectObj(
-      availableOptions,
-      currentValue,
-      {(list: List[User]) => set(list.map(_.id.get))},
+      Full(SHtml.multiSelectObj(availableOptions, currentValue, {(list: List[User]) =>
+        set(list.map(_.id.get))
+      },
       "class" -> "select2 form-control",
-      "data-placeholder" -> "Seleccione uno o varios tipos de evento.."
+      "data-placeholder" -> "Seleccione uno o varios soportes.."
       ))
     }
+    override def defaultValue = User.currentUser.getOrElse(User.createRecord).id.get :: Nil
+    def currentValue = User.currentUser.getOrElse(User.createRecord) :: Nil
+    def availableOptions = User.findAll.map(p => p -> p.name.get).toSeq
   }
 
   object collaborators extends ObjectIdRefListField(this, User){
-    def currentValue = User.currentUser.getOrElse(User.createRecord) :: Nil
-    def availableOptions: List[(User, String)] =
-      User.findAll.map(p => p -> p.name.get).toList
+    override def toString = {
+      User.findAll(this.get).map(_.name.get).mkString(", ")
+    }
 
     override def toForm: Box[Elem] = {
-      Full(SHtml.multiSelectObj(
-      availableOptions,
-      currentValue,
-      {(list: List[User]) => set(list.map(_.id.get))},
+      Full(SHtml.multiSelectObj(availableOptions, currentValue, {(list: List[User]) =>
+        set(list.map(_.id.get))
+      },
       "class" -> "select2 form-control",
-      "data-placeholder" -> "Seleccione uno o varios tipos de evento.."
+      "data-placeholder" -> "Seleccione uno o varios colaboradores.."
       ))
     }
+    override def defaultValue = User.currentUser.getOrElse(User.createRecord).id.get :: Nil
+    def currentValue = User.currentUser.getOrElse(User.createRecord) :: Nil
+    def availableOptions = User.findAll.map(p => p -> p.name.get).toSeq
   }
 
   object pressRoom extends ObjectIdRefField(this, PressNotes)
@@ -294,7 +313,12 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
     }
   }
 
-  object quote extends StringField(this, "")
+  object quote extends StringField(this, ""){
+    override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
+      set(s)
+      Noop
+    }))
+  }
 
   object tools extends TextareaField(this, 1000){
     override def toForm = {

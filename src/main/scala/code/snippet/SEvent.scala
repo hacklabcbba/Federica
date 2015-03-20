@@ -45,11 +45,34 @@ object SEvent {
 
   def editForm = {
     val e: Event = eventRequestVar.get.dmap(Event.createRecord)(p => p)
-    "data-name=name" #> e.name.toForm &
-    "data-name=description" #> e.description.toForm &
-    "data-name=area" #> e.area.toForm &
-    "data-name=program" #> e.program.toForm &
-    "data-name=edit" #> SHtml.ajaxButton("Guardar" ,() => update(e))
+      "data-name=name *" #> e.name.toForm &
+      "data-name=shortDescription *" #> e.shortDescription.toForm &
+      "data-name=description *" #> e.description.toForm &
+      "data-name=schedule *" #> e.schedule.toForm &
+      "data-name=eventTypes *" #> e.eventTypes.toForm &
+      "data-name=area *" #> e.area.toForm &
+      "data-name=program *" #> e.program.toForm &
+      "data-name=process *" #> e.process.toForm &
+      "data-name=actionLines *" #> e.actionLines.toForm &
+      "data-name=productiveUnit *" #> e.productiveUnit.toForm &
+      "data-name=expositors *" #> e.expositors.toForm &
+      "data-name=organizer *" #> e.organizer.toForm &
+      "data-name=handlers *" #> e.handlers.toForm &
+      "data-name=sponsors *" #> e.sponsors.toForm &
+      "data-name=supports *" #> e.supports.toForm &
+      "data-name=collaborators *" #> e.collaborators.toForm &
+      "data-name=city *" #> e.city.toForm &
+      "data-name=country *" #> e.country.toForm &
+      "data-name=place *" #> e.place.toForm &
+      "data-name=activities *" #> e.activities.toForm &
+      "data-name=requirements *" #> e.requirements.toForm &
+      "data-name=goal *" #> e.goal.toForm &
+      "data-name=quote *" #> e.quote.toForm &
+      "data-name=tools *" #> e.tools.toForm &
+      "data-name=supplies *" #> e.supplies.toForm &
+      "data-name=registration *" #> e.registration.toForm &
+      "data-name=costContributionByUse *" #> e.costContributionByUse.toForm &
+      "data-name=edit" #> SHtml.ajaxButton("Actualizar" ,() => update(e))
   }
 
   def showAll = {
@@ -57,11 +80,10 @@ object SEvent {
       "data-name=checkbox *" #> customCheckbox(e) &
       "data-name=number *" #> e.eventNumber &
       "data-name=name *"  #> e.name &
-      "data-name=begins *"  #> e.schedule.toString &
-      "data-name=ends *" #> e.name &
-      "data-name=cost *" #> e.name &
-      "data-name=organizer *" #> e.name &
-      "data-name=areaProgram *" #> e.name &
+      "data-name=date *"  #> e.schedule.toString &
+      "data-name=cost *" #> e.costInfo.toString() &
+      "data-name=organizer *" #> e.organizer.toString &
+      "data-name=areaProgram *" #> (e.area + " " + e.program) &
       "data-name=edit *" #> SHtml.ajaxButton("Editar", () => RedirectTo("/event/edit",
         () => eventRequestVar.set(Full(e))))
     }) &
@@ -89,12 +111,13 @@ object SEvent {
   def page = Event.findAll
 
   def save(e: Event) = {
+    println(e)
     e.save(true)
     redirectToHome
   }
 
-  def update(productiveUnit: Event) = {
-    productiveUnit.update
+  def update(e: Event) = {
+    e.update
     redirectToHome
   }
 
