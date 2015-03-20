@@ -34,7 +34,7 @@
     $ELEMENTS
 \*------------------------------------*/
 body {
-  padding-top: 50px;. 
+  height: 100%;
 }
 
 
@@ -52,16 +52,18 @@ body {
     $HEADER
 \*------------------------------------*/
 
+.gs-navbar .navbar-brand {
+	padding: 3px 3px 0 15px;
+}
 .gs-navbar.navbar-default {
 	background-color: #fff;
 	border: none;
 	margin-bottom: 0;
 	box-shadow: 0 0 7px -5px #333333;
+  padding-right: 28px;
+  margin-right: 0;
+  z-index: 10;
 }
-.gs-navbar .navbar-brand {
-	padding: 3px 3px 0 100px;
-}
-
 .gs-navbar.navbar-default .nav > li > a{
 	text-transform: uppercase;
 	color: #1a1a1a;
@@ -78,7 +80,10 @@ body {
     vertical-align: middle;
     z-index: 1
 }
-
+.gs-navbar .navbar-right {
+	padding-right: 28px;
+	margin-right: 0;
+}
 
 
 /*------------------------------------*\
@@ -96,6 +101,7 @@ body {
   top: 50px;
   width: 15em;
   z-index: 2000;
+  box-shadow: 0 0 7px -2px #333333;
   
   transition: right 0.3s ease-in-out 0s;
   -webkit-transition: right 0.3s ease-in-out 0s;
@@ -203,34 +209,63 @@ body.nav-expanded {
 .gs-first-nav li.active a .gs-right-arrow {
   background-image: url("../img/left-arrow-active.png");
 }
-.gs-navbar #nav-expander.navbar-toggle .icon-bar {
+#nav-expander {
+  background-color: #222;
+  border: medium none;
+  border-radius: 0;
+  padding: 18px 7px;
+  margin: 0px;
+  position: fixed;
+  top: 0px;
+  display: block;
+  right: 0px;
+  z-index: 12;
+}
+#nav-expander.navbar-toggle .icon-bar {
   background-color: #bbb;
 }
 #nav-expander2 {
-	padding: 10px 15px;
-	border-radius: 0;
+  border-bottom: 1px dashed #333;
+  border-radius: 0px;
+  width: 100%;
+  display: inline-block;
+  margin: 0px;
+  padding: 10px 5px !important;
 }
-#nav-expander2 .icon-bar {
-	background-color: #bbb;
+#nav-expander2 span {
+  font-size: 20px;
+  color: #fff
 }
-#nav-expander2:hover .icon-bar {
-	background-color: #fff
+.gs-sidebar-left {
+  left: -15em;
+  transition: all 0.3s ease-in-out;
 }
-.gs-navbar #nav-expander.navbar-toggle:hover .icon-bar {
+.nav-expanded2 .gs-sidebar-left {
+  left: 0
+}
+.nav-expanded2 #nav-expander2 .glyphicon.glyphicon-chevron-left:before {
+  content: ""
+}
+.nav-expanded2 #nav-expander2 .glyphicon.glyphicon-chevron-left:before {
+  content: ""
+}
+.nav-expanded #nav-expander .icon-bar,
+#nav-expander:hover .icon-bar {
 	box-shadow: 0 0 10px 1px #ffffff;
+	background-color: #fff;
 }
-.gs-navbar #nav-expander.navbar-toggle {
+#nav-expander {
   border: none;
 }
-.gs-navbar .navbar-right li #nav-expander {
+.navbar-right li #nav-expander {
   background-color: #222;
   border: medium none;
   border-radius: 0;
   padding: 18px 7px;
   margin-left: 15px;
 }
-.gs-navbar .navbar-right li #nav-expander:hover,
-.gs-navbar .navbar-right li #nav-expander:focus {
+.navbar-right li #nav-expander:hover,
+.navbar-right li #nav-expander:focus {
   background-color: #000;
   box-shadow: 0 0 5px #000 inset;
 }
@@ -255,13 +290,18 @@ body.nav-expanded {
 	background-color: #222222;
 	height: 100%;
 	box-shadow: 0 0 7px -2px #333333;
-	z-index: 2;
+	z-index: 5;
+	transition: all 0.7s ease 0s;
+	top: 50px;
 }
 .gs-sidebar-left .gs-sec-nav li {
 	height: 45px;
 }
 .gs-sidebar-left .gs-sec-nav li a {
 	opacity: 0.6;
+}
+.gs-sidebar-left .gs-sec-nav ul.nav {
+	padding-top: 60px;
 }
 .gs-sidebar-left .nav li a:hover {
 	opacity: 1
@@ -280,9 +320,9 @@ body.nav-expanded {
 	float: left;
 	background-color: #eaeaea;
 	height: 100%;
-	width: 0;
-	overflow: hidden;
-	transition: width .8s ease-in-out
+	width: 15em;
+	position: relative;
+	z-index: 3;
 }
 .gs-first-nav li a,
 .gs-first-nav li.active ul li > a {
@@ -291,12 +331,12 @@ body.nav-expanded {
 	font-weight: 700;
 	border-bottom: 1px solid transparent
 }
+.gs-first-nav li.active {
+	border-bottom: 1px solid #f1f1f1; 
+}
 .gs-first-nav li.active > a,
 .gs-first-nav li a:hover {
 	color: #000;
-}
-.gs-first-nav li.active > a {
-	box-shadow: 0 10px 10px -14px #999999;
 }
 .gs-first-nav li > a {
 	font-size: 13px;
@@ -309,8 +349,8 @@ body.nav-expanded {
 	padding: 7px 15px 7px 44px;
 }
 .gs-first-nav li.active ul {
-	border: 1px solid #DBDBDB;
-	box-shadow: 0 -10px 10px -14px #999999 inset;
+  border: 1px solid #dddddd;
+  box-shadow: 0 0 10px -7px #444444 inset;
 }
 .gs-first-nav li.active ul li > a:hover {
 	background-color: #E2E2E2;
@@ -318,7 +358,9 @@ body.nav-expanded {
 .gs-sec-nav {
 	float: right;
 	box-shadow: -15px -16px 5px -15px #333333;
-	height: 100%
+	height: 100%;
+	position: relative;
+	z-index: 4;
 }
 .gs-sec-nav li {
 	position: relative;
@@ -329,30 +371,17 @@ body.nav-expanded {
   right: 0;
   width: 57px;
 }
-.nav-expanded2 .gs-first-nav {
-	width: 15em;
+.nav-left-expanded .gs-first-nav {
+	width: 0;
+  transition: all 0.3s ease-in-out 0s;
 }
 .gs-first-nav form {
 	padding: 10px;
 }
 
-
 /*------------------------------------*\
-    $CONTENT
+    $BOOTSTRAP TABS
 \*------------------------------------*/
-
-.columns {
-  height: 100%;
-  position: fixed;
-  background-color: #eee;
-}
-
-
-
-/*------------------------------------*\
-    $TABS
-\*------------------------------------*/
-
 
 .tabs-left > li, 
 .tabs-right > li {
@@ -366,6 +395,81 @@ body.nav-expanded {
 
 
 
+/*------------------------------------*\
+    $CONTENT
+\*------------------------------------*/
 
-
-
+.gs-content {
+	padding-left: 4em;
+	overflow: hidden;
+	height: 100vh;
+	padding-top: 50px;
+}
+.columns,
+.column {
+	background-color: #555;
+	border-right: 2px solid #fff;
+	padding: 0;
+	position: relative;
+	overflow: hidden;
+}
+.columns {
+	height: 100vh;
+}
+.column {
+	height: 50vh;
+	border: none;
+}
+.columns .column {
+	border-bottom: 2px solid #fff;
+}
+.gs-cat-label {
+  font-size: 10px;
+  font-weight: bold;
+  padding: 5px 15px;
+  position: absolute;
+  text-transform: uppercase;
+  left: 0;
+}
+.gs-cat-label.visuales {
+  background-color: #e89cdb;
+}
+.gs-cat-label.escenicas {
+  background-color: #9bb7d3;
+}
+.gs-visuales {
+  color: #ffffff;
+  left: 0;
+  position: absolute;
+  right: 0;
+  padding: 10px;
+  bottom: 70px;
+}
+.gs-visuales p {
+	text-align: justify;
+	text-shadow: 0 0 1px #666;
+}
+.gs-visuales strong {
+	font-size: 12px;
+	margin-bottom: 15px;
+	display: inline-block;
+}
+.gs-visuales h2 {
+	font-weight: bold;
+	text-shadow: 0 0 1px #333333;
+}
+.gs-visuales h2 {
+	font-size: 18px;
+	text-transform: uppercase;
+}
+.gs-visuales-btn {
+	background-color: transparent;
+	border: 2px solid #fff;
+	border-radius: 0;
+	padding: 5px 30px;
+	font-weight: bold; 
+}
+.gs-visuales-btn:hover {
+	color: #fff;
+	background-color: rgba(255,255,255,0.2);
+}
