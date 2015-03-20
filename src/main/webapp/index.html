@@ -517,17 +517,49 @@
 		  interval: 50000
 		})
        
-       //SIDEBAR RIGHT
-        $('#nav-expander').on('click',function(e){
-      		e.preventDefault();
-      		$('body').toggleClass('nav-expanded');
-      	});
-        $('#nav-expander2').on('click',function(e){
-      		e.preventDefault();
-      		$('body').toggleClass('nav-expanded2');
-      	});
+//SIDEBAR RIGHT
+$('#nav-expander').on('click',function(e){
+    e.preventDefault();
+    $('body').toggleClass('nav-expanded');
+});
+$('#nav-expander2').on('click',function(e){
+    e.preventDefault();
+    $('body').toggleClass('nav-expanded2');
+});
 
-      	// Metis MEnu
+
+var ExpandManger = {
+    isExpandedLeftPanel: function(){
+        return $('body').hasClass('nav-expanded2');
+    },
+    showLeftPanel: function(){
+        $('body').toggleClass('nav-expanded2');
+    },
+    hideLeftPanel: function(){
+        $('body').removeClass('nav-expanded2');
+    },
+    initControls: function(){
+        var self = this;
+        $('ul.sideways li').click(function(){
+            var shouldIClosePanel = $(this).hasClass('active');
+            if (self.isExpandedLeftPanel()) {
+                if (shouldIClosePanel) {
+                    self.hideLeftPanel();
+                }
+            }else{
+                self.showLeftPanel();
+            }
+        });
+    }
+}.initControls();
+
+// Metis MEnu
+$(function () {
+    $('#menu').metisMenu();
+    $('#menu2').metisMenu();
+    $('#menu3').metisMenu();
+});
+        /*
 		    $(function () {
 		        $('#menu').metisMenu();
 		    });
@@ -537,6 +569,7 @@
 		    $(function () {
 		        $('#menu3').metisMenu();
 		    });
+		    */
       </script>
   </body>
 </html>
