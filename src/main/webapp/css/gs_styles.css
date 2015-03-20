@@ -28,7 +28,9 @@
 /*------------------------------------*\
     $RESET
 \*------------------------------------*/
-
+a:hover {
+	text-decoration: none;
+}
 
 /*------------------------------------*\
     $ELEMENTS
@@ -312,7 +314,7 @@ body.nav-expanded {
   padding: 13px 3px;
   position: absolute;
   left: 60px;
-  text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
   top: 0;
   text-transform: capitalize;
 }
@@ -407,7 +409,7 @@ body.nav-expanded {
 }
 .columns,
 .column {
-	background-color: #555;
+	background-color: #333;
 	border-right: 2px solid #fff;
 	padding: 0;
 	position: relative;
@@ -430,6 +432,7 @@ body.nav-expanded {
   position: absolute;
   text-transform: uppercase;
   left: 0;
+  top: 0;
 }
 .gs-cat-label.visuales {
   background-color: #e89cdb;
@@ -437,17 +440,18 @@ body.nav-expanded {
 .gs-cat-label.escenicas {
   background-color: #9bb7d3;
 }
-.gs-visuales {
+.gs-visuales,
+.gs-cat-escenicas {
   color: #ffffff;
   left: 0;
   position: absolute;
   right: 0;
-  padding: 10px;
+  padding: 15px;
   bottom: 70px;
 }
 .gs-visuales p {
 	text-align: justify;
-	text-shadow: 0 0 1px #666;
+	text-shadow: 0 0 5px #666;
 }
 .gs-visuales strong {
 	font-size: 12px;
@@ -455,21 +459,59 @@ body.nav-expanded {
 	display: inline-block;
 }
 .gs-visuales h2 {
-	font-weight: bold;
-	text-shadow: 0 0 1px #333333;
+	line-height: 20px;
 }
-.gs-visuales h2 {
+.gs-visuales h2 a {
+	font-weight: bold;
+	text-shadow: 0 0 5px #333333;
 	font-size: 18px;
 	text-transform: uppercase;
+	color: #fff;
 }
-.gs-visuales-btn {
+.gs-visuales h2 a:hover {
+	opacity: 0.8
+}
+.gs-visuales-btn,
+.gs-cat-escenicas .btn-default {
 	background-color: transparent;
 	border: 2px solid #fff;
 	border-radius: 0;
 	padding: 5px 30px;
 	font-weight: bold; 
+	color: #fff;
+	text-shadow: 0 0 5px #777;
 }
-.gs-visuales-btn:hover {
+.gs-visuales-btn:hover,
+.gs-cat-escenicas .btn-default:focus,
+.gs-cat-escenicas .btn-default:hover,
+.gs-cat-escenicas .open .btn-default {
 	color: #fff;
 	background-color: rgba(255,255,255,0.2);
+}
+.gs-escenicas {
+	bottom: 0;
+	padding: 10px 90px;
+}
+.gs-cat-escenicas {
+  right: 0;
+  top: 0;
+  z-index: 2;
+  left: auto
+}
+.gs-cat-escenicas .btn-default {
+	padding: 5px 10px;
+	font-weight: normal;
+	font-size: 10px;
+	text-transform: uppercase;
+}
+.gs-cat-escenicas ul.dropdown-menu {
+	right: 0;
+	left: auto
+}
+.gs-cat-escenicas ul.dropdown-menu li a {
+	font-size: 13px;
+	padding: 0 13px;
+}
+#gs-carousel-mobile {
+	display: none;
 }

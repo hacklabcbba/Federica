@@ -1,0 +1,50 @@
+/*------------------------------------*\
+* Company: Genso, Iniciativas Web
+* Project: FER
+* Version: 1.0
+* Autor: Pedroq
+* Reviser: -
+\*------------------------------------*/
+
+
+
+
+
+@media only screen and (max-width : 768px) {
+	#gs-carousel-home {
+		display: none;
+	}
+	#gs-carousel-mobile {
+		display: block;
+	}
+	#gs-carousel-mobile .item {
+
+	}
+	
+	/*HEADER*/
+	.gs-navbar.navbar-default {
+		z-index: 12
+	}
+
+	/*SIDEBAR*/
+	.gs-sidebar-left-label {
+		display: none;
+	}
+	.gs-sec-nav {
+		overflow-y: auto
+	}
+	.gs-sec-nav li:last-child {
+		bottom: auto;
+		right: auto;
+		position: relative;
+	}
+	.gs-content {
+		height: auto;
+	}
+	.columns	{
+		overflow: auto;
+		background-color: #fff;
+		margin-bottom: 15px;
+		height: auto;
+	}
+}
