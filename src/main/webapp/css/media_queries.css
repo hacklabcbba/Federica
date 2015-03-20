@@ -11,16 +11,17 @@
 
 
 @media only screen and (max-width : 768px) {
+	/*SLIDESHOW*/
 	#gs-carousel-home {
 		display: none;
 	}
 	#gs-carousel-mobile {
 		display: block;
 	}
-	#gs-carousel-mobile .item {
-
+	.carousel-caption {
+		z-index: 4;
 	}
-	
+
 	/*HEADER*/
 	.gs-navbar.navbar-default {
 		z-index: 12
