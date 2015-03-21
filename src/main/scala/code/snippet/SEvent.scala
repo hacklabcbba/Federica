@@ -8,10 +8,11 @@ import net.liftweb.http.{SHtml, PaginatorSnippet, StatefulSnippet}
 import code.model.event._
 import net.liftweb.util._
 import Helpers._
+import code.model.Setting
 
 object SEvent {
 
-  def addForm = {
+  def addForm: CssSel = {
     val e = Event.createRecord
     "data-name=name *" #> e.name.toForm &
     "data-name=shortDescription *" #> e.shortDescription.toForm &
@@ -40,11 +41,12 @@ object SEvent {
     "data-name=supplies *" #> e.supplies.toForm &
     "data-name=registration *" #> e.registration.toForm &
     "data-name=costContributionByUse *" #> e.costContributionByUse.toForm &
-    "data-name=add" #> SHtml.ajaxButton("Guardar" ,() => save(e))
+      "type=submit" #> SHtml.ajaxOnSubmit(() => save(e))
   }
 
   def editForm = {
     val e: Event = eventRequestVar.get.dmap(Event.createRecord)(p => p)
+      "data-name=eventNumber *" #> e.eventNumber.toDisableForm &
       "data-name=name *" #> e.name.toForm &
       "data-name=shortDescription *" #> e.shortDescription.toForm &
       "data-name=description *" #> e.description.toForm &
@@ -72,7 +74,7 @@ object SEvent {
       "data-name=supplies *" #> e.supplies.toForm &
       "data-name=registration *" #> e.registration.toForm &
       "data-name=costContributionByUse *" #> e.costContributionByUse.toForm &
-      "data-name=edit" #> SHtml.ajaxButton("Actualizar" ,() => update(e))
+      "type=submit" #> SHtml.ajaxOnSubmit(() => update(e))
   }
 
   def showAll = {
@@ -81,7 +83,7 @@ object SEvent {
       "data-name=number *" #> e.eventNumber &
       "data-name=name *"  #> e.name &
       "data-name=date *"  #> e.schedule.toString &
-      "data-name=cost *" #> e.costInfo.toString() &
+      "data-name=cost *" #> e.costInfo.toString &
       "data-name=organizer *" #> e.organizer.toString &
       "data-name=areaProgram *" #> (e.area + " " + e.program) &
       "data-name=edit *" #> SHtml.ajaxButton("Editar", () => RedirectTo("/event/edit",
@@ -89,12 +91,14 @@ object SEvent {
     }) &
     "data-name=add" #> SHtml.ajaxButton("Agregar", () => RedirectTo("/event/add")) &
     "data-name=delete" #> SHtml.ajaxButton("Eliminar", () => {
-       RedirectTo("/event/productives", () => delete(eventDeleteRequestVar.get))
+      val listToDelete = eventDeleteRequestVar.get
+      RedirectTo("/event/events", () => delete(listToDelete))
     })
   }
 
   def customCheckbox(item: Event) = {
     SHtml.ajaxCheckbox(false, b => {
+      println("selected checkbox event: " + b +  " item, " + item)
       updateDeleteList(b, item)
     }, "class" -> "checkbox-list")
   }
@@ -111,8 +115,10 @@ object SEvent {
   def page = Event.findAll
 
   def save(e: Event) = {
+    e.eventNumber(Setting.getEventNumber)
     println(e)
     e.save(true)
+    Setting.updateEventNumber
     redirectToHome
   }
 
@@ -123,8 +129,8 @@ object SEvent {
 
   def delete(items: List[Event]) = {
     println("delete list: " + items)
-    items.map(productive => {
-      productive.delete_!
+    items.map(e => {
+      e.delete_!
     })
   }
 

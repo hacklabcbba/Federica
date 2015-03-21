@@ -27,13 +27,14 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
       set(s)
       Noop
     }))
+    def toDisableForm = SHtml.span(<b>{get}</b>, Noop)
   }
 
   object name extends StringField(this, 200){
     override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
       set(s)
       Noop
-    }))
+    }, "class" -> "form-control", "data-placeholder" -> "Ingrese nombre.."))
   }
 
   object schedule extends ObjectIdRefField(this, Schedule){
@@ -42,7 +43,9 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
     }
   }
 
-  object costInfo extends ObjectIdRefField(this, CostInfo)
+  object costInfo extends ObjectIdRefField(this, CostInfo){
+    override def toString = CostInfo.find(get).dmap("no definido..")(_.cost.get.toString)
+  }
 
   object eventTypes extends ObjectIdRefListField(this, EventType){
     def currentValue = EventType.findAll.headOption.toList
@@ -168,7 +171,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
     override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
       set(s)
       Noop
-    }))
+    }, "class" -> "form-control", "data-placeholder" -> "Ingrese el lugar del evento.."))
   }
 
   object shortDescription extends TextareaField(this, 1000){
@@ -181,7 +184,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
 
   object description extends TextareaField(this, 1000){
     override def toForm = {
-      Full(SHtml.textarea(value, {v => set(v)}, "class"->"form-control" ))
+      Full(SHtml.textarea(value, v => set(v), "class"->"form-control" ))
     }
   }
 
@@ -317,7 +320,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
     override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
       set(s)
       Noop
-    }))
+    }, "class" -> "form-control", "data-placeholder" -> "Ingrese el cupo maximo.."))
   }
 
   object tools extends TextareaField(this, 1000){
