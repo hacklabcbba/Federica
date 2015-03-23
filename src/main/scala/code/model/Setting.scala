@@ -12,7 +12,7 @@ class Setting private() extends MongoRecord[Setting] with ObjectIdPk[Setting]{
 
   override def meta = Setting
   object name extends EnumNameField(this, SettingType)
-  object value extends MongoMapField[Setting, String](this)
+  object settingValue extends MongoMapField[Setting, String](this)
 }
 
 object Setting extends Setting with RogueMetaRecord[Setting]{
@@ -23,21 +23,23 @@ object Setting extends Setting with RogueMetaRecord[Setting]{
     }else{
       settings.headOption.get
     }
-    //setting.value.get.map(v => v._1 +"-"+ v._2 ).head
-    "EVT-001"
+
+    val code = setting.settingValue.get("code")
+    val number = setting.settingValue.get("currentNumber")
+    s"$code - $number"
   }
 
   def updateEventNumber() = {
-
     val setting = Setting.where(_.name eqs SettingType.EventCode).fetch().headOption match {
-      case Some(s) =>
-        s
-      case _ =>
-        createEventNumber()
+      case Some(s) => s
+      case _ => createEventNumber()
     }
-
-    //for { (k,v) <- setting.value.get } yield  newValue:Map = Map()
-    setting.save(true)
+    val nextNumber = setting.settingValue.get("currentNumber")
+    val info = Map(
+      "code" -> "EVT",
+      "currentNumber" -> (nextNumber.toInt + 1 ).toString
+    )
+    setting.settingValue(info).update
   }
 
   def createEventNumber() = {
@@ -45,7 +47,7 @@ object Setting extends Setting with RogueMetaRecord[Setting]{
       "code" -> "EVT",
       "currentNumber" -> "1"
     )
-    Setting.createRecord.name(SettingType.EventCode).value(info).save(true)
+    Setting.createRecord.name(SettingType.EventCode).settingValue(info).save(true)
   }
 }
 object SettingType extends Enumeration {
