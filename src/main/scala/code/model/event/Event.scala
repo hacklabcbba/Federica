@@ -7,7 +7,7 @@ import code.model.project._
 import net.liftweb.util.Helpers._
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field._
-import net.liftweb.record.field.{TextareaField, LongField, DecimalField, StringField}
+import net.liftweb.record.field.{EnumNameField, TextareaField, LongField, DecimalField, StringField}
 import code.model.proposal.{ActionLine, Area, Program}
 import code.model.activity.{Activity, ActivityType}
 import code.model.productive.ProductiveUnit
@@ -342,6 +342,12 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
   }
 
   object costContributionByUse extends ObjectIdRefField(this, CostContributionByUse)
+  object state extends EnumNameField(this, StateType)
 }
 
 object Event extends Event with RogueMetaRecord[Event]
+
+object StateType extends Enumeration {
+  type StateType = Value
+  val Aproved, Rejected, Draft = Value
+}

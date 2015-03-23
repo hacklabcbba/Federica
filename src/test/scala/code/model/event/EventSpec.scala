@@ -20,7 +20,6 @@ class EventSpec extends BaseMongoSessionWordSpec {
       val country = createCountry("Bolivia")
       val schedule = createSchedule
 
-      val organizer = createOrganizer("Jhon", "Smith")
       val eType1 =  createEventType("festival")
       val eType2 =  createEventType("concierto")
 
@@ -58,11 +57,7 @@ class EventSpec extends BaseMongoSessionWordSpec {
         .activities(activity1.id.get :: activity2.id.get :: Nil)
         .description("descripcion larga")
         .requirements(req1.id.get :: req2.id.get :: Nil)
-        .expositors(user1.id.get :: Nil)
-        .organizers(user1.id.get :: Nil)
-        .handlers(user1.id.get :: Nil)
-        .sponsors(user1.id.get :: Nil)
-        .supports(user1.id.get :: Nil)
+        .organizers(user1.id.get)
         .collaborators(user1.id.get :: Nil)
         .pressRoom(user1.id.get)
         .goal("objetivo 1")
@@ -386,21 +381,5 @@ class EventSpec extends BaseMongoSessionWordSpec {
     }
     req.validate.length should equal (0)
     req.save(false)
-  }
-
-  def createOrganizer(name: String, lastname: String): Organizer = {
-
-    val organizer = Organizer
-      .createRecord
-      .name(name)
-      .lastName(lastname)
-
-    val errsOrganizer = organizer.validate
-    if (errsOrganizer.length > 1) {
-      fail("Validation error: " + errsOrganizer.mkString(", "))
-    }
-
-    organizer.validate.length should equal (0)
-    organizer.save(false)
   }
 }

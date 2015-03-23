@@ -15,7 +15,7 @@ class Process private() extends MongoRecord[Process] with ObjectIdPk[Process]{
   object name extends StringField(this, 200)
   object goal extends StringField(this, 300)
   object description extends StringField(this, 500)
-  object responsible extends ObjectIdRefField(this, Organizer)
+  object responsible extends ObjectIdRefField(this, User)
   object history extends StringField(this, 1000)
   object area extends ObjectIdRefField(this, Area) {
     override def optional_? = true
