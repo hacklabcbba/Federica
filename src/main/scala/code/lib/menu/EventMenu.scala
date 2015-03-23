@@ -16,8 +16,6 @@ import sitemap.Loc._
 object EventMenu {
 
   val menuAdd = MenuLoc(Menu.i("Agregar Evento") / "event" / "add" >> Locs.RequireLoggedIn)
-
   val menuEdit = MenuLoc(Menu.i("Edit Evento") / "event" / "edit" >> Locs.RequireLoggedIn)
-
-  val menuList = MenuLoc(Menu.i("Lista de Eventos") / "event" / "events" >> Locs.RequireLoggedIn >> MenuGroups.TopBarGroup)
+  val menuList = MenuLoc(Menu.i("Eventos") / "event" / "events" >> Locs.RequireLoggedIn >> MenuGroups.TopBarGroup)
 }

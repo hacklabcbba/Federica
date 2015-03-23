@@ -31,6 +31,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
   }
 
   object name extends StringField(this, 200){
+    override def toString = get
     override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
       set(s)
       Noop

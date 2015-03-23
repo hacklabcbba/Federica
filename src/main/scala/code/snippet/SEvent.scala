@@ -41,11 +41,14 @@ object SEvent {
     "data-name=supplies *" #> e.supplies.toForm &
     "data-name=registration *" #> e.registration.toForm &
     "data-name=costContributionByUse *" #> e.costContributionByUse.toForm &
-      "type=submit" #> SHtml.ajaxOnSubmit(() => save(e))
+    "type=submit" #> SHtml.ajaxOnSubmit(() => save(e))&
+    "type=cancel" #> SHtml.ajaxButton("Cancelar", () => RedirectTo("/event/events"), "class"->"btn btn-default" )
+
   }
 
   def editForm = {
     val e: Event = eventRequestVar.get.dmap(Event.createRecord)(p => p)
+      "data-name=eventName" #> e.name &
       "data-name=eventNumber *" #> e.eventNumber.toDisableForm &
       "data-name=name *" #> e.name.toForm &
       "data-name=shortDescription *" #> e.shortDescription.toForm &
@@ -74,7 +77,8 @@ object SEvent {
       "data-name=supplies *" #> e.supplies.toForm &
       "data-name=registration *" #> e.registration.toForm &
       "data-name=costContributionByUse *" #> e.costContributionByUse.toForm &
-      "type=submit" #> SHtml.ajaxOnSubmit(() => update(e))
+      "type=submit" #> SHtml.ajaxOnSubmit(() => update(e)) &
+      "type=cancel" #> SHtml.ajaxButton("Cancelar", () => RedirectTo("/event/events"), "class"->"btn btn-default" )
   }
 
   def showAll = {
@@ -86,14 +90,16 @@ object SEvent {
       "data-name=cost *" #> e.costInfo.toString &
       "data-name=organizer *" #> e.organizer.toString &
       "data-name=areaProgram *" #> (e.area + " " + e.program) &
-      "data-name=edit *" #> SHtml.ajaxButton("Editar", () => RedirectTo("/event/edit",
-        () => eventRequestVar.set(Full(e))))
+      "data-name=edit *" #> SHtml.ajaxButton("Editar", () =>
+        RedirectTo("/event/edit", () => eventRequestVar.set(Full(e))),
+        "class" -> "btn btn-default"
+      )
     }) &
-    "data-name=add" #> SHtml.ajaxButton("Agregar", () => RedirectTo("/event/add")) &
+    "data-name=add" #> SHtml.ajaxButton("Agregar", () => RedirectTo("/event/add"), "class"->"btn btn-primary" ) &
     "data-name=delete" #> SHtml.ajaxButton("Eliminar", () => {
       val listToDelete = eventDeleteRequestVar.get
       RedirectTo("/event/events", () => delete(listToDelete))
-    })
+    }, "class"->"btn btn-danger")
   }
 
   def customCheckbox(item: Event) = {

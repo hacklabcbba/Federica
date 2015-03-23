@@ -3,11 +3,11 @@
         <title data-lift="Menu.title">Federica: %*%</title>
     </lift:head>
     <div class="main-content">
-        <div class="row lift:SEvent.showAll">
-            <div class="row">
-                <div class="col-xs-12 col-md-12">
-                    <table class="table">
-                        <thread>
+        <h3>Lista de eventos</h3>
+        <div class="row" data-lift="lift:SEvent.showAll">
+            <div class="col-xs-12 col-md-12">
+                    <table class="table table-bordered table-striped">
+                        <thead>
                             <tr>
                                 <th class="span-3"><input id="checkbox-all" type="checkbox"></th>
                                 <th class="span-3">Nro.</th>
@@ -18,7 +18,7 @@
                                 <th class="span-3">Area o Programa</th>
                                 <th class="span-3">&nbsp;</th>
                             </tr>
-                        </thread>
+                        </thead>
                         <tbody>
                         <tr data-name="list">
                             <td data-name="checkbox"></td>
@@ -33,9 +33,8 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
             <div class="row">
-                <div class="col-xs-12 col-md-12 col-md-offset-4">
+                <div class="col-xs-12 col-md-12">
                     <div data-name="add"></div>
                     <div data-name="delete"></div>
                 </div>
