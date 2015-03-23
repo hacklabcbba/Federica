@@ -6,6 +6,7 @@ import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field._
 import net.liftweb.record.field._
 import net.liftweb.common.{Box, Full}
+import code.model.SettingType.SettingType
 
 
 class Setting private() extends MongoRecord[Setting] with ObjectIdPk[Setting]{
@@ -16,40 +17,39 @@ class Setting private() extends MongoRecord[Setting] with ObjectIdPk[Setting]{
 }
 
 object Setting extends Setting with RogueMetaRecord[Setting]{
-  def getEventNumber: String = {
-    val settings = Setting.where(_.name eqs SettingType.EventCode).fetch()
-    val setting = if (settings.isEmpty){
-      createEventNumber()
-    }else{
-      settings.headOption.get
-    }
-
-    val code = setting.settingValue.get("code")
-    val number = setting.settingValue.get("currentNumber")
+  def eventNumber: String = {
+    val settings = findByName(SettingType.EventCode)
+    val setting = settings.headOption.getOrElse(createEventNumber)
+    val code = setting.settingValue.get.getOrElse("code", "EVT")
+    val number = setting.settingValue.get.getOrElse("currentNumber", "1")
     s"$code - $number"
   }
 
-  def updateEventNumber() = {
-    val setting = Setting.where(_.name eqs SettingType.EventCode).fetch().headOption match {
-      case Some(s) => s
-      case _ => createEventNumber()
-    }
-    val nextNumber = setting.settingValue.get("currentNumber")
+  def updateEventNumber = {
+    val settings = findByName(SettingType.EventCode)
+    val setting = settings.headOption.getOrElse(createEventNumber)
+    val code = setting.settingValue.get.getOrElse("code", "EVT")
+    val nextNumber = setting.settingValue.get.getOrElse("currentNumber", "1")
     val info = Map(
-      "code" -> "EVT",
+      "code" -> code,
       "currentNumber" -> (nextNumber.toInt + 1 ).toString
     )
     setting.settingValue(info).update
   }
 
-  def createEventNumber() = {
+  def createEventNumber = {
     val info = Map(
       "code" -> "EVT",
       "currentNumber" -> "1"
     )
     Setting.createRecord.name(SettingType.EventCode).settingValue(info).save(true)
   }
+
+  def findByName(name: SettingType): List[Setting] = {
+    Setting.where(_.name eqs name).fetch()
+  }
 }
+
 object SettingType extends Enumeration {
   type SettingType = Value
   val EventCode = Value("EventCode")

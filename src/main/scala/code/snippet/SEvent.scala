@@ -121,7 +121,7 @@ object SEvent {
   def page = Event.findAll
 
   def save(e: Event) = {
-    e.eventNumber(Setting.getEventNumber)
+    e.eventNumber(Setting.eventNumber)
     println(e)
     e.save(true)
     Setting.updateEventNumber

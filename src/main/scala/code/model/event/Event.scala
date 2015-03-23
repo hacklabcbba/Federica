@@ -22,7 +22,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
 
   override def meta = Event
 
-  object eventNumber extends StringField(this, 200){
+  object eventNumber extends StringField(this, 200) {
     override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
       set(s)
       Noop
@@ -30,7 +30,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
     def toDisableForm = SHtml.span(<b>{get}</b>, Noop)
   }
 
-  object name extends StringField(this, 200){
+  object name extends StringField(this, 200) {
     override def toString = get
     override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
       set(s)
@@ -38,17 +38,17 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
     }, "class" -> "form-control", "data-placeholder" -> "Ingrese nombre.."))
   }
 
-  object schedule extends ObjectIdRefField(this, Schedule){
+  object schedule extends ObjectIdRefField(this, Schedule) {
     override def toString = {
-      Schedule.find(this.value).getOrElse(Schedule.createRecord) + ""
+      this.obj.dmap("")(_.toString)
     }
   }
 
-  object costInfo extends ObjectIdRefField(this, CostInfo){
-    override def toString = CostInfo.find(get).dmap("no definido..")(_.cost.get.toString)
+  object costInfo extends ObjectIdRefField(this, CostInfo) {
+    override def toString = this.obj.dmap("no definido..")(_.cost.get.toString)
   }
 
-  object eventTypes extends ObjectIdRefListField(this, EventType){
+  object eventTypes extends ObjectIdRefListField(this, EventType) {
     def currentValue = EventType.findAll.headOption.toList
     def availableOptions: List[(EventType, String)] = EventType.findAll.map(p => p -> p.name.get).toList
 
@@ -63,12 +63,12 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
     }
   }
 
-  object program extends ObjectIdRefField(this, Program){
+  object program extends ObjectIdRefField(this, Program) {
 
     override def optional_? = true
-    override def toString = Program.find(get).dmap("")(_.name.get)
+    override def toString = this.obj.dmap("")(_.name.get)
     val listProgram = Program.findAll.map(p => p)
-    val defaultProgram = Program.findAll.headOption
+    val defaultProgram = listProgram.headOption
     override def toForm = {
       Full(SHtml.ajaxSelectElem(listProgram, defaultProgram,
         "class" -> "select2 form-control",
@@ -79,11 +79,11 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
     }
   }
 
-  object area extends ObjectIdRefField(this, Area){
+  object area extends ObjectIdRefField(this, Area) {
 
-    override def toString = Area.find(get).dmap("")(_.name.get)
+    override def toString = this.obj.dmap("")(_.name.get)
     val list = Area.findAll.map(p => p)
-    val default = Area.findAll.headOption
+    val default = list.headOption
     override def toForm = {
       Full(SHtml.ajaxSelectElem(list, default,
         "class" -> "select2 form-control",
@@ -94,9 +94,9 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
     }
   }
 
-  object process extends ObjectIdRefField(this, Process){
+  object process extends ObjectIdRefField(this, Process) {
     val list = Process.findAll.map(p => p)
-    val default = Process.findAll.headOption
+    val default = list.headOption
     override def toForm = {
       Full(SHtml.ajaxSelectElem(list, default,
         "class" -> "select2 form-control",
@@ -107,7 +107,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
     }
   }
 
-  object actionLines extends ObjectIdRefListField(this, ActionLine){
+  object actionLines extends ObjectIdRefListField(this, ActionLine) {
     def currentValue = ActionLine.findAll.headOption.toList
     def availableOptions: List[(ActionLine, String)] = ActionLine.findAll.map(p => p -> p.name.get).toList
 
@@ -122,12 +122,12 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
     }
   }
 
-  object productiveUnit extends ObjectIdRefField(this, ProductiveUnit){
+  object productiveUnit extends ObjectIdRefField(this, ProductiveUnit) {
 
     override def optional_? = true
-    override def toString = ProductiveUnit.find(get).dmap("")(_.name.get)
+    override def toString = this.obj.dmap("")(_.name.get)
     val list = ProductiveUnit.findAll.map(p => p)
-    val default = ProductiveUnit.findAll.headOption
+    val default = list.headOption
     override def toForm = {
       Full(SHtml.ajaxSelectElem(list, default,
         "class" -> "select2 form-control",
@@ -138,11 +138,11 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
     }
   }
 
-  object city extends ObjectIdRefField(this, City){
+  object city extends ObjectIdRefField(this, City) {
 
-    override def toString = City.find(get).dmap("")(_.name.get)
+    override def toString = this.obj.dmap("")(_.name.get)
     val list = City.findAll.map(p => p)
-    val default = City.findAll.headOption
+    val default = list.headOption
     override def toForm = {
       Full(SHtml.ajaxSelectElem(list, default,
         "class" -> "select2 form-control",
@@ -153,11 +153,11 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
     }
   }
 
-  object country extends ObjectIdRefField(this, Country){
+  object country extends ObjectIdRefField(this, Country) {
 
-    override def toString = Country.find(get).dmap("")(_.name.get)
+    override def toString = this.obj.dmap("")(_.name.get)
     val list = Country.findAll.map(p => p)
-    val default = Country.findAll.headOption
+    val default = list.headOption
     override def toForm = {
       Full(SHtml.ajaxSelectElem(list, default,
         "class" -> "select2 form-control",
@@ -168,28 +168,28 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
     }
   }
 
-  object place extends StringField(this, 500){
+  object place extends StringField(this, 500) {
     override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
       set(s)
       Noop
     }, "class" -> "form-control", "data-placeholder" -> "Ingrese el lugar del evento.."))
   }
 
-  object shortDescription extends TextareaField(this, 1000){
-    override def toForm = {
-      Full(SHtml.textarea(value, {v => set(v)}, "class"->"form-control" ))
-    }
-  }
-
-  object activities extends ObjectIdRefListField(this, Activity)
-
-  object description extends TextareaField(this, 1000){
+  object shortDescription extends TextareaField(this, 1000) {
     override def toForm = {
       Full(SHtml.textarea(value, v => set(v), "class"->"form-control" ))
     }
   }
 
-  object requirements extends ObjectIdRefListField(this, EventRequirement){
+  object activities extends ObjectIdRefListField(this, Activity)
+
+  object description extends TextareaField(this, 1000) {
+    override def toForm = {
+      Full(SHtml.textarea(value, v => set(v), "class"->"form-control" ))
+    }
+  }
+
+  object requirements extends ObjectIdRefListField(this, EventRequirement) {
     def currentValue = EventRequirement.findAll.headOption.toList
     def availableOptions: List[(EventRequirement, String)] =
       EventRequirement.findAll.map(p => p -> p.title.get).toList
@@ -205,8 +205,9 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
     }
   }
 
-  object expositors extends ObjectIdRefListField(this, User){
-    def currentValue = User.currentUser.getOrElse(User.createRecord) :: Nil
+  object expositors extends ObjectIdRefListField(this, User) {
+    def currentValue = this.objs
+    //def currentValue = User.currentUser.getOrElse(User.createRecord) :: Nil
     def availableOptions: List[(User, String)] =
       User.findAll.map(p => p -> p.name.get).toList
 
@@ -220,9 +221,9 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
     }
   }
 
-  object organizer extends ObjectIdRefField(this, User){
+  object organizer extends ObjectIdRefField(this, User) {
     override def toString = {
-      User.find(get).dmap("Indefinido..")(_.name.get)
+      this.obj.dmap("Indefinido..")(_.name.get)
     }
     override def defaultValue = User.currentUser.getOrElse(User.createRecord).id.get
     override def toForm: Box[Elem] = {
@@ -237,7 +238,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
     def availableOptions = User.findAll.map(p => p -> p.name.get).toSeq
   }
 
-  object handlers extends ObjectIdRefListField(this, User){
+  object handlers extends ObjectIdRefListField(this, User) {
     override def toString = {
       User.findAll(this.get).map(_.name.get).mkString(", ")
     }
@@ -255,7 +256,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
     def availableOptions = User.findAll.map(p => p -> p.name.get).toSeq
   }
 
-  object sponsors extends ObjectIdRefListField(this, User){
+  object sponsors extends ObjectIdRefListField(this, User) {
     override def toString = {
       User.findAll(this.get).map(_.name.get).mkString(", ")
     }
@@ -273,7 +274,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
     def availableOptions = User.findAll.map(p => p -> p.name.get).toSeq
   }
 
-  object supports extends ObjectIdRefListField(this, User){
+  object supports extends ObjectIdRefListField(this, User) {
     override def toString = {
       User.findAll(this.get).map(_.name.get).mkString(", ")
     }
@@ -291,7 +292,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
     def availableOptions = User.findAll.map(p => p -> p.name.get).toSeq
   }
 
-  object collaborators extends ObjectIdRefListField(this, User){
+  object collaborators extends ObjectIdRefListField(this, User) {
     override def toString = {
       User.findAll(this.get).map(_.name.get).mkString(", ")
     }
@@ -311,34 +312,34 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
 
   object pressRoom extends ObjectIdRefField(this, PressNotes)
 
-  object goal extends TextareaField(this, 1000){
+  object goal extends TextareaField(this, 1000) {
     override def toForm = {
-      Full(SHtml.textarea(value, {v => set(v)}, "class"->"form-control" ))
+      Full(SHtml.textarea(value, v => set(v), "class"->"form-control" ))
     }
   }
 
-  object quote extends StringField(this, ""){
+  object quote extends StringField(this, "") {
     override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
       set(s)
       Noop
     }, "class" -> "form-control", "data-placeholder" -> "Ingrese el cupo maximo.."))
   }
 
-  object tools extends TextareaField(this, 1000){
+  object tools extends TextareaField(this, 1000) {
     override def toForm = {
-      Full(SHtml.textarea(value, {v => set(v)}, "class"->"form-control" ))
+      Full(SHtml.textarea(value, v => set(v), "class"->"form-control" ))
     }
   }
 
-  object supplies extends TextareaField(this, 1000){
+  object supplies extends TextareaField(this, 1000) {
     override def toForm = {
-      Full(SHtml.textarea(value, {v => set(v)}, "class"->"form-control" ))
+      Full(SHtml.textarea(value, v => set(v), "class"->"form-control" ))
     }
   }
 
-  object registration extends TextareaField(this, 1000){
+  object registration extends TextareaField(this, 1000) {
     override def toForm = {
-      Full(SHtml.textarea(value, {v => set(v)}, "class"->"form-control" ))
+      Full(SHtml.textarea(value, v => set(v), "class"->"form-control" ))
     }
   }
 
