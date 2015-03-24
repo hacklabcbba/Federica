@@ -1,7 +1,7 @@
 package code.snippet
 
 import code.lib.request.request._
-import net.liftweb.common.Full
+import net.liftweb.common.{Full, Failure, Empty}
 import net.liftweb.http.js.JsCmd
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.http.{SHtml, PaginatorSnippet, StatefulSnippet}
@@ -9,8 +9,10 @@ import code.model.event._
 import net.liftweb.util._
 import Helpers._
 import code.model.Setting
+import net.liftmodules.extras.SnippetHelper
+import scala.xml.NodeSeq
 
-object SEvent {
+object SEvent extends SnippetHelper {
 
   def addForm: CssSel = {
     val e = Event.createRecord
@@ -46,8 +48,10 @@ object SEvent {
 
   }
 
-  def editForm = {
-    val e: Event = eventRequestVar.get.dmap(Event.createRecord)(p => p)
+  def editForm: CssSel = {
+    for {
+        e <- eventRequestVar.get ?~ "Evento no definido"
+    } yield {
       "data-name=eventName" #> e.name &
       "data-name=eventNumber *" #> e.eventNumber.toDisableForm &
       "data-name=name *" #> e.name.toForm &
@@ -79,6 +83,7 @@ object SEvent {
       "data-name=costContributionByUse *" #> e.costContributionByUse.toForm &
       "type=submit" #> SHtml.ajaxOnSubmit(() => update(e)) &
       "type=cancel" #> SHtml.ajaxButton("Cancelar", () => RedirectTo("/event/events"), "class"->"btn btn-default" )
+    }:CssSel
   }
 
   def showAll = {
@@ -143,4 +148,5 @@ object SEvent {
   def redirectToHome = {
     RedirectTo("/event/events")
   }
+
 }

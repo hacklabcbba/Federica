@@ -20,14 +20,14 @@ class Schedule private() extends MongoRecord[Schedule] with ObjectIdPk[Schedule]
     val dates = dateRange.get
     rangeType.get match {
       case RangeType.ContinuousInterval =>
-        "De: " + dates.headOption.map(u=>u).getOrElse("no definido")+
-        " a:" + dates.lastOption.map(u=>u).getOrElse("no definido")
+        "De: " + dates.headOption.getOrElse("no definido")+
+        " a:" + dates.lastOption.getOrElse("no definido")
 
       case RangeType.DiscontinuousInterval =>
         "%s={%s}" format ("Fechas: ", dates.mkString(", "))
 
       case RangeType.SimpleDate =>
-        "Fecha: " + dates.headOption.map(u=>u).getOrElse("no definido")
+        "Fecha: " + dates.headOption.getOrElse("no definido")
     }
   }
 }
