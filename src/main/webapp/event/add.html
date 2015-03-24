@@ -1,0 +1,144 @@
+<div data-lift="surround?with=base-wrap;at=content">
+    <lift:head>
+        <title data-lift="Menu.title">Federica: %*%</title>
+    </lift:head>
+    <div class="main-content">
+        <h3>Nuevo evento</h3>
+        <hr />
+        <div id="editForm" data-lift="SEvent.addForm">
+            <form data-lift="form.ajax?class=form-horizontal">
+
+                <div class="form-group">
+                    <label for="eventNumber" class="col-md-2 control-label">Numero de evento:</label>
+                    <div class="col-md-10" id="eventNumber" data-name="eventNumber">
+                        <b>EVT-???</b>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventNumber" class="col-md-2 control-label">Nombre:</label>
+                    <div class="col-md-10" id="name" data-name="name"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventNumber" class="col-md-2 control-label">Descripcion corta:</label>
+                    <div class="col-md-10" id="shortDescription" data-name="shortDescription"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventNumber" class="col-md-2 control-label">Descripcion:</label>
+                    <div class="col-md-10" id="description" data-name="description"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventNumber" class="col-md-2 control-label">Tipo:</label>
+                    <div class="col-md-10" id="eventTypes" data-name="eventTypes"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventNumber" class="col-md-2 control-label">Area:</label>
+                    <div class="col-md-10" id="area" data-name="area"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventNumber" class="col-md-2 control-label">Programa:</label>
+                    <div class="col-md-10" id="program" data-name="program"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventNumber" class="col-md-2 control-label">Proceso:</label>
+
+                    <div class="col-md-10" id="process" data-name="process"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventNumber" class="col-md-2 control-label">Lineas de accion:</label>
+                    <div class="col-md-10" id="actionLines" data-name="actionLines"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventNumber" class="col-md-2 control-label">Expositor(es):</label>
+                    <div class="col-md-10" id="expositors" data-name="expositors"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventNumber" class="col-md-2 control-label">Organizador:</label>
+                    <div class="col-md-10" id="organizer" data-name="organizer"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventNumber" class="col-md-2 control-label">Gestionan:</label>
+                    <div class="col-md-10" id="handlers" data-name="handlers"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventNumber" class="col-md-2 control-label">Auspician:</label>
+                    <div class="col-md-10" id="sponsors" data-name="sponsors"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventNumber" class="col-md-2 control-label">Apoyan:</label>
+                    <div class="col-md-10" id="supports" data-name="supports"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventNumber" class="col-md-2 control-label">Colaboran:</label>
+                    <div class="col-md-10" id="collaborators" data-name="collaborators"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventNumber" class="col-md-2 control-label">Pais:</label>
+                    <div class="col-md-10" id="country" data-name="country"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventNumber" class="col-md-2 control-label">Ciudad:</label>
+                    <div class="col-md-10" id="city" data-name="city"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventNumber" class="col-md-2 control-label">Lugar:</label>
+                    <div class="col-md-10" id="place" data-name="place"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventNumber" class="col-md-2 control-label">Requerimientos:</label>
+                    <div class="col-md-10" id="requirements" data-name="requirements"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventNumber" class="col-md-2 control-label">Objetivo:</label>
+                    <div class="col-md-10" id="goal" data-name="goal"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventNumber" class="col-md-2 control-label">Cupo:</label>
+                    <div class="col-md-10" id="quote" data-name="quote"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventNumber" class="col-md-2 control-label">Herramientas:</label>
+                    <div class="col-md-10" id="tools" data-name="tools"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventNumber" class="col-md-2 control-label">Insumos:</label>
+                    <div class="col-md-10" id="supplies" data-name="supplies"></div>
+                </div>
+                <div class="form-group">
+                    <label for="eventNumber" class="col-md-2 control-label">Registro e inscripciones:</label>
+                    <div class="col-md-10" id="registration" class="col-md-10" data-name="registration">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="cancel" class="btn btn-default">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <span data-lift="embed?what=/templates-hidden/parts/footer"></span>
+</div>
