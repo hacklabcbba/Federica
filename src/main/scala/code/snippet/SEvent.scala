@@ -45,7 +45,6 @@ object SEvent extends SnippetHelper {
     "data-name=costContributionByUse *" #> e.costContributionByUse.toForm &
     "type=submit" #> SHtml.ajaxOnSubmit(() => save(e))&
     "type=cancel" #> SHtml.ajaxButton("Cancelar", () => RedirectTo("/event/events"), "class"->"btn btn-default" )
-
   }
 
   def editForm: CssSel = {
@@ -87,31 +86,33 @@ object SEvent extends SnippetHelper {
   }
 
   def showAll = {
-    "data-name=list" #> page.map(e => {
-      "data-name=checkbox *" #> customCheckbox(e) &
-      "data-name=number *" #> e.eventNumber &
-      "data-name=name *"  #> e.name &
-      "data-name=date *"  #> e.schedule.toString &
-      "data-name=cost *" #> e.costInfo.toString &
-      "data-name=organizer *" #> e.organizer.toString &
-      "data-name=areaProgram *" #> (e.area + " " + e.program) &
-      "data-name=edit *" #> SHtml.ajaxButton("Editar", () =>
-        RedirectTo("/event/edit", () => eventRequestVar.set(Full(e))),
-        "class" -> "btn btn-default"
-      )
-    }) &
+    "data-name=list" #> page.map(
+      e => {
+        "data-name=checkbox *" #> customCheckbox(e) &
+        "data-name=number *" #> e.eventNumber &
+        "data-name=name *"  #> e.name &
+        "data-name=date *"  #> e.schedule.toString &
+        "data-name=cost *" #> e.costInfo.toString &
+        "data-name=organizer *" #> e.organizer.toString &
+        "data-name=areaProgram *" #> (e.area + " " + e.program) &
+        "data-name=edit *" #> SHtml.ajaxButton(
+          "Editar",
+          () => RedirectTo("/event/edit", () => eventRequestVar.set(Full(e))),
+          "class" -> "btn btn-default"
+        )
+      }) &
     "data-name=add" #> SHtml.ajaxButton("Agregar", () => RedirectTo("/event/add"), "class"->"btn btn-primary" ) &
-    "data-name=delete" #> SHtml.ajaxButton("Eliminar", () => {
-      val listToDelete = eventDeleteRequestVar.get
-      RedirectTo("/event/events", () => delete(listToDelete))
-    }, "class"->"btn btn-danger")
+    "data-name=delete" #> SHtml.ajaxButton(
+      "Eliminar",
+      () => {
+        val listToDelete = eventDeleteRequestVar.get
+        RedirectTo("/event/events", () => delete(listToDelete))
+      },
+      "class"->"btn btn-danger")
   }
 
   def customCheckbox(item: Event) = {
-    SHtml.ajaxCheckbox(false, b => {
-      println("selected checkbox event: " + b +  " item, " + item)
-      updateDeleteList(b, item)
-    }, "class" -> "checkbox-list")
+    SHtml.ajaxCheckbox(false, b => updateDeleteList(b, item), "class" -> "checkbox-list")
   }
 
   def updateDeleteList(value: Boolean, e: Event): JsCmd = value match {
@@ -127,7 +128,6 @@ object SEvent extends SnippetHelper {
 
   def save(e: Event) = {
     e.eventNumber(Setting.eventNumber)
-    println(e)
     e.save(true)
     Setting.updateEventNumber
     redirectToHome
@@ -139,7 +139,6 @@ object SEvent extends SnippetHelper {
   }
 
   def delete(items: List[Event]) = {
-    println("delete list: " + items)
     items.map(e => {
       e.delete_!
     })
