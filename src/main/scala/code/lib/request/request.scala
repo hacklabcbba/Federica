@@ -17,5 +17,5 @@ package object request {
   object areaRequestVar extends RequestVar[Box[Area]](Empty)
   object areaDeleteRequestVar extends RequestVar[List[Area]](Nil)
   object actionLineRequestVar extends RequestVar[Box[ActionLine]](Empty)
-  object actionLinetDeleteRequestVar extends RequestVar[List[ActionLine]](Nil)
+  object actionLineDeleteRequestVar extends RequestVar[List[ActionLine]](Nil)
 }

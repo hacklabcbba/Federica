@@ -53,7 +53,7 @@ object SActionLine extends SnippetHelper {
     "data-name=delete" #> SHtml.ajaxButton(
       "Eliminar",
       () => {
-        val list = actionLinetDeleteRequestVar.get
+        val list = actionLineDeleteRequestVar.get
         RedirectTo(menu.menuList.url, () => delete(list))
       },
       "class"->"btn btn-danger")
@@ -65,10 +65,10 @@ object SActionLine extends SnippetHelper {
 
   def updateDeleteList(value: Boolean, item: ActionLine): JsCmd = value match {
     case true =>
-      actionLinetDeleteRequestVar.set(item :: actionLinetDeleteRequestVar.is)
+      actionLineDeleteRequestVar.set(item :: actionLineDeleteRequestVar.is)
       Noop
     case false =>
-      actionLinetDeleteRequestVar.set(actionLinetDeleteRequestVar.is.filter(b => b.id != item.id))
+      actionLineDeleteRequestVar.set(actionLineDeleteRequestVar.is.filter(b => b.id != item.id))
       Noop
   }
 

@@ -17,5 +17,5 @@ object ActionLineMenu {
 
   val menuAdd = MenuLoc(Menu.i("Agregar Linea de accion") / "actionLine" / "add" >> Locs.RequireLoggedIn)
   val menuEdit = MenuLoc(Menu.i("Edit Linea de accion") / "actionLine" / "edit" >> Locs.RequireLoggedIn)
-  val menuList = MenuLoc(Menu.i("Lineas de accion") / "actionLine" / "list" >> Locs.RequireLoggedIn >> MenuGroups.TopBarGroup)
+  val menuList = MenuLoc(Menu.i("Lineas de accion") / "actionLine" / "list" >> Locs.RequireLoggedIn >> MenuGroups.AdminGroup)
 }
