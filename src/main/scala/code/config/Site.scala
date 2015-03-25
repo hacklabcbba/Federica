@@ -8,15 +8,17 @@ import common._
 import http.S
 import sitemap._
 import sitemap.Loc._
-import code.lib.menu.ProductiveUnitMenu
-import code.lib.menu.EventMenu
+import code.lib.menu.{AreaMenu, ProductiveUnitMenu, EventMenu}
 
 import net.liftmodules.mongoauth.Locs
 
 object MenuGroups {
   val SettingsGroup = LocGroup("settings")
   val TopBarGroup = LocGroup("topbar")
+  val AdminGroup = LocGroup("topbar")
 }
+
+
 
 /*
  * Wrapper for Menu locations
@@ -60,6 +62,9 @@ object Site extends Locs {
     EventMenu.menuAdd.menu,
     EventMenu.menuEdit.menu,
     EventMenu.menuList.menu,
+    AreaMenu.menuAdd.menu,
+    AreaMenu.menuEdit.menu,
+    AreaMenu.menuList.menu,
     Menu.i("Error") / "error" >> Hidden,
     Menu.i("404") / "404" >> Hidden,
     Menu.i("Throw") / "throw"  >> EarlyResponse(() => throw new Exception("This is only a test."))
