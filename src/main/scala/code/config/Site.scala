@@ -8,7 +8,7 @@ import common._
 import http.S
 import sitemap._
 import sitemap.Loc._
-import code.lib.menu.{AreaMenu, ProductiveUnitMenu, EventMenu}
+import code.lib.menu.{ProgramMenu, AreaMenu, ProductiveUnitMenu, EventMenu}
 
 import net.liftmodules.mongoauth.Locs
 
@@ -65,6 +65,9 @@ object Site extends Locs {
     AreaMenu.menuAdd.menu,
     AreaMenu.menuEdit.menu,
     AreaMenu.menuList.menu,
+    ProgramMenu.menuAdd.menu,
+    ProgramMenu.menuEdit.menu,
+    ProgramMenu.menuList.menu,
     Menu.i("Error") / "error" >> Hidden,
     Menu.i("404") / "404" >> Hidden,
     Menu.i("Throw") / "throw"  >> EarlyResponse(() => throw new Exception("This is only a test."))
