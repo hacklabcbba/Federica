@@ -27,7 +27,7 @@ object SProgram extends SnippetHelper {
     for {
       item <- programRequestVar.get ?~ "Programa no definida"
     } yield {
-      "data-name=areaName *" #> item.name &
+      "data-name=programName *" #> item.name &
       "data-name=name *" #> item.name.toForm &
       "data-name=description *" #> item.description.toForm &
       "type=submit" #> SHtml.ajaxOnSubmit(() => update(item)) &
@@ -40,50 +40,50 @@ object SProgram extends SnippetHelper {
       item => {
         "data-name=checkbox *" #> customCheckbox(item) &
         "data-name=name *"  #> item.name &
-        "data-name=responsible *"  #> item.responsible.toString &
-        "data-name=code *"  #> item.code &
-          "data-name=edit *" #> SHtml.ajaxButton(
-            "Editar",
-            () => RedirectTo(menu.menuEdit.url, () => areaRequestVar.set(Full(item))),
-            "class" -> "btn btn-default"
-          )
+        "data-name=description *"  #> item.description &
+        "data-name=edit *" #> SHtml.ajaxButton(
+          "Editar",
+          () => RedirectTo(menu.menuEdit.url, () => programRequestVar.set(Full(item))),
+          "class" -> "btn btn-default"
+        )
       }) &
-      "data-name=add" #> SHtml.ajaxButton("Agregar Area", () => RedirectTo(menu.menuAdd.url), "class"->"btn btn-primary" ) &
+      "data-name=add" #> SHtml.ajaxButton("Agregar programa", () => RedirectTo(menu.menuAdd.url), "class"->"btn btn-primary" ) &
       "data-name=delete" #> SHtml.ajaxButton(
         "Eliminar",
         () => {
-          val list = areaDeleteRequestVar.get
+          val list = programDeleteRequestVar.get
           RedirectTo(menu.menuList.url, () => delete(list))
         },
-        "class"->"btn btn-danger")
+        "class"->"btn btn-danger"
+      )
   }
 
-  def customCheckbox(item: Area) = {
+  def customCheckbox(item: Program) = {
     SHtml.ajaxCheckbox(false, b => updateDeleteList(b, item), "class" -> "checkbox-list")
   }
 
-  def updateDeleteList(value: Boolean, item: Area): JsCmd = value match {
+  def updateDeleteList(value: Boolean, item: Program): JsCmd = value match {
     case true =>
-      areaDeleteRequestVar.set(item :: areaDeleteRequestVar.is)
+      programDeleteRequestVar.set(item :: programDeleteRequestVar.is)
       Noop
     case false =>
-      areaDeleteRequestVar.set(areaDeleteRequestVar.is.filter(b => b.id != item.id))
+      programDeleteRequestVar.set(programDeleteRequestVar.is.filter(b => b.id != item.id))
       Noop
   }
 
-  def page = Area.findAll
+  def page = Program.findAll
 
-  def save(item: Area) = {
+  def save(item: Program) = {
     item.save(true)
     redirectToHome
   }
 
-  def update(item: Area) = {
+  def update(item: Program) = {
     item.update
     redirectToHome
   }
 
-  def delete(items: List[Area]) = {
+  def delete(items: List[Program]) = {
     items.map(e => {
       e.delete_!
     })
