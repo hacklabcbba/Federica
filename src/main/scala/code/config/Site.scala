@@ -4,11 +4,10 @@ package config
 import model.User
 
 import net.liftweb._
-import common._
 import http.S
 import sitemap._
 import sitemap.Loc._
-import code.lib.menu.{ProgramMenu, AreaMenu, ProductiveUnitMenu, EventMenu}
+import code.lib.menu._
 
 import net.liftmodules.mongoauth.Locs
 
@@ -65,6 +64,9 @@ object Site extends Locs {
     AreaMenu.menuAdd.menu,
     AreaMenu.menuEdit.menu,
     AreaMenu.menuList.menu,
+    ActionLineMenu.menuAdd.menu,
+    ActionLineMenu.menuEdit.menu,
+    ActionLineMenu.menuList.menu,
     ProgramMenu.menuAdd.menu,
     ProgramMenu.menuEdit.menu,
     ProgramMenu.menuList.menu,
