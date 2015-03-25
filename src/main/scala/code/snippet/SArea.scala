@@ -20,7 +20,7 @@ object SArea extends SnippetHelper {
     val item = Area.createRecord
     "data-name=name *" #> item.name.toForm &
     "data-name=description *" #> item.description.toForm &
-    "data-name=email *" #> item.email.toForm &
+    "data-name=responsible *" #> item.responsible.toForm &
     "data-name=code *" #> item.code.toForm &
     "type=submit" #> SHtml.ajaxOnSubmit(() => save(item))&
     "type=cancel" #> SHtml.ajaxButton("Cancelar", () => RedirectTo(menu.menuList.url), "class"->"btn btn-default" )
@@ -33,7 +33,7 @@ object SArea extends SnippetHelper {
       "data-name=areaName *" #> item.name &
       "data-name=name *" #> item.name.toForm &
       "data-name=description *" #> item.description.toForm &
-      "data-name=email *" #> item.email.toForm &
+      "data-name=responsible *" #> item.responsible.toForm &
       "data-name=code *" #> item.code.toForm &
       "type=submit" #> SHtml.ajaxOnSubmit(() => update(item)) &
       "type=cancel" #> SHtml.ajaxButton("Cancelar", () => RedirectTo(menu.menuList.url), "class"->"btn btn-default" )
@@ -45,7 +45,7 @@ object SArea extends SnippetHelper {
       item => {
         "data-name=checkbox *" #> customCheckbox(item) &
         "data-name=name *"  #> item.name &
-        "data-name=email *"  #> item.email &
+        "data-name=responsible *"  #> item.responsible.toString &
         "data-name=code *"  #> item.code &
           "data-name=edit *" #> SHtml.ajaxButton(
             "Editar",
