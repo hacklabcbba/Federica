@@ -259,6 +259,10 @@ object Site extends Locs {
     Menu.i("Como llegar") / "como-llegar" >> LeftMenuGroup
     ))
 
+  /* Administracion */
+  // Administracion
+  val administracion = MenuLoc(Menu.i("Administración") / "dashboard" >> LeftMenuGroup)
+
   /* Menu Derecha */
   /* Procesos */
   // Procesos
@@ -320,6 +324,8 @@ object Site extends Locs {
 
 
 
+
+
   val loginToken = MenuLoc(buildLoginTokenMenu)
   val logout = MenuLoc(buildLogoutMenu)
   private val profileParamMenu = Menu.param[User]("User", "Profile",
@@ -362,7 +368,8 @@ object Site extends Locs {
     media.menu,
     blog.menu,
     convocatorias.menu,
-    contacto.menu
+    contacto.menu,
+    administracion.menu
   )
 
   /*
