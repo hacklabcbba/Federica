@@ -14,7 +14,10 @@ import net.liftmodules.mongoauth.Locs
 object MenuGroups {
   val SettingsGroup = LocGroup("settings")
   val TopBarGroup = LocGroup("topbar")
+  val AdminGroup = LocGroup("topbar")
 }
+
+
 
 /*
  * Wrapper for Menu locations
@@ -58,6 +61,9 @@ object Site extends Locs {
     EventMenu.menuAdd.menu,
     EventMenu.menuEdit.menu,
     EventMenu.menuList.menu,
+    AreaMenu.menuAdd.menu,
+    AreaMenu.menuEdit.menu,
+    AreaMenu.menuList.menu,
     ActionLineMenu.menuAdd.menu,
     ActionLineMenu.menuEdit.menu,
     ActionLineMenu.menuList.menu,
