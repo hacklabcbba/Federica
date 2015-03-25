@@ -1,4 +1,6 @@
-package code.lib.menu
+package code
+package lib
+package menu
 
 import code.config.{MenuGroups, MenuLoc}
 import code.model.productive.ProductiveUnit
@@ -15,5 +17,5 @@ object AreaMenu {
 
   val menuAdd = MenuLoc(Menu.i("Agregar Area") / "area" / "add" >> Locs.RequireLoggedIn)
   val menuEdit = MenuLoc(Menu.i("Edit Area") / "area" / "edit" >> Locs.RequireLoggedIn)
-  val menuList = MenuLoc(Menu.i("Areas") / "area" / "list" >> Locs.RequireLoggedIn >> MenuGroups.TopBarGroup)
+  val menuList = MenuLoc(Menu.i("Areas") / "area" / "list" >> Locs.RequireLoggedIn >> MenuGroups.AdminGroup)
 }
