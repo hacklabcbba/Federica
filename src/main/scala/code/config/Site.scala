@@ -4,12 +4,10 @@ package config
 import model.User
 
 import net.liftweb._
-import common._
 import http.S
 import sitemap._
 import sitemap.Loc._
-import code.lib.menu.ProductiveUnitMenu
-import code.lib.menu.EventMenu
+import code.lib.menu._
 
 import net.liftmodules.mongoauth.Locs
 
@@ -60,6 +58,9 @@ object Site extends Locs {
     EventMenu.menuAdd.menu,
     EventMenu.menuEdit.menu,
     EventMenu.menuList.menu,
+    ActionLineMenu.menuAdd.menu,
+    ActionLineMenu.menuEdit.menu,
+    ActionLineMenu.menuList.menu,
     Menu.i("Error") / "error" >> Hidden,
     Menu.i("404") / "404" >> Hidden,
     Menu.i("Throw") / "throw"  >> EarlyResponse(() => throw new Exception("This is only a test."))
