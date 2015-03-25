@@ -1,4 +1,5 @@
-package code.snippet
+package code
+package snippet
 
 import code.lib.request.request._
 import net.liftweb.common.{Full, Failure, Empty}
