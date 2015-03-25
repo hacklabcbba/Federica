@@ -18,10 +18,10 @@ class ActionLine private () extends MongoRecord[ActionLine] with ObjectIdPk[Acti
 
   object name extends StringField(this, 500){
     override def toString = get
-    override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
-      set(s)
-      Noop
-    }, "class" -> "form-control", "data-placeholder" -> "Ingrese nombre.."))
+    override def toForm = Full(SHtml.text(
+      value,
+      (s: String) => set(s),
+      "class" -> "form-control", "data-placeholder" -> "Ingrese nombre.."))
   }
 
   object description extends TextareaField(this, 1000) {
