@@ -1,5 +1,5 @@
 package code
-package  model
+package model
 package network
 
 import code.lib.RogueMetaRecord
@@ -17,70 +17,50 @@ class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] {
   override def meta = Network
 
   object name extends StringField(this, 500) {
-    override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
-      set(s)
-      Noop
-    }))
+    override def toForm = Full(SHtml.text(value, set(_)))
   }
 
   object description extends StringField(this, 500){
-    override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
-      set(s)
-      Noop
-    }))
+    override def toForm = Full(SHtml.text(value, set(_)))
   }
   object administrator extends ObjectIdRefField(this, User) {
     override def toString = {
-      User.find(get).dmap("")(_.name.get)
+      obj.dmap("")(_.name.get)
     }
     val listUsers = User.findAll.map(u => u).toSeq
     val defaultUser = User.currentUser
 
     override def toForm = {
-      Full(SHtml.ajaxSelectElem(listUsers, defaultUser)(u => {
-        set(u.id.get)
-        Noop
-      }))
+      Full(SHtml.selectElem(listUsers, defaultUser)(s => set(s.id.get)))
     }
 
-    override def defaultValue = User.currentUser.getOrElse(User.createRecord).id.get
   }
 
   object area extends ObjectIdRefField(this, Area) {
     override def optional_? = true
-    override def toString = Area.find(get).dmap("")(_.name.get)
+    override def toString = obj.dmap("")(_.name.get)
     val listAreas = Area.findAll.map(a => a)
     val defaultArea = Area.findAll.headOption
     override def toForm = {
-      Full(SHtml.ajaxSelectElem(listAreas, defaultArea)(a => {
-        set(a.id.get)
-        Noop
-      }))
+      Full(SHtml.selectElem(listAreas, defaultArea)(a => set(a.id.get)))
     }
   }
 
   object program extends ObjectIdRefField(this, Program){
     override def optional_? = true
 
-    override def toString = Program.find(get).dmap("")(_.name.get)
+    override def toString = obj.dmap("")(_.name.get)
 
-    val listProgram = Program.findAll.map(p => p)
-    val defaultProgram= Program.findAll.headOption
+    val listProgram = Program.findAll
 
     override def toForm = {
-      Full(SHtml.ajaxSelectElem(listProgram, defaultProgram)(p => {
-        set(p.id.get)
-        Noop
-      }))
+      Full(SHtml.selectElem(listProgram, this.obj)(p => set(p.id.get)))
     }
   }
 
   object productiveType extends EnumNameField(this, NetworkType) {
-    override def toForm = Full(SHtml.ajaxSelectObj[Box[NetworkType.Value]](buildDisplayList, Full(valueBox),
-      (v: Box[NetworkType.Value]) => {
-      setBox(v)
-      Noop
-    }))
+    override def toForm =
+      Full(SHtml.selectObj[Box[NetworkType.Value]](buildDisplayList, Full(valueBox), s => setBox(s)))
   }
 }
 

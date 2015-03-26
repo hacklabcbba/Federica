@@ -5,7 +5,7 @@ import model.User
 
 import net.liftweb._
 import net.liftweb.http.{Templates, S}
-import code.lib.menu.{EventMenu, ProductiveUnitMenu}
+import code.lib.menu._
 import net.liftweb._
 import util._
 import sitemap._

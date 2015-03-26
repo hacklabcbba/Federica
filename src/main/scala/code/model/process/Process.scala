@@ -17,70 +17,47 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] {
   override def meta = Process
 
   object name extends StringField(this, 500) {
-    override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
-      set(s)
-      Noop
-    }))
+    override def toForm = Full(SHtml.text(value, set(_)))
   }
 
   object description extends StringField(this, 500){
-    override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
-      set(s)
-      Noop
-    }))
+    override def toForm = Full(SHtml.text(value, set(_)))
   }
   object administrator extends ObjectIdRefField(this, User) {
     override def toString = {
-      User.find(get).dmap("")(_.name.get)
+      obj.dmap("")(_.name.get)
     }
     val listUsers = User.findAll.map(u => u).toSeq
-    val defaultUser = User.currentUser
 
     override def toForm = {
-      Full(SHtml.ajaxSelectElem(listUsers, defaultUser)(u => {
-        set(u.id.get)
-        Noop
-      }))
+      Full(SHtml.selectElem(listUsers, User.currentUser)(u => set(u.id.get)))
     }
-
-    override def defaultValue = User.currentUser.getOrElse(User.createRecord).id.get
   }
 
   object area extends ObjectIdRefField(this, Area) {
     override def optional_? = true
-    override def toString = Area.find(get).dmap("")(_.name.get)
+    override def toString = obj.dmap("")(_.name.get)
     val listAreas = Area.findAll.map(a => a)
-    val defaultArea = Area.findAll.headOption
     override def toForm = {
-      Full(SHtml.ajaxSelectElem(listAreas, defaultArea)(a => {
-        set(a.id.get)
-        Noop
-      }))
+      Full(SHtml.selectElem(listAreas, obj)(a => set(a.id.get)))
     }
   }
 
   object program extends ObjectIdRefField(this, Program){
     override def optional_? = true
 
-    override def toString = Program.find(get).dmap("")(_.name.get)
+    override def toString = obj.dmap("")(_.name.get)
 
-    val listProgram = Program.findAll.map(p => p)
-    val defaultProgram= Program.findAll.headOption
+    val listProgram = Program.findAll
 
     override def toForm = {
-      Full(SHtml.ajaxSelectElem(listProgram, defaultProgram)(p => {
-        set(p.id.get)
-        Noop
-      }))
+      Full(SHtml.selectElem(listProgram, obj)(s => set(s.id.get)))
     }
   }
 
   object productiveType extends EnumNameField(this, ProcessType) {
-    override def toForm = Full(SHtml.ajaxSelectObj[Box[ProcessType.Value]](buildDisplayList, Full(valueBox),
-      (v: Box[ProcessType.Value]) => {
-      setBox(v)
-      Noop
-    }))
+    override def toForm =
+      Full(SHtml.selectObj[Box[ProcessType.Value]](buildDisplayList, Full(valueBox), s => setBox(s)))
   }
 }
 
