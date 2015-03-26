@@ -1,4 +1,5 @@
-package code.snippet
+package code
+package snippet
 
 import net.liftweb.common.{Full, Failure, Empty}
 import net.liftweb.http.js.JsCmd
