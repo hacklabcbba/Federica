@@ -67,6 +67,9 @@ object Site extends Locs {
     ActionLineMenu.menuAdd.menu,
     ActionLineMenu.menuEdit.menu,
     ActionLineMenu.menuList.menu,
+    ProgramMenu.menuAdd.menu,
+    ProgramMenu.menuEdit.menu,
+    ProgramMenu.menuList.menu,
     Menu.i("Error") / "error" >> Hidden,
     Menu.i("404") / "404" >> Hidden,
     Menu.i("Throw") / "throw"  >> EarlyResponse(() => throw new Exception("This is only a test."))
