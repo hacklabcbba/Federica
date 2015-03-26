@@ -27,11 +27,10 @@ class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] {
     override def toString = {
       obj.dmap("")(_.name.get)
     }
-    val listUsers = User.findAll.map(u => u).toSeq
-    val defaultUser = User.currentUser
+    val listUsers = User.findAll
 
     override def toForm = {
-      Full(SHtml.selectElem(listUsers, defaultUser)(s => set(s.id.get)))
+      Full(SHtml.selectElem(listUsers, obj)(s => set(s.id.get)))
     }
 
   }
