@@ -27,7 +27,7 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] {
     override def toString = {
       obj.dmap("")(_.name.get)
     }
-    val listUsers = User.findAll.map(u => u).toSeq
+    val listUsers = User.findAll
 
     override def toForm = {
       Full(SHtml.selectElem(listUsers, User.currentUser)(u => set(u.id.get)))
@@ -37,7 +37,7 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] {
   object area extends ObjectIdRefField(this, Area) {
     override def optional_? = true
     override def toString = obj.dmap("")(_.name.get)
-    val listAreas = Area.findAll.map(a => a)
+    val listAreas = Area.findAll
     override def toForm = {
       Full(SHtml.selectElem(listAreas, obj)(a => set(a.id.get)))
     }
