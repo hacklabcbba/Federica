@@ -39,7 +39,7 @@ class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] {
   object area extends ObjectIdRefField(this, Area) {
     override def optional_? = true
     override def toString = obj.dmap("")(_.name.get)
-    val listAreas = Area.findAll.map(a => a)
+    val listAreas = Area.findAll
     val defaultArea = Area.findAll.headOption
     override def toForm = {
       Full(SHtml.selectElem(listAreas, defaultArea)(a => set(a.id.get)))
