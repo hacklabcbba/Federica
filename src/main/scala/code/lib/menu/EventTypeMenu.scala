@@ -1,4 +1,6 @@
-package code.lib.menu
+package code
+package lib
+package menu
 
 import code.config.{MenuGroups, MenuLoc}
 import code.model.productive.ProductiveUnit
