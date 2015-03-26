@@ -16,8 +16,6 @@ import sitemap.Loc._
 object ProductiveUnitMenu {
 
   val menuAdd = MenuLoc(Menu.i("Agregar") / "productive" / "add" >> Locs.RequireLoggedIn)
-
   val menuEdit = MenuLoc(Menu.i("Edit") / "productive" / "edit" >> Locs.RequireLoggedIn)
-
-  val menuList = MenuLoc(Menu.i("Unidades productivas") / "productive" / "productives" >> Locs.RequireLoggedIn >> MenuGroups.TopBarGroup)
+  val menuList = MenuLoc(Menu.i("Unidades productivas") / "productive" / "productives" >> Locs.RequireLoggedIn >> MenuGroups.AdminGroup)
 }

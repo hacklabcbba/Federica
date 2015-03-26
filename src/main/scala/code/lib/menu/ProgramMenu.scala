@@ -13,9 +13,9 @@ import net.liftweb.sitemap.Menu.Menuable
 import net.liftweb.sitemap._
 import sitemap.Loc._
 
-object EventMenu {
+object ProgramMenu {
 
-  val menuAdd = MenuLoc(Menu.i("Agregar Evento") / "event" / "add" >> Locs.RequireLoggedIn)
-  val menuEdit = MenuLoc(Menu.i("Edit Evento") / "event" / "edit" >> Locs.RequireLoggedIn)
-  val menuList = MenuLoc(Menu.i("Eventos") / "event" / "events" >> Locs.RequireLoggedIn >> MenuGroups.AdminGroup)
+  val menuAdd = MenuLoc(Menu.i("Agregar Programa") / "program" / "add" >> Locs.RequireLoggedIn)
+  val menuEdit = MenuLoc(Menu.i("Edit Programa") / "program" / "edit" >> Locs.RequireLoggedIn)
+  val menuList = MenuLoc(Menu.i("Programas") / "program" / "list" >> Locs.RequireLoggedIn >> MenuGroups.AdminGroup)
 }

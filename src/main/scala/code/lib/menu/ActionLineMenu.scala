@@ -13,9 +13,9 @@ import net.liftweb.sitemap.Menu.Menuable
 import net.liftweb.sitemap._
 import sitemap.Loc._
 
-object EventMenu {
+object ActionLineMenu {
 
-  val menuAdd = MenuLoc(Menu.i("Agregar Evento") / "event" / "add" >> Locs.RequireLoggedIn)
-  val menuEdit = MenuLoc(Menu.i("Edit Evento") / "event" / "edit" >> Locs.RequireLoggedIn)
-  val menuList = MenuLoc(Menu.i("Eventos") / "event" / "events" >> Locs.RequireLoggedIn >> MenuGroups.AdminGroup)
+  val menuAdd = MenuLoc(Menu.i("Agregar Linea de accion") / "actionLine" / "add" >> Locs.RequireLoggedIn)
+  val menuEdit = MenuLoc(Menu.i("Edit Linea de accion") / "actionLine" / "edit" >> Locs.RequireLoggedIn)
+  val menuList = MenuLoc(Menu.i("Lineas de accion") / "actionLine" / "list" >> Locs.RequireLoggedIn >> MenuGroups.AdminGroup)
 }
