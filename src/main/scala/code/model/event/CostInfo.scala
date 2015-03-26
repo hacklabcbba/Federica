@@ -2,7 +2,6 @@ package code
 package model
 package event
 
-
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field._
 import net.liftweb.record.field.{LongField, DecimalField, StringField}

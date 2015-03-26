@@ -1,5 +1,5 @@
 # jquery
-libs/jquery-1.10.2.min.js
+libs/jquery-2.1.3.min.js
 libs/jquery.bsAlerts.min.js
 libs/jquery.bsFormAlerts.min.js
 libs/liftAjax.js
@@ -7,6 +7,9 @@ libs/select2.js
 
 # bootstrap
 libs/bootstrap.min.js
+
+#metis
+libs/metisMenu.js
 
 # app
 App.js

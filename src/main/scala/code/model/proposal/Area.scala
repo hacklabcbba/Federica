@@ -18,42 +18,37 @@ class Area private () extends MongoRecord[Area] with ObjectIdPk[Area]{
 
   object name extends StringField(this, 500){
     override def toString = get
-    override def toForm = Full(SHtml.text(
-      value,
-      (s: String) => set(s),
-      "class" -> "form-control", "data-placeholder" -> "Ingrese nombre.."
-    ))
+    override def toForm =
+      Full(SHtml.text(value, set(_), "class" -> "form-control", "data-placeholder" -> "Ingrese nombre.."))
   }
 
   object description extends TextareaField(this, 1000) {
-    override def toForm = {
+    override def toForm =
       Full(SHtml.textarea(value, v => set(v), "class"->"form-control", "data-placeholder" -> "Ingrese descripcion.." ))
-    }
   }
 
   object responsible extends ObjectIdRefField(this, User) {
     override def toString = {
       this.obj.dmap("Indefinido..")(_.name.get)
     }
-    override def defaultValue = User.currentUser.getOrElse(User.createRecord).id.get
     override def toForm: Box[Elem] = {
-      Full(SHtml.selectObj(availableOptions, currentValue, (u: User) =>
-        set(u.id.get),
-        "class" -> "select2 form-control",
-        "data-placeholder" -> "Seleccione responsable.."
-      ))
+      Full(
+        SHtml.selectElem(
+          availableOptions,
+          obj,
+          "class" -> "select2 form-control",
+          "data-placeholder" -> "Seleccione responsable.."
+        )(s => set(s.id.get))
+      )
     }
-    def currentValue = this.obj
-    def availableOptions = User.findAll.map(p => p -> p.name.get)
+
+    def availableOptions = User.findAll
   }
 
   object code extends StringField(this, 50){
     override def toString = get
-    override def toForm = Full(SHtml.text(
-      value,
-      (s: String) => set(s),
-      "class" -> "form-control", "data-placeholder" -> "Ingrese nombre.."
-    ))
+    override def toForm =
+      Full(SHtml.text(value, set(_), "class" -> "form-control", "data-placeholder" -> "Ingrese nombre.."))
   }
 
   override def toString = name.get

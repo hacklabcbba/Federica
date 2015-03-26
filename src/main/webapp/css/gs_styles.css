@@ -1,0 +1,562 @@
+/*------------------------------------*\
+* Company: Genso, Iniciativas Web
+* Project: FER
+* Version: 1.0
+* Autor: Pedroq
+* Reviser: -
+\*------------------------------------*/
+
+
+
+/*------------------------------------*\
+    $TABLE OF CONTENTS
+\*------------------------------------*/
+/*
+* RESET
+* ELEMENTS
+* FONT-FACE
+* GENERAL CLASSES
+* HEADER
+* BODY
+* BODY SUBSECTIONS
+* FOOTER
+* COMPONENTS
+* ALERTS
+*/
+
+
+/*------------------------------------*\
+    $RESET
+\*------------------------------------*/
+a:hover {
+	text-decoration: none;
+}
+
+/*------------------------------------*\
+    $ELEMENTS
+\*------------------------------------*/
+body {
+  height: 100%;
+}
+
+
+/*------------------------------------*\
+    $FONT-FACE
+\*------------------------------------*/
+
+
+
+/*------------------------------------*\
+    $GENERAL CLASSES
+\*------------------------------------*/
+
+/*------------------------------------*\
+    $HEADER
+\*------------------------------------*/
+
+.gs-navbar .navbar-brand {
+	padding: 3px 3px 0 15px;
+}
+.gs-navbar.navbar-default {
+	background-color: #fff;
+	border: none;
+	margin-bottom: 0;
+	box-shadow: 0 0 7px -5px #333333;
+  padding-right: 28px;
+  margin-right: 0;
+  z-index: 10;
+}
+.gs-navbar.navbar-default .nav > li > a{
+	text-transform: uppercase;
+	color: #1a1a1a;
+	font-size: 12px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+.gs-navbar .caret::after {
+    content: "/";
+    display: inline-block;
+    position: absolute;
+    margin-left: 7px;
+    top: 15px;
+    vertical-align: middle;
+    z-index: 1
+}
+.gs-navbar .navbar-right {
+	margin-right: -8px;
+}
+.gs-navbar .navbar-right > li.gs-navbar-login > a {
+	border-radius: 25px;
+	margin: 10px 15px;
+	padding: 5px 15px;
+	background-color: #f0ad4e;
+	color: #fff;
+}
+.gs-navbar .navbar-right > li.gs-navbar-login.open > a,
+.gs-navbar .navbar-right > li.gs-navbar-login > a:hover,
+.gs-navbar .navbar-right > li.gs-navbar-login > a:focus {
+	background-color: #ec971f;
+	color: #fff;	
+	border-color: #C97E16;
+	box-shadow: 0 0 5px -2px #C97E16 inset
+}
+.gs-navbar .navbar-right .gs-dropdown {
+	padding: 15px 20px;
+	width: 250px;
+}
+.gs-navbar .navbar-right .gs-dropdown .form-group a {
+	display: inline-block;
+	width: 100%;
+	color: #333;
+}
+.gs-navbar .navbar-right .gs-dropdown .form-group a:hover {
+	color: #EC942E
+}
+.gs-navbar .navbar-right .gs-dropdown .has-feedback .form-control {
+	padding-left: 30px;
+	padding-right: 7;
+}
+.gs-navbar .navbar-right .gs-dropdown .has-feedback .form-control-feedback {
+	right: auto;
+	left: 0;
+	color: #bbb;
+}
+
+
+
+
+/*------------------------------------*\
+    $SIDEBAR RIGHT
+\*------------------------------------*/
+
+.gs-sidebar-right {
+  background-color: #222222;
+  display: block;
+  height: 100%;
+  overflow: auto;
+  position: fixed;
+  right: -20em;
+  font-size: 15px;
+  top: 50px;
+  width: 15em;
+  z-index: 2;
+  box-shadow: 0 0 7px -2px #333333;
+  
+  transition: all 0.7s ease 0s;
+  -webkit-transition: all 0.7s ease 0s;
+  -moz-transition: all 0.7s ease 0s;
+  -o-transition: all 0.7s ease 0s;
+
+}
+.nav-expanded .gs-sidebar-right {
+  right: 0;
+}
+body.nav-expanded {
+  margin-left: 0em;
+  transition: right 0.4s ease-in-out 0s;
+  -webkit-transition: right 0.4s ease-in-out 0s;
+  -moz-transition: right 0.4s ease-in-out 0s;
+  -o-transition: right 0.4s ease-in-out 0s;
+}
+#nav-close {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-weight: 300;
+  position: absolute;
+  color: #fff;
+  font-size: 20px;
+  top: -5px;
+}
+
+.gs-nav-right {
+	padding: 30px 0;
+}
+.gs-nav-right li a {
+	color: #fff;
+	font-size: 15px;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+.gs-nav-right.nav li.active > a, 
+.gs-nav-right.nav li > a:hover,
+.gs-nav-right.nav li.active > a:focus, 
+.gs-nav-right.nav li.active > a:hover {
+	background-color: #111111;
+}
+.gs-nav-right.nav li.active {
+	border-bottom: 1px solid #333;
+}
+.gs-nav-right.nav.main-menu li.active > a {
+	border-bottom: 1px solid #222;
+}
+.gs-nav-right.nav.main-menu li.active > ul {
+	box-shadow: 0 0 5px #000 inset;
+	padding: 0;
+}
+.gs-nav-right.nav.main-menu li > ul li a,
+.gs-nav-right.nav.main-menu li.active > ul li a {
+	padding: 7px 15px 7px 44px;
+	font-size: 12px;
+}
+.gs-nav-right.nav.main-menu li.active > ul li a:hover {
+	background-color: rgba(17, 17, 17, 0.6)
+}
+.gs-form-right .form-group:before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin: 8px;
+  background: url("../img/search.png");
+  background-repeat: no-repeat;
+  position: absolute;
+}
+.gs-form-right .form-control {
+	background-color: #222222;
+	border-color: #bbb;
+	color: #fff;
+  padding-left: 30px;
+  border-width: 2px;
+}
+.gs-form-right .form-control:focus {
+	box-shadow: 0 0 5px -1px #ffffff;
+	border-color: #fff;
+	border-width: 2px;
+}
+.gs-form-right {
+	margin: 0 15px;
+}
+.gs-nav-right .gs-right-arrow,
+.gs-nav-right li.active a .gs-right-arrow,
+.gs-first-nav .gs-right-arrow {
+  display: inline-block;
+  line-height: 1;
+  position: relative;
+  top: 5px;
+  width: 22px;
+  height: 22px;
+  margin-right: 5px;
+}
+.gs-nav-right .gs-right-arrow {
+  background-image: url("../img/right-arrow.png");
+}
+.gs-first-nav .gs-right-arrow {
+  background-image: url("../img/left-arrow.png");
+}
+.gs-nav-right li.active a .gs-right-arrow {
+  background-image: url("../img/right-arrow-active.png");
+}
+.gs-first-nav li.active a .gs-right-arrow {
+  background-image: url("../img/left-arrow-active.png");
+}
+#nav-expander {
+  background-color: #222;
+  border: medium none;
+  border-radius: 0;
+  padding: 18px 7px;
+  margin: 0px;
+  position: fixed;
+  top: 0px;
+  display: block;
+  right: 0px;
+  z-index: 12;
+}
+#nav-expander.navbar-toggle .icon-bar {
+  background-color: #bbb;
+}
+#nav-expander2 {
+  border-bottom: 1px dashed #333;
+  border-radius: 0px;
+  width: 100%;
+  display: inline-block;
+  margin: 0px;
+  padding: 10px 5px !important;
+}
+#nav-expander2 span {
+  font-size: 20px;
+  color: #fff
+}
+.gs-sidebar-left {
+  left: -15em;
+  transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.3s ease-in-out;
+}
+.nav-expanded2 .gs-sidebar-left {
+  left: 0
+}
+.nav-expanded2 #nav-expander2 .glyphicon.glyphicon-chevron-left:before {
+  content: ""
+}
+.nav-expanded2 #nav-expander2 .glyphicon.glyphicon-chevron-left:before {
+  content: ""
+}
+.nav-expanded #nav-expander .icon-bar,
+#nav-expander:hover .icon-bar {
+	box-shadow: 0 0 10px 1px #ffffff;
+	background-color: #fff;
+}
+#nav-expander {
+  border: none;
+}
+.navbar-right li #nav-expander {
+  background-color: #222;
+  border: medium none;
+  border-radius: 0;
+  padding: 18px 7px;
+  margin-left: 15px;
+}
+.navbar-right li #nav-expander:hover,
+.navbar-right li #nav-expander:focus {
+  background-color: #000;
+  box-shadow: 0 0 5px #000 inset;
+}
+#nav-expander2,
+.gs-navbar .navbar-right .navbar-toggle {
+  display: block;
+  margin: 0;
+}
+.gs-right-search input{
+	background-color: #2D2F33;
+	border-color: #fff;
+	color: #fff
+}
+
+
+
+/*------------------------------------*\
+    $SIDEBAR LEFT
+\*------------------------------------*/
+.gs-sidebar-left {
+	position: fixed;
+	background-color: #222222;
+	height: 100%;
+	box-shadow: 0 0 7px -2px #333333;
+	z-index: 5;
+	transition: all 0.7s ease 0s;
+	-moz-transition: all 0.7s ease 0s;
+	-ms-transition: all 0.7s ease 0s;
+	-o-transition: all 0.7s ease 0s;
+	-webkit-transition: all 0.7s ease 0s;
+	top: 50px;
+}
+.gs-sidebar-left .gs-sec-nav li {
+	height: 45px;
+}
+.gs-sidebar-left .gs-sec-nav li a {
+	opacity: 0.6;
+}
+.gs-sidebar-left .gs-sec-nav ul.nav {
+	padding-top: 60px;
+}
+.gs-sidebar-left .nav li a:hover {
+	opacity: 1
+}
+.gs-sidebar-left .nav li a:hover .gs-sidebar-left-label {
+	opacity: 1;
+}
+.gs-sidebar-left-label {
+  color: #fff;
+  font-size: 12px;
+  padding: 13px 3px;
+  position: absolute;
+  left: 60px;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+  top: 0;
+  text-transform: capitalize;
+  opacity: 0;
+}
+.gs-first-nav {
+	float: left;
+	background-color: #eaeaea;
+	height: 100%;
+	width: 15em;
+	position: relative;
+	z-index: 3;
+}
+.gs-first-nav li a,
+.gs-first-nav li.active ul li > a {
+	color: #666;
+	text-transform: uppercase;
+	font-weight: 700;
+	border-bottom: 1px solid transparent
+}
+.gs-first-nav li.active {
+	border-bottom: 1px solid #f1f1f1; 
+}
+.gs-first-nav li.active > a,
+.gs-first-nav li a:hover {
+	color: #000;
+}
+.gs-first-nav li > a {
+	font-size: 13px;
+}
+.gs-first-nav li ul li > a,
+.gs-first-nav li.active ul li > a {
+	list-style: none;
+	text-transform: uppercase;
+	font-size: 10px;
+	padding: 7px 15px 7px 44px;
+}
+.gs-first-nav li.active ul {
+  border: 1px solid #dddddd;
+  box-shadow: 0 0 10px -7px #444444 inset;
+}
+.gs-first-nav li.active ul li > a:hover {
+	background-color: #E2E2E2;
+}
+.gs-sec-nav {
+	float: right;
+	box-shadow: -15px -16px 5px -15px #333333;
+	height: 100%;
+	position: relative;
+	z-index: 4;
+}
+.gs-sec-nav li {
+	position: relative;
+}
+.nav-left-expanded .gs-first-nav {
+	width: 0;
+  transition: all 0.3s ease-in-out 0s;
+}
+.gs-first-nav form {
+	padding: 10px;
+}
+
+/*------------------------------------*\
+    $BOOTSTRAP TABS
+\*------------------------------------*/
+
+.tabs-left > li, 
+.tabs-right > li {
+	float: none;
+}
+
+.tabs-right > li.active > a {
+	opacity: 1;
+	background-color: #111;
+}
+
+
+
+/*------------------------------------*\
+    $CONTENT
+\*------------------------------------*/
+
+.gs-content {
+	padding-left: 4em;
+	overflow: hidden;
+	height: 100vh;
+	padding-top: 50px;
+}
+.columns,
+.column {
+	background-color: #333;
+	border-right: 2px solid #fff;
+	padding: 0;
+	position: relative;
+	overflow: hidden;
+}
+.columns {
+	height: 100vh;
+}
+.column {
+	height: 50vh;
+	border: none;
+}
+.columns .column {
+	border-bottom: 2px solid #fff;
+}
+.gs-cat-label {
+  font-size: 10px;
+  font-weight: bold;
+  padding: 5px 15px;
+  position: absolute;
+  text-transform: uppercase;
+  left: 0;
+  top: 0;
+}
+.gs-cat-label.visuales {
+  background-color: #e89cdb;
+}
+.gs-cat-label.escenicas {
+  background-color: #9bb7d3;
+}
+.gs-visuales {
+  color: #ffffff;
+  left: 0;
+  position: absolute;
+  right: 0;
+  padding: 15px;
+  bottom: 70px;
+}
+.gs-visuales p {
+	text-align: justify;
+	text-shadow: 0 0 5px #666;
+}
+.gs-visuales strong {
+	font-size: 12px;
+	margin-bottom: 15px;
+	display: inline-block;
+}
+.gs-visuales h2 {
+	line-height: 20px;
+}
+.gs-visuales h2 a {
+	font-weight: bold;
+	text-shadow: 0 0 5px #333333;
+	font-size: 18px;
+	text-transform: uppercase;
+	color: #fff;
+}
+.gs-visuales h2 a:hover {
+	opacity: 0.8
+}
+.gs-visuales-btn,
+.gs-cat-escenicas .btn-default {
+	background-color: transparent;
+	border: 2px solid #fff;
+	border-radius: 0;
+	padding: 5px 30px;
+	font-weight: bold; 
+	color: #fff;
+	text-shadow: 0 0 5px #777;
+}
+.gs-visuales-btn:hover,
+.gs-cat-escenicas .btn-default:focus,
+.gs-cat-escenicas .btn-default:hover,
+.gs-cat-escenicas .open .btn-default {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-color: #444444;
+  color: #333333;
+}
+.gs-escenicas {
+	bottom: 0;
+	padding: 10px 90px;
+}
+.gs-cat-escenicas {
+  right: 35px;
+  top: 65px;
+  z-index: 1;
+  left: auto;
+  position: absolute;
+}
+.gs-cat-escenicas .btn-default {
+	padding: 5px 10px;
+	font-weight: normal;
+	font-size: 10px;
+	text-transform: uppercase;
+}
+.gs-cat-escenicas ul.dropdown-menu {
+	right: 0;
+	left: auto
+}
+.gs-cat-escenicas ul.dropdown-menu li a {
+	font-size: 13px;
+	padding: 0 13px;
+}
+#gs-carousel-mobile {
+	display: none;
+}
+
