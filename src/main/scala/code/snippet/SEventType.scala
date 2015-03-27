@@ -20,17 +20,17 @@ object SEventType extends SnippetHelper {
     val item = EventType.createRecord
     "data-name=name *" #> item.name.toForm &
     "type=submit" #> SHtml.ajaxOnSubmit(() => save(item))&
-    "type=cancel" #> SHtml.ajaxButton("Cancelar", () => RedirectTo(menu.menuList.url), "class"->"btn btn-default" )
+    "type=cancel" #> SHtml.ajaxButton("Cancelar", () => RedirectTo(menu.menuList.url), "class"->"btn btn-default")
   }
 
   def editForm: CssSel = {
     for {
-      item <- eventTypeRequestVar.get ?~ "Tipo de Evento no definida"
+      item <- eventTypeRequestVar.get ?~ "Tipo de Evento no definido"
     } yield {
       "data-name=eventTypeName *" #> item.name &
       "data-name=name *" #> item.name.toForm &
       "type=submit" #> SHtml.ajaxOnSubmit(() => update(item)) &
-      "type=cancel" #> SHtml.ajaxButton("Cancelar", () => RedirectTo(menu.menuList.url), "class"->"btn btn-default" )
+      "type=cancel" #> SHtml.ajaxButton("Cancelar", () => RedirectTo(menu.menuList.url), "class"->"btn btn-default")
     }:CssSel
   }
 
@@ -45,7 +45,7 @@ object SEventType extends SnippetHelper {
             "class" -> "btn btn-default"
           )
       }) &
-      "data-name=add" #> SHtml.ajaxButton("Agregar tipo de evento", () => RedirectTo(menu.menuAdd.url), "class"->"btn btn-primary" ) &
+      "data-name=add" #> SHtml.ajaxButton("Agregar tipo de evento", () => RedirectTo(menu.menuAdd.url), "class"->"btn btn-primary") &
       "data-name=delete" #> SHtml.ajaxButton(
         "Eliminar",
         () => {
