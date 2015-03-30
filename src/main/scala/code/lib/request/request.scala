@@ -6,8 +6,8 @@ import code.model.productive.ProductiveUnit
 import code.model.event._
 import net.liftweb.common.{Empty, Box}
 import net.liftweb.http.RequestVar
-import code.model.proposal.{Program, Area}
-import code.model.proposal.ActionLine
+import code.model.proposal.{ActionLine,Program, Area}
+import code.model.process.Process
 
 package object request {
   object productiveRequestVar extends RequestVar[Box[ProductiveUnit]](Empty)
@@ -22,4 +22,6 @@ package object request {
   object programDeleteRequestVar extends RequestVar[List[Program]](Nil)
   object eventTypeRequestVar extends RequestVar[Box[EventType]](Empty)
   object eventTypeDeleteRequestVar extends RequestVar[List[EventType]](Nil)
+  object processRequestVar extends RequestVar[Box[Process]](Empty)
+  object processDeleteRequestVar extends RequestVar[List[Process]](Nil)
 }
