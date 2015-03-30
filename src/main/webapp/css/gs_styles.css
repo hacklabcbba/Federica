@@ -560,3 +560,79 @@ body.nav-expanded {
 	display: none;
 }
 
+
+/*------------------------------------*\
+    $AREAS
+\*------------------------------------*/
+.gs-areas {
+	padding: 15px
+}
+.gs-areas .panel-title a,
+.gs-areas h3,
+.gs-areas h4,
+.gs-procesos .btn {
+	text-transform: uppercase;
+	font-weight: bold;
+}
+.gs-areas h3 {
+	font-size: 18px;
+	margin-top: 0;
+}
+.gs-areas .panel-title a {
+	width: 100%;
+	color: #333;
+	font-size: 18px;
+	display: inline-block;
+}
+.gs-areas.gs-right-arrow,
+.gs-areas a.collapsed .gs-right-arrow,
+.gs-areas .gs-right-arrow {
+  display: inline-block;
+  line-height: 1;
+  position: relative;
+  top: 5px;
+  width: 22px;
+  height: 22px;
+  margin-right: 5px;
+}
+.gs-areas .gs-right-arrow {
+  background-image: url("../img/left-arrow-active.png");
+}
+.gs-areas a.collapsed .gs-right-arrow {
+  background-image: url("../img/left-arrow.png");
+}
+#carousel-areas {
+	padding: 15px;
+	border: 1px solid #ddd;
+	background-color: #f9f9f9;
+	box-shadow: 0 0 5px 0 #ddd inset;
+}
+.gs-event-carousel strong{
+	font-size: 13px;
+	width: 100%;
+	text-transform: capitalize;
+	display: inline-block;
+}
+#carousel-areas .carousel-control.left { 
+	background-image: none;
+}
+#carousel-areas .carousel-control.right {
+	background-image: none;
+}
+#carousel-areas .carousel-control {
+	width: 7%;
+	text-shadow: none;
+}
+#carousel-areas .carousel-control.left .glyphicon,
+#carousel-areas .carousel-control.right .glyphicon {
+	color: #333;
+}
+#carousel-areas .carousel-control.left .glyphicon {
+	margin-left: -50px;
+}
+#carousel-areas .carousel-control.right .glyphicon {
+	margin-right: -50px
+}
+.gs-areas .thumbnail {
+	border-radius: 0;
+}
