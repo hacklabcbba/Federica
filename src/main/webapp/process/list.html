@@ -2,9 +2,19 @@
     <lift:head>
         <title data-lift="Menu.title">Federica: %*%</title>
     </lift:head>
-    <div class="main-content">
-        <h3>Lista de procesos</h3>
-        <div class="row" data-lift="lift:SProcess.showAll">
+    <div data-lift="lift:SProcess.showAll">
+        <div class="page-header">
+            <h1>Lista de procesos</h1>
+        </div>
+        <div class="row pull-right">
+            <div class="col-xs-12 col-md-12">
+                <p>
+                <div data-name="add"></div>
+                <div data-name="delete"></div>
+                </p>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-xs-12 col-md-12">
                     <table class="table table-bordered table-striped">
                         <thead>
@@ -30,12 +40,6 @@
                         </tr>
                         </tbody>
                     </table>
-                </div>
-            <div class="row">
-                <div class="col-xs-12 col-md-12">
-                    <div data-name="add"></div>
-                    <div data-name="delete"></div>
-                </div>
             </div>
         </div>
     </div>

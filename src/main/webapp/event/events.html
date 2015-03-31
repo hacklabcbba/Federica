@@ -2,42 +2,46 @@
     <lift:head>
         <title data-lift="Menu.title">Federica: %*%</title>
     </lift:head>
-    <div class="main-content">
-        <h3>Lista de eventos</h3>
-        <div class="row" data-lift="lift:SEvent.showAll">
+    <div data-lift="lift:SEvent.showAll">
+        <div class="page-header">
+            <h1>Lista de eventos</h1>
+        </div>
+        <div class="row pull-right">
             <div class="col-xs-12 col-md-12">
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th class="span-3"><input id="checkbox-all" type="checkbox"></th>
-                                <th class="span-3">Nro.</th>
-                                <th class="span-3">Name</th>
-                                <th class="span-3">Fecha</th>
-                                <th class="span-3">Costo</th>
-                                <th class="span-3">Organizador</th>
-                                <th class="span-3">Area o Programa</th>
-                                <th class="span-3">&nbsp;</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <tr data-name="list">
-                            <td data-name="checkbox"></td>
-                            <td data-name="number"></td>
-                            <td data-name="name"></td>
-                            <td data-name="date"></td>
-                            <td data-name="cost"></td>
-                            <td data-name="organizer"></td>
-                            <td data-name="areaProgram"></td>
-                            <td data-name="edit"></td>
+                <p>
+                <div data-name="add"></div>
+                <div data-name="delete"></div>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-md-12">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th class="span-3"><input id="checkbox-all" type="checkbox"></th>
+                            <th class="span-3">Nro.</th>
+                            <th class="span-3">Name</th>
+                            <th class="span-3">Fecha</th>
+                            <th class="span-3">Costo</th>
+                            <th class="span-3">Organizador</th>
+                            <th class="span-3">Area o Programa</th>
+                            <th class="span-3">&nbsp;</th>
                         </tr>
-                        </tbody>
-                    </table>
-                </div>
-            <div class="row">
-                <div class="col-xs-12 col-md-12">
-                    <div data-name="add"></div>
-                    <div data-name="delete"></div>
-                </div>
+                    </thead>
+                    <tbody>
+                    <tr data-name="list">
+                        <td data-name="checkbox"></td>
+                        <td data-name="number"></td>
+                        <td data-name="name"></td>
+                        <td data-name="date"></td>
+                        <td data-name="cost"></td>
+                        <td data-name="organizer"></td>
+                        <td data-name="areaProgram"></td>
+                        <td data-name="edit"></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

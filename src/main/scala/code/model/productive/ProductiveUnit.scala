@@ -61,10 +61,8 @@ class ProductiveUnit private () extends MongoRecord[ProductiveUnit] with ObjectI
 
   object program extends ObjectIdRefField(this, Program){
     override def optional_? = true
-
     override def toString = Program.find(get).dmap("")(_.name.get)
-
-    val listProgram = Program.findAll.map(p => p)
+    val listProgram = Program.findAll
     val defaultProgram= Program.findAll.headOption
 
     override def toForm = {

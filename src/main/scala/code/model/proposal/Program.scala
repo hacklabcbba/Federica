@@ -6,8 +6,6 @@ import code.lib.RogueMetaRecord
 import net.liftweb.mongodb.record.field.{ObjectIdRefListField, ObjectIdRefField, ObjectIdPk}
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.record.field.{TextareaField, BooleanField, StringField}
-import code.model.project.Process
-import code.model.event.Event
 import net.liftweb.common.Full
 import net.liftweb.http.SHtml
 
