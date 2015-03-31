@@ -66,7 +66,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
 
     override def optional_? = true
     override def toString = this.obj.dmap("")(_.name.get)
-    val listProgram = Program.findAll.map(p => p)
+    val listProgram = Program.findAll
     val defaultProgram = listProgram.headOption
     override def toForm = {
       Full(SHtml.ajaxSelectElem(listProgram, defaultProgram,

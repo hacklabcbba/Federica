@@ -8,20 +8,26 @@ import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{ObjectIdRefField, ObjectIdPk}
-import net.liftweb.record.field.{EnumNameField, BooleanField, StringField}
-import net.liftweb.http.js.JsCmds._
-import org.bson.types.ObjectId
+import net.liftweb.record.field.{TextareaField, EnumNameField, BooleanField, StringField}
 
 class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] {
 
   override def meta = Network
 
   object name extends StringField(this, 500) {
-    override def toForm = Full(SHtml.text(value, set(_)))
+    override def toForm = Full(SHtml.text(
+      value,
+      set(_),
+      "class" -> "form-control", "data-placeholder" -> "Ingrese nombre.."
+    ))
   }
 
-  object description extends StringField(this, 500){
-    override def toForm = Full(SHtml.text(value, set(_)))
+  object description extends TextareaField(this, 500){
+    override def toForm = Full(SHtml.text(
+      value,
+      set(_),
+      "class"->"form-control", "data-placeholder" -> "Ingrese descripcion.."
+    ))
   }
   object administrator extends ObjectIdRefField(this, User) {
     override def toString = {
@@ -30,9 +36,13 @@ class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] {
     val listUsers = User.findAll
 
     override def toForm = {
-      Full(SHtml.selectElem(listUsers, obj)(s => set(s.id.get)))
+      Full(SHtml.selectElem(
+        listUsers,
+        obj,
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione administrador.."
+      )(s => set(s.id.get)))
     }
-
   }
 
   object area extends ObjectIdRefField(this, Area) {
@@ -41,7 +51,12 @@ class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] {
     val listAreas = Area.findAll
     val defaultArea = Area.findAll.headOption
     override def toForm = {
-      Full(SHtml.selectElem(listAreas, defaultArea)(a => set(a.id.get)))
+      Full(SHtml.selectElem(
+        listAreas,
+        obj,
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione area.."
+      )(a => set(a.id.get)))
     }
   }
 
@@ -53,11 +68,16 @@ class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] {
     val listProgram = Program.findAll
 
     override def toForm = {
-      Full(SHtml.selectElem(listProgram, this.obj)(p => set(p.id.get)))
+      Full(SHtml.selectElem(
+        listProgram,
+        obj,
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione programa.."
+      )(p => set(p.id.get)))
     }
   }
 
-  object productiveType extends EnumNameField(this, NetworkType) {
+  object networkType extends EnumNameField(this, NetworkType) {
     override def toForm =
       Full(SHtml.selectObj[Box[NetworkType.Value]](buildDisplayList, Full(valueBox), s => setBox(s)))
   }
