@@ -35,12 +35,12 @@ object SNetwork extends SnippetHelper {
       item <- networkRequestVar.get ?~ "Red no definida"
     } yield {
       "data-name=networkName *" #> item.name &
-        "data-name=name *" #> item.name.toForm &
-        "data-name=description *" #> item.description.toForm &
-        "data-name=administrator *" #> item.administrator.toForm &
-        "data-name=area *" #> item.area.toForm &
-        "data-name=program *" #> item.program.toForm &
-        "data-name=type *" #> item.networkType.toForm &
+      "data-name=name *" #> item.name.toForm &
+      "data-name=description *" #> item.description.toForm &
+      "data-name=administrator *" #> item.administrator.toForm &
+      "data-name=area *" #> item.area.toForm &
+      "data-name=program *" #> item.program.toForm &
+      "data-name=type *" #> item.networkType.toForm &
       "type=submit" #> SHtml.ajaxOnSubmit(() => update(item)) &
       "type=cancel" #> SHtml.ajaxButton("Cancelar", () => RedirectTo(menu.menuList.url), "class"->"btn btn-default" )
     }:CssSel
