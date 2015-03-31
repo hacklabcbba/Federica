@@ -1,14 +1,17 @@
-<div data-lift="surround?with=base-wrap;at=content">
+<div data-lift="surround?with=base-wrap;at=content;lift:SArea.showAll">
     <lift:head>
         <title data-lift="Menu.title">Federica: %*%</title>
     </lift:head>
-    <div class="main-content" data-lift="lift:SArea.showAll">
-        <h3>Lista de Areas</h3>
-        <hr />
+    <div data-lift="lift:SArea.showAll">
+        <div class="page-header">
+            <h3>Lista de Areas</h3>
+        </div>
         <div class="row pull-right">
             <div class="col-xs-12 col-md-12">
+                <p>
                 <div data-name="add"></div>
                 <div data-name="delete"></div>
+                </p>
             </div>
         </div>
         <div class="row">

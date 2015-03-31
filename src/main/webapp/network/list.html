@@ -2,13 +2,17 @@
     <lift:head>
         <title data-lift="Menu.title">Federica: %*%</title>
     </lift:head>
-    <div class="main-content" data-lift="lift:SNetwork.showAll">
-        <h3>Lista de redes</h3>
-        <hr />
+    <div data-lift="lift:SNetwork.showAll">
+        <div class="page-header">
+            <h1>Lista de redes</h1>
+        </div>
+
         <div class="row pull-right">
             <div class="col-xs-12 col-md-12">
+                <p>
                 <div data-name="add"></div>
                 <div data-name="delete"></div>
+                </p>
             </div>
         </div>
         <div class="row">

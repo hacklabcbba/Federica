@@ -12,8 +12,11 @@ import Helpers._
 import code.model.Setting
 import net.liftmodules.extras.SnippetHelper
 import scala.xml.NodeSeq
+import code.lib.menu.EventMenu
 
 object SEvent extends SnippetHelper {
+
+  val menu = EventMenu
 
   def addForm: CssSel = {
     val e = Event.createRecord
@@ -45,7 +48,7 @@ object SEvent extends SnippetHelper {
     "data-name=registration *" #> e.registration.toForm &
     "data-name=costContributionByUse *" #> e.costContributionByUse.toForm &
     "type=submit" #> SHtml.ajaxOnSubmit(() => save(e))&
-    "type=cancel" #> SHtml.ajaxButton("Cancelar", () => RedirectTo("/event/events"), "class"->"btn btn-default" )
+    "type=cancel" #> SHtml.ajaxButton("Cancelar", () => RedirectTo(menu.menuList.url), "class"->"btn btn-default" )
   }
 
   def editForm: CssSel = {
@@ -82,7 +85,7 @@ object SEvent extends SnippetHelper {
       "data-name=registration *" #> e.registration.toForm &
       "data-name=costContributionByUse *" #> e.costContributionByUse.toForm &
       "type=submit" #> SHtml.ajaxOnSubmit(() => update(e)) &
-      "type=cancel" #> SHtml.ajaxButton("Cancelar", () => RedirectTo("/event/events"), "class"->"btn btn-default" )
+      "type=cancel" #> SHtml.ajaxButton("Cancelar", () => RedirectTo(menu.menuList.url), "class"->"btn btn-default" )
     }:CssSel
   }
 
@@ -98,16 +101,16 @@ object SEvent extends SnippetHelper {
         "data-name=areaProgram *" #> (e.area + " " + e.program) &
         "data-name=edit *" #> SHtml.ajaxButton(
           "Editar",
-          () => RedirectTo("/event/edit", () => eventRequestVar.set(Full(e))),
+          () => RedirectTo(menu.menuEdit.url, () => eventRequestVar.set(Full(e))),
           "class" -> "btn btn-default"
         )
       }) &
-    "data-name=add" #> SHtml.ajaxButton("Agregar", () => RedirectTo("/event/add"), "class"->"btn btn-primary" ) &
+    "data-name=add" #> SHtml.ajaxButton("Agregar event", () => RedirectTo(menu.menuAdd.url), "class"->"btn btn-primary" ) &
     "data-name=delete" #> SHtml.ajaxButton(
       "Eliminar",
       () => {
         val listToDelete = eventDeleteRequestVar.get
-        RedirectTo("/event/events", () => delete(listToDelete))
+        RedirectTo(menu.menuList.url, () => delete(listToDelete))
       },
       "class"->"btn btn-danger")
   }
@@ -146,7 +149,7 @@ object SEvent extends SnippetHelper {
   }
 
   def redirectToHome = {
-    RedirectTo("/event/events")
+    RedirectTo(menu.menuList.url)
   }
 
 }
