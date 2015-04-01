@@ -11,6 +11,7 @@ import net.liftweb.record.field.{EnumNameField, TextareaField, LongField, Decima
 import code.model.proposal.{ActionLine, Area, Program}
 import code.model.activity.{Activity, ActivityType}
 import code.model.productive.ProductiveUnit
+import code.model.process.Process
 import net.liftweb.common.{Full, Empty, Box}
 import scala.xml.Elem
 import net.liftweb.http.SHtml
@@ -81,7 +82,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
   object area extends ObjectIdRefField(this, Area) {
 
     override def toString = this.obj.dmap("")(_.name.get)
-    val list = Area.findAll.map(p => p)
+    val list = Area.findAll
     val default = list.headOption
     override def toForm = {
       Full(SHtml.ajaxSelectElem(list, default,
@@ -125,7 +126,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
 
     override def optional_? = true
     override def toString = this.obj.dmap("")(_.name.get)
-    val list = ProductiveUnit.findAll.map(p => p)
+    val list = ProductiveUnit.findAll
     val default = list.headOption
     override def toForm = {
       Full(SHtml.ajaxSelectElem(list, default,
@@ -140,7 +141,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
   object city extends ObjectIdRefField(this, City) {
 
     override def toString = this.obj.dmap("")(_.name.get)
-    val list = City.findAll.map(p => p)
+    val list = City.findAll
     val default = list.headOption
     override def toForm = {
       Full(SHtml.ajaxSelectElem(list, default,
@@ -155,7 +156,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
   object country extends ObjectIdRefField(this, Country) {
 
     override def toString = this.obj.dmap("")(_.name.get)
-    val list = Country.findAll.map(p => p)
+    val list = Country.findAll
     val default = list.headOption
     override def toForm = {
       Full(SHtml.ajaxSelectElem(list, default,
