@@ -346,26 +346,32 @@ body.nav-expanded {
 }
 .gs-sidebar-left .gs-sec-nav li a {
 	opacity: 0.6;
+	overflow: hidden;
 }
 .gs-sidebar-left .gs-sec-nav ul.nav {
-	padding-top: 60px;
+	padding-top: 30px;
 }
 .gs-sidebar-left .nav li a:hover {
-	opacity: 1
+	opacity: 1;
+	overflow: visible;
 }
 .gs-sidebar-left .nav li a:hover .gs-sidebar-left-label {
 	opacity: 1;
+	background-color: rgba(0,0,0,0.6);
 }
 .gs-sidebar-left-label {
   color: #fff;
   font-size: 12px;
-  padding: 13px 3px;
+  padding: 10px 18px;
   position: absolute;
-  left: 60px;
+  left: 56px;
   text-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
   top: 0;
   text-transform: capitalize;
   opacity: 0;
+  -webkit-transition: all 0.6s ease 0s;
+  -o-transition: all 0.6s ease 0s;
+  transition: all 0.6s ease 0s;
 }
 .gs-first-nav {
 	float: left;
@@ -565,7 +571,19 @@ body.nav-expanded {
     $AREAS
 \*------------------------------------*/
 .gs-areas {
-	padding: 15px
+
+}
+.gs-areas .panel-default {
+	border-radius: 0;
+	border: none;
+	box-shadow: none;
+}
+.gs-areas .panel-default > .panel-heading {
+	background-color: #fff;
+}
+.gs-areas .panel-default > .panel-heading + .panel-collapse > .panel-body {
+	border-top-color: transparent;
+	padding: 0;
 }
 .gs-areas .panel-title a,
 .gs-areas h3,
@@ -574,15 +592,46 @@ body.nav-expanded {
 	text-transform: uppercase;
 	font-weight: bold;
 }
+.gs-left-corousel-eventos {
+	padding: 0 15px;
+}
+.gs-left-corousel-eventos .gs-carousel-arrow-left,
+.gs-left-corousel-eventos .gs-carousel-arrow-right {
+	width: 23px;
+	height: 23px;
+	top: 50%;
+	position: absolute;
+	z-index: 5;
+}
+.gs-left-corousel-eventos .gs-carousel-arrow-left {
+	background-image: url("../img/carousel-arrow-left.png");
+	left: 50%;
+}
+.gs-left-corousel-eventos .gs-carousel-arrow-right {
+	background-image: url("../img/carousel-arrow-right.png");
+	right: 50%;
+}
+.gs-procesos .btn-default {
+	border-radius: 0;
+	border: 1px solid #202020;
+	box-shadow: 0 0 0 1px #e3e3e3 inset;
+	padding: 6px 30px;
+	font-size: 11px;
+}
 .gs-areas h3 {
 	font-size: 18px;
 	margin-top: 0;
 }
 .gs-areas .panel-title a {
 	width: 100%;
-	color: #333;
+	color: #202020;
 	font-size: 18px;
 	display: inline-block;
+}
+.gs-areas .panel-title a:hover,
+.gs-areas .panel-title a:focus {
+	opacity: 0.8;
+	text-decoration: none;
 }
 .gs-areas.gs-right-arrow,
 .gs-areas a.collapsed .gs-right-arrow,
@@ -596,17 +645,19 @@ body.nav-expanded {
   margin-right: 5px;
 }
 .gs-areas .gs-right-arrow {
-  background-image: url("../img/left-arrow-active.png");
-}
-.gs-areas a.collapsed .gs-right-arrow {
+	transform: rotate(90deg);
+  transition: all 320ms ease-in-out 0s;
   background-image: url("../img/left-arrow.png");
 }
-#carousel-areas {
+.gs-areas a.collapsed .gs-right-arrow {
+	transform: rotate(0deg);
+}
+/*#carousel-areas {
 	padding: 15px;
 	border: 1px solid #ddd;
 	background-color: #f9f9f9;
 	box-shadow: 0 0 5px 0 #ddd inset;
-}
+}*/
 .gs-event-carousel strong{
 	font-size: 13px;
 	width: 100%;
