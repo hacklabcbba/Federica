@@ -9,6 +9,7 @@ import net.liftweb.http.RequestVar
 import code.model.proposal.{ActionLine,Program, Area}
 import code.model.process.Process
 import code.model.network.Network
+import code.model.resource.ConcreteResource
 
 package object request {
   object productiveRequestVar extends RequestVar[Box[ProductiveUnit]](Empty)
@@ -27,4 +28,6 @@ package object request {
   object networkDeleteRequestVar extends RequestVar[List[Network]](Nil)
   object processRequestVar extends RequestVar[Box[Process]](Empty)
   object processDeleteRequestVar extends RequestVar[List[Process]](Nil)
+  object concreteResourceRequestVar extends RequestVar[Box[ConcreteResource]](Empty)
+  object concreteResourceDeleteRequestVar extends RequestVar[List[ConcreteResource]](Nil)
 }

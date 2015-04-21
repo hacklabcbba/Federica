@@ -10,7 +10,7 @@ import code.model.resource
 trait Resource[T <: MongoRecord[T]] extends MongoRecord[T] with ObjectIdPk[T] {
   this: T =>
 
-  object name extends StringField(this.asInstanceOf[T], 500)
+  //object name extends StringField(this.asInstanceOf[T], 500)
   object description extends StringField(this.asInstanceOf[T], 500)
   object cost extends ObjectIdRefField(this.asInstanceOf[T], ConcreteQuote)
 

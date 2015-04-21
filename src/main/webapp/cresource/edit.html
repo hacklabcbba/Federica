@@ -1,0 +1,32 @@
+<div data-lift="surround?with=base-wrap;at=content">
+    <lift:head>
+        <title data-lift="Menu.title">Federica: %*%</title>
+    </lift:head>
+    <div class="main-content"  data-lift="SConcreteResource.editForm">
+        <h3>Modificar: <span data-name="resourceName"></span></h3>
+        <hr />
+        <div id="editForm">
+            <form data-lift="form.ajax?class=form-horizontal">
+
+                <div class="form-group">
+                    <label for="name" class="col-md-2 control-label">Nombre:</label>
+                    <div class="col-md-10" id="name" data-name="name"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description" class="col-md-2 control-label">Descripcion:</label>
+                    <div class="col-md-10" id="description" data-name="description"></div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="cancel" class="btn btn-default">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <span data-lift="embed?what=/templates-hidden/parts/footer"></span>
+</div>
