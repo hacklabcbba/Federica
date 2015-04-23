@@ -80,6 +80,8 @@ class Boot extends Loggable {
     // don't include the liftAjax.js code. It's served statically.
     LiftRules.autoIncludeAjaxCalc.default.set(() => () => (session: LiftSession) => false)
 
+    LiftRules.dispatch.append(code.rest.AjaxFileUpload)
+
     // Mailer
     Mailer.devModeSend.default.set((m: MimeMessage) => logger.info("Dev mode message:\n" + prettyPrintMime(m)))
     Mailer.testModeSend.default.set((m: MimeMessage) => logger.info("Test mode message:\n" + prettyPrintMime(m)))
