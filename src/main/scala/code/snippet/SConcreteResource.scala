@@ -19,7 +19,6 @@ object SConcreteResource extends SnippetHelper {
     val item = ConcreteResource.createRecord
     "data-name=name *" #> item.name.toForm &
     "data-name=description *" #> item.description.toForm &
-    "data-name=cost *" #> item.cost.toForm &
     "type=submit" #> SHtml.ajaxOnSubmit(() => save(item))&
     "type=cancel" #> SHtml.ajaxButton("Cancelar", () => RedirectTo(menu.menuList.url), "class"->"btn btn-default" )
   }
@@ -31,7 +30,6 @@ object SConcreteResource extends SnippetHelper {
       "data-name=resourceName *" #> item.name &
       "data-name=name *" #> item.name.toForm &
       "data-name=description *" #> item.description.toForm &
-      "data-name=cost *" #> item.cost.toForm &
       "type=submit" #> SHtml.ajaxOnSubmit(() => update(item)) &
       "type=cancel" #> SHtml.ajaxButton("Cancelar", () => RedirectTo(menu.menuList.url), "class"->"btn btn-default" )
     }:CssSel

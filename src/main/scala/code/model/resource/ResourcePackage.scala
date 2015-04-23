@@ -9,7 +9,7 @@ class ResourcePackage private() extends Resource[ResourcePackage] {
 
   override def meta = ResourcePackage
   object comboName extends StringField(this, 500)
-  object classType extends EnumNameField(this, ClassType)
+
 }
 
 object ResourcePackage extends ResourcePackage with RogueMetaRecord[ResourcePackage] {

@@ -3,17 +3,42 @@ package model
 package resource
 
 import code.lib.RogueMetaRecord
+import net.liftweb.common.Full
+import net.liftweb.http.SHtml
 import net.liftweb.record.field.{EnumNameField, BooleanField, IntField, StringField}
 
 class Room private() extends Resource[Room] {
 
   override def meta = Room
-  object capacity extends IntField(this, 0)
-  object code  extends StringField(this, 50)
-  object state extends StringField(this, 50)
-  object plane extends StringField(this, 500)
+  object capacity extends StringField(this, 500){
+    override def toForm = Full(SHtml.text(value,
+      (s: String) => set(s),
+      "class" -> "form-control",
+      "data-placeholder" -> "Ingrese capacidad.."))
+  }
+
+  object code  extends StringField(this, 50){
+    override def toForm = Full(SHtml.text(value,
+      (s: String) => set(s),
+      "class" -> "form-control",
+      "data-placeholder" -> "Ingrese capacidad.."))
+  }
+
+  object state extends StringField(this, 50){
+    override def toForm = Full(SHtml.text(value,
+      (s: String) => set(s),
+      "class" -> "form-control",
+      "data-placeholder" -> "Ingrese capacidad.."))
+  }
+
+  object plane extends StringField(this, 500){
+    override def toForm = Full(SHtml.text(value,
+      (s: String) => set(s),
+      "class" -> "form-control",
+      "data-placeholder" -> "Ingrese capacidad.."))
+  }
+
   object isReservable extends BooleanField(this, false)
-  object classType extends EnumNameField(this, ClassType)
 }
 
 object Room extends Room with RogueMetaRecord[Room] {
