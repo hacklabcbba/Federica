@@ -41,6 +41,9 @@ class Room private() extends Resource[Room] {
 
   object plane extends FileField(this) {
     override def displayName = "Plano"
+    override def toString = {
+      value.fileName.get
+    }
   }
 
   object isReservable extends BooleanField(this, false)
