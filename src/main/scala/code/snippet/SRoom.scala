@@ -25,6 +25,7 @@ object SRoom extends SnippetHelper {
     "data-name=code *" #> item.code.toForm &
     "data-name=state *" #> item.state.toForm &
     "data-name=plane *" #> item.plane.toForm &
+    "data-name=plane2 *" #> item.plane2.toForm &
     "data-name=isReservable *" #> item.isReservable.toForm &
     "type=submit" #> SHtml.ajaxOnSubmit(() => save(item))&
     "type=cancel" #> SHtml.ajaxButton("Cancelar", () => RedirectTo(menu.menuList.url), "class"->"btn btn-default" )
