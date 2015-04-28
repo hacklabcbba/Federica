@@ -17,10 +17,13 @@ import org.bson.types.ObjectId
 import org.joda.time.DateTime
 import net.liftweb.http.js.HtmlFixer
 
+
 class FileField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
   extends BsonRecordField(rec, FileRecord)
   with LifecycleCallbacks with HtmlFixer {
 
+  val uploadPath = "/upload"
+  val downloadPath = "/files"
   val id = nextFuncName
   val hiddenId = "hidden-" + id
   val hiddenDeleteId = "hiddenDelete-" + id
@@ -37,11 +40,11 @@ class FileField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
 
     S.appendJs(script)
     Full(
-      <div class={containerFieldId}>
-        <div class={containerInputId}>
-          <input class="fileupload" type="file" name="files" data-url="/upload" id={id} />
+      <div class={containerFieldId} >
+        <div class={containerInputId} >
+          <input class="fileupload" type="file" name="files" data-url={uploadPath} id={id} />
         </div>
-        <div class="progress" style="width:20em; border: 1pt solid silver; display: none">
+        <div class="progress" style="width:20em; border: 1pt solid silver; display: none" >
           {SHtml.hidden(s => saveFileIds(s), "", "id" -> hiddenId)}
           {SHtml.hidden(s => setDeletedFileIds(s), "", "id" -> hiddenDeleteId)}
           <div class="progress-bar" style="background: green; height: 1em; width:0%"></div>
@@ -54,22 +57,22 @@ class FileField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
   def toEditForm = {
 
     val file = this.get
-    val tempItem = templateItem
 
     val uploadedData = (
-      ".link-item [href+]" #>  file.fileId.get &
-      ".link-item *" #>  file.fileName.get &
-      ".size-item *" #>  file.fileSize.get &
+      ".link-item [href]" #> (downloadPath +"/"+  file.fileId.get) &
+      ".preview-item *" #> previewFile &
+      ".link-item *" #> file.fileName.get &
+      ".size-item *" #> file.fileSize.get &
       ".remove-item [data-file-id]" #>  file.fileId.get
-    ).apply(tempItem)
-
+    ).apply(templateItem)
 
     S.appendJs(onClickRemoveScript)
     S.appendJs(script)
+
     Full(
       <div class={containerFieldId} >
         <div class={containerInputId} style="display: none" >
-          <input class="fileupload" type="file" name="files" data-url="/upload" id={id} />
+          <input class="fileupload" type="file" name="files" data-url={uploadPath} id={id} />
         </div>
         <div class="progress" style="width:20em; border: 1pt solid silver; display: none" >
           {SHtml.hidden(s => saveFileIds(s), "", "id" -> hiddenId)}
@@ -81,6 +84,57 @@ class FileField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
         </div>
       </div>
     )
+  }
+
+  def toListElement = {
+
+    val file = this.get
+    val uploadedData = (
+      ".link-item [href]" #> (downloadPath +"/"+  file.fileId.get) &
+        ".preview-item *" #> previewFile &
+        ".link-item *" #> file.fileName.get &
+        ".size-item *" #> file.fileSize.get &
+        ".remove-item " #>  ""
+      ).apply(templateItem)
+
+    Full(uploadedData)
+  }
+
+  def previewFile = {
+    val f = this.get
+    var previewData = f.fileType.get match {
+      case "image/png" =>
+        Some(<img src={s"/file/preview/${f.fileId.get}"} title={f.fileName.get}/>)
+
+      case "image/jpeg" =>
+        Some(<img src={s"/file/preview/${f.fileId.get}"} title={f.fileName.get}/>)
+
+      case "image/gif" =>
+        Some(<img src={s"/file/preview/${f.fileId.get}"} title={f.fileName.get}/>)
+
+      case "application/pdf" =>
+        Some(<i class="fa fa-file-pdf-o fa-3x" title={f.fileName.get}/>)
+
+      case "application/zip" =>
+        Some(<i class="fa fa-file-zip-o fa-3x" title={f.fileName.get}/>)
+
+      case "application/rar" =>
+        Some(<i class="fa fa-file-pdf-o fa-3x" title={f.fileName.get}/>)
+
+      case "application/msword" =>
+        Some(<i class="fa fa-file-word-o fa-3x" title={f.fileName.get}/>)
+
+      case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" =>
+        Some(<i class="fa fa-file-excel-o fa-3x" title={f.fileName.get}/>)
+
+      case "application/octet-stream" =>
+        Some(<i class="fa fa-file fa-3x" title={f.fileName.get}/>)
+
+      case _ =>
+        Some(<i class="fa fa-file fa-3x" title={f.fileName.get}/>)
+    }
+
+    previewData
   }
 
   private def saveFileIds(s: String) = {
@@ -142,29 +196,30 @@ class FileField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
   }
 
   def templateItem = {
-
     <span class="data-item">
-      <a class="link-item" href="files/">%fileName</a>
+      <span class="preview-item"></span>
+      <i class="fa fa-cloud-download fa-fw"></i>
+      <a class="link-item" href="#">%fileName</a>
       <span class="size-item">%fileSize</span>
-      [ <a href="#" class="remove-item" data-file-id="%fileId">x</a> ]<br/>
+      <button class="btn btn-danger btn-xs remove-item" data-file-id="%fileId" type="button">
+        <i class="fa fa-trash-o fa-fw"></i>&nbsp;Remover
+      </button><br/>
     </span>
-
   }
 
   private def script = Run{
 
-    val (tmp, _) = fixHtmlAndJs("temp", templateItem)
+    val (downloadTemplateItem, _) = fixHtmlAndJs("temp", templateItem)
     """
       $(function () {
-          var $uploadInput = $('#""" + id + """');
-          var $fieldContainer = $uploadInput.parents('.""" + containerFieldId + """')
-          var $inputContainer = $uploadInput.parents('.""" + containerInputId + """')
-          var $itemsToSave = $('#""" + hiddenId + """')
-          var $itemsToDelete = $('#""" + hiddenDeleteId + """');
-          var $containerInfo = $('div.uploadedData', $fieldContainer);
-          var $progress = $('.progress', $fieldContainer);
-          var $progressBar = $('.progress-bar', $fieldContainer);
-
+          var $uploadInput = $('#""" + id + """'),
+              $fieldContainer = $uploadInput.parents('.""" + containerFieldId + """'),
+              $inputContainer = $uploadInput.parents('.""" + containerInputId + """'),
+              $itemsToSave = $('#""" + hiddenId + """'),
+              $itemsToDelete = $('#""" + hiddenDeleteId + """'),
+              $containerInfo = $('div.uploadedData', $fieldContainer),
+              $progress = $('.progress', $fieldContainer),
+              $progressBar = $('.progress-bar', $fieldContainer);
 
           $uploadInput.fileupload({
             dataType: 'json',
@@ -181,7 +236,6 @@ class FileField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
             },
 
             done: function (e, data) {
-
               console.log("respuesta server: ", data.response().result.files);
               $itemsToSave.val(JSON.stringify(data.response().result.files));
               $progress.hide();
@@ -198,10 +252,12 @@ class FileField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
 
             var $rows = $();
             $.each(files, function(i, f){
-              var $row = $(""" + tmp + """);
+
+              var $row = $(""" + downloadTemplateItem + """);
+              var downloadPath =  '""" + downloadPath + """/' + f.fileId
 
               $row.find(".link-item")
-                .attr("href", "files/"+f.fileId)
+                .attr("href", downloadPath )
                 .html(f.fileName);
 
               $row.find(".size-item")
@@ -239,11 +295,12 @@ class FileField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
       $(function () {
 
         var $uploadInput = $('#""" + id + """'),
+            $fieldContainer = $uploadInput.parents('.""" + containerFieldId + """'),
             $inputContainer = $uploadInput.parents('.""" + containerInputId + """'),
             $itemsToSave = $('#""" + hiddenId + """'),
             $itemsToDelete  = $('#""" + hiddenDeleteId + """');
 
-        $("a.remove-item").click(function(e){
+        $(".remove-item", $fieldContainer).click(function(e){
 
             e.preventDefault();
             var $currentLink2Delete = $(this);

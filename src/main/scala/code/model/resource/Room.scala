@@ -32,22 +32,8 @@ class Room private() extends Resource[Room] {
       "data-placeholder" -> "Ingrese capacidad.."))
   }
 
-  /*object plane extends StringField(this, 500){
-    override def toForm = Full(SHtml.text(value,
-      (s: String) => set(s),
-      "class" -> "form-control",
-      "data-placeholder" -> "Ingrese capacidad.."))
-  }*/
-
   object plane extends FileField(this) {
     override def displayName = "Plano"
-    override def toString = {
-      value.fileName.get
-    }
-  }
-
-  object plane2 extends FileField(this) {
-    override def displayName = "Plano2"
     override def toString = {
       value.fileName.get
     }

@@ -18,7 +18,8 @@ object LiftProjectBuild extends Build {
         rogueField,
         rogueCore,
         rogueLift,
-        rogueIndex
+        rogueIndex,
+        imaging
       ) ++
       test(scalatest) ++
       container(jettyWebapp)
