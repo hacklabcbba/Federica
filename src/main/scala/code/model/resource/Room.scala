@@ -40,6 +40,7 @@ class Room private() extends Resource[Room] {
   }
 
   object isReservable extends BooleanField(this, false)
+
 }
 
 object Room extends Room with RogueMetaRecord[Room] {

@@ -2,7 +2,7 @@ package code
 package model
 package resource
 
-import code.lib.field.{BsTextareaField, BsStringField}
+import code.lib.field.{BsCkTextareaField, BsTextareaField, BsStringField}
 import net.liftweb.common.Full
 import net.liftweb.http.{S, SHtml}
 import net.liftweb.http.js.JsCmds._
@@ -27,10 +27,14 @@ trait Resource[T <: MongoRecord[T]] extends MongoRecord[T] with ObjectIdPk[T] {
     }, "class" -> "form-control", "data-placeholder" -> "Ingrese descripcion.."))
   }
 
-  val description = new BsTextareaField[T](this, 5000) {
+  /*val description = new BsTextareaField[T](this, 5000) {
     override def displayName = S ? "Descripcion"
     override def validations: List[ValidationFunction] =  valMinLen(1, S.?("comment.must.not.be.empty")) _ ::
       super.validations
+  }*/
+
+  val description = new BsCkTextareaField[T](this, 512) {
+    override def displayName = S ? "Description"
   }
 
   object classType extends EnumNameField(this.asInstanceOf[T], ClassType)

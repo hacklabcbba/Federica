@@ -182,7 +182,6 @@ class FileField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
     }
   }
 
-  //callback triggered on afterSave field
   def deleteFiles(): Box[Unit] = tryo {
     MongoDB.use(MongoConfig.defaultId.vend) {
       db =>
