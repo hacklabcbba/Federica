@@ -59,7 +59,7 @@ class FileField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
     val file = this.get
 
     val uploadedData = (
-      ".link-item [href]" #> (downloadPath +"/"+  file.fileId.get) &
+      ".link-item [href]" #> (downloadPath +"/"+  file.fileId.get+ "/"+ file.fileName.get ) &
       ".preview-item *" #> previewFile &
       ".link-item *" #> file.fileName.get &
       ".size-item *" #> file.fileSize.get &
@@ -102,7 +102,7 @@ class FileField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
 
   def previewFile = {
     val f = this.get
-    var previewData = f.fileType.get match {
+    val previewData = f.fileType.get match {
       case "image/png" =>
         Some(<img src={s"/file/preview/${f.fileId.get}"} title={f.fileName.get}/>)
 
@@ -189,8 +189,7 @@ class FileField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
         val fs = new GridFS(db)
         deletedIds.map( fId => {
           println("aqui se deberia eliminar el file", fId)
-          val id: ObjectId = new ObjectId(fId)
-          fs.remove(id)
+          fs.remove(new ObjectId(fId))
         })
     }
   }
@@ -254,11 +253,13 @@ class FileField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
             $.each(files, function(i, f){
 
               var $row = $(""" + downloadTemplateItem + """);
-              var downloadPath =  '""" + downloadPath + """/' + f.fileId
+              var downloadPath =  '""" + downloadPath + """/' + f.fileId +'/'+ f.fileName
 
               $row.find(".link-item")
                 .attr("href", downloadPath )
                 .html(f.fileName);
+
+              $row.find(".preview-item").html(previewHtml(f))
 
               $row.find(".size-item")
                 .html("("+ f.fileSize +")("+ f.fileType +")");
@@ -285,6 +286,46 @@ class FileField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
 
             });
             return $rows;
+          }
+
+          function previewHtml(f){
+            var html = "";
+            switch(f.fileType){
+              case "image/png":
+              case "image/jpeg":
+              case "image/gif":
+              html = '<img src="/file/preview/'+ f.fileId+ '" title="'+ f.fileName +'" />';
+              break;
+
+              case "application/pdf":
+                html = '<i class="fa fa-file-pdf-o fa-3x" title="" />';
+                break;
+
+              case "application/zip":
+                html = '<i class="fa fa-file-zip-o fa-3x" title="" />';
+                break;
+
+              case "application/rar":
+                html = '<i class="fa fa-file-zip-o fa-3x" title="" />';
+                break;
+
+              case "application/msword":
+                html = '<i class="fa fa-file-word-o fa-3x" title="" />';
+                break;
+
+              case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+                html = '<i class="fa fa-file-excel-o fa-3x" title="" />';
+                break;
+
+              case "application/octet-stream":
+                html = '<i class="fa fa-file fa-3x" title="" />';
+                break;
+
+              default:
+                html = '<i class="fa fa-file fa-3x" title="" />';
+                break;
+            }
+            return html;
           }
         });
     """.stripMargin
@@ -318,6 +359,7 @@ class FileField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
     });
   """.stripMargin
   )
+
 }
 
 case class ItemFiles2Delete (fileId: String)

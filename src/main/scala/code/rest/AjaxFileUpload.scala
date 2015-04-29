@@ -12,6 +12,7 @@ import net.liftweb.http.rest.RestHelper
 import net.liftweb.http.{LiftResponse, JsonResponse, FileParamHolder, OkResponse}
 import net.liftweb.json.JsonAST.JValue
 import net.liftweb.mongodb.MongoDB
+import net.liftweb.util.JsonCommand.iterableToOption
 import org.joda.time.DateTime
 import net.liftweb.json._
 import net.liftweb.json.JsonDSL._
@@ -37,26 +38,32 @@ object AjaxFileUpload extends RestHelper {
 
   serve {
 
-    case "upload" :: Nil Post req => {
-      val jvalue = "files" -> req.uploadedFiles.map(file => {
-        println("Received: " + file.fileName)
+    case "upload" :: Nil Post req =>
+      val jValue = "files" -> req.uploadedFiles.map(file => {
         saveFile(file)
       })
-      println(jvalue)
-      response(jvalue)
-    }
+      response(jValue)
 
-    case "files" :: fileName :: Nil Get req => {
-      serveFile(fileName, req)
-    }
 
-    case "file" :: "preview" :: fileName :: Nil Get req => {
+    case "files" :: fileName:: dFileName :: Nil Get req =>
+      serveFile(fileName, req, {
+        (fileName) =>
+          Room.where(_.plane.subfield(_.fileId) eqs fileName).select(_.plane).fetch(1).headOption match{
+            case Some(fi) =>
+              fi.fileName.get
+            case _ =>
+              dFileName
+          }
+      })
+
+
+    case "file" :: "preview" :: fileName :: Nil Get req =>
       servePreviewFile(fileName, req)
-    }
   }
 
+
   private def response(jvalue: JValue): LiftResponse = {
-    JsonResponse(jvalue,200)
+    JsonResponse(jvalue, 200)
   }
 
   private def saveFile(fph: FileParamHolder) = {
@@ -74,7 +81,8 @@ object AjaxFileUpload extends RestHelper {
       fileType(auxType).fileSize(auxLength).creationDate(fileCreationDate)
 
     //Write file in Gridfs
-    writeFile(fph, fileMongoName)
+    val f = writeFile(fph, fileMongoName)
+
     ("fileId" -> fileMongoName) ~
       ("fileName" -> auxName) ~
       ("fileType" -> auxType) ~
@@ -92,23 +100,20 @@ object AjaxFileUpload extends RestHelper {
     }
   }
 
-  private def serveFile(fileName:String, req: Req): Box[LiftResponse] = {
+  private def serveFile(fileName:String, req: Req, dFileName: String => String): Box[LiftResponse] = {
 
     MongoDB.use(MongoConfig.defaultId.vend){
-
       db =>
         val fs = new GridFS(db)
         fs.findOne(fileName) match {
 
           case file: GridFSDBFile =>
-            println("file gridFSDBFile", file)
             val lastModified = file.getUploadDate.getTime
-            val fileRecord = Room.where(_.plane.subfield(_.fileId) eqs fileName).select(_.plane).fetch(1).headOption
-            println("file record", fileRecord)
+            val downloadFileName = dFileName(fileName)
 
-            Full(req.testFor304(lastModified, "Expires" -> toInternetDate(millis + 10.days)) openOr {
+              Full(req.testFor304(lastModified, "Expires" -> toInternetDate(millis + 10.days)) openOr {
               val headers =
-                ("Content-Disposition" -> ("attachment; filename="+ fileRecord.get.fileName.get) ) ::
+                ("Content-Disposition" -> ("attachment; filename="+ downloadFileName ) ) ::
                 ("Content-Type" -> file.getContentType) ::
                 ("Pragma" -> "") ::
                 ("Cache-Control" -> "") ::
@@ -141,15 +146,10 @@ object AjaxFileUpload extends RestHelper {
         fs.findOne(fileName) match {
 
           case file: GridFSDBFile =>
-            println("file gridFSDBFile", file)
             val lastModified = file.getUploadDate.getTime
-            val fileRecord = Room.where(_.plane.subfield(_.fileId) eqs fileName).select(_.plane).fetch(1).headOption
-            println("file record", fileRecord)
-
             Full(req.testFor304(lastModified, "Expires" -> toInternetDate(millis + 10.days)) openOr {
               val headers =
-                ("Content-Disposition" -> ("attachment; filename="+ fileRecord.get.fileName.get) ) ::
-                  ("Content-Type" -> file.getContentType) ::
+                ("Content-Type" -> file.getContentType) ::
                   ("Pragma" -> "") ::
                   ("Cache-Control" -> "") ::
                   ("Last-Modified" -> toInternetDate(lastModified)) ::
@@ -173,9 +173,25 @@ object AjaxFileUpload extends RestHelper {
             })
 
           case _ =>
-            println("file record empty")
             Empty
         }
     }
   }
+
+  private def withFileToDo(fileName:String, success: GridFSDBFile => String, fail: String => String ): String = {
+
+    var result = ""
+    MongoDB.use(MongoConfig.defaultId.vend){
+      db =>
+        val fs = new GridFS(db)
+        result = fs.findOne(fileName) match {
+          case f: GridFSDBFile =>
+            success(f)
+          case _ =>
+            fail(fileName)
+        }
+    }
+    result
+  }
+
 }
