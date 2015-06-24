@@ -1,0 +1,58 @@
+<div data-lift="surround?with=base-wrap;at=content">
+    <lift:head>
+        <title data-lift="Menu.title">Federica: %*%</title>
+    </lift:head>
+    <div class="main-content">
+        <h3>Nueva sala</h3>
+        <hr />
+        <div id="addForm" data-lift="SRoom.addForm">
+            <form data-lift="form.ajax?class=form-horizontal">
+
+                <div class="form-group">
+                    <label for="name" class="col-md-2 control-label">Nombre:</label>
+                    <div class="col-md-10" id="name" data-name="name"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description" class="col-md-2 control-label">Descripcion:</label>
+                    <div class="col-md-10" id="description" data-name="description"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="capacity" class="col-md-2 control-label">Capacidad:</label>
+                    <div class="col-md-10" id="capacity" data-name="capacity"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="code" class="col-md-2 control-label">Código:</label>
+                    <div class="col-md-10" id="code" data-name="code"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="state" class="col-md-2 control-label">Estado:</label>
+                    <div class="col-md-10" id="state" data-name="state"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="plane" class="col-md-2 control-label">Plano:</label>
+                    <div class="col-md-10" id="plane" data-name="plane"></div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="isReservable" class="col-md-2 control-label">Reservable:</label>
+                    <div class="col-md-10" id="isReservable" data-name="isReservable"></div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="cancel" class="btn btn-default">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <span data-lift="embed?what=/templates-hidden/parts/footer"></span>
+</div>

@@ -4,6 +4,7 @@ package resource
 
 import code.lib.RogueMetaRecord
 
+
 class ConcreteQuote private() extends Resource[ConcreteQuote] {
   override def meta = ConcreteQuote
 }

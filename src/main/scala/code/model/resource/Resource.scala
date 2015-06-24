@@ -2,16 +2,40 @@ package code
 package model
 package resource
 
+import code.lib.field.{BsCkTextareaField, BsTextareaField, BsStringField}
+import net.liftweb.common.Full
+import net.liftweb.http.{S, SHtml}
+import net.liftweb.http.js.JsCmds._
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{ObjectIdRefField, ObjectIdPk}
-import net.liftweb.record.field.StringField
-import code.model.resource
+import net.liftweb.record.field.EnumNameField
+
+import scala.xml.Text
 
 trait Resource[T <: MongoRecord[T]] extends MongoRecord[T] with ObjectIdPk[T] {
   this: T =>
 
-  object name extends StringField(this.asInstanceOf[T], 500)
-  object description extends StringField(this.asInstanceOf[T], 500)
-  object cost extends ObjectIdRefField(this.asInstanceOf[T], ConcreteQuote)
+  val name = new BsStringField[T](this, 500) {
+    override def toString = get
+    override def isAutoFocus = false
+    override def displayName: String = "Name"
+    override val fieldId = Some(Text("name"))
+    override def validations = valMinLen(2, "longitud minima") _ :: super.validations
+    override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
+      set(s)
+      Noop
+    }, "class" -> "form-control", "data-placeholder" -> "Ingrese descripcion.."))
+  }
 
+  /*val description = new BsTextareaField[T](this, 5000) {
+    override def displayName = S ? "Descripcion"
+    override def validations: List[ValidationFunction] =  valMinLen(1, S.?("comment.must.not.be.empty")) _ ::
+      super.validations
+  }*/
+
+  val description = new BsCkTextareaField[T](this, 512) {
+    override def displayName = S ? "Description"
+  }
+
+  object classType extends EnumNameField(this.asInstanceOf[T], ClassType)
 }

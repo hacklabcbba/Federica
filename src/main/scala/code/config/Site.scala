@@ -1,6 +1,7 @@
 package code
 package config
 
+import code.model.resource.Room
 import model.User
 
 import net.liftweb._
@@ -375,6 +376,15 @@ object Site extends Locs {
     ProcessMenu.menuAdd.menu,
     ProcessMenu.menuEdit.menu,
     ProcessMenu.menuList.menu,
+    ConcreteResourceMenu.menuAdd.menu,
+    ConcreteResourceMenu.menuEdit.menu,
+    ConcreteResourceMenu.menuList.menu,
+    RoomMenu.menuAdd.menu,
+    RoomMenu.menuEdit.menu,
+    RoomMenu.menuList.menu,
+    EquipmentMenu.menuAdd.menu,
+    EquipmentMenu.menuEdit.menu,
+    EquipmentMenu.menuList.menu,
     Menu.i("Error") / "error" >> Hidden,
     Menu.i("404") / "404" >> Hidden,
     Menu.i("Throw") / "throw"  >> EarlyResponse(() => throw new Exception("This is only a test.")),
