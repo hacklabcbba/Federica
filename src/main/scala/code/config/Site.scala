@@ -43,6 +43,8 @@ object Site extends Locs {
   // locations (menu entries)
   val home = MenuLoc(Menu.i("Inicio") / "index" >> TopBarGroup)
 
+  val dashboard = MenuLoc(Menu.i("Dashboard") / "dashboard" >> TopBarGroup >> RequireLoggedIn)
+
   /* Quienes somos menu */
   // Quienes somos
   val who = MenuLoc(Menu.i("Quienes somos") / "quienes-somos" >> TopBarGroup submenus(
@@ -344,6 +346,7 @@ object Site extends Locs {
 
   private def menus = List(
     home.menu,
+    dashboard.menu,
     Menu.i("Login") / "login" >> RequireNotLoggedIn,
     register.menu,
     loginToken.menu,

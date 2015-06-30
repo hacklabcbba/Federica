@@ -102,13 +102,7 @@ object UserLogin extends Loggable {
   def render = {
     // form vars
     var password = ""
-    var hasPassword = false
     var remember = User.loginCredentials.is.isRememberMe
-
-    val radios = SHtml.radioElem[Boolean](
-      Seq(false, true),
-      Full(hasPassword)
-    )(it => it.foreach(hasPassword = _))
 
     def doSubmit(): JsCmd = {
       S.param("email").map(e => {
@@ -116,29 +110,24 @@ object UserLogin extends Loggable {
         // save the email and remember entered in the session var
         User.loginCredentials(LoginCredentials(email, remember))
 
-        if (hasPassword && email.length > 0 && password.length > 0) {
+        if (email.length > 0 && password.length > 0) {
           User.findByEmail(email) match {
             case Full(user) if (user.password.isMatch(password)) =>
               logger.debug("pwd matched")
               User.logUserIn(user, true)
               if (remember) User.createExtSession(user.id.get)
               else ExtSession.deleteExtCookie()
-              RedirectTo(LoginRedirect.openOr(Site.home.url))
+              RedirectTo(LoginRedirect.openOr(Site.dashboard.url))
             case _ =>
               S.error("Invalid credentials")
               Noop
           }
         }
-        else if (hasPassword && email.length <= 0 && password.length > 0) {
+        else if (email.length <= 0 && password.length > 0) {
           S.error("id_email_err", "Please enter an email")
           Noop
         }
-        else if (hasPassword && password.length <= 0 && email.length > 0) {
-          S.error("id_password_err", "Please enter a password")
-          Noop
-        }
-        else if (hasPassword) {
-          S.error("id_email_err", "Please enter an email")
+        else if (password.length <= 0 && email.length > 0) {
           S.error("id_password_err", "Please enter a password")
           Noop
         }
@@ -166,8 +155,6 @@ object UserLogin extends Loggable {
 
     "#id_email [value]" #> User.loginCredentials.is.email &
       "#id_password" #> SHtml.password(password, password = _) &
-      "#no_password" #> radios(0) &
-      "#yes_password" #> radios(1) &
       "name=remember" #> SHtml.checkbox(remember, remember = _) &
       "#id_submit" #> SHtml.hidden(doSubmit)
   }

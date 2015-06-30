@@ -7,6 +7,7 @@ libs/select2/select2.min.js
 libs/jquery.upload/jquery.ui.widget.js
 libs/jquery.upload/jquery.iframe-transport.js
 libs/jquery.upload/jquery.fileupload.js
+libs/iCheck/icheck.min.js
 
 
 # bootstrap
