@@ -43,7 +43,7 @@ object Site extends Locs {
   // locations (menu entries)
   val home = MenuLoc(Menu.i("Inicio") / "index" >> TopBarGroup)
 
-  val dashboard = MenuLoc(Menu.i("Dashboard") / "dashboard" >> TopBarGroup >> RequireLoggedIn)
+  val dashboard = MenuLoc(Menu.i("Dashboard") / "dashboard" >> TopBarGroup >> RequireLoggedIn >> LeftMenuGroup)
 
   /* Quienes somos menu */
   // Quienes somos
@@ -186,87 +186,87 @@ object Site extends Locs {
   /* Menu Izquierdo */
   /* Agenda */
   // Agenda
-  val agenda = MenuLoc(Menu.i("Agenda") / "agenda" >> LeftMenuGroup submenus(
+  val agenda = MenuLoc(Menu.i("Agenda") / "agenda" submenus(
     // Agenda
-    Menu.i("Calendario de Actividades") / "calendario" >> LeftMenuGroup,
+    Menu.i("Calendario de Actividades") / "calendario",
     // Google Calendar
-    Menu.i("Google Calendar") / "google-calendar" >> LeftMenuGroup
+    Menu.i("Google Calendar") / "google-calendar"
     ))
 
   /* Participa */
   // Participa
-  val participa = MenuLoc(Menu.i("Participa") / "participa" >> LeftMenuGroup submenus(
+  val participa = MenuLoc(Menu.i("Participa") / "participa"  submenus(
     // Como artista
-    Menu.i("Como artista") / "como-artista" >> LeftMenuGroup,
+    Menu.i("Como artista") / "como-artista",
     // Como organizacion
-    Menu.i("Como organización") / "como-organizacion" >> LeftMenuGroup,
+    Menu.i("Como organización") / "como-organizacion",
     // Como auspiciador
-    Menu.i("Como auspiciador") / "como-auspiciador" >> LeftMenuGroup,
+    Menu.i("Como auspiciador") / "como-auspiciador",
     // Como voluntario
-    Menu.i("Como voluntario") / "como-voluntario" >> LeftMenuGroup
+    Menu.i("Como voluntario") / "como-voluntario"
     ))
 
   /* Espacio */
   // Espacio
-  val espacio = MenuLoc(Menu.i("Espacio") / "espacio" >> LeftMenuGroup submenus(
+  val espacio = MenuLoc(Menu.i("Espacio") / "espacio" submenus(
     // Conoce mARTadero
-    Menu.i("Conoce mARTadero") / "conoce-martadero" >> LeftMenuGroup submenus(
+    Menu.i("Conoce mARTadero") / "conoce-martadero" submenus(
       // Salas y equipamiento
-      Menu.i("Salas y Equpamiento") / "salas-y-equipamiento" >> LeftMenuGroup
+      Menu.i("Salas y Equpamiento") / "salas-y-equipamiento"
       ),
     // Aporte por uso
-    Menu.i("Aporte por uso") / "aporte-por-uso" >> LeftMenuGroup submenus(
+    Menu.i("Aporte por uso") / "aporte-por-uso"  submenus(
       // Cuadro de estimaciones
-      Menu.i("Cuadro de estimaciones") / "cuadro-de-estimaciones" >> LeftMenuGroup
+      Menu.i("Cuadro de estimaciones") / "cuadro-de-estimaciones"
       ),
     // Solicita un espacio
-    Menu.i("Solicita un espacio") / "solicita-un-espacio" >> LeftMenuGroup submenus(
+    Menu.i("Solicita un espacio") / "solicita-un-espacio"  submenus(
       // Formulario de solicitud
-      Menu.i("Formulario de solicitud") / "formulario-de-solicitud" >> LeftMenuGroup
+      Menu.i("Formulario de solicitud") / "formulario-de-solicitud"
       )
     ))
 
   /* Media */
   // Media
-  val media = MenuLoc(Menu.i("Media") / "media" >> LeftMenuGroup submenus(
+  val media = MenuLoc(Menu.i("Media") / "media" submenus(
     // Biblioteca libre
-    Menu.i("Biblioteca libre") / "biblioteca-libre" >> LeftMenuGroup,
+    Menu.i("Biblioteca libre") / "biblioteca-libre",
     // Descargas (logos, fuentes, libros, catálogos)
-    Menu.i("Descargas (logos, fuentes, libros, catálogos)") / "descargas" >> LeftMenuGroup,
+    Menu.i("Descargas (logos, fuentes, libros, catálogos)") / "descargas" ,
     // Contextopedia
-    Menu.i("Contextopedia") / "contextopedia" >> LeftMenuGroup,
+    Menu.i("Contextopedia") / "contextopedia" ,
     // Redes Sociales
-    Menu.i("Redes Sociales") / "redes-sociales" >> LeftMenuGroup,
+    Menu.i("Redes Sociales") / "redes-sociales",
     // Fotos mARTadero (Flickr mARTadero)
-    Menu.i("Fotos mARTadero (Flickr mARTadero)") / "fotos" >> LeftMenuGroup,
+    Menu.i("Fotos mARTadero (Flickr mARTadero)") / "fotos" ,
     // Videos mARTadero (Canal de YouTube)
-    Menu.i("Videos mARTadero (Canal de YouTube)") / "videos" >> LeftMenuGroup,
+    Menu.i("Videos mARTadero (Canal de YouTube)") / "videos",
     // Rss Newsfeed (general/áreas)
-    Menu.i("Rss Newsfeed (general/áreas)") / "rss" >> LeftMenuGroup
+    Menu.i("Rss Newsfeed (general/áreas)") / "rss"
     ))
 
   /* Blog */
   // Blog
-  val blog = MenuLoc(Menu.i("Blog") / "blog" >> LeftMenuGroup)
+  val blog = MenuLoc(Menu.i("Blog") / "blog")
 
   /* Convocatorias */
   // Convocatorias
-  val convocatorias = MenuLoc(Menu.i("Convocatorias") / "convocatorias" >> LeftMenuGroup)
+  val convocatorias = MenuLoc(Menu.i("Convocatorias") / "convocatorias")
 
   /* Contacto */
   // Contacto
-  val contacto = MenuLoc(Menu.i("Contacto") / "contacto" >> LeftMenuGroup submenus(
+  val contacto = MenuLoc(Menu.i("Contacto") / "contacto" submenus(
     // Contacto
-    Menu.i("Contactacte con mARTadero ") / "formulario-de-contacto" >> LeftMenuGroup,
+    Menu.i("Contactacte con mARTadero ") / "formulario-de-contacto",
     // Mapa
-    Menu.i("Mapa") / "mapa" >> LeftMenuGroup,
+    Menu.i("Mapa") / "mapa",
     // Como llegar
-    Menu.i("Como llegar") / "como-llegar" >> LeftMenuGroup
+    Menu.i("Como llegar") / "como-llegar"
     ))
 
   /* Administracion */
   // Administracion
-  val administracion = MenuLoc(Menu.i("Administración") / "dashboard" >> LeftMenuGroup)
+  //val administracion = MenuLoc(Menu.i("Administración") / "dashboard" >> LeftMenuGroup)
 
   /* Menu Derecha */
   /* Procesos */
@@ -333,16 +333,49 @@ object Site extends Locs {
 
   val loginToken = MenuLoc(buildLoginTokenMenu)
   val logout = MenuLoc(buildLogoutMenu)
-  private val profileParamMenu = Menu.param[User]("User", "Profile",
+  private val profileParamMenu = Menu.param[User]("User", "Perfil",
     User.findByUsername _,
     _.username.get
-  ) / "user" >> Loc.CalcValue(() => User.currentUser)
+  ) / "user" >> Loc.CalcValue(() => User.currentUser) >> LeftMenuGroup
   lazy val profileLoc = profileParamMenu.toLoc
 
   val password = MenuLoc(Menu.i("Password") / "settings" / "password" >> RequireLoggedIn >> SettingsGroup)
   val account = MenuLoc(Menu.i("Account") / "settings" / "account" >> SettingsGroup >> RequireLoggedIn)
   val editProfile = MenuLoc(Menu("EditProfile", "Profile") / "settings" / "profile" >> SettingsGroup >> RequireLoggedIn)
   val register = MenuLoc(Menu.i("Register") / "register" >> RequireNotLoggedIn)
+
+  //Backend menu
+
+  val backendMessages = MenuLoc(Menu.i("Mensajes") / "backend" / "messages" >> TemplateBox(() => Templates("backend" :: "messages" :: "index" :: Nil)) >> RequireLoggedIn >> LeftMenuGroup)
+
+  val backendPendingEvents = MenuLoc(Menu.i("Solicitudes") / "backend" / "events" / "pendingevents" >> RequireLoggedIn)
+
+  val backendApprovedEvents = MenuLoc(Menu.i("Eventos") / "backend" / "events" / "index" >> RequireLoggedIn)
+
+  val backendCalendar = MenuLoc(Menu.i("Calendario") / "backend" / "events" / "calendar" >> RequireLoggedIn)
+
+  val backendResidencies = MenuLoc(Menu.i("Residencias") / "backend" / "events" / "residencies" >> RequireLoggedIn)
+
+  val backendEvents = MenuLoc(Menu.i("Módulo de Eventos") / "backend" / "events" >> RequireLoggedIn >> LeftMenuGroup submenus(
+    backendPendingEvents.menu, backendApprovedEvents.menu, backendCalendar.menu, backendResidencies.menu
+    ))
+
+  val backendCalls = MenuLoc(Menu.i("Convocatorias") / "backend" / "calls" >> RequireLoggedIn >> LeftMenuGroup)
+
+  val backendRooms = MenuLoc(Menu.i("Salas") / "backend" / "rooms" >> RequireLoggedIn >> LeftMenuGroup)
+
+  val backendAreas = MenuLoc(Menu.i("Módulo de Áreas") / "backend" / "areas" >> RequireLoggedIn >> LeftMenuGroup)
+
+  val backendFiles = MenuLoc(Menu.i("Archivos") / "backend" / "files" >> RequireLoggedIn >> LeftMenuGroup)
+
+  val backendServices = MenuLoc(Menu.i("Accesorios y Servicios") / "backend" / "services" >> RequireLoggedIn >> LeftMenuGroup)
+
+  val backendUsers = MenuLoc(Menu.i("Usuarios") / "backend" / "usuarios" >> RequireLoggedIn >> LeftMenuGroup)
+
+  val backendBlog = MenuLoc(Menu.i("Módulo Blog") / "backend" / "blog" >> RequireLoggedIn >> LeftMenuGroup)
+
+
+
 
   private def menus = List(
     home.menu,
@@ -355,7 +388,14 @@ object Site extends Locs {
     account.menu,
     password.menu,
     editProfile.menu,
-    ProductiveUnitMenu.menuAdd.menu,
+    backendMessages.menu,
+    backendEvents.menu,
+    backendAreas.menu,
+    backendFiles.menu,
+    backendServices.menu,
+    backendUsers.menu,
+    backendBlog.menu,
+    /*ProductiveUnitMenu.menuAdd.menu,
     ProductiveUnitMenu.menuEdit.menu,
     ProductiveUnitMenu.menuList.menu,
     EventMenu.menuAdd.menu,
@@ -387,7 +427,7 @@ object Site extends Locs {
     RoomMenu.menuList.menu,
     EquipmentMenu.menuAdd.menu,
     EquipmentMenu.menuEdit.menu,
-    EquipmentMenu.menuList.menu,
+    EquipmentMenu.menuList.menu,*/
     Menu.i("Error") / "error" >> Hidden,
     Menu.i("404") / "404" >> Hidden,
     Menu.i("Throw") / "throw"  >> EarlyResponse(() => throw new Exception("This is only a test.")),
@@ -404,8 +444,7 @@ object Site extends Locs {
     media.menu,
     blog.menu,
     convocatorias.menu,
-    contacto.menu,
-    administracion.menu
+    contacto.menu
   )
 
   /*
