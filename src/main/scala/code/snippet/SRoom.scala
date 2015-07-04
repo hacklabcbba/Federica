@@ -23,9 +23,10 @@ object SRoom extends SnippetHelper {
     "data-name=description *" #> item.description.toForm &
     "data-name=capacity *" #> item.capacity.toForm &
     "data-name=code *" #> item.code.toForm &
-    "data-name=state *" #> item.state.toForm &
+    "data-name=state *" #> item.status.toForm &
     "data-name=plane *" #> item.plane.toForm &
-    "data-name=isReservable *" #> item.isReservable.toForm &
+    "data-name=isReservable *" #> item.isBookable.toForm &
+    "data-name=isReservable *" #> item.isBookableShift.toForm &
     "type=submit" #> SHtml.ajaxOnSubmit(() => save(item))&
     "type=cancel" #> SHtml.ajaxButton("Cancelar", () => RedirectTo(menu.menuList.url), "class"->"btn btn-default" )
   }
@@ -38,9 +39,10 @@ object SRoom extends SnippetHelper {
       "data-name=description *" #> item.description.toForm &
       "data-name=capacity *" #> item.capacity.toForm &
       "data-name=code *" #> item.code.toForm &
-      "data-name=state *" #> item.state.toForm &
+      "data-name=state *" #> item.status.toForm &
       "data-name=plane *" #> item.plane.toEditForm &
-      "data-name=isReservable *" #> item.isReservable.toForm &
+      "data-name=isReservable *" #> item.isBookable.toForm &
+        "data-name=isReservable *" #> item.isBookableShift.toForm &
       "type=submit" #> SHtml.ajaxOnSubmit(() => update(item)) &
       "type=cancel" #> SHtml.ajaxButton("Cancelar", () => RedirectTo(menu.menuList.url), "class"->"btn btn-default" )
     }:CssSel
@@ -53,9 +55,9 @@ object SRoom extends SnippetHelper {
         "data-name=name *"  #> item.name &
         "data-name=capacity *"  #> item.capacity.toString &
         "data-name=code *" #> item.code.toString &
-        "data-name=state *" #> item.state.toString &
+        "data-name=state *" #> item.status.toString &
         "data-name=plane *" #> item.plane.toListElement &
-        "data-name=isReservable *" #> item.isReservable.toString &
+        "data-name=isReservable *" #> item.isBookable.toString &
         "data-name=edit *" #> SHtml.ajaxButton(
           "Editar",
           () => RedirectTo(menu.menuEdit.url, () => roomRequestVar.set(Full(item))),

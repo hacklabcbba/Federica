@@ -1,10 +1,11 @@
 package code
 package config
 
-import code.model.resource.Room
+import code.model.resource.{Equipment, Room}
 import model.User
 
 import net.liftweb._
+import net.liftweb.common.Full
 import net.liftweb.http.{Templates, S}
 import code.lib.menu._
 import net.liftweb._
@@ -346,23 +347,64 @@ object Site extends Locs {
 
   //Backend menu
 
-  val backendMessages = MenuLoc(Menu.i("Mensajes") / "backend" / "messages" >> TemplateBox(() => Templates("backend" :: "messages" :: "index" :: Nil)) >> RequireLoggedIn >> LeftMenuGroup)
+  val backendMessages = MenuLoc(Menu.i("Mensajes") / "backend" / "messages" >>
+    TemplateBox(() => Templates("templates-hidden" :: "backend" :: "listing-table" :: Nil)) >> RequireLoggedIn >> LeftMenuGroup)
 
   val backendPendingEvents = MenuLoc(Menu.i("Solicitudes") / "backend" / "events" / "pendingevents" >> RequireLoggedIn)
 
   val backendApprovedEvents = MenuLoc(Menu.i("Eventos") / "backend" / "events" / "index" >> RequireLoggedIn)
+
+  val backendApprovedEventsWorkshops = MenuLoc(Menu.i("Talleres") / "backend" / "events" / "workshops" >> RequireLoggedIn)
 
   val backendCalendar = MenuLoc(Menu.i("Calendario") / "backend" / "events" / "calendar" >> RequireLoggedIn)
 
   val backendResidencies = MenuLoc(Menu.i("Residencias") / "backend" / "events" / "residencies" >> RequireLoggedIn)
 
   val backendEvents = MenuLoc(Menu.i("Módulo de Eventos") / "backend" / "events" >> RequireLoggedIn >> LeftMenuGroup submenus(
-    backendPendingEvents.menu, backendApprovedEvents.menu, backendCalendar.menu, backendResidencies.menu
+    backendPendingEvents.menu, backendApprovedEvents.menu, backendCalendar.menu, backendResidencies.menu, backendApprovedEventsWorkshops.menu
     ))
 
   val backendCalls = MenuLoc(Menu.i("Convocatorias") / "backend" / "calls" >> RequireLoggedIn >> LeftMenuGroup)
 
-  val backendRooms = MenuLoc(Menu.i("Salas") / "backend" / "rooms" >> RequireLoggedIn >> LeftMenuGroup)
+  val backendRoomAdd = Menu.param[Room](
+    "Agregar sala", "Agregar sala",
+    s => Full(Room.createRecord),
+    s => "new") / "backend" / "rooms" / "add" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendRoomEdit = Menu.param[Room](
+    "Editar sala", "Editar sala",
+    Room.find,
+    s => s.id.get.toString) / "backend" / "rooms" / "edit" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendRooms = MenuLoc(Menu.i("Salas") / "backend" / "rooms" >> RequireLoggedIn >> LeftMenuGroup >>
+    TemplateBox(() => Templates("backend" :: "rooms" :: "index" :: Nil)) submenus(
+      backendRoomAdd, backendRoomEdit))
+
+  val backendEquipmentAdd = Menu.param[Equipment](
+    "Agregar equipo", "Agregar equipo",
+    s => Full(Equipment.createRecord),
+    s => "new") / "backend" / "equipments" / "add" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendEquipmentEdit = Menu.param[Equipment](
+    "Editar equipo", "Editar equipo",
+    Equipment.find,
+    s => s.id.get.toString) / "backend" / "equipments" / "edit" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendEquipments = MenuLoc(Menu.i("Equipos") / "backend" / "equipments" >> RequireLoggedIn >> LeftMenuGroup >>
+    TemplateBox(() => Templates("backend" :: "equipments" :: "index" :: Nil)) submenus(
+    backendEquipmentAdd, backendEquipmentEdit))
 
   val backendAreas = MenuLoc(Menu.i("Módulo de Áreas") / "backend" / "areas" >> RequireLoggedIn >> LeftMenuGroup)
 
@@ -370,9 +412,23 @@ object Site extends Locs {
 
   val backendServices = MenuLoc(Menu.i("Accesorios y Servicios") / "backend" / "services" >> RequireLoggedIn >> LeftMenuGroup)
 
+  //Submenus equipos, accesorios y servicios
+
   val backendUsers = MenuLoc(Menu.i("Usuarios") / "backend" / "usuarios" >> RequireLoggedIn >> LeftMenuGroup)
 
   val backendBlog = MenuLoc(Menu.i("Módulo Blog") / "backend" / "blog" >> RequireLoggedIn >> LeftMenuGroup)
+
+  // Salas
+
+  // Lineas de accion
+
+  // Procesos
+
+  // Tags y cada tag debe poder tener asociada una descripcion
+
+  // Modulos Cotizaciones con posibilidad de modificar por admins y descuentos a nivel de item
+
+  // Programas
 
 
 
@@ -389,6 +445,8 @@ object Site extends Locs {
     password.menu,
     editProfile.menu,
     backendMessages.menu,
+    backendRooms.menu,
+    backendEquipments.menu,
     backendEvents.menu,
     backendAreas.menu,
     backendFiles.menu,

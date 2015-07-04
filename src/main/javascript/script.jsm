@@ -14,7 +14,6 @@ libs/iCheck/icheck.min.js
 libs/bootstrap-slider/bootstrap-slider.js
 libs/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js
 libs/chartjs/Chart.js
-libs/ckeditor/ckeditor.js
 libs/colorpicker/bootstrap-colorpicker.min.js
 libs/datatables/jquery.dataTables.min.js
 libs/datatables/dataTables.bootstrap.min.js
@@ -30,7 +29,7 @@ libs/jQueryUI/jquery-ui.js
 libs/jvectormap/jquery-jvectormap-1.2.2.min.js
 libs/jvectormap/jquery-jvectormap-world-mill-en.js
 libs/knob/jquery.knob.js
-libs/morris/morris.min.js
+#libs/morris/morris.min.js
 libs/pace/pace.js
 libs/slimScroll/jquery.slimscroll.js
 libs/sparkline/jquery.sparkline.js

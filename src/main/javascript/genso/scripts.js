@@ -1,4 +1,4 @@
-$(document).ready(function() {
+/*$(document).ready(function() {
 
     $('#carousel-areas').carousel({
         interval: 500000
@@ -95,10 +95,10 @@ $(document).ready(function() {
       function (start, end) {
         alert("You chose: " + start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
       });
-
+*/
       /* jQueryKnob */
-      $(".knob").knob();
-
+  //    $(".knob").knob();
+/*
       //jvectormap data
       var visitorsData = {
         "US": 398, //USA
@@ -172,10 +172,10 @@ $(document).ready(function() {
       $('#chat-box').slimScroll({
         height: '250px'
       });
-
+*/
       /* Morris.js Charts */
       // Sales chart
-      var area = new Morris.Area({
+/*      var area = new Morris.Area({
         element: 'revenue-chart',
         resize: true,
         data: [
@@ -279,3 +279,4 @@ var showUploadedFile = {
 
 
 
+*/
