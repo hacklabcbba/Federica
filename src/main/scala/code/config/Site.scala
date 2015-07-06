@@ -1,10 +1,11 @@
 package code
 package config
 
-import code.model.resource.Room
+import code.model.resource.{Equipment, Room}
 import model.User
 
 import net.liftweb._
+import net.liftweb.common.Full
 import net.liftweb.http.{Templates, S}
 import code.lib.menu._
 import net.liftweb._
@@ -14,7 +15,6 @@ import Loc._
 
 import net.liftmodules.mongoauth.Locs
 import code.model._
-import process._
 import network._
 
 
@@ -43,6 +43,8 @@ object Site extends Locs {
   // locations (menu entries)
   val home = MenuLoc(Menu.i("Inicio") / "index" >> TopBarGroup)
 
+  val dashboard = MenuLoc(Menu.i("Dashboard") / "dashboard" >> TopBarGroup >> RequireLoggedIn >> LeftMenuGroup)
+
   /* Quienes somos menu */
   // Quienes somos
   val who = MenuLoc(Menu.i("Quienes somos") / "quienes-somos" >> TopBarGroup submenus(
@@ -53,7 +55,7 @@ object Site extends Locs {
 
   /* Áreas menu*/
   // Áreas
-  val areas = MenuLoc(Menu.i("Áreas") / "areas" >> TopBarGroup submenus(
+  val areas = MenuLoc(Menu.i("Ver Áreas") / "areas" >> TopBarGroup submenus(
     // Áreas
     Menu.i("Artes Escénicas") / "artes-escenicas" >> TopBarGroup submenus(
       // Elenco mARTadero
@@ -88,7 +90,7 @@ object Site extends Locs {
 
   /* Programas */
   // Programas
-  val programs = MenuLoc(Menu.i("Programs") / "programs" >> TopBarGroup submenus(
+  val programs = MenuLoc(Menu.i("Ver Programs") / "programs" >> TopBarGroup submenus(
     // formARTe
     Menu.i("formARTe") / "formarte" >> TopBarGroup,
     // Taller de creatividad infantil
@@ -184,87 +186,87 @@ object Site extends Locs {
   /* Menu Izquierdo */
   /* Agenda */
   // Agenda
-  val agenda = MenuLoc(Menu.i("Agenda") / "agenda" >> LeftMenuGroup submenus(
+  val agenda = MenuLoc(Menu.i("Agenda") / "agenda" submenus(
     // Agenda
-    Menu.i("Calendario de Actividades") / "calendario" >> LeftMenuGroup,
+    Menu.i("Calendario de Actividades") / "calendario",
     // Google Calendar
-    Menu.i("Google Calendar") / "google-calendar" >> LeftMenuGroup
+    Menu.i("Google Calendar") / "google-calendar"
     ))
 
   /* Participa */
   // Participa
-  val participa = MenuLoc(Menu.i("Participa") / "participa" >> LeftMenuGroup submenus(
+  val participa = MenuLoc(Menu.i("Participa") / "participa"  submenus(
     // Como artista
-    Menu.i("Como artista") / "como-artista" >> LeftMenuGroup,
+    Menu.i("Como artista") / "como-artista",
     // Como organizacion
-    Menu.i("Como organización") / "como-organizacion" >> LeftMenuGroup,
+    Menu.i("Como organización") / "como-organizacion",
     // Como auspiciador
-    Menu.i("Como auspiciador") / "como-auspiciador" >> LeftMenuGroup,
+    Menu.i("Como auspiciador") / "como-auspiciador",
     // Como voluntario
-    Menu.i("Como voluntario") / "como-voluntario" >> LeftMenuGroup
+    Menu.i("Como voluntario") / "como-voluntario"
     ))
 
   /* Espacio */
   // Espacio
-  val espacio = MenuLoc(Menu.i("Espacio") / "espacio" >> LeftMenuGroup submenus(
+  val espacio = MenuLoc(Menu.i("Espacio") / "espacio" submenus(
     // Conoce mARTadero
-    Menu.i("Conoce mARTadero") / "conoce-martadero" >> LeftMenuGroup submenus(
+    Menu.i("Conoce mARTadero") / "conoce-martadero" submenus(
       // Salas y equipamiento
-      Menu.i("Salas y Equpamiento") / "salas-y-equipamiento" >> LeftMenuGroup
+      Menu.i("Salas y Equpamiento") / "salas-y-equipamiento"
       ),
     // Aporte por uso
-    Menu.i("Aporte por uso") / "aporte-por-uso" >> LeftMenuGroup submenus(
+    Menu.i("Aporte por uso") / "aporte-por-uso"  submenus(
       // Cuadro de estimaciones
-      Menu.i("Cuadro de estimaciones") / "cuadro-de-estimaciones" >> LeftMenuGroup
+      Menu.i("Cuadro de estimaciones") / "cuadro-de-estimaciones"
       ),
     // Solicita un espacio
-    Menu.i("Solicita un espacio") / "solicita-un-espacio" >> LeftMenuGroup submenus(
+    Menu.i("Solicita un espacio") / "solicita-un-espacio"  submenus(
       // Formulario de solicitud
-      Menu.i("Formulario de solicitud") / "formulario-de-solicitud" >> LeftMenuGroup
+      Menu.i("Formulario de solicitud") / "formulario-de-solicitud"
       )
     ))
 
   /* Media */
   // Media
-  val media = MenuLoc(Menu.i("Media") / "media" >> LeftMenuGroup submenus(
+  val media = MenuLoc(Menu.i("Media") / "media" submenus(
     // Biblioteca libre
-    Menu.i("Biblioteca libre") / "biblioteca-libre" >> LeftMenuGroup,
+    Menu.i("Biblioteca libre") / "biblioteca-libre",
     // Descargas (logos, fuentes, libros, catálogos)
-    Menu.i("Descargas (logos, fuentes, libros, catálogos)") / "descargas" >> LeftMenuGroup,
+    Menu.i("Descargas (logos, fuentes, libros, catálogos)") / "descargas" ,
     // Contextopedia
-    Menu.i("Contextopedia") / "contextopedia" >> LeftMenuGroup,
+    Menu.i("Contextopedia") / "contextopedia" ,
     // Redes Sociales
-    Menu.i("Redes Sociales") / "redes-sociales" >> LeftMenuGroup,
+    Menu.i("Redes Sociales") / "redes-sociales",
     // Fotos mARTadero (Flickr mARTadero)
-    Menu.i("Fotos mARTadero (Flickr mARTadero)") / "fotos" >> LeftMenuGroup,
+    Menu.i("Fotos mARTadero (Flickr mARTadero)") / "fotos" ,
     // Videos mARTadero (Canal de YouTube)
-    Menu.i("Videos mARTadero (Canal de YouTube)") / "videos" >> LeftMenuGroup,
+    Menu.i("Videos mARTadero (Canal de YouTube)") / "videos",
     // Rss Newsfeed (general/áreas)
-    Menu.i("Rss Newsfeed (general/áreas)") / "rss" >> LeftMenuGroup
+    Menu.i("Rss Newsfeed (general/áreas)") / "rss"
     ))
 
   /* Blog */
   // Blog
-  val blog = MenuLoc(Menu.i("Blog") / "blog" >> LeftMenuGroup)
+  val blog = MenuLoc(Menu.i("Blog") / "blog")
 
   /* Convocatorias */
   // Convocatorias
-  val convocatorias = MenuLoc(Menu.i("Convocatorias") / "convocatorias" >> LeftMenuGroup)
+  val convocatorias = MenuLoc(Menu.i("Convocatorias") / "convocatorias")
 
   /* Contacto */
   // Contacto
-  val contacto = MenuLoc(Menu.i("Contacto") / "contacto" >> LeftMenuGroup submenus(
+  val contacto = MenuLoc(Menu.i("Contacto") / "contacto" submenus(
     // Contacto
-    Menu.i("Contactacte con mARTadero ") / "formulario-de-contacto" >> LeftMenuGroup,
+    Menu.i("Contactacte con mARTadero ") / "formulario-de-contacto",
     // Mapa
-    Menu.i("Mapa") / "mapa" >> LeftMenuGroup,
+    Menu.i("Mapa") / "mapa",
     // Como llegar
-    Menu.i("Como llegar") / "como-llegar" >> LeftMenuGroup
+    Menu.i("Como llegar") / "como-llegar"
     ))
 
   /* Administracion */
   // Administracion
-  val administracion = MenuLoc(Menu.i("Administración") / "dashboard" >> LeftMenuGroup)
+  //val administracion = MenuLoc(Menu.i("Administración") / "dashboard" >> LeftMenuGroup)
 
   /* Menu Derecha */
   /* Procesos */
@@ -331,10 +333,10 @@ object Site extends Locs {
 
   val loginToken = MenuLoc(buildLoginTokenMenu)
   val logout = MenuLoc(buildLogoutMenu)
-  private val profileParamMenu = Menu.param[User]("User", "Profile",
+  private val profileParamMenu = Menu.param[User]("User", "Perfil",
     User.findByUsername _,
     _.username.get
-  ) / "user" >> Loc.CalcValue(() => User.currentUser)
+  ) / "user" >> Loc.CalcValue(() => User.currentUser) >> LeftMenuGroup
   lazy val profileLoc = profileParamMenu.toLoc
 
   val password = MenuLoc(Menu.i("Password") / "settings" / "password" >> RequireLoggedIn >> SettingsGroup)
@@ -342,8 +344,167 @@ object Site extends Locs {
   val editProfile = MenuLoc(Menu("EditProfile", "Profile") / "settings" / "profile" >> SettingsGroup >> RequireLoggedIn)
   val register = MenuLoc(Menu.i("Register") / "register" >> RequireNotLoggedIn)
 
+  //Backend menu
+
+  val backendMessages = MenuLoc(Menu.i("Mensajes") / "backend" / "messages" >>
+    TemplateBox(() => Templates("templates-hidden" :: "backend" :: "listing-table" :: Nil)) >> RequireLoggedIn >> LeftMenuGroup)
+
+  val backendPendingEvents = MenuLoc(Menu.i("Solicitudes") / "backend" / "events" / "pendingevents" >> RequireLoggedIn)
+
+  val backendApprovedEvents = MenuLoc(Menu.i("Eventos aprobados") / "backend" / "events" / "index" >> RequireLoggedIn)
+
+  val backendApprovedEventsWorkshops = MenuLoc(Menu.i("Talleres") / "backend" / "events" / "workshops" >> RequireLoggedIn)
+
+  val backendCalendar = MenuLoc(Menu.i("Calendario") / "backend" / "events" / "calendar" >> RequireLoggedIn)
+
+  val backendResidencies = MenuLoc(Menu.i("Residencias") / "backend" / "events" / "residencies" >> RequireLoggedIn)
+
+  val backendEvents = MenuLoc(Menu.i("Eventos") / "backend" / "events" >> RequireLoggedIn >> LeftMenuGroup submenus(
+    backendPendingEvents.menu, backendApprovedEvents.menu, backendCalendar.menu, backendResidencies.menu, backendApprovedEventsWorkshops.menu
+    ))
+
+  val backendCalls = MenuLoc(Menu.i("Convocatorias") / "backend" / "calls" >> RequireLoggedIn >> LeftMenuGroup)
+
+  val backendRoomAdd = Menu.param[Room](
+    "Agregar sala", "Agregar sala",
+    s => Full(Room.createRecord),
+    s => "new") / "backend" / "rooms" / "add" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendRoomEdit = Menu.param[Room](
+    "Editar sala", "Editar sala",
+    Room.find,
+    s => s.id.get.toString) / "backend" / "rooms" / "edit" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendRooms = MenuLoc(Menu.i("Salas") / "backend" / "rooms" >> RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "rooms" :: "index" :: Nil)) submenus(
+      backendRoomAdd, backendRoomEdit))
+
+  val backendEquipmentAdd = Menu.param[Equipment](
+    "Agregar equipo", "Agregar equipo",
+    s => Full(Equipment.createRecord),
+    s => "new") / "backend" / "equipments" / "add" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendEquipmentEdit = Menu.param[Equipment](
+    "Editar equipo", "Editar equipo",
+    Equipment.find,
+    s => s.id.get.toString) / "backend" / "equipments" / "edit" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendEquipments = MenuLoc(Menu.i("Equipos") / "backend" / "equipments" >> RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "equipments" :: "index" :: Nil)) submenus(
+    backendEquipmentAdd, backendEquipmentEdit))
+
+  val backendAreaAdd = Menu.param[Area](
+    "Agregar área", "Agregar área",
+    s => Full(Area.createRecord),
+    s => "new") / "backend" / "areas" / "add" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendAreaEdit = Menu.param[Area](
+    "Editar área", "Editar área",
+    Area.find,
+    s => s.id.get.toString) / "backend" / "areas" / "edit" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendAreas = MenuLoc(Menu.i("Áreas") / "backend" / "areas" >> RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "areas" :: "index" :: Nil)) submenus(
+    backendAreaAdd, backendAreaEdit))
+
+  val backendProgramAdd = Menu.param[Program](
+    "Agregar programa", "Agregar programa",
+    s => Full(Program.createRecord),
+    s => "new") / "backend" / "program" / "add" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendProgramEdit = Menu.param[Program](
+    "Editar programa", "Editar programa",
+    Program.find,
+    s => s.id.get.toString) / "backend" / "programs" / "edit" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendPrograms = MenuLoc(Menu.i("Programas") / "backend" / "programs" >> RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "programs" :: "index" :: Nil)) submenus(
+    backendProgramAdd, backendProgramEdit))
+
+  val backendProcessAdd = Menu.param[Process](
+    "Agregar proceso", "Agregar proceso",
+    s => Full(Process.createRecord),
+    s => "new") / "backend" / "process" / "add" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendProcessEdit = Menu.param[Process](
+    "Editar proceso", "Editar proceso",
+    Process.find,
+    s => s.id.get.toString) / "backend" / "process" / "edit" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendProcess = MenuLoc(Menu.i("Procesos") / "backend" / "process" >> RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "process" :: "index" :: Nil)) submenus(
+    backendProcessAdd, backendProcessEdit))
+
+  val backendFiles = MenuLoc(Menu.i("Archivos") / "backend" / "files" >> RequireLoggedIn >> LeftMenuGroup)
+
+  val backendServices = MenuLoc(Menu.i("Accesorios y Servicios") / "backend" / "services" >> RequireLoggedIn)
+
+  //Submenus equipos, accesorios y servicios
+
+  val backendUsers = MenuLoc(Menu.i("Usuarios") / "backend" / "usuarios" >> RequireLoggedIn)
+
+  val backendBlog = MenuLoc(Menu.i("Módulo Blog") / "backend" / "blog" >> RequireLoggedIn >> LeftMenuGroup)
+
+  val backendAdminModule = MenuLoc(Menu.i("Administración") / "backend" / "admin" >>
+    RequireLoggedIn >>
+    LeftMenuGroup >>
+    PlaceHolder submenus(
+    backendAreas.menu,
+    backendPrograms.menu,
+    backendProcess.menu,
+    backendRooms.menu,
+    backendServices.menu,
+    backendEquipments.menu,
+    backendUsers.menu))
+
+  // Salas
+
+  // Lineas de accion
+
+  // Procesos
+
+  // Tags y cada tag debe poder tener asociada una descripcion
+
+  // Modulos Cotizaciones con posibilidad de modificar por admins y descuentos a nivel de item
+
+  // Programas
+
+
+
+
   private def menus = List(
     home.menu,
+    dashboard.menu,
     Menu.i("Login") / "login" >> RequireNotLoggedIn,
     register.menu,
     loginToken.menu,
@@ -352,39 +513,11 @@ object Site extends Locs {
     account.menu,
     password.menu,
     editProfile.menu,
-    ProductiveUnitMenu.menuAdd.menu,
-    ProductiveUnitMenu.menuEdit.menu,
-    ProductiveUnitMenu.menuList.menu,
-    EventMenu.menuAdd.menu,
-    EventMenu.menuEdit.menu,
-    EventMenu.menuList.menu,
-    AreaMenu.menuAdd.menu,
-    AreaMenu.menuEdit.menu,
-    AreaMenu.menuList.menu,
-    ActionLineMenu.menuAdd.menu,
-    ActionLineMenu.menuEdit.menu,
-    ActionLineMenu.menuList.menu,
-    ProgramMenu.menuAdd.menu,
-    ProgramMenu.menuEdit.menu,
-    ProgramMenu.menuList.menu,
-    EventTypeMenu.menuAdd.menu,
-    EventTypeMenu.menuEdit.menu,
-    EventTypeMenu.menuList.menu,
-    NetworkMenu.menuAdd.menu,
-    NetworkMenu.menuEdit.menu,
-    NetworkMenu.menuList.menu,
-    ProcessMenu.menuAdd.menu,
-    ProcessMenu.menuEdit.menu,
-    ProcessMenu.menuList.menu,
-    ConcreteResourceMenu.menuAdd.menu,
-    ConcreteResourceMenu.menuEdit.menu,
-    ConcreteResourceMenu.menuList.menu,
-    RoomMenu.menuAdd.menu,
-    RoomMenu.menuEdit.menu,
-    RoomMenu.menuList.menu,
-    EquipmentMenu.menuAdd.menu,
-    EquipmentMenu.menuEdit.menu,
-    EquipmentMenu.menuList.menu,
+    backendMessages.menu,
+    backendAdminModule.menu,
+    backendEvents.menu,
+    backendFiles.menu,
+    backendBlog.menu,
     Menu.i("Error") / "error" >> Hidden,
     Menu.i("404") / "404" >> Hidden,
     Menu.i("Throw") / "throw"  >> EarlyResponse(() => throw new Exception("This is only a test.")),
@@ -401,8 +534,7 @@ object Site extends Locs {
     media.menu,
     blog.menu,
     convocatorias.menu,
-    contacto.menu,
-    administracion.menu
+    contacto.menu
   )
 
   /*

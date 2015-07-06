@@ -19,7 +19,6 @@ object SEquipment extends SnippetHelper {
     val item = Equipment.createRecord
     "data-name=name *" #> item.name.toForm &
     "data-name=description *" #> item.description.toForm &
-    "data-name=nameGroup *" #> item.nameGroup.toForm &
     "type=submit" #> SHtml.ajaxOnSubmit(() => save(item))&
     "type=cancel" #> SHtml.ajaxButton("Cancelar", () => RedirectTo(menu.menuList.url), "class"->"btn btn-default" )
   }
@@ -30,7 +29,6 @@ object SEquipment extends SnippetHelper {
     } yield {
       "data-name=name *" #> item.name.toForm &
       "data-name=description *" #> item.description.toForm &
-      "data-name=nameGroup *" #> item.nameGroup.toForm &
       "type=submit" #> SHtml.ajaxOnSubmit(() => update(item)) &
       "type=cancel" #> SHtml.ajaxButton("Cancelar", () => RedirectTo(menu.menuList.url), "class"->"btn btn-default" )
     }: CssSel
@@ -41,7 +39,6 @@ object SEquipment extends SnippetHelper {
       item => {
         "data-name=checkbox *" #> customCheckbox(item) &
         "data-name=name *"  #> item.name &
-        "data-name=nameGroup *"  #> item.nameGroup.toString &
         "data-name=edit *" #> SHtml.ajaxButton(
           "Editar",
           () => RedirectTo(menu.menuEdit.url, () => equipmentRequestVar.set(Full(item))),

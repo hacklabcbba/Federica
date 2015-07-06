@@ -2,8 +2,8 @@ package code
 package model
 package activity
 
-import code.model.project.{Country, City}
-import code.model.proposal.Area
+import code.model.Area
+import code.model.project.Country
 import code.model.resource.ClassType._
 import code.model.resource.CostType._
 import code.model.resource._

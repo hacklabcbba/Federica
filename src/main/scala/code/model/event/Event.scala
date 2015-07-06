@@ -3,15 +3,12 @@ package model
 package event
 
 import code.lib.RogueMetaRecord
-import code.model.project._
+import code.model.{Process, ProductiveUnit}
 import net.liftweb.util.Helpers._
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field._
 import net.liftweb.record.field.{EnumNameField, TextareaField, LongField, DecimalField, StringField}
-import code.model.proposal.{ActionLine, Area, Program}
 import code.model.activity.{Activity, ActivityType}
-import code.model.productive.ProductiveUnit
-import code.model.process.Process
 import net.liftweb.common.{Full, Empty, Box}
 import scala.xml.Elem
 import net.liftweb.http.SHtml

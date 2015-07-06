@@ -2,7 +2,7 @@ package code
 package model
 package resource
 
-import code.model.proposal.Area
+import code.model.Area
 import code.model.resource.ClassType._
 import code.model.resource.CostType._
 

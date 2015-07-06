@@ -77,12 +77,14 @@ class BsCkTextareaField[OwnerType <: Record[OwnerType]](rec: OwnerType, maxLengt
     S.fmapFunc(S.SFuncHolder(this.setFromAny(_))) {
       funcName =>
 
+        S.appendJs(script(fieldId))
+
         <textarea name={funcName}
         rows={textareaRows.toString}
         cols={textareaCols.toString}
         tabindex={tabIndex.toString}
         id={fieldId}
-        class="form-control">{valueBox openOr ""}</textarea> % autofocus(isAutoFocus)  ++ script(fieldId)
+        class="form-control">{valueBox openOr ""}</textarea> % autofocus(isAutoFocus)
         //S.appendJs(script(fieldId))
     }
   }
@@ -114,7 +116,7 @@ class BsCkTextareaField[OwnerType <: Record[OwnerType]](rec: OwnerType, maxLengt
 
   override def asJValue = super.asJValue
 
-  private def script(id: String) = Script(
+  private def script(id: String) =
     Run (
       """
         $(function() {
@@ -141,6 +143,5 @@ class BsCkTextareaField[OwnerType <: Record[OwnerType]](rec: OwnerType, maxLengt
           };
         });""".stripMargin
     )
-  )
 }
 

@@ -1,65 +1,70 @@
-/***********************************************************
-  * Import the files you want to use. This is a custom
-  * version of bootstrap.less with responsive
-  * support included.
-  **********************************************************
-  */
+/*!
+ *   AdminLTE v2.1.2
+ *   Author: Almsaeed Studio
+ *	 Website: Almsaeed Studio <http://almsaeedstudio.com>
+ *   License: Open source - MIT
+ *           Please visit http://opensource.org/licenses/MIT for more information
+!*/
 
-@BootstrapPath: "./bootstrap";
+//google fonts
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic);
 
-// Core variables and mixins
+//Bootstrap Variables & Mixins
+//The core bootstrap code have not been modified. These files
+//are included only for reference.
+@import "bootstrap/mixins.less";
+@import "bootstrap/variables.less";
+
+//MISC
+//----
+@import "core.less";
 @import "variables.less";
-@import "@{BootstrapPath}/mixins.less";
+@import "mixins.less";
 
-// Reset
-@import "@{BootstrapPath}/normalize.less";
-@import "@{BootstrapPath}/print.less";
+//COMPONENTS
+//-----------
+@import "header.less";
+@import "sidebar.less";
+@import "sidebar-mini.less";
+@import "control-sidebar.less";
+@import "dropdown.less";
+@import "forms.less";
+@import "progress-bars.less";
+@import "small-box.less";
+@import "boxes.less";
+@import "info-box.less";
+@import "timeline.less";
+@import "buttons.less";
+@import "callout.less";
+@import "alerts.less";
+@import "navs.less";
+@import "products.less";
+@import "table.less";
+@import "labels.less";
+@import "direct-chat.less";
+@import "users-list.less";
+@import "carousel.less";
+@import "modal.less";
 
-// Core CSS
-@import "@{BootstrapPath}/scaffolding.less";
-@import "@{BootstrapPath}/type.less";
-@import "@{BootstrapPath}/code.less";
-@import "@{BootstrapPath}/grid.less";
-@import "@{BootstrapPath}/tables.less";
-@import "@{BootstrapPath}/forms.less";
-@import "@{BootstrapPath}/buttons.less";
+//PAGES
+//------
+@import "mailbox.less";
+@import "lockscreen.less";
+@import "login_and_register.less";
+@import "404_500_errors.less";
+@import "invoice.less";
 
-// Components
-@import "@{BootstrapPath}/component-animations.less";
-@import "@{BootstrapPath}/glyphicons.less";
-@import "@{BootstrapPath}/dropdowns.less";
-@import "@{BootstrapPath}/button-groups.less";
-@import "@{BootstrapPath}/input-groups.less";
-@import "@{BootstrapPath}/navs.less";
-@import "@{BootstrapPath}/navbar.less";
-@import "@{BootstrapPath}/breadcrumbs.less";
-@import "@{BootstrapPath}/pagination.less";
-@import "@{BootstrapPath}/pager.less";
-@import "@{BootstrapPath}/labels.less";
-@import "@{BootstrapPath}/badges.less";
-@import "@{BootstrapPath}/jumbotron.less";
-@import "@{BootstrapPath}/thumbnails.less";
-@import "@{BootstrapPath}/alerts.less";
-@import "@{BootstrapPath}/progress-bars.less";
-@import "@{BootstrapPath}/media.less";
-@import "@{BootstrapPath}/list-group.less";
-@import "@{BootstrapPath}/panels.less";
-@import "@{BootstrapPath}/wells.less";
-@import "@{BootstrapPath}/close.less";
+//Plugins
+//--------
+@import "bootstrap-social.less";
+@import "fullcalendar.less";
+@import "select2.less";
 
-// Components w/ JavaScript
-@import "@{BootstrapPath}/modals.less";
-@import "@{BootstrapPath}/tooltip.less";
-@import "@{BootstrapPath}/popovers.less";
-@import "@{BootstrapPath}/carousel.less";
+//Miscellaneous
+//-------------
+@import "miscellaneous.less";
+@import "print.less";
 
-// Utility classes
-@import "@{BootstrapPath}/utilities.less";
-@import "@{BootstrapPath}/responsive-utilities.less";
-
-/***********************************************************
-  * Custom styles
-  **********************************************************
-  */
-@import "custom.less";
-@import "bsFormAlerts.less";
+//Skins
+//-------------
+@import "skins/skin-yellow.less";
