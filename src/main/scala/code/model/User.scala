@@ -1,6 +1,7 @@
 package code
 package model
 
+import code.lib.field.BsStringField
 import com.mongodb.WriteConcern
 import lib.RogueMetaRecord
 
@@ -32,14 +33,14 @@ class User private () extends ProtoAuthUser[User] with ObjectIdPk[User] {
     override def defaultValue = "America/Chicago"
   }
 
-  object name extends StringField(this, 64) {
+  object name extends BsStringField(this, 64) {
     override def displayName = "Name"
 
     override def validations =
       valMaxLen(64, "Name must be 64 characters or less") _ ::
       super.validations
   }
-  object location extends StringField(this, 64) {
+  object location extends BsStringField(this, 64) {
     override def displayName = "Location"
 
     override def validations =
@@ -52,6 +53,13 @@ class User private () extends ProtoAuthUser[User] with ObjectIdPk[User] {
     override def validations =
       valMaxLen(160, "Bio must be 160 characters or less") _ ::
       super.validations
+  }
+
+  object isOnline extends BooleanField(this, false) {
+    override def shouldDisplay_? = false
+    override def asHtml =
+      if (this.value) <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+      else <a href="#"><i class="fa fa-circle text-danger"></i> Offline</a>
   }
 
   /*

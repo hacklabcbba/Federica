@@ -1,29 +1,26 @@
-package code
-package model
-package productive
+package code.model
 
 import code.lib.RogueMetaRecord
-import code.model.proposal.{Program, Area}
+import code.lib.field.BsStringField
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
-import net.liftweb.mongodb.record.MongoRecord
-import net.liftweb.mongodb.record.field.{ObjectIdRefField, ObjectIdPk}
-import net.liftweb.record.field.{EnumNameField, BooleanField, StringField}
 import net.liftweb.http.js.JsCmds._
-import org.bson.types.ObjectId
+import net.liftweb.mongodb.record.MongoRecord
+import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField}
+import net.liftweb.record.field.{EnumNameField, StringField}
 
 class ProductiveUnit private () extends MongoRecord[ProductiveUnit] with ObjectIdPk[ProductiveUnit] {
 
   override def meta = ProductiveUnit
 
-  object name extends StringField(this, 500) {
+  object name extends BsStringField(this, 500) {
     override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
       set(s)
       Noop
     }))
   }
 
-  object description extends StringField(this, 500){
+  object description extends BsStringField(this, 500){
     override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
       set(s)
       Noop

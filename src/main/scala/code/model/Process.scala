@@ -1,36 +1,36 @@
-package code
-package model
-package process
+package code.model
 
-import code.lib.RogueMetaRecord
-import code.model.proposal.{Program, Area}
+import code.config.Site
+import code.lib.{BaseModel, RogueMetaRecord}
+import code.lib.field.{BsStringField, BsCkTextareaField}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
-import net.liftweb.mongodb.record.field.{ObjectIdRefField, ObjectIdPk}
-import net.liftweb.record.field.{TextareaField, EnumNameField, StringField}
+import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField}
+import net.liftweb.record.field.{EnumNameField, StringField, TextareaField}
 
-class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] {
+class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] with BaseModel[Process] {
 
   override def meta = Process
 
-  object name extends StringField(this, 500) {
-    override def toForm = Full(SHtml.text(value, set(_), "class" -> "form-control"))
+  def title = "Proceso"
+
+  def entityListUrl = Site.backendProcess.menu.loc.calcDefaultHref
+
+  object name extends BsStringField(this, 500) {
+    override def displayName = "Nombre"
   }
 
-  object goal extends TextareaField(this, 1000) {
-    override def toForm = {
-      Full(SHtml.textarea(value, v => set(v), "class"->"form-control" ))
-    }
+  object goal extends BsCkTextareaField(this, 1000) {
+    override def displayName = "Objetivo"
   }
 
-  object description extends TextareaField(this, 1000) {
-    override def toForm = {
-      Full(SHtml.textarea(value, v => set(v), "class"->"form-control" ))
-    }
+  object description extends BsCkTextareaField(this, 1000) {
+    override def displayName = "Descripción"
   }
 
   object administrator extends ObjectIdRefField(this, User) {
+    override def displayName = "Coordinador"
     override def toString = {
       obj.dmap("")(_.name.get)
     }
@@ -46,6 +46,7 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] {
   }
 
   object area extends ObjectIdRefField(this, Area) {
+    override def displayName = "Área"
     override def optional_? = true
     override def toString = obj.dmap("")(_.name.get)
     val listAreas = Area.findAll
@@ -59,7 +60,8 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] {
     }
   }
 
-  object program extends ObjectIdRefField(this, Program){
+  object program extends ObjectIdRefField(this, Program) {
+    override def displayName = "Programa"
     override def optional_? = true
     override def toString = obj.dmap("")(_.name.get)
     val listProgram = Program.findAll
@@ -74,6 +76,7 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] {
   }
 
   object processType extends EnumNameField(this, ProcessType) {
+    override def displayName = "Tipo"
     override def toForm =
       Full(SHtml.selectObj[Box[ProcessType.Value]](
         buildDisplayList,
@@ -84,14 +87,14 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] {
       ))
   }
 
-  object history extends TextareaField(this, 1000) {
-    override def toForm = {
-      Full(SHtml.textarea(value, v => set(v), "class"->"form-control" ))
-    }
+  object history extends BsCkTextareaField(this, 1000) {
+    override def displayName = "Historia"
   }
 }
 
-object Process extends Process with RogueMetaRecord[Process]
+object Process extends Process with RogueMetaRecord[Process] {
+  override def fieldOrder = List(name, processType, goal, description, area, program, administrator, history)
+}
 
 object ProcessType extends Enumeration {
   type ProcessType = Value

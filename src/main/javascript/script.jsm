@@ -33,7 +33,7 @@ libs/knob/jquery.knob.js
 libs/pace/pace.js
 libs/slimScroll/jquery.slimscroll.js
 libs/sparkline/jquery.sparkline.js
-libs/timepicker/bootstrap-timepicker.js
+libs/timepicker/bootstrap-timepicker.min.js
 genso/adminlt.js
 
 

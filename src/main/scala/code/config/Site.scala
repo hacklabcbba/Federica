@@ -15,7 +15,6 @@ import Loc._
 
 import net.liftmodules.mongoauth.Locs
 import code.model._
-import process._
 import network._
 
 
@@ -56,7 +55,7 @@ object Site extends Locs {
 
   /* Áreas menu*/
   // Áreas
-  val areas = MenuLoc(Menu.i("Áreas") / "areas" >> TopBarGroup submenus(
+  val areas = MenuLoc(Menu.i("Ver Áreas") / "areas" >> TopBarGroup submenus(
     // Áreas
     Menu.i("Artes Escénicas") / "artes-escenicas" >> TopBarGroup submenus(
       // Elenco mARTadero
@@ -91,7 +90,7 @@ object Site extends Locs {
 
   /* Programas */
   // Programas
-  val programs = MenuLoc(Menu.i("Programs") / "programs" >> TopBarGroup submenus(
+  val programs = MenuLoc(Menu.i("Ver Programs") / "programs" >> TopBarGroup submenus(
     // formARTe
     Menu.i("formARTe") / "formarte" >> TopBarGroup,
     // Taller de creatividad infantil
@@ -352,7 +351,7 @@ object Site extends Locs {
 
   val backendPendingEvents = MenuLoc(Menu.i("Solicitudes") / "backend" / "events" / "pendingevents" >> RequireLoggedIn)
 
-  val backendApprovedEvents = MenuLoc(Menu.i("Eventos") / "backend" / "events" / "index" >> RequireLoggedIn)
+  val backendApprovedEvents = MenuLoc(Menu.i("Eventos aprobados") / "backend" / "events" / "index" >> RequireLoggedIn)
 
   val backendApprovedEventsWorkshops = MenuLoc(Menu.i("Talleres") / "backend" / "events" / "workshops" >> RequireLoggedIn)
 
@@ -360,7 +359,7 @@ object Site extends Locs {
 
   val backendResidencies = MenuLoc(Menu.i("Residencias") / "backend" / "events" / "residencies" >> RequireLoggedIn)
 
-  val backendEvents = MenuLoc(Menu.i("Módulo de Eventos") / "backend" / "events" >> RequireLoggedIn >> LeftMenuGroup submenus(
+  val backendEvents = MenuLoc(Menu.i("Eventos") / "backend" / "events" >> RequireLoggedIn >> LeftMenuGroup submenus(
     backendPendingEvents.menu, backendApprovedEvents.menu, backendCalendar.menu, backendResidencies.menu, backendApprovedEventsWorkshops.menu
     ))
 
@@ -382,7 +381,7 @@ object Site extends Locs {
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
-  val backendRooms = MenuLoc(Menu.i("Salas") / "backend" / "rooms" >> RequireLoggedIn >> LeftMenuGroup >>
+  val backendRooms = MenuLoc(Menu.i("Salas") / "backend" / "rooms" >> RequireLoggedIn >>
     TemplateBox(() => Templates("backend" :: "rooms" :: "index" :: Nil)) submenus(
       backendRoomAdd, backendRoomEdit))
 
@@ -402,21 +401,91 @@ object Site extends Locs {
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
-  val backendEquipments = MenuLoc(Menu.i("Equipos") / "backend" / "equipments" >> RequireLoggedIn >> LeftMenuGroup >>
+  val backendEquipments = MenuLoc(Menu.i("Equipos") / "backend" / "equipments" >> RequireLoggedIn >>
     TemplateBox(() => Templates("backend" :: "equipments" :: "index" :: Nil)) submenus(
     backendEquipmentAdd, backendEquipmentEdit))
 
-  val backendAreas = MenuLoc(Menu.i("Módulo de Áreas") / "backend" / "areas" >> RequireLoggedIn >> LeftMenuGroup)
+  val backendAreaAdd = Menu.param[Area](
+    "Agregar área", "Agregar área",
+    s => Full(Area.createRecord),
+    s => "new") / "backend" / "areas" / "add" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendAreaEdit = Menu.param[Area](
+    "Editar área", "Editar área",
+    Area.find,
+    s => s.id.get.toString) / "backend" / "areas" / "edit" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendAreas = MenuLoc(Menu.i("Áreas") / "backend" / "areas" >> RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "areas" :: "index" :: Nil)) submenus(
+    backendAreaAdd, backendAreaEdit))
+
+  val backendProgramAdd = Menu.param[Program](
+    "Agregar programa", "Agregar programa",
+    s => Full(Program.createRecord),
+    s => "new") / "backend" / "program" / "add" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendProgramEdit = Menu.param[Program](
+    "Editar programa", "Editar programa",
+    Program.find,
+    s => s.id.get.toString) / "backend" / "programs" / "edit" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendPrograms = MenuLoc(Menu.i("Programas") / "backend" / "programs" >> RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "programs" :: "index" :: Nil)) submenus(
+    backendProgramAdd, backendProgramEdit))
+
+  val backendProcessAdd = Menu.param[Process](
+    "Agregar proceso", "Agregar proceso",
+    s => Full(Process.createRecord),
+    s => "new") / "backend" / "process" / "add" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendProcessEdit = Menu.param[Process](
+    "Editar proceso", "Editar proceso",
+    Process.find,
+    s => s.id.get.toString) / "backend" / "process" / "edit" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendProcess = MenuLoc(Menu.i("Procesos") / "backend" / "process" >> RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "process" :: "index" :: Nil)) submenus(
+    backendProcessAdd, backendProcessEdit))
 
   val backendFiles = MenuLoc(Menu.i("Archivos") / "backend" / "files" >> RequireLoggedIn >> LeftMenuGroup)
 
-  val backendServices = MenuLoc(Menu.i("Accesorios y Servicios") / "backend" / "services" >> RequireLoggedIn >> LeftMenuGroup)
+  val backendServices = MenuLoc(Menu.i("Accesorios y Servicios") / "backend" / "services" >> RequireLoggedIn)
 
   //Submenus equipos, accesorios y servicios
 
-  val backendUsers = MenuLoc(Menu.i("Usuarios") / "backend" / "usuarios" >> RequireLoggedIn >> LeftMenuGroup)
+  val backendUsers = MenuLoc(Menu.i("Usuarios") / "backend" / "usuarios" >> RequireLoggedIn)
 
   val backendBlog = MenuLoc(Menu.i("Módulo Blog") / "backend" / "blog" >> RequireLoggedIn >> LeftMenuGroup)
+
+  val backendAdminModule = MenuLoc(Menu.i("Administración") / "backend" / "admin" >>
+    RequireLoggedIn >>
+    LeftMenuGroup >>
+    PlaceHolder submenus(
+    backendAreas.menu,
+    backendPrograms.menu,
+    backendProcess.menu,
+    backendRooms.menu,
+    backendServices.menu,
+    backendEquipments.menu,
+    backendUsers.menu))
 
   // Salas
 
@@ -445,47 +514,10 @@ object Site extends Locs {
     password.menu,
     editProfile.menu,
     backendMessages.menu,
-    backendRooms.menu,
-    backendEquipments.menu,
+    backendAdminModule.menu,
     backendEvents.menu,
-    backendAreas.menu,
     backendFiles.menu,
-    backendServices.menu,
-    backendUsers.menu,
     backendBlog.menu,
-    /*ProductiveUnitMenu.menuAdd.menu,
-    ProductiveUnitMenu.menuEdit.menu,
-    ProductiveUnitMenu.menuList.menu,
-    EventMenu.menuAdd.menu,
-    EventMenu.menuEdit.menu,
-    EventMenu.menuList.menu,
-    AreaMenu.menuAdd.menu,
-    AreaMenu.menuEdit.menu,
-    AreaMenu.menuList.menu,
-    ActionLineMenu.menuAdd.menu,
-    ActionLineMenu.menuEdit.menu,
-    ActionLineMenu.menuList.menu,
-    ProgramMenu.menuAdd.menu,
-    ProgramMenu.menuEdit.menu,
-    ProgramMenu.menuList.menu,
-    EventTypeMenu.menuAdd.menu,
-    EventTypeMenu.menuEdit.menu,
-    EventTypeMenu.menuList.menu,
-    NetworkMenu.menuAdd.menu,
-    NetworkMenu.menuEdit.menu,
-    NetworkMenu.menuList.menu,
-    ProcessMenu.menuAdd.menu,
-    ProcessMenu.menuEdit.menu,
-    ProcessMenu.menuList.menu,
-    ConcreteResourceMenu.menuAdd.menu,
-    ConcreteResourceMenu.menuEdit.menu,
-    ConcreteResourceMenu.menuList.menu,
-    RoomMenu.menuAdd.menu,
-    RoomMenu.menuEdit.menu,
-    RoomMenu.menuList.menu,
-    EquipmentMenu.menuAdd.menu,
-    EquipmentMenu.menuEdit.menu,
-    EquipmentMenu.menuList.menu,*/
     Menu.i("Error") / "error" >> Hidden,
     Menu.i("404") / "404" >> Hidden,
     Menu.i("Throw") / "throw"  >> EarlyResponse(() => throw new Exception("This is only a test.")),

@@ -41,7 +41,7 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
       "data-name=remove-items [onclick]" #> SHtml.ajaxInvoke(deleteItemsJsCmd _) &
       "data-name=items" #> meta.findAll.map(item => {
         "type=checkbox" #> SHtml.ajaxCheckbox(false, s => selectItem(s, item)) &
-        "data-name=column-data *" #> listFields.map(field => item.fieldByName(field.name).dmap("")(_.get.toString)) &
+        "data-name=column-data *" #> listFields.map(field => item.fieldByName(field.name).dmap("")(_.toString)) &
         "data-name=edit-item [href]" #> itemEditUrl(item) &
         "data-name=remove-item [onclick]" #> SHtml.ajaxInvoke(() => deleteItemJsCmd(item))
       })

@@ -21,10 +21,6 @@ trait Resource[T <: MongoRecord[T]] extends MongoRecord[T] with ObjectIdPk[T] wi
     override def isAutoFocus = false
     override def displayName = "Nombre"
     override def validations = valMinLen(2, "longitud mínima") _ :: super.validations
-    override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
-      set(s)
-      Noop
-    }, "class" -> "form-control", "data-placeholder" -> "Ingrese descripcion.."))
   }
 
   val description = new BsCkTextareaField[T](this, 512) {

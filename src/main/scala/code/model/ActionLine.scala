@@ -1,18 +1,16 @@
-package code
-package model
-package proposal
+package code.model
 
 import code.lib.RogueMetaRecord
-import net.liftweb.mongodb.record.field.{ObjectIdRefListField, ObjectIdRefField, ObjectIdPk}
-import net.liftweb.mongodb.record.MongoRecord
-import net.liftweb.record.field.{TextareaField, BooleanField, StringField}
 import net.liftweb.common.Full
 import net.liftweb.http.SHtml
+import net.liftweb.mongodb.record.MongoRecord
+import net.liftweb.mongodb.record.field.ObjectIdPk
+import net.liftweb.record.field.{StringField, TextareaField}
 
 
-class Program private () extends MongoRecord[Program] with ObjectIdPk[Program]{
+class ActionLine private () extends MongoRecord[ActionLine] with ObjectIdPk[ActionLine]{
 
-  override def meta = Program
+  override def meta = ActionLine
 
   object name extends StringField(this, 500){
     override def toString = get
@@ -27,8 +25,6 @@ class Program private () extends MongoRecord[Program] with ObjectIdPk[Program]{
       Full(SHtml.textarea(value, v => set(v), "class"->"form-control", "data-placeholder" -> "Ingrese descripcion.." ))
     }
   }
-
-  override def toString = name.get
 }
 
-object Program extends Program with RogueMetaRecord[Program]
+object ActionLine extends ActionLine with RogueMetaRecord[ActionLine]

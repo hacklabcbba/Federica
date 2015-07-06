@@ -71,6 +71,16 @@ sealed trait UserSnippet extends SnippetHelper with Loggable {
 
 object CurrentUser extends UserSnippet {
   protected def user = User.currentUser
+  def render: CssSel = {
+    for {
+      user <- user
+    } yield {
+      val size = S.attr("size").map(toInt) openOr Gravatar.defaultSize.vend
+      "data-name=user-name *" #> user.name.get &
+      "data-name=user-avatar" #> Gravatar.imgTag(user.email.get, size) &
+      "data-name=user-status" #> user.isOnline.asHtml
+    }: CssSel
+  }
 }
 
 object ProfileLocUser extends UserSnippet {

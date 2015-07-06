@@ -3,7 +3,7 @@ package model
 package resource
 
 import code.lib.RogueMetaRecord
-import code.model.proposal.Area
+import code.model.Area
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{MongoListField, ObjectIdPk}
 import net.liftweb.record.field.StringField
