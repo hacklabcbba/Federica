@@ -545,9 +545,29 @@ object Site extends Locs {
     TemplateBox(() => Templates("backend" :: "users" :: "index" :: Nil)) submenus(
     backendUserAdd, backendUserEdit))
 
-  val backendFiles = MenuLoc(Menu.i("Archivos") / "backend" / "files" >> RequireLoggedIn >> LeftMenuGroup)
+  val backendServiceAdd = Menu.param[Service](
+    "Agregar servicio", "Agregar servicio",
+    s => Full(Service.createRecord),
+    s => "new") / "backend" / "services" / "add" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
 
-  val backendServices = MenuLoc(Menu.i("Servicios") / "backend" / "services" >> RequireLoggedIn)
+  val backendServiceEdit = Menu.param[Service](
+    "Editar servicio", "Editar servicio",
+    Service.find,
+    s => s.id.get.toString) / "backend" / "services" / "edit" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendServices = MenuLoc(Menu.i("Servicios") / "backend" / "servicios" >> RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "services" :: "index" :: Nil)) submenus(
+    backendServiceAdd, backendServiceEdit))
+
+
+  val backendFiles = MenuLoc(Menu.i("Archivos") / "backend" / "files" >> RequireLoggedIn >> LeftMenuGroup)
+  
 
   //Submenus equipos, accesorios y servicios
 
