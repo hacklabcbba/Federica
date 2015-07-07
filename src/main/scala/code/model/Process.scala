@@ -90,6 +90,8 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] w
   object history extends BsCkTextareaField(this, 1000) {
     override def displayName = "Historia"
   }
+
+  override def toString = name.get
 }
 
 object Process extends Process with RogueMetaRecord[Process] {
