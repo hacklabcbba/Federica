@@ -329,6 +329,9 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
 
   object costContributionByUse extends ObjectIdRefField(this, CostContributionByUse)
   object state extends EnumNameField(this, StateType)
+  object values extends ObjectIdRefListField(this, Values) {
+    override def displayName = "Principios"
+  }
 }
 
 object Event extends Event with RogueMetaRecord[Event]
@@ -337,3 +340,39 @@ object StateType extends Enumeration {
   type StateType = Value
   val Approved, Rejected, Draft = Value
 }
+
+class Values private() extends MongoRecord[Values] with ObjectIdPk[Values] {
+
+  override def meta = Values
+
+  object name extends StringField(this, 100) {
+    override def displayName = "Nombre"
+  }
+
+}
+
+object Values extends Values with RogueMetaRecord[Values] {
+  val Innovation = "Innovación"
+  val Research = "Investigación"
+  val Experimentation = "Experimentacion"
+  val ConceptualAndFormaligor = "Rigor conceptual y formal"
+  val Integration = "Integracion"
+  val ExchangeOfKnowledgeAndExperiences = "Intercambio de conocimientos y experiencias"
+  val Intercultural = "Interculturalidad"
+  private lazy val data = List(
+    "Innovación",
+    "Investigación",
+    "Experimentacion",
+    "Rigor conceptual y formal",
+    "Integracion",
+    "Intercambio de conocimientos y experiencias",
+    "Interculturalidad"
+  )
+
+  def seedData = {
+    if (Values.count() == 0) data.foreach(d => {
+      Values.createRecord.name(d).save(true)
+    })
+  }
+}
+

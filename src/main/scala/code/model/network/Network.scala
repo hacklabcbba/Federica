@@ -147,6 +147,10 @@ class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] w
     }
   }
 
+  object scope extends EnumNameField(this, Scope) {
+    override def displayName = "Alcance"
+  }
+
 }
 
 object Network extends Network with RogueMetaRecord[Network] {
@@ -158,4 +162,13 @@ object NetworkType extends Enumeration {
   type NetworkType = Value
   val Intern = Value("Interno")
   val Associate = Value("Asociado")
+}
+
+object Scope extends Enumeration {
+  type StateType = Value
+  val Neighborhood = Value(0, "Barrial")
+  val Local = Value(1, "Local")
+  val National = Value(2, "Nacional")
+  val Regional = Value(3, "Regional")
+  val Global = Value(4, "Nacional")
 }

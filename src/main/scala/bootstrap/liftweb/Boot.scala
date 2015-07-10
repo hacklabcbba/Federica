@@ -1,5 +1,7 @@
 package bootstrap.liftweb
 
+import code.model.event.Values
+
 import scala.xml.{Null, UnprefixedAttribute}
 import javax.mail.internet.MimeMessage
 
@@ -85,6 +87,7 @@ class Boot extends Loggable {
     // Mailer
     Mailer.devModeSend.default.set((m: MimeMessage) => logger.info("Dev mode message:\n" + prettyPrintMime(m)))
     Mailer.testModeSend.default.set((m: MimeMessage) => logger.info("Test mode message:\n" + prettyPrintMime(m)))
+    Values.seedData
   }
 
   private def prettyPrintMime(m: MimeMessage): String = {
