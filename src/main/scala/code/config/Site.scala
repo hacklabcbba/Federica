@@ -567,7 +567,7 @@ object Site extends Locs {
 
 
   val backendFiles = MenuLoc(Menu.i("Archivos") / "backend" / "files" >> RequireLoggedIn >> LeftMenuGroup)
-  
+
 
   //Submenus equipos, accesorios y servicios
 
