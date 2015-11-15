@@ -1,9 +1,10 @@
 package code
 package model
 
-import code.lib.field.BsStringField
+import code.config.Site
+import code.lib.field.{BsEmailField, BsCkTextareaField, BsStringField}
 import com.mongodb.WriteConcern
-import lib.RogueMetaRecord
+import code.lib.{BaseModel, RogueMetaRecord}
 
 import org.bson.types.ObjectId
 import org.joda.time.DateTime
@@ -12,46 +13,135 @@ import net.liftweb._
 import common._
 import http.{StringField => _, BooleanField => _, _}
 import mongodb.record.field._
-import record.field._
-import util.FieldContainer
+import record.field.{PasswordField => _, _}
+import net.liftweb.util.{FieldError, Helpers, FieldContainer}
 
 import net.liftmodules.mongoauth._
 import net.liftmodules.mongoauth.field._
 import net.liftmodules.mongoauth.model._
+import java.util.{Locale}
+import xml._
 
-class User private () extends ProtoAuthUser[User] with ObjectIdPk[User] {
+import common._
+import util._
+import Helpers._
+import http.{S, SHtml}
+
+class User private () extends MongoAuthUser[User] with ObjectIdPk[User] with BaseModel[User] {
   def meta = User
 
   def userIdAsString: String = id.toString
 
+  def title = "Usuario"
+
+  def entityListUrl = Site.backendUsers.menu.loc.calcDefaultHref
+
+  object username extends BsStringField(this, 32) {
+    override def displayName = "Nombre de usuario"
+    override def setFilter = trim _ :: super.setFilter
+
+    private def valUnique(msg: => String)(value: String): List[FieldError] = {
+      if (value.length > 0)
+        meta.findAll(name, value).filterNot(_.id.get == owner.id.get).map(u =>
+          FieldError(this, Text(msg))
+        )
+      else
+        Nil
+    }
+
+    override def validations =
+      valUnique(S ? "liftmodule-monogoauth.monogoAuthUser.username.validation.unique") _ ::
+        valMinLen(3, S ? "liftmodule-monogoauth.monogoAuthUser.username.validation.min.length") _ ::
+        valMaxLen(32, S ? "liftmodule-monogoauth.monogoAuthUser.username.validation.max.length") _ ::
+        super.validations
+  }
+
+  /*
+  * http://www.dominicsayers.com/isemail/
+  */
+  object email extends BsEmailField(this, 254) {
+    override def displayName = "Correo electrónico"
+    override def setFilter = trim _ :: toLower _ :: super.setFilter
+
+    private def valUnique(msg: => String)(value: String): List[FieldError] = {
+      owner.meta.findAll(name, value).filter(_.id.get != owner.id.get).map(u =>
+        FieldError(this, Text(msg))
+      )
+    }
+
+    override def validations =
+      valUnique("That email address is already registered with us") _  ::
+        valMaxLen(254, "Email must be 254 characters or less") _ ::
+        super.validations
+  }
+  // email address has been verified by clicking on a LoginToken link
+  object verified extends BooleanField(this) {
+    override def displayName = "Verificado"
+  }
+  object password extends PasswordField(this, 6, 32) {
+    override def displayName = "Contraseña"
+    override def elem = S.fmapFunc(S.SFuncHolder(this.setFromAny(_))) {
+      funcName => <input type="password" maxlength={maxLength.toString}
+                         name={funcName}
+                         value={valueBox openOr ""}
+                         tabindex={tabIndex toString} class="form-control"/>}
+  }
+  object permissions extends PermissionListField(this)
+  object roles extends StringRefListField(this, Role) {
+    def permissions: List[Permission] = objs.flatMap(_.permissions.get)
+    def names: List[String] = objs.map(_.id.get)
+  }
+
+  lazy val authPermissions: Set[Permission] = (permissions.get ::: roles.permissions).toSet
+  lazy val authRoles: Set[String] = roles.names.toSet
+
+  lazy val fancyEmail = AuthUtil.fancyEmail(username.get, email.get)
+
   object locale extends LocaleField(this) {
-    override def displayName = "Locale"
-    override def defaultValue = "en_US"
+    override def displayName = "Idioma"
+    override def defaultValue = "es_BO"
+
+    private def elem = SHtml.select(buildDisplayList, Full(valueBox.map(_.toString) openOr ""),
+      locale => setBox(Full(locale)), "tabindex" -> tabIndex.toString, "class" -> "form-control")
+
+    override def toForm: Box[NodeSeq] =
+      uniqueFieldId match {
+        case Full(id) => Full(elem % ("id" -> id))
+        case _ => Full(elem)
+      }
   }
   object timezone extends TimeZoneField(this) {
-    override def displayName = "Time Zone"
-    override def defaultValue = "America/Chicago"
+    override def displayName = "Zona horaria"
+    override def defaultValue = "America/La_Paz"
+    private def elem = SHtml.select(buildDisplayList, Full(valueBox openOr ""),
+      timezone => setBox(Full(timezone))) % ("tabindex" -> tabIndex.toString) % ("class" -> "form-control")
+
+    override def toForm: Box[NodeSeq] =
+      uniqueFieldId match {
+        case Full(id) => Full(elem % ("id" -> id))
+        case _ => Full(elem)
+      }
   }
 
   object name extends BsStringField(this, 64) {
-    override def displayName = "Name"
+    override def displayName = "Nombre"
 
     override def validations =
       valMaxLen(64, "Name must be 64 characters or less") _ ::
       super.validations
   }
   object location extends BsStringField(this, 64) {
-    override def displayName = "Location"
+    override def displayName = "Lugar"
 
     override def validations =
       valMaxLen(64, "Location must be 64 characters or less") _ ::
       super.validations
   }
-  object bio extends TextareaField(this, 160) {
+  object bio extends BsCkTextareaField(this, 500) {
     override def displayName = "Bio"
 
     override def validations =
-      valMaxLen(160, "Bio must be 160 characters or less") _ ::
+      valMaxLen(160, "Bio must be 500 characters or less") _ ::
       super.validations
   }
 

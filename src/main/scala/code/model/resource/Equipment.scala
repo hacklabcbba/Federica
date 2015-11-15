@@ -16,6 +16,7 @@ class Equipment private() extends Resource[Equipment] {
   def entityListUrl = Site.backendEquipments.menu.loc.calcDefaultHref
 
   override def meta = Equipment
+
   object photo extends FileField(this) {
     override def displayName = "Foto"
     override def toString = {

@@ -465,13 +465,112 @@ object Site extends Locs {
     TemplateBox(() => Templates("backend" :: "process" :: "index" :: Nil)) submenus(
     backendProcessAdd, backendProcessEdit))
 
+  val backendSpaceAdd = Menu.param[Space](
+    "Agregar espacio", "Agregar espacio",
+    s => Full(Space.createRecord),
+    s => "new") / "backend" / "spaces" / "add" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendSpaceEdit = Menu.param[Space](
+    "Editar espacio", "Editar espacio",
+    Space.find,
+    s => s.id.get.toString) / "backend" / "spaces" / "edit" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendSpaces = MenuLoc(Menu.i("Espacios") / "backend" / "spaces" >> RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "spaces" :: "index" :: Nil)) submenus(
+    backendSpaceAdd, backendSpaceEdit))
+
+  val backendNetworkAdd = Menu.param[Network](
+    "Agregar red", "Agregar red",
+    s => Full(Network.createRecord),
+    s => "new") / "backend" / "networks" / "add" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendNetworkEdit = Menu.param[Network](
+    "Editar red", "Editar red",
+    Network.find,
+    s => s.id.get.toString) / "backend" / "networks" / "edit" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendNetworks = MenuLoc(Menu.i("Redes") / "backend" / "networks" >> RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "networks" :: "index" :: Nil)) submenus(
+    backendNetworkAdd, backendNetworkEdit))
+
+  val backendProjectAdd = Menu.param[Project](
+    "Agregar proyecto", "Agregar proyecto",
+    s => Full(Project.createRecord),
+    s => "new") / "backend" / "projects" / "add" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendProjectEdit = Menu.param[Project](
+    "Editar proyecto", "Editar proyecto",
+    Project.find,
+    s => s.id.get.toString) / "backend" / "projects" / "edit" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendProjects= MenuLoc(Menu.i("Proyectos") / "backend" / "projects" >> RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "projects" :: "index" :: Nil)) submenus(
+    backendProjectAdd, backendProjectEdit))
+
+  val backendUserAdd = Menu.param[User](
+    "Agregar usuario", "Agregar usuario",
+    s => Full(User.createRecord),
+    s => "new") / "backend" / "users" / "add" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendUserEdit = Menu.param[User](
+    "Editar usuario", "Editar usuario",
+    User.find,
+    s => s.id.get.toString) / "backend" / "users" / "edit" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendUsers = MenuLoc(Menu.i("Usuarios") / "backend" / "users" >> RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "users" :: "index" :: Nil)) submenus(
+    backendUserAdd, backendUserEdit))
+
+  val backendServiceAdd = Menu.param[Service](
+    "Agregar servicio", "Agregar servicio",
+    s => Full(Service.createRecord),
+    s => "new") / "backend" / "services" / "add" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendServiceEdit = Menu.param[Service](
+    "Editar servicio", "Editar servicio",
+    Service.find,
+    s => s.id.get.toString) / "backend" / "services" / "edit" / * >>
+    Locs.RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendServices = MenuLoc(Menu.i("Servicios") / "backend" / "servicios" >> RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "services" :: "index" :: Nil)) submenus(
+    backendServiceAdd, backendServiceEdit))
+
+
   val backendFiles = MenuLoc(Menu.i("Archivos") / "backend" / "files" >> RequireLoggedIn >> LeftMenuGroup)
 
-  val backendServices = MenuLoc(Menu.i("Accesorios y Servicios") / "backend" / "services" >> RequireLoggedIn)
 
   //Submenus equipos, accesorios y servicios
 
-  val backendUsers = MenuLoc(Menu.i("Usuarios") / "backend" / "usuarios" >> RequireLoggedIn)
 
   val backendBlog = MenuLoc(Menu.i("Módulo Blog") / "backend" / "blog" >> RequireLoggedIn >> LeftMenuGroup)
 
@@ -485,6 +584,9 @@ object Site extends Locs {
     backendRooms.menu,
     backendServices.menu,
     backendEquipments.menu,
+    backendSpaces.menu,
+    backendProjects.menu,
+    backendNetworks.menu,
     backendUsers.menu))
 
   // Salas

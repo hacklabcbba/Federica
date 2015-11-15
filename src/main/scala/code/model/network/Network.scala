@@ -2,7 +2,8 @@ package code
 package model
 package network
 
-import code.lib.RogueMetaRecord
+import code.config.Site
+import code.lib.{BaseModel, RogueMetaRecord}
 import code.lib.field.{BsStringField, BsCkTextareaField}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
@@ -10,9 +11,13 @@ import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{ObjectIdRefListField, ObjectIdRefField, ObjectIdPk}
 import net.liftweb.record.field.{TextareaField, EnumNameField, BooleanField, StringField}
 
-class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] {
+class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] with BaseModel[Network] {
 
   override def meta = Network
+
+  def title = "Red"
+
+  def entityListUrl = Site.backendNetworks.menu.loc.calcDefaultHref
 
   object name extends BsStringField(this, 500) {
     override def displayName = "Nombre"
@@ -21,6 +26,13 @@ class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] {
   object description extends BsCkTextareaField(this, 500){
     override def displayName = "Descripción"
   }
+
+  object networkType extends EnumNameField(this, NetworkType) {
+    override def displayName = "Tipo"
+    override def toForm =
+      Full(SHtml.selectObj[Box[NetworkType.Value]](buildDisplayList, Full(valueBox), s => setBox(s), "class" -> "form-control"))
+  }
+
   object administrator extends ObjectIdRefField(this, User) {
     override def displayName = "Coordinador"
     override def toString = {
@@ -60,11 +72,11 @@ class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] {
 
     override def toString = obj.dmap("")(_.name.get)
 
-    val listProgram = Program.findAll
+    val programs = Program.findAll
 
     override def toForm = {
       Full(SHtml.selectElem(
-        listProgram,
+        programs,
         obj,
         "class" -> "select2 form-control",
         "data-placeholder" -> "Seleccione programa.."
@@ -74,6 +86,16 @@ class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] {
 
   object projects extends ObjectIdRefListField(this, Project) {
     override def displayName = "Proyectos"
+    val projects = Project.findAll
+
+    override def toForm = {
+      Full(SHtml.multiSelectElem(
+        projects,
+        objs,
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione proceso.."
+      )(p => set(p.map(_.id.get))))
+    }
   }
 
   object process extends ObjectIdRefField(this, Process) {
@@ -100,11 +122,11 @@ class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] {
 
     override def toString = obj.dmap("")(_.name.get)
 
-    val listProgram = ActionLine.findAll
+    val actionLines = ActionLine.findAll
 
     override def toForm = {
       Full(SHtml.selectElem(
-        listProgram,
+        actionLines,
         obj,
         "class" -> "select2 form-control",
         "data-placeholder" -> "Seleccione línea de acción.."
@@ -112,16 +134,41 @@ class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] {
     }
   }
 
-  object networkType extends EnumNameField(this, NetworkType) {
-    override def toForm =
-      Full(SHtml.selectObj[Box[NetworkType.Value]](buildDisplayList, Full(valueBox), s => setBox(s)))
+  object spaces extends ObjectIdRefListField(this, Space) {
+    override def displayName = "Espacios conectados"
+    val spaces = Space.findAll
+    override def toForm = {
+      Full(SHtml.multiSelectElem(
+        spaces,
+        objs,
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione proceso.."
+      )(p => set(p.map(_.id.get))))
+    }
   }
+
+  object scope extends EnumNameField(this, Scope) {
+    override def displayName = "Alcance"
+  }
+
 }
 
-object Network extends Network with RogueMetaRecord[Network]
+object Network extends Network with RogueMetaRecord[Network] {
+  override def fieldOrder =
+    List(name, description, networkType, administrator, area, program, projects, process, actionLine, spaces)
+}
 
 object NetworkType extends Enumeration {
   type NetworkType = Value
   val Intern = Value("Interno")
   val Associate = Value("Asociado")
+}
+
+object Scope extends Enumeration {
+  type StateType = Value
+  val Neighborhood = Value(0, "Barrial")
+  val Local = Value(1, "Local")
+  val National = Value(2, "Nacional")
+  val Regional = Value(3, "Regional")
+  val Global = Value(4, "Nacional")
 }

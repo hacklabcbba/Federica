@@ -25,6 +25,8 @@ class ActionLine private () extends MongoRecord[ActionLine] with ObjectIdPk[Acti
       Full(SHtml.textarea(value, v => set(v), "class"->"form-control", "data-placeholder" -> "Ingrese descripcion.." ))
     }
   }
+
+  override def toString = name.get
 }
 
 object ActionLine extends ActionLine with RogueMetaRecord[ActionLine]

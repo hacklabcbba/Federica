@@ -1,6 +1,7 @@
 package code.model
 
-import code.lib.RogueMetaRecord
+import code.config.Site
+import code.lib.{BaseModel, RogueMetaRecord}
 import code.lib.field.{BsStringField, BsCkTextareaField}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
@@ -8,27 +9,28 @@ import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField}
 import net.liftweb.record.field.{EnumNameField, StringField, TextareaField}
 
-class Project private () extends MongoRecord[Project] with ObjectIdPk[Project] {
+class Project private () extends MongoRecord[Project] with ObjectIdPk[Project] with BaseModel[Project] {
 
   override def meta = Project
 
+  def title = "Proyecto"
+
+  def entityListUrl = Site.backendProjects.menu.loc.calcDefaultHref
+
   object name extends BsStringField(this, 500) {
-    override def toForm = Full(SHtml.text(value, set(_), "class" -> "form-control"))
+    override def displayName = "Nombre"
   }
 
   object goal extends BsCkTextareaField(this, 1000) {
-    override def toForm = {
-      Full(SHtml.textarea(value, v => set(v), "class"->"form-control" ))
-    }
+    override def displayName = "Objetivo"
   }
 
   object description extends BsCkTextareaField(this, 1000) {
-    override def toForm = {
-      Full(SHtml.textarea(value, v => set(v), "class"->"form-control" ))
-    }
+    override def displayName = "Descripción"
   }
 
   object administrator extends ObjectIdRefField(this, User) {
+    override def displayName = "Coordinador"
     override def toString = {
       obj.dmap("")(_.name.get)
     }
@@ -44,6 +46,7 @@ class Project private () extends MongoRecord[Project] with ObjectIdPk[Project] {
   }
 
   object area extends ObjectIdRefField(this, Area) {
+    override def displayName = "Área"
     override def optional_? = true
     override def toString = obj.dmap("")(_.name.get)
     val listAreas = Area.findAll
@@ -57,7 +60,8 @@ class Project private () extends MongoRecord[Project] with ObjectIdPk[Project] {
     }
   }
 
-  object program extends ObjectIdRefField(this, Program){
+  object program extends ObjectIdRefField(this, Program) {
+    override def displayName = "Programa"
     override def optional_? = true
     override def toString = obj.dmap("")(_.name.get)
     val listProgram = Program.findAll
@@ -72,10 +76,10 @@ class Project private () extends MongoRecord[Project] with ObjectIdPk[Project] {
   }
 
   object history extends BsCkTextareaField(this, 1000) {
-    override def toForm = {
-      Full(SHtml.textarea(value, v => set(v), "class"->"form-control" ))
-    }
+    override def displayName = "Historia"
   }
+
+  override def toString = name.get
 }
 
 object Project extends Project with RogueMetaRecord[Project]
