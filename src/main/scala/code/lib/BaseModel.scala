@@ -4,14 +4,14 @@ package lib
 import net.liftmodules.extras.SnippetHelper
 import net.liftweb.common._
 import net.liftweb.http.js.JsCmd
-import net.liftweb.http.{RequestVar, Templates, S, SHtml}
 import net.liftweb.http.js.JsCmds.RedirectTo
-import net.liftweb.mongodb.record.{MongoMetaRecord, MongoRecord}
+import net.liftweb.http.{S, SHtml, Templates}
+import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.record.Field
-import net.liftweb.util.{Helpers, CssSel}
-import Helpers._
+import net.liftweb.util.Helpers._
+import net.liftweb.util.{CssSel, Helpers}
 
-import scala.xml.{Text, NodeSeq}
+import scala.xml.{NodeSeq, Text}
 
 trait BaseModel[T <: MongoRecord[T]] extends MongoRecord[T] with SnippetHelper {
 
@@ -33,7 +33,7 @@ trait BaseModel[T <: MongoRecord[T]] extends MongoRecord[T] with SnippetHelper {
     for {
       node <- legend
     } yield {
-      "h1 *" #> node
+      "data-name=legend *" #> node
     }
   }
 
