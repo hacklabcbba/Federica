@@ -1,17 +1,13 @@
 package code.lib.field
 
 import code.model.OfficeHours
-import net.liftweb.mongodb.record.BsonRecord
-import net.liftweb.mongodb.record.field.BsonRecordField
-import net.liftweb.record._
-import net.liftweb.record.field.{StringField, OptionalStringField, StringTypedField}
 import net.liftmodules.extras.SnippetHelper
 import net.liftweb.common._
-import scala.xml.NodeSeq
+import net.liftweb.http.S
+import net.liftweb.http.js.JsCmds.Run
+import net.liftweb.mongodb.record.BsonRecord
+import net.liftweb.mongodb.record.field.BsonRecordField
 import net.liftweb.util.Helpers._
-import net.liftweb.http.{SHtml, S}
-import net.liftweb.http.js.JsCmds.{Run, Noop}
-import scala.xml.Text
 
 
 class TimePickerField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
@@ -33,7 +29,7 @@ class TimePickerField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
     S.appendJs(js)
     S.fmapFunc(S.SFuncHolder(this.setFromTimePicker(_))) {
       funcName =>
-        <div class="input-group">
+        <div class="col-md-12">
           {<input type={formInputType}
                   id={fieldId}
                   name={funcName}
@@ -41,9 +37,7 @@ class TimePickerField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
                   tabindex={tabIndex.toString}
                   class="form-control timepicker" /> % autofocus(isAutoFocus)
           }
-          <div class="input-group-addon">
-            <i class="fa fa-clock-o"></i>
-          </div>
+          <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
         </div>
     }
   }

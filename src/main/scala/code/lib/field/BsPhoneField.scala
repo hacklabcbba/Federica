@@ -2,15 +2,15 @@ package code
 package lib
 package field
 
-import net.liftweb.record._
-import net.liftweb.record.field.{StringField, OptionalStringField, StringTypedField}
 import net.liftmodules.extras.SnippetHelper
 import net.liftweb.common._
-import scala.xml.NodeSeq
+import net.liftweb.http.S
+import net.liftweb.http.js.JsCmds.Run
+import net.liftweb.record._
+import net.liftweb.record.field.{OptionalStringField, StringField, StringTypedField}
 import net.liftweb.util.Helpers._
-import net.liftweb.http.{SHtml, S}
-import net.liftweb.http.js.JsCmds.{Run, Noop}
-import scala.xml.Text
+
+import scala.xml.{NodeSeq, Text}
 
 trait BsPhoneTypedField extends StringTypedField with SnippetHelper {
   def isAutoFocus: Boolean = false
@@ -25,10 +25,10 @@ trait BsPhoneTypedField extends StringTypedField with SnippetHelper {
 
     S.fmapFunc(S.SFuncHolder(this.setFromAny(_))) {
       funcName =>
-        <div class="input-group">
-          <div class="input-group-addon">
-            <i class="fa fa-phone"></i>
-          </div>
+        <div class="col-md-12">
+          <span class="input-group-addon">
+            <i class="glyphicon glyphicon-earphone"></i>
+          </span>
           {<input type={formInputType} maxlength={maxLength.toString}
                   id={fieldId}
                   name={funcName}

@@ -2,15 +2,14 @@ package code
 package lib
 package field
 
-import net.liftweb.record._
-import net.liftweb.record.field._
 import net.liftmodules.extras.SnippetHelper
 import net.liftweb.common._
-import scala.xml.NodeSeq
+import net.liftweb.http.S
+import net.liftweb.record._
+import net.liftweb.record.field._
 import net.liftweb.util.Helpers._
-import net.liftweb.http.{SHtml, S}
-import net.liftweb.http.js.JsCmds.Noop
-import scala.xml.Text
+
+import scala.xml.{NodeSeq, Text}
 
 trait BsEmailTypedField extends EmailTypedField with SnippetHelper {
   def isAutoFocus: Boolean = false
@@ -22,14 +21,16 @@ trait BsEmailTypedField extends EmailTypedField with SnippetHelper {
 
     S.fmapFunc(S.SFuncHolder(this.setFromAny(_))) {
       funcName =>
-        <div class="input-group">
-          <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+        <div class="col-md-12">
+          <span class="input-group-addon">
+            <i class="fa fa-envelope"></i>
+          </span>
           {<input type="email"
-                 id={fieldId}
-                 name={funcName}
-                 value={valueBox openOr ""}
-                 tabindex={tabIndex.toString}
-                 class="form-control" /> % autofocus(isAutoFocus)}
+                  id={fieldId}
+                  name={funcName}
+                  value={valueBox openOr ""}
+                  tabindex={tabIndex.toString}
+                  class="form-control" /> % autofocus(isAutoFocus)}
         </div>
     }
   }
