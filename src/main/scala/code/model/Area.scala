@@ -7,7 +7,7 @@ import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.{BsonMetaRecord, BsonRecord, MongoRecord}
 import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField}
-import net.liftweb.record.field.{IntField, EmailField, StringField, TextareaField}
+import net.liftweb.record.field._
 import net.liftweb.util.FieldError
 
 import scala.xml.{Text, Elem}
@@ -68,6 +68,10 @@ class Area private () extends MongoRecord[Area] with ObjectIdPk[Area] with BaseM
   object code extends BsStringField(this, 50) {
     override def displayName = "Código"
     override def toString = get
+  }
+
+  object isPublished extends BooleanField(this, false) {
+    override def displayName = "Publicado"
   }
 
   override def toString = name.get
