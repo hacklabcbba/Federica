@@ -8,8 +8,8 @@ import net.liftweb.http.js.JsCmds.RedirectTo
 import net.liftweb.http.{S, SHtml, Templates}
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.record.Field
+import net.liftweb.util.CssSel
 import net.liftweb.util.Helpers._
-import net.liftweb.util.{CssSel, Helpers}
 
 import scala.xml.{NodeSeq, Text}
 
