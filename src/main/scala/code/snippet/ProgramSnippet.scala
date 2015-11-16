@@ -7,6 +7,8 @@ object ProgramSnippet extends ListSnippet[Program] {
 
   val meta = Program
 
+  val title = "Programas"
+
   val addUrl = Site.backendProgramAdd.calcHref(Program.createRecord)
 
   def entityListUrl: String = Site.backendPrograms.menu.loc.calcDefaultHref

@@ -7,6 +7,8 @@ object AreaSnippet extends ListSnippet[Area] {
 
   val meta = Area
 
+  val title = "Areas"
+
   val addUrl = Site.backendAreaAdd.calcHref(Area.createRecord)
 
   def entityListUrl: String = Site.backendAreas.menu.loc.calcDefaultHref

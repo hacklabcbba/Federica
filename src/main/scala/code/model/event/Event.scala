@@ -3,23 +3,23 @@ package model
 package event
 
 import code.lib.RogueMetaRecord
-import code.model.{Process, ProductiveUnit}
-import net.liftweb.util.Helpers._
-import net.liftweb.mongodb.record.MongoRecord
-import net.liftweb.mongodb.record.field._
-import net.liftweb.record.field.{EnumNameField, TextareaField, LongField, DecimalField, StringField}
-import code.model.activity.{Activity, ActivityType}
-import net.liftweb.common.{Full, Empty, Box}
-import scala.xml.Elem
+import code.model.activity.Activity
+import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.http.js.JsCmds._
-import net.liftweb.common.Full
+import net.liftweb.mongodb.record.MongoRecord
+import net.liftweb.mongodb.record.field._
+import net.liftweb.record.field.{EnumNameField, StringField, TextareaField}
+import net.liftweb.util.Helpers._
+
+import scala.xml.Elem
 
 class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
 
   override def meta = Event
 
   object eventNumber extends StringField(this, 200) {
+    override def displayName = "#"
     override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
       set(s)
       Noop
@@ -28,6 +28,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
   }
 
   object name extends StringField(this, 200) {
+    override def displayName = "Nombre"
     override def toString = get
     override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
       set(s)
@@ -42,10 +43,12 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
   }
 
   object costInfo extends ObjectIdRefField(this, CostInfo) {
+    override def displayName = "Costo"
     override def toString = this.obj.dmap("no definido..")(_.cost.get.toString)
   }
 
   object eventTypes extends ObjectIdRefListField(this, EventType) {
+    override def displayName = "Tipo"
     def currentValue = this.objs
     def availableOptions: List[(EventType, String)] = EventType.findAll.map(p => p -> p.name.get)
 
@@ -61,6 +64,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
   }
 
   object program extends ObjectIdRefField(this, Program) {
+    override def displayName = "Programa"
 
     override def optional_? = true
     override def toString = this.obj.dmap("")(_.name.get)
@@ -78,6 +82,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
 
   object area extends ObjectIdRefField(this, Area) {
 
+    override def displayName = "Área"
     override def toString = this.obj.dmap("")(_.name.get)
     val list = Area.findAll
     val default = list.headOption
@@ -92,6 +97,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
   }
 
   object process extends ObjectIdRefField(this, Process) {
+    override def displayName = "Proceso"
     val list = Process.findAll
     val default = list.headOption
     override def toForm = {
@@ -105,6 +111,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
   }
 
   object actionLines extends ObjectIdRefListField(this, ActionLine) {
+    override def displayName = "Lineas de acción"
     def currentValue = this.objs
     def availableOptions: List[(ActionLine, String)] = ActionLine.findAll.map(p => p -> p.name.get).toList
 
@@ -121,6 +128,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
 
   object productiveUnit extends ObjectIdRefField(this, ProductiveUnit) {
 
+    override def displayName = "Unidad productiva"
     override def optional_? = true
     override def toString = this.obj.dmap("")(_.name.get)
     val list = ProductiveUnit.findAll
@@ -137,6 +145,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
 
   object city extends ObjectIdRefField(this, City) {
 
+    override def displayName = "Ciudad"
     override def toString = this.obj.dmap("")(_.name.get)
     val list = City.findAll
     val default = list.headOption
@@ -152,6 +161,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
 
   object country extends ObjectIdRefField(this, Country) {
 
+    override def displayName = "Pais"
     override def toString = this.obj.dmap("")(_.name.get)
     val list = Country.findAll
     val default = list.headOption
@@ -166,6 +176,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
   }
 
   object place extends StringField(this, 500) {
+    override def displayName = "Lugar"
     override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
       set(s)
       Noop
@@ -173,20 +184,25 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
   }
 
   object shortDescription extends TextareaField(this, 1000) {
+    override def displayName = "Descripción corta"
     override def toForm = {
       Full(SHtml.textarea(value, v => set(v), "class"->"form-control" ))
     }
   }
 
-  object activities extends ObjectIdRefListField(this, Activity)
+  object activities extends ObjectIdRefListField(this, Activity) {
+    override def displayName = "Actividades"
+  }
 
   object description extends TextareaField(this, 1000) {
+    override def displayName = "Descripción"
     override def toForm = {
       Full(SHtml.textarea(value, v => set(v), "class"->"form-control" ))
     }
   }
 
   object requirements extends ObjectIdRefListField(this, EventRequirement) {
+    override def displayName = "Requerimientos"
     def currentValue = this.objs
     def availableOptions: List[(EventRequirement, String)] =
       EventRequirement.findAll.map(p => p -> p.title.get).toList
@@ -201,6 +217,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
   }
 
   object expositors extends ObjectIdRefListField(this, User) {
+    override def displayName = "Expositores"
     def currentValue = this.objs
     def availableOptions: List[(User, String)] = User.findAll.map(p => p -> p.name.get).toList
 
@@ -214,6 +231,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
   }
 
   object organizer extends ObjectIdRefField(this, User) {
+    override def displayName = "Organiza"
     override def toString = {
       this.obj.dmap("Indefinido..")(_.name.get)
     }
@@ -230,6 +248,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
   }
 
   object handlers extends ObjectIdRefListField(this, User) {
+    override def displayName = "Gestionadores"
     override def toString = {
       this.objs.map(_.name.get).mkString(", ")
     }
@@ -245,6 +264,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
   }
 
   object sponsors extends ObjectIdRefListField(this, User) {
+    override def displayName = "Auspiciadores"
     override def toString = {
       User.findAll(this.get).map(_.name.get).mkString(", ")
     }
@@ -279,6 +299,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
   }
 
   object collaborators extends ObjectIdRefListField(this, User) {
+    override def displayName = "Colaboradores"
     override def toString = {
       this.objs.map(_.name.get).mkString(", ")
     }
@@ -294,15 +315,19 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
     def availableOptions = User.findAll.map(p => p -> p.name.get).toSeq
   }
 
-  object pressRoom extends ObjectIdRefField(this, PressNotes)
+  object pressRoom extends ObjectIdRefField(this, PressNotes) {
+    override def displayName = "Sala de prensa"
+  }
 
   object goal extends TextareaField(this, 1000) {
+    override def displayName = "Objetivo"
     override def toForm = {
       Full(SHtml.textarea(value, v => set(v), "class"->"form-control" ))
     }
   }
 
   object quote extends StringField(this, "") {
+    override def displayName = "Presupuesto"
     override def toForm = Full(SHtml.ajaxText(value, (s: String) => {
       set(s)
       Noop
@@ -310,6 +335,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
   }
 
   object tools extends TextareaField(this, 1000) {
+    override def displayName = "Herramientas"
     override def toForm = {
       Full(SHtml.textarea(value, v => set(v), "class"->"form-control" ))
     }
@@ -328,7 +354,9 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
   }
 
   object costContributionByUse extends ObjectIdRefField(this, CostContributionByUse)
-  object state extends EnumNameField(this, StateType)
+  object status extends EnumNameField(this, StatusType) {
+    override def displayName = "Estado"
+  }
   object values extends ObjectIdRefListField(this, Values) {
     override def displayName = "Principios"
   }
@@ -336,7 +364,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
 
 object Event extends Event with RogueMetaRecord[Event]
 
-object StateType extends Enumeration {
+object StatusType extends Enumeration {
   type StateType = Value
   val Approved, Rejected, Draft = Value
 }

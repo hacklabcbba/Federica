@@ -2,20 +2,16 @@ package code
 package snippet
 
 import code.lib.BaseModel
-import code.model.resource.Room
 import net.liftmodules.extras.SnippetHelper
-import net.liftweb.common.{Failure, Full, Box}
+import net.liftweb.common.{Box, Failure, Full}
 import net.liftweb.http.js.JsCmd
 import net.liftweb.http.js.JsCmds._
-import net.liftweb.http.{SHtml, RequestVar, Templates, S}
+import net.liftweb.http.{RequestVar, S, SHtml, Templates}
 import net.liftweb.mongodb.record.{MongoMetaRecord, MongoRecord}
 import net.liftweb.record.Field
-import net.liftweb.sitemap.Loc.TemplateBox
-import net.liftweb.util.{CssSel, PassThru}
 import net.liftweb.util.Helpers._
-import com.foursquare.rogue.LiftRogue._
 
-import scala.xml.{Text, NodeSeq}
+import scala.xml.{NodeSeq, Text}
 
 trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
   val meta: MongoMetaRecord[BaseRecord]
@@ -30,7 +26,7 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
 
   def listFields: List[Field[_, BaseRecord]] = meta.fieldOrder
 
-  val title: String = ""
+  val title: String
 
   def render = {
     "*" #>

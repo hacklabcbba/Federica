@@ -7,6 +7,8 @@ object ProcessSnippet extends ListSnippet[Process] {
 
   val meta = Process
 
+  val title = "Procesos"
+
   val addUrl = Site.backendProcessAdd.calcHref(Process.createRecord)
 
   def entityListUrl: String = Site.backendProcess.menu.loc.calcDefaultHref

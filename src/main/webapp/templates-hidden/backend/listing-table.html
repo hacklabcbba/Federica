@@ -1,56 +1,77 @@
-<section class="content">
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="box">
-                <div class="box-header">
-                    <h3 class="box-title" data-name="title">Responsive Hover Table</h3>
-                    <div class="box-tools">
-                        <div class="input-group" style="width: 150px;">
-                            <input type="text" name="table_search" class="form-control input-sm pull-right" placeholder="Buscar">
-                            <div class="input-group-btn">
-                                <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
-                                <div class="btn-group">
-                                    <button class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bars"></i></button>
-                                    <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a data-name="add-item" href="#"><i class="fa fa-plus"></i> Agregar </a></li>
-                                        <li><a data-name="remove-items" href="#"><i class="fa fa-trash"></i> Eliminar </a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+<main class="row">
+    <div class="col-md-12">
+        <header class="page-header row">
+            <h2 class="no-margin-top title-page col-md-7">
+                <i class="glyphicon glyphicon-menu-right border-circle"></i> <span data-name="title">Item list</span>
+            </h2>
+            <!--<ul class="list-unstyled list-inline col-md-5 text-right-md">
+                <li>
+                    <a href="#" class="btn black">New</a>
+                </li>
+                <li><a href="#" class="btn ">Edit</a></li>
+                <li><a href="#" class="btn ">Delete</a></li>
+                <li>
+                    <div class="btn-group" role="group">
+                        <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Status
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Publish</a></li>
+                            <li><a href="#">Unpublish</a></li>
+                        </ul>
                     </div>
-                </div><!-- /.box-header -->
-                <div class="box-body table-responsive no-padding">
-                    <table class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th>&nbsp;</th>
-                            <th data-name="column-name">ID</th>
-                            <th class="pull-right">&nbsp;</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr data-name="items">
-                            <td data-name="check"><input type="checkbox"></td>
-                            <td data-name="column-data">183</td>
-                            <td class="pull-right">
-                                <a class="btn btn-default" href="#" data-name="edit-item"><i class="fa fa-pencil"></i></a>
-                                <a class="btn btn-danger" href="#" data-name="remove-item"><i class="fa fa-remove"></i></a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div><!-- /.box-body -->
-                <div class="box-footer clearfix">
-                    <ul class="pagination pagination-sm no-margin pull-right">
-                        <li><a href="#">«</a></li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">»</a></li>
-                    </ul>
-                </div>
-            </div><!-- /.box -->
+                </li>
+            </ul>-->
+        </header>
+        <div>
+            <table class="table table-listitems">
+                <thead>
+                <tr>
+                    <th class="text-center"><input type="checkbox"/></th>
+                    <th data-name="column-name" class="text-center">#</th>
+                    <th>&nbsp;</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-name="items">
+                    <td class="text-center">
+                        <input type="checkbox"/>
+                    </td>
+                    <td data-name="column-data" class="text-center">
+                        1
+                    </td>
+                    <td>
+                        <ul class="list-unstyled list-inline option-list text-center">
+                            <li><a href="#" data-name="edit-item" class="black border-circle delete"><i class="fa fa-trash"></i><span class="hide">Editar</span></a></li>
+                            <li><a href="#" data-name="remove-item" class="black border-circle edit"><i class="fa fa-pencil"></i></a></li>
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+        </div>
+        <div>
+            <nav class="text-center ">
+                <ul class="pagination pagination-lg">
+                    <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
-</section>
+</main>

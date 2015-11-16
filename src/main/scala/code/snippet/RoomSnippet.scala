@@ -8,6 +8,8 @@ object RoomSnippet extends ListSnippet[Room] {
 
   val meta = Room
 
+  val title = "Ambiente"
+
   val addUrl = Site.backendRoomAdd.calcHref(Room.createRecord)
 
   def entityListUrl: String = Site.backendRooms.menu.loc.calcDefaultHref

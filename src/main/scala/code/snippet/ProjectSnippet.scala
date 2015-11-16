@@ -2,11 +2,12 @@ package code.snippet
 
 import code.config.Site
 import code.model.Project
-import code.model.network.Space
 
 object ProjectSnippet extends ListSnippet[Project] {
 
   val meta = Project
+
+  val title = "Proyecto"
 
   val addUrl = Site.backendProjectAdd.calcHref(Project.createRecord)
 

@@ -1,11 +1,13 @@
 package code.snippet
 
 import code.config.Site
-import code.model.{User, Area}
+import code.model.User
 
 object BackendUserSnippet extends ListSnippet[User] {
 
   val meta = User
+
+  val title = "Usuarios"
 
   val addUrl = Site.backendUserAdd.calcHref(User.createRecord)
 

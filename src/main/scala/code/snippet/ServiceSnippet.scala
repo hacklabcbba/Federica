@@ -8,6 +8,8 @@ object ServiceSnippet extends ListSnippet[Service] {
 
   val meta = Service
 
+  val title = "Servicios"
+
   val addUrl = Site.backendServiceAdd.calcHref(Service.createRecord)
 
   def entityListUrl: String = Site.backendServices.menu.loc.calcDefaultHref

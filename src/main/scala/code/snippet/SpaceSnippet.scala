@@ -1,12 +1,13 @@
 package code.snippet
 
 import code.config.Site
-import code.model.Area
 import code.model.network.Space
 
 object SpaceSnippet extends ListSnippet[Space] {
 
   val meta = Space
+
+  val title = "Espacios"
 
   val addUrl = Site.backendSpaceAdd.calcHref(Space.createRecord)
 
