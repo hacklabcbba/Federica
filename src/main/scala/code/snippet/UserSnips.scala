@@ -1,22 +1,19 @@
 package code
 package snippet
 
-import config.Site
-import model.{User, LoginCredentials}
-
-import scala.xml._
-
-import net.liftweb._
-import common._
-import http.{DispatchSnippet, S, SHtml, StatefulSnippet}
-import http.js.JsCmd
-import http.js.JsCmds._
-import util._
-import Helpers._
-
+import code.config.Site
+import code.model.{LoginCredentials, User}
 import net.liftmodules.extras.{Gravatar, SnippetHelper}
 import net.liftmodules.mongoauth.LoginRedirect
 import net.liftmodules.mongoauth.model.ExtSession
+import net.liftweb.common._
+import net.liftweb.http.js.JsCmd
+import net.liftweb.http.js.JsCmds._
+import net.liftweb.http.{S, SHtml}
+import net.liftweb.util.Helpers._
+import net.liftweb.util._
+
+import scala.xml._
 
 sealed trait UserSnippet extends SnippetHelper with Loggable {
 
@@ -174,24 +171,9 @@ object UserTopbar {
   def render = {
     User.currentUser match {
       case Full(user) =>
-        <ul class="nav navbar-nav navbar-right" id="user">
-          <li class="dropdown" data-dropdown="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              {Gravatar.imgTag(user.email.get, 20)}
-              <span>{user.username.get}</span>
-              <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-              <li><a href={Site.profileLoc.calcHref(user)}><i class="icon-user"></i> Profile</a></li>
-              <li><lift:Menu.item name="Account" donthide="true" linktoself="true"><i class="icon-cog"></i> Settings</lift:Menu.item></li>
-              <li class="divider"></li>
-              <li><lift:Menu.item name="Logout" donthide="true"><i class="icon-off"></i> Log Out</lift:Menu.item></li>
-            </ul>
-          </li>
-        </ul>
-      case _ if (S.request.flatMap(_.location).map(_.name).filterNot(it => List("Login", "Register").contains(it)).isDefined) =>
-        <a href="/login" class="btn btn-default navbar-btn navbar-right">Sign In</a>
-      case _ => NodeSeq.Empty
+        <div data-lift="embed?what=/templates-hidden/parts/user-block"></div>
+      case _ =>
+        <div data-lift="embed?what=/templates-hidden/parts/login-block"></div>
     }
   }
 }

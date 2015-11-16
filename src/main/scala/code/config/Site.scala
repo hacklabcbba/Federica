@@ -1,21 +1,14 @@
 package code
 package config
 
+import code.model.network._
 import code.model.resource.{Equipment, Room}
-import model.User
-
-import net.liftweb._
-import net.liftweb.common.Full
-import net.liftweb.http.{Templates, S}
-import code.lib.menu._
-import net.liftweb._
-import util._
-import sitemap._
-import Loc._
-
+import code.model.{User, _}
 import net.liftmodules.mongoauth.Locs
-import code.model._
-import network._
+import net.liftweb.common.Full
+import net.liftweb.http.{S, Templates}
+import net.liftweb.sitemap.Loc._
+import net.liftweb.sitemap._
 
 
 object MenuGroups {
@@ -37,7 +30,7 @@ case class MenuLoc(menu: Menu) {
 }
 
 object Site extends Locs {
-  import MenuGroups._
+  import code.config.MenuGroups._
 
   /* Menu superior */
   // locations (menu entries)
@@ -195,20 +188,11 @@ object Site extends Locs {
 
   /* Participa */
   // Participa
-  val participa = MenuLoc(Menu.i("Participa") / "participa"  submenus(
-    // Como artista
-    Menu.i("Como artista") / "como-artista",
-    // Como organizacion
-    Menu.i("Como organización") / "como-organizacion",
-    // Como auspiciador
-    Menu.i("Como auspiciador") / "como-auspiciador",
-    // Como voluntario
-    Menu.i("Como voluntario") / "como-voluntario"
-    ))
+  val participa = MenuLoc(Menu.i("Participa") / "participa")
 
   /* Espacio */
   // Espacio
-  val espacio = MenuLoc(Menu.i("Espacio") / "espacio" submenus(
+  val espacios = MenuLoc(Menu.i("Espacio") / "espacios" submenus(
     // Conoce mARTadero
     Menu.i("Conoce mARTadero") / "conoce-martadero" submenus(
       // Salas y equipamiento
@@ -228,22 +212,7 @@ object Site extends Locs {
 
   /* Media */
   // Media
-  val media = MenuLoc(Menu.i("Media") / "media" submenus(
-    // Biblioteca libre
-    Menu.i("Biblioteca libre") / "biblioteca-libre",
-    // Descargas (logos, fuentes, libros, catálogos)
-    Menu.i("Descargas (logos, fuentes, libros, catálogos)") / "descargas" ,
-    // Contextopedia
-    Menu.i("Contextopedia") / "contextopedia" ,
-    // Redes Sociales
-    Menu.i("Redes Sociales") / "redes-sociales",
-    // Fotos mARTadero (Flickr mARTadero)
-    Menu.i("Fotos mARTadero (Flickr mARTadero)") / "fotos" ,
-    // Videos mARTadero (Canal de YouTube)
-    Menu.i("Videos mARTadero (Canal de YouTube)") / "videos",
-    // Rss Newsfeed (general/áreas)
-    Menu.i("Rss Newsfeed (general/áreas)") / "rss"
-    ))
+  val media = MenuLoc(Menu.i("Media") / "media")
 
   /* Blog */
   // Blog
@@ -568,6 +537,8 @@ object Site extends Locs {
 
   val backendFiles = MenuLoc(Menu.i("Archivos") / "backend" / "files" >> RequireLoggedIn >> LeftMenuGroup)
 
+  val backendPages = MenuLoc(Menu.i("Páginas") / "backend" / "pages" >> RequireLoggedIn >> LeftMenuGroup)
+
 
   //Submenus equipos, accesorios y servicios
 
@@ -587,6 +558,7 @@ object Site extends Locs {
     backendSpaces.menu,
     backendProjects.menu,
     backendNetworks.menu,
+    backendPages.menu,
     backendUsers.menu))
 
   // Salas
@@ -632,7 +604,7 @@ object Site extends Locs {
     apoya.menu,
     agenda.menu,
     participa.menu,
-    espacio.menu,
+    espacios.menu,
     media.menu,
     blog.menu,
     convocatorias.menu,

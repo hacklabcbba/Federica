@@ -4,22 +4,27 @@
         Reserva <br/>tu espacio
     </div>
     <ul class="list-unstyled no-margin login-options">
-        <li class="new-register"><a href="#">Nuevo registro</a></li>
+        <li class="new-register"><a href="/register">Nuevo registro</a></li>
         <li id="login"><a href="#">Entrar</a></li>
     </ul>
-    <div id="login-box">
+    <div id="login-box" data-lift="UserLogin">
         <h3>Iniciar sesión</h3>
         <div class="padding-xs">
-            <form>
+            <form data-lift="form.ajax">
                 <div class="input-container">
-                    <input type="text" class="form-control"/>
+                    <input type="email" class="form-control" placeholder="Correo electrónico" id="id_email" name="email" />
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                    <span data-alertid="id_email_err" form-alert=""></span>
                     <i class="glyphicon glyphicon-user"></i>
                 </div>
                 <div class="input-container">
-                    <input type="password" class="form-control"/>
+                    <input type="password" class="form-control" placeholder="Contraseña" id="id_password" />
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    <span data-alertid="id_password_err" form-alert=""></span>
                     <i class="glyphicon glyphicon-lock"></i>
                 </div>
                 <div>
+                    <input id="id_submit" type="hidden"/>
                     <input type="submit" class="form-control login-button" value="Iniciar sesión"/>
                 </div>
             </form>
@@ -31,7 +36,7 @@
                 </div>
             </div>
             <div>
-                <a href="#" class="btn login-button form-control">Crear cuenta</a>
+                <a href="/register" class="btn login-button form-control">Crear cuenta</a>
             </div>
         </div>
     </div>
