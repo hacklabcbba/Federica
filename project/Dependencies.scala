@@ -17,6 +17,7 @@ object Dependencies {
     val lift = "2.6.2"
     val lift_edition = "2.6"
     val jetty = "9.2.2.v20140723"
+    val angular_version = "1.4.7"
   }
 
   // Lift
@@ -42,5 +43,7 @@ object Dependencies {
   val logback = "ch.qos.logback" % "logback-classic" % "1.1.2"
   val scalatest = "org.scalatest" %% "scalatest" % "2.2.1"
   val imaging = "net.liftmodules" % "imaging_2.6_2.10" % "1.3"
+  val angularJs = "org.webjars.bower" %  "angularjs"         % Ver.angular_version
+  val liftNg = "net.liftmodules"   %% ("ng_"+Ver.lift_edition) % "0.9.0"
 
 }

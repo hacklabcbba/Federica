@@ -19,7 +19,9 @@ object LiftProjectBuild extends Build {
         rogueCore,
         rogueLift,
         rogueIndex,
-        imaging
+        imaging,
+        angularJs,
+        liftNg
       ) ++
       test(scalatest) ++
       container(jettyWebapp)

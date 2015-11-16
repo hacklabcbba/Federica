@@ -1,0 +1,38 @@
+.gs-slidenav {
+    width: 50px;
+}
+
+.gs-slidenav .menu-title {
+    display: none;
+}
+
+.gs-slidenav.open {
+    width: 300px !important;
+    z-index: 1000;
+}
+
+.gs-slidenav.open .gs-slidenav-menu .gs-slidenav-option {
+    text-align: right;
+}
+
+
+.gs-slidenav .gs-slidenav-menu.close-menu .gs-slidenav-option:hover .menu-title {
+    background: rgba(0,0,0,0.5);
+    position: absolute;
+    display: block;
+    right: -100px;
+    z-index: 1000;
+    padding: 5px;
+}
+
+.gs-slidenav.open .gs-slidenav-menu .gs-slidenav-option .menu-title {
+    display: inline-block;
+}
+
+.gs-slidenav .gs-slidenav-menu .gs-slidenav-menu-options {
+    display: none;
+}
+
+.gs-slidenav.open .gs-slidenav-menu .gs-slidenav-menu-options {
+    display: block;
+}
