@@ -1,3 +1,18 @@
+/*------------------------------------*\
+
+\*------------------------------------*/
+/*----/ $TABLE OF CONTENTS /----*/
+/*
+ *----/ GENERAL ELEMENTS
+ *----/----/ TAGS
+ *----/----/ CLASSES
+ *----/----/ BUTTONS
+ *----/ BOOTSTRAP OVERWRITE
+ *----/----/ NAVEGATION
+ *----/ HEADER
+ *----/ BODY
+ *----/ FOOTER
+ */
 /*----/ $GENERAL ELEMENTS */
 @font-face {
   font-family: "alte_haas_groteskregular";
@@ -190,15 +205,30 @@ textarea.form-control {
   border-right: none;
   border-bottom: 1px solid #000;
   box-shadow: none;
+  font-size: 16px;
 }
 .form-group .form-control:focus {
   border-color: #000 !important;
   color: #000 !important;
 }
+.form-group .form-control + .input-group-addon {
+  bottom: 0;
+  right: 25px;
+}
 .form-group textarea.form-control,
 .form-group .multiselect select {
   border: 1px solid #000;
   font-size: 16px;
+}
+.form-group .input-group-addon {
+  position: absolute;
+  background: transparent none repeat scroll 0% 0%;
+  border: medium none;
+  font-size: 20px;
+  padding-left: 3px;
+}
+.form-group .input-group-addon + .form-control {
+  padding-left: 30px;
 }
 .form-group .input-lg {
   padding: 0 5px;
@@ -852,6 +882,48 @@ body .pagination a {
   opacity: 1;
   background: #337ab7;
   border-color: #337ab7;
+}
+/*----/----/----/ $DASHBOARD */
+body.page.dashboard .content {
+  margin-top: 0;
+}
+.dashboard .dashboard-menu {
+  background: #000;
+}
+.dashboard .dashboard-menu .dashboard-title {
+  font-size: 16px;
+  color: #fff;
+}
+.dashboard .dashboard-menu .dropdown-menu {
+  position: relative;
+  background: transparent;
+}
+.dashboard .dashboard-menu .navbar-nav > li {
+  float: none;
+}
+.dashboard .dashboard-menu a {
+  font-family: "MyriadProRegular";
+  color: #fff;
+  padding-left: 0;
+  padding-right: 0;
+  font-size: 13px;
+  padding-bottom: 0;
+}
+.dashboard .boxes .row > section {
+  margin-bottom: 20px;
+}
+.dashboard .boxes .row > section h2 {
+  border-bottom: 1px solid #000;
+  padding-bottom: 8px;
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+.dashboard .boxes .table-listusers img {
+  width: 30px;
+  margin-right: 10px;
+}
+.dashboard .boxes .comments > * {
+  margin-bottom: 15px;
 }
 /*----/----/----/ $CREATE EVENT */
 .backend-wizard #event-wizard .wizard-nav {
