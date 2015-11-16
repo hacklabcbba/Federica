@@ -537,7 +537,7 @@ object Site extends Locs {
 
   val backendFiles = MenuLoc(Menu.i("Archivos") / "backend" / "files" >> RequireLoggedIn >> LeftMenuGroup)
 
-  val backendPages = MenuLoc(Menu.i("Páginas") / "backend" / "pages" >> RequireLoggedIn >> LeftMenuGroup)
+  val backendPages = MenuLoc(Menu.i("Páginas") / "backend" / "pages" >> RequireLoggedIn)
 
 
   //Submenus equipos, accesorios y servicios

@@ -1,21 +1,16 @@
 package bootstrap.liftweb
 
-import code.model.event.Values
-
-import scala.xml.{Null, UnprefixedAttribute}
 import javax.mail.internet.MimeMessage
 
-import net.liftweb._
-import common._
-import http._
-import util._
-import util.Helpers._
-
 import code.config._
+import code.model.event.Values
 import code.model.{SystemUser, User}
-
+import net.liftmodules.FoBo
 import net.liftmodules.extras.{Gravatar, LiftExtras}
 import net.liftmodules.mongoauth.MongoAuth
+import net.liftweb.common._
+import net.liftweb.http._
+import net.liftweb.util._
 
 /**
  * A class that's instantiated early and run.  It allows the application
@@ -27,6 +22,7 @@ class Boot extends Loggable {
 
     // init mongodb
     MongoConfig.init()
+    FoBo.init()
 
     // init auth-mongo
     MongoAuth.authUserMeta.default.set(User)

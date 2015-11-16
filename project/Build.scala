@@ -21,7 +21,8 @@ object LiftProjectBuild extends Build {
         rogueIndex,
         imaging,
         angularJs,
-        liftNg
+        liftNg,
+        liftFoBo
       ) ++
       test(scalatest) ++
       container(jettyWebapp)

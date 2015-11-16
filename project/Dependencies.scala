@@ -27,6 +27,7 @@ object Dependencies {
   // Lift modules
   val liftExtras = "net.liftmodules" %% ("extras_"+Ver.lift_edition) % "0.4-SNAPSHOT"
   val liftMongoauth = "net.liftmodules" %% ("mongoauth_"+Ver.lift_edition) % "0.6-SNAPSHOT"
+  val liftFoBo = "net.liftmodules" %% "fobo_2.6"    % "1.4"
 
   // Rogue
   val rogueField      = "com.foursquare" %% "rogue-field"         % "2.4.0" intransitive()
