@@ -1,31 +1,23 @@
 package code
 package model
 
-import code.config.Site
-import code.lib.field.{BsEmailField, BsCkTextareaField, BsStringField}
-import com.mongodb.WriteConcern
+import code.config.{DefaultRoles, Site}
+import code.lib.field.{BsCkTextareaField, BsEmailField, BsStringField}
 import code.lib.{BaseModel, RogueMetaRecord}
-
-import org.bson.types.ObjectId
-import org.joda.time.DateTime
-
-import net.liftweb._
-import common._
-import http.{StringField => _, BooleanField => _, _}
-import mongodb.record.field._
-import record.field.{PasswordField => _, _}
-import net.liftweb.util.{FieldError, Helpers, FieldContainer}
-
 import net.liftmodules.mongoauth._
 import net.liftmodules.mongoauth.field._
 import net.liftmodules.mongoauth.model._
-import java.util.{Locale}
-import xml._
+import net.liftweb.common._
+import net.liftweb.http.{BooleanField => _, S, SHtml, StringField => _, _}
+import net.liftweb.mongodb.record.field._
+import net.liftweb.record.field.{PasswordField => _, _}
+import net.liftweb.sitemap.Loc.If
+import net.liftweb.util.Helpers._
+import net.liftweb.util.{FieldContainer, FieldError}
+import org.bson.types.ObjectId
+import org.joda.time.DateTime
 
-import common._
-import util._
-import Helpers._
-import http.{S, SHtml}
+import scala.xml._
 
 class User private () extends MongoAuthUser[User] with ObjectIdPk[User] with BaseModel[User] {
   def meta = User
@@ -173,7 +165,7 @@ class User private () extends MongoAuthUser[User] with ObjectIdPk[User] with Bas
 }
 
 object User extends User with ProtoAuthUserMeta[User] with RogueMetaRecord[User] with Loggable {
-  import mongodb.BsonDSL._
+  import net.liftweb.mongodb.BsonDSL._
 
   override def collectionName = "user.users"
 
@@ -286,24 +278,33 @@ object User extends User with ProtoAuthUserMeta[User] with RogueMetaRecord[User]
   // used during login process
   object loginCredentials extends SessionVar[LoginCredentials](LoginCredentials(""))
   object regUser extends SessionVar[User](createRecord.email(loginCredentials.is.email))
+
+  def HasRoleOrPermission(role: Role, permission: Permission) =
+    If(() => User.hasRole(role.id.get) || User.hasPermission(permission),
+      DisplayError("liftmodule-monogoauth.locs.hasRole", "liftmodule-monogoauth.locs.hasPermission"))
+
+  protected def DisplayError(message: String*) = () => {
+    val msg = message.map(S ? _).mkString(",")
+    RedirectWithState(indexUrl, RedirectState(() => S.error(msg)))
+  }
 }
 
 case class LoginCredentials(email: String, isRememberMe: Boolean = false)
 
 object SystemUser {
   private val username = "admin"
-  private val email = "info@genso.com.bo"
+  private val email = "admin@martadero.org"
 
   lazy val user: User = User.findByUsername(username) openOr {
-    //User.save
     User.createRecord
-      .name(MongoAuth.siteName.vend)
+      .name("Administración Espacio")
       .username(username)
       .email(email)
       .locale("es_BO")
       .timezone("America/La_Paz")
       .verified(true)
       .password("asdf1234", true) // TODO: set me
+      .roles(List(DefaultRoles.SuperAdmin.id.get))
       .save(true)
   }
 }

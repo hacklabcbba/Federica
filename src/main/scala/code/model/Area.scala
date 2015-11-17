@@ -31,7 +31,7 @@ class Area private () extends MongoRecord[Area] with ObjectIdPk[Area] with BaseM
   }
 
   object responsible extends ObjectIdRefField(this, User) {
-    override def displayName = "Responsable"
+    override def displayName = "Coordinador"
     override def toString = {
       this.obj.dmap("Indefinido..")(_.name.get)
     }
@@ -41,7 +41,7 @@ class Area private () extends MongoRecord[Area] with ObjectIdPk[Area] with BaseM
           availableOptions,
           obj,
           "class" -> "select2 form-control",
-          "data-placeholder" -> "Seleccione responsable.."
+          "data-placeholder" -> "Seleccione coordinador.."
         )(s => set(s.id.get))
       )
     }
