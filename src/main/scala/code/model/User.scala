@@ -1,7 +1,7 @@
 package code
 package model
 
-import code.config.{DefaultRoles, Site}
+import code.config.{Permissions, DefaultRoles, Site}
 import code.lib.field.{BsCkTextareaField, BsEmailField, BsStringField}
 import code.lib.{BaseModel, RogueMetaRecord}
 import net.liftmodules.mongoauth._
@@ -72,16 +72,36 @@ class User private () extends MongoAuthUser[User] with ObjectIdPk[User] with Bas
   }
   object password extends PasswordField(this, 6, 32) {
     override def displayName = "Contraseña"
-    override def elem = S.fmapFunc(S.SFuncHolder(this.setFromAny(_))) {
+    override def elem = S.fmapFunc(S.SFuncHolder(s => {
+      this.set(_)
+      this.hashIt
+    })) {
       funcName => <input type="password" maxlength={maxLength.toString}
                          name={funcName}
                          value={valueBox openOr ""}
                          tabindex={tabIndex toString} class="form-control"/>}
   }
-  object permissions extends PermissionListField(this)
+  object permissions extends PermissionListField(this) {
+    override def displayName = "Permisos"
+    override def options = Permissions.list.map(p => p -> p.toString())
+    private def elem: Elem = SHtml.multiSelectObj[Permission](options, this.value, list => {
+      set(list)
+    }, "class" -> "form-control")
+    override def toForm: Box[NodeSeq] = Full(elem)
+    override def toString = this.value.mkString(", ")
+  }
+
   object roles extends StringRefListField(this, Role) {
+    override def displayName = "Roles"
     def permissions: List[Permission] = objs.flatMap(_.permissions.get)
     def names: List[String] = objs.map(_.id.get)
+    override def options: List[(String, String)] = DefaultRoles.list.map(s => s.id.get -> s.id.get)
+    super.options
+    private def elem: Elem = SHtml.multiSelect(options, names, list => {
+      set(list)
+    }, "class" -> "form-control")
+    override def toForm: Box[NodeSeq] = Full(elem)
+    override def toString = names.mkString(", ")
   }
 
   lazy val authPermissions: Set[Permission] = (permissions.get ::: roles.permissions).toSet

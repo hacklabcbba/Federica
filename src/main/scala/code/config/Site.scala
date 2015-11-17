@@ -565,7 +565,7 @@ object Site extends Locs {
   val backendBlog = MenuLoc(Menu.i("Módulo Blog") / "backend" / "blog" >> User.HasRoleOrPermission(SuperAdmin, Blog) >> LeftMenuGroup)
 
   val backendAdminModule = MenuLoc(Menu.i("Administración") / "backend" / "admin" >>
-    RequireLoggedIn >>
+    User.HasRoleOrPermission(SuperAdmin, Administracion) >>
     LeftMenuGroup >>
     PlaceHolder submenus(
     backendAreas.menu,

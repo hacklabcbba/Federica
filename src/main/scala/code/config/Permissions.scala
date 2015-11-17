@@ -5,6 +5,7 @@ import net.liftmodules.mongoauth.Permission
 
 object Permissions {
   val Mensajes = Permission("Mensajes")
+  val Administracion = Permission("Administración")
   val Solicitudes = Permission("Solicitudes")
   val Eventos = Permission("Eventos")
   val Calendario = Permission("Calendario")
@@ -28,6 +29,11 @@ object Permissions {
   //ToDO widgets no es soportado todavia
   val Widgets = Permission("Widgets")
   //ToDO paginas no es soportado todavia
-  val Paginas= Permission("Paginas")
+  val Paginas = Permission("Paginas")
+
+  def list = List(
+    Accesorios, Administracion, Archivos, Areas, Blog, Calendario, Convocatorias, Cotizaciones, Espacios, Estadisticas, Eventos,
+    Mensajes, Paginas, Procesos, Programas, Proyectos, Redes, Residencias, Roles, Salas, Servicios, Solicitudes,
+    Usuarios, Widgets)
 
 }

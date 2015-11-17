@@ -64,6 +64,8 @@ object DefaultRoles {
           Mensajes, Solicitudes, Eventos, Calendario))
       .save(true)
 
+  def list = List(SuperAdmin, Admin, CoordGeneral, Coord, Usuario)
+
 
 
 }

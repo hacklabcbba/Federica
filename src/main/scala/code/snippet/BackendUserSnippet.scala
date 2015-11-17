@@ -15,6 +15,6 @@ object BackendUserSnippet extends ListSnippet[User] {
 
   def itemEditUrl(inst: User): String = Site.backendUserEdit.toLoc.calcHref(inst)
 
-  override def listFields = List(meta.name, meta.email)
+  override def listFields = List(meta.name, meta.email, meta.roles)
 
 }
