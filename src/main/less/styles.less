@@ -285,7 +285,7 @@
  }
 }
 
-/*----/----/ $ELEMENTS BLOCKs */
+/*----/----/ $ELEMENTS BLOCKS */
 .tabs-section {
  .nav-tabs {
   border: none;
@@ -323,6 +323,23 @@
  }
 }
 
+/*----/----/ $RELATED ITEMS */
+.related-articles {
+ .item {
+  padding:0 15px ;
+ }
+ .title {
+  font-size: 14px;
+ }
+}
+
+/*----/----/ $COMPLEMENTS */
+.border-bottom-separation {
+ padding-bottom: 20px;
+ margin-bottom: 20px;
+ border-bottom: 1px solid #9d9d9d;
+}
+
 
 /*----/----/ $BOOTSTRAP OVERWRITE */
 /*----/----/----/ $NAVEGATION */
@@ -341,23 +358,23 @@
 }
 /*----/----/----/ $FORMS */
 .form-control {
- border: 1px solid #C0C0C0;
+ border: 1px solid #000;
  border-radius: 0;
 }
 
  /*----/----/----/ $JAVASCRIPT-COMPONENTS */
  .panel-group .panel {
   border-radius: 0;
-  border:1px solid #222;
+  border:none;
  }
  .panel-default > .panel-heading {
   background-color: transparent;
-  border-color: transparent;
+  border:1px solid #222;
+  border-radius: 0;
  }
 
  .panel-group .panel-heading + .panel-collapse > .list-group,
  .panel-group .panel-heading + .panel-collapse > .panel-body {
-  border-top: 1px solid #222;
  }
 
  .panel-group {
@@ -845,6 +862,7 @@
  .side {
  > section {
   margin-bottom: 40px;
+  clear: both;
   > h3 {
    margin-top: 0;
    margin-bottom: 20px;
@@ -870,7 +888,7 @@
 /*----/----/ $CONVOCATIONS */
 .convocations-page {
  .convocation {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   border-right: 1px solid #ccc;
   &:nth-child(4n+0){
    border-right: none;
@@ -908,13 +926,152 @@
   }
  }
 
-/*----/----/ $SERVICES */
-.media-page {
- .media-download {
-  margin-bottom: 20px;
+/*----/----/ $BLOG */
+.blog-page {
+ .blog-articles {
+  .title-article {
+   font-size: 17px;
+   margin-top: 0;
+  }
+  .postblog-date {
+   font-size: 13px;
+  }
+ }
+ .blog-article {
+  margin-bottom: 15px;
  }
 }
 
+/*----/----/----/ $POST-BLOG */
+.blogpost-page {
+ .postblog-date {
+  .separator {
+   margin-left: 10px;
+  }
+ }
+ .requests-space {
+  height: 250px;
+  overflow: hidden;
+ }
+ .nav-postblog {
+  a {
+   color: #000;
+  }
+ }
+ .main-content {
+  figure {
+   margin-bottom: 15px;
+  }
+ }
+ .prev-post,
+ .next-post {
+  font-family: "HelveticaBd";
+  margin-top: 10px;
+ }
+ .blog-categories {
+  a {
+   text-transform: uppercase;
+   color: #000;
+   display: block;
+   padding: 5px 0px 5px 30px;
+   &:hover {
+    background: #000;
+    color: #fff;
+   }
+   position: relative;
+  }
+  .active {
+   a {
+    background: #000;
+    color: #fff;
+    font-weight: bold;
+    &:before {
+     content: ">";
+     position: absolute;
+     left: 10px;
+     font-size: 18px;
+     top: 2px;
+    }
+   }
+  }
+ }
+}
+
+/*----/----/ $MEDIA */
+.media-page {
+ a {
+  color: #000;
+ }
+ .font-image {
+  border-radius: 5px;
+  background: #9d9d9d;
+  color: #fff;
+  font-family: "Times New Roman", Times, serif;
+  font-style: italic;
+  height: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+  padding: 5px;
+  width: 50px;
+  text-align: center;
+  font-size: 30px;
+ }
+ .media-download {
+  margin-bottom: 20px;
+ }
+ .books {
+  .book {
+   .cover-book {
+    width: 80px;
+    height: 120px;
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
+   }
+  }
+ }
+}
+
+/*----/----/ $SUPCRIPTION */
+.suscripcion-page {
+  .image-header {
+   width: 100%;
+   height: 150px;
+   overflow: hidden;
+  }
+}
+
+/*----/----/ $SPACES */
+.space-page {
+ .space-title {
+  padding-left: 30px;
+  position: relative;
+  &:before {
+   content: ">";
+   display: block;
+   padding: 5px 5px;
+   border: 1px solid #000;
+   position: absolute;
+   left: 0;
+   font-size: 15px;
+   letter-spacing: -1px;
+   font-family: "MyriadProRegular";
+   width: 20px;
+   height: 20px;
+   line-height: 0.7;
+  }
+ }
+ .space-name {
+  font-size: 18px;
+ }
+ .space-descrition {
+  padding-left: 30px;
+ }
+ .space {
+  margin-bottom: 20px;
+ }
+}
 
 /*----/----/ $BACKEND */
 .backend {
