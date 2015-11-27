@@ -220,6 +220,15 @@ object Site extends Locs {
   // Blog
   val blog = MenuLoc(Menu.i("Blog") / "blog")
 
+  val servicio =  Menu.param[Service](
+    "Ver Servicio", "Ver Servicio",
+    Service.find,
+    s => s.id.get.toString) / "servicio" / * >>
+    TemplateBox(() => Templates("servicio" :: Nil)) >>
+    Hidden
+
+  val servicios = MenuLoc(Menu.i("Servicios ") / "servicios" submenus(servicio))
+
   /* Convocatorias */
   // Convocatorias
   val convocatorias = MenuLoc(Menu.i("Convocatorias") / "convocatorias")
@@ -274,17 +283,6 @@ object Site extends Locs {
       Menu.i("Breaking The Floor - Escuela de Break Dance") / "breaking-the-floor" >> RightMenuGroup,
       // Pi Producciones
       Menu.i("Pi Producciones") / "pi-producciones" >> RightMenuGroup
-      ),
-    // Servicios
-    Menu.i("Servicios") / "servicios" >> RightMenuGroup submenus(
-      // Gestión de eventos culturales
-      Menu.i("Gestión de Eventos Culturales") / "gestion-de-eventos-culturales" >> RightMenuGroup,
-      // Residencias Prana
-      Menu.i("Residencias PrAna") / "residencias-prana" >> RightMenuGroup,
-      // Comun&ca
-      Menu.i("Comun&ca 2") / "comunica2" >> RightMenuGroup,
-      // La Mosquita
-      Menu.i("La Mosquita Muerta") / "la-mosquita-muerta" >> RightMenuGroup
       )
   ))
 
@@ -547,7 +545,7 @@ object Site extends Locs {
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
-  val backendServices = MenuLoc(Menu.i("Servicios") / "backend" / "servicios" >>
+  val backendServices = MenuLoc(Menu.i("Servicios") / "backend" / "services" >>
     User.HasRoleOrPermission(SuperAdmin, Servicios) >>
     TemplateBox(() => Templates("backend" :: "services" :: "index" :: Nil)) submenus(
     backendServiceAdd, backendServiceEdit))
@@ -627,8 +625,8 @@ object Site extends Locs {
     media.menu,
     blog.menu,
     convocatorias.menu,
-    contacto.menu
-  )
+    servicios.menu,
+    contacto.menu)
 
   /*
    * Return a SiteMap needed for Lift
