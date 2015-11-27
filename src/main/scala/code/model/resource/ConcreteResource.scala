@@ -4,12 +4,6 @@ package resource
 
 import code.config.Site
 import code.lib.RogueMetaRecord
-import net.liftweb.common.Full
-import net.liftweb.http.{S, SHtml}
-import net.liftweb.http.js.JsCmds._
-import net.liftweb.record.field.{TextareaField, StringField}
-import code.lib.field._
-import xml.{Elem, NodeSeq, Text}
 
 class ConcreteResource private() extends Resource[ConcreteResource] {
 
@@ -22,5 +16,5 @@ class ConcreteResource private() extends Resource[ConcreteResource] {
 
 object ConcreteResource extends ConcreteResource with RogueMetaRecord[ConcreteResource] {
 
-  override def collectionName = "resource"
+  override def collectionName = "resource.resources"
 }

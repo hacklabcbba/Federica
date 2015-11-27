@@ -4,7 +4,7 @@ package resource
 
 import code.config.Site
 import code.lib.RogueMetaRecord
-import net.liftweb.record.field.{EnumNameField, StringField}
+import net.liftweb.record.field.StringField
 
 class ResourcePackage private() extends Resource[ResourcePackage] {
 
@@ -18,5 +18,5 @@ class ResourcePackage private() extends Resource[ResourcePackage] {
 }
 
 object ResourcePackage extends ResourcePackage with RogueMetaRecord[ResourcePackage] {
-  override def collectionName = "resource"
+  override def collectionName = "resource.resources"
 }

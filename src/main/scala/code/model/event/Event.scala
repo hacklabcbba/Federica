@@ -362,7 +362,9 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
   }
 }
 
-object Event extends Event with RogueMetaRecord[Event]
+object Event extends Event with RogueMetaRecord[Event] {
+  override def collectionName = "event.events"
+}
 
 object StatusType extends Enumeration {
   type StateType = Value

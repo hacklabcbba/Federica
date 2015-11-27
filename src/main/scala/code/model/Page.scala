@@ -32,6 +32,7 @@ class Page private () extends MongoRecord[Page] with ObjectIdPk[Page] with BaseM
 }
 
 object Page extends Page with RogueMetaRecord[Page] {
+  override def collectionName = "main.pages"
   override def fieldOrder = List(name, body)
 
 }

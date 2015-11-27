@@ -2,10 +2,10 @@ package code
 package model
 package event
 
-import net.liftweb.mongodb.record.MongoRecord
-import net.liftweb.record.field.{StringField, BooleanField}
-import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefListField}
 import code.lib.RogueMetaRecord
+import net.liftweb.mongodb.record.MongoRecord
+import net.liftweb.mongodb.record.field.ObjectIdPk
+import net.liftweb.record.field.StringField
 
 
 class CostContributionByUse private() extends MongoRecord[CostContributionByUse] with ObjectIdPk[CostContributionByUse]{
@@ -16,6 +16,7 @@ class CostContributionByUse private() extends MongoRecord[CostContributionByUse]
   //object itemList extends ObjectIdRefListField(this, CostSelection)
 }
 object CostContributionByUse extends CostContributionByUse with RogueMetaRecord[CostContributionByUse]{
+  override def collectionName = "event.cost_contributions"
 }
 
 

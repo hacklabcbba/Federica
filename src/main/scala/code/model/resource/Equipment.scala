@@ -5,9 +5,7 @@ package resource
 import code.config.Site
 import code.lib.RogueMetaRecord
 import code.lib.field.FileField
-import net.liftweb.common.Full
-import net.liftweb.http.SHtml
-import net.liftweb.record.field.{EnumField, EnumNameField, StringField}
+import net.liftweb.record.field.EnumField
 
 class Equipment private() extends Resource[Equipment] {
 
@@ -34,7 +32,7 @@ class Equipment private() extends Resource[Equipment] {
 }
 
 object Equipment extends Equipment with RogueMetaRecord[Equipment] {
-  override def collectionName = "resource"
+  override def collectionName = "resource.resources"
 }
 
 object CostType extends Enumeration {

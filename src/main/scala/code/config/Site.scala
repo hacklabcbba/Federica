@@ -560,7 +560,25 @@ object Site extends Locs {
   //Submenus equipos, accesorios y servicios
 
 
-  val backendBlog = MenuLoc(Menu.i("Módulo Blog") / "backend" / "blog" >> User.HasRoleOrPermission(SuperAdmin, Blog) >> LeftMenuGroup)
+  val backendBlogAdd = Menu.param[BlogPost](
+    "Agregar entrada al blog", "Agregar entrada al blog",
+    s => Full(Service.createRecord),
+    s => "new") / "backend" / "blog" / "add" / * >>
+    User.HasRoleOrPermission(SuperAdmin, Servicios) >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendBlogEdit = Menu.param[BlogPost](
+    "Editar entrada del blog", "Editar entrada del blog",
+    BlogPost.find,
+    s => s.id.get.toString) / "backend" / "blog" / "edit" / * >>
+    User.HasRoleOrPermission(SuperAdmin, Servicios) >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendBlog = MenuLoc(Menu.i("Módulo Blog") / "backend" / "blog" >>
+    User.HasRoleOrPermission(SuperAdmin, Blog) >> LeftMenuGroup submenus(
+    backendBlogAdd, backendBlogEdit))
 
   val backendAdminModule = MenuLoc(Menu.i("Administración") / "backend" / "admin" >>
     User.HasRoleOrPermission(SuperAdmin, Administracion) >>

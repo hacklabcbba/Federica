@@ -13,5 +13,5 @@ class EquipmentQuote private() extends Quote[EquipmentQuote] {
 }
 
 object EquipmentQuote extends EquipmentQuote with RogueMetaRecord[EquipmentQuote] {
-  override def collectionName = "quote"
+  override def collectionName = "resource.quotes"
 }

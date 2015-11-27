@@ -13,5 +13,5 @@ class RoomQuote private() extends Quote[RoomQuote] {
 }
 
 object RoomQuote extends RoomQuote with RogueMetaRecord[RoomQuote] {
-  override def collectionName = "quote"
+  override def collectionName = "resource.quotes"
 }

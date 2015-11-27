@@ -2,10 +2,10 @@ package code
 package model
 package event
 
-import net.liftweb.mongodb.record.field.{ObjectIdRefListField, ObjectIdPk}
 import code.lib.RogueMetaRecord
-import net.liftweb.record.field.{BinaryField, StringField, BooleanField}
 import net.liftweb.mongodb.record.MongoRecord
+import net.liftweb.mongodb.record.field.ObjectIdPk
+import net.liftweb.record.field.{BinaryField, StringField}
 
 
 class PressArticle private() extends MongoRecord[PressArticle] with ObjectIdPk[PressArticle]{
@@ -17,6 +17,7 @@ class PressArticle private() extends MongoRecord[PressArticle] with ObjectIdPk[P
 }
 
 object PressArticle extends PressArticle with RogueMetaRecord[PressArticle]{
+  override def collectionName = "event.press_articless"
 }
 
 

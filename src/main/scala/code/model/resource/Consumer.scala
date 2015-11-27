@@ -3,7 +3,6 @@ package model
 package resource
 
 import code.lib.RogueMetaRecord
-import code.model.Area
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{MongoListField, ObjectIdPk}
 import net.liftweb.record.field.StringField
@@ -17,4 +16,6 @@ class Consumer private() extends MongoRecord[Consumer] with ObjectIdPk[Consumer]
   object areas extends MongoListField[Consumer, Area](this)
 }
 
-object Consumer extends Consumer with RogueMetaRecord[Consumer]
+object Consumer extends Consumer with RogueMetaRecord[Consumer] {
+  override def collectionName = "resource.consumers"
+}

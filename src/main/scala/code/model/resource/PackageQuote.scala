@@ -13,5 +13,5 @@ class PackageQuote private() extends Quote[PackageQuote] {
 }
 
 object PackageQuote extends PackageQuote with RogueMetaRecord[PackageQuote] {
-  override def collectionName = "quote"
+  override def collectionName = "resource.quotes"
 }

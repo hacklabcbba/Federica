@@ -3,13 +3,13 @@ package model
 package network
 
 import code.config.Site
+import code.lib.field.{BsCkTextareaField, BsStringField}
 import code.lib.{BaseModel, RogueMetaRecord}
-import code.lib.field.{BsStringField, BsCkTextareaField}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
-import net.liftweb.mongodb.record.field.{ObjectIdRefListField, ObjectIdRefField, ObjectIdPk}
-import net.liftweb.record.field.{TextareaField, EnumNameField, BooleanField, StringField}
+import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField, ObjectIdRefListField}
+import net.liftweb.record.field.EnumNameField
 
 class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] with BaseModel[Network] {
 
@@ -154,6 +154,7 @@ class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] w
 }
 
 object Network extends Network with RogueMetaRecord[Network] {
+  override def collectionName = "main.networks"
   override def fieldOrder =
     List(name, description, networkType, administrator, area, program, projects, process, actionLine, spaces)
 }

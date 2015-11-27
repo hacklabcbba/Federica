@@ -2,19 +2,17 @@ package code
 package model
 
 import code.config.Site
+import code.lib.field.{BsCkTextareaField, BsEmailField, BsStringField, FileField}
 import code.lib.{BaseModel, RogueMetaRecord}
-import code.lib.field.{FileField, BsEmailField, BsStringField, BsCkTextareaField}
 import net.liftweb.common.{Box, Full}
-import net.liftweb.http.js.{HtmlFixer, JsCmd}
 import net.liftweb.http.js.JsCmds.Run
-import net.liftweb.http.{S, IdMemoizeTransform, SHtml}
+import net.liftweb.http.js.{HtmlFixer, JsCmd}
+import net.liftweb.http.{IdMemoizeTransform, S, SHtml}
+import net.liftweb.mongodb.record.field.{BsonRecordListField, ObjectIdPk, ObjectIdRefField}
 import net.liftweb.mongodb.record.{BsonMetaRecord, BsonRecord, MongoRecord}
-import net.liftweb.mongodb.record.field.{BsonRecordListField, ObjectIdRefListField, ObjectIdRefField, ObjectIdPk}
-import net.liftweb.record.field.{TextareaField, EnumNameField, BooleanField, StringField}
-import net.liftweb.util.Helpers
+import net.liftweb.util.Helpers._
 
-import scala.xml.{Text, Elem}
-import Helpers._
+import scala.xml.{Elem, Text}
 
 class Service private () extends MongoRecord[Service] with ObjectIdPk[Service] with BaseModel[Service] {
 
@@ -145,6 +143,7 @@ class Service private () extends MongoRecord[Service] with ObjectIdPk[Service] w
 }
 
 object Service extends Service with RogueMetaRecord[Service] {
+  override def collectionName = "main.services"
   override def fieldOrder = List(name, description, responsible, photo, email)
 }
 

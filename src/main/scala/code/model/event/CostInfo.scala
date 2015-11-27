@@ -2,12 +2,10 @@ package code
 package model
 package event
 
-import code.model.ProductiveUnit
+import code.lib.RogueMetaRecord
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field._
-import net.liftweb.record.field.{LongField, DecimalField, StringField}
-import code.model.activity.Activity
-import code.lib.RogueMetaRecord
+import net.liftweb.record.field.{DecimalField, StringField}
 
 class CostInfo private() extends MongoRecord[CostInfo] with ObjectIdPk[CostInfo]{
 
@@ -17,4 +15,6 @@ class CostInfo private() extends MongoRecord[CostInfo] with ObjectIdPk[CostInfo]
   object description extends StringField(this, "")
 }
 
-object CostInfo extends CostInfo with RogueMetaRecord[CostInfo]
+object CostInfo extends CostInfo with RogueMetaRecord[CostInfo] {
+  override def collectionName = "event.cost_info"
+}

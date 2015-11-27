@@ -5,9 +5,7 @@ package resource
 import code.config.Site
 import code.lib.RogueMetaRecord
 import code.lib.field.{BsStringField, FileField}
-import net.liftweb.common.Full
-import net.liftweb.http.SHtml
-import net.liftweb.record.field.{EnumNameField, BooleanField, IntField, StringField}
+import net.liftweb.record.field.BooleanField
 
 class Room private() extends Resource[Room] {
 
@@ -47,7 +45,7 @@ class Room private() extends Resource[Room] {
 }
 
 object Room extends Room with RogueMetaRecord[Room] {
-  override def collectionName = "resource"
+  override def collectionName = "resource.resources"
 
   override def fieldOrder = List(code, name)
 }

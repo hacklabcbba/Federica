@@ -16,5 +16,5 @@ class ConcreteQuote private() extends Resource[ConcreteQuote] {
 
 object ConcreteQuote extends ConcreteQuote with RogueMetaRecord[ConcreteQuote] {
 
-  override def collectionName = "quote"
+  override def collectionName = "resource.quotes"
 }

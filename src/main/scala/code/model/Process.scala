@@ -1,13 +1,13 @@
 package code.model
 
 import code.config.Site
+import code.lib.field.{BsCkTextareaField, BsStringField}
 import code.lib.{BaseModel, RogueMetaRecord}
-import code.lib.field.{BsStringField, BsCkTextareaField}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField}
-import net.liftweb.record.field.{EnumNameField, StringField, TextareaField}
+import net.liftweb.record.field.EnumNameField
 
 class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] with BaseModel[Process] {
 
@@ -95,6 +95,7 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] w
 }
 
 object Process extends Process with RogueMetaRecord[Process] {
+  override def collectionName = "main.process"
   override def fieldOrder = List(name, processType, goal, description, area, program, administrator, history)
 }
 

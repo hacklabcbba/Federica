@@ -1,13 +1,12 @@
 package code.model
 
 import code.config.Site
+import code.lib.field.{BsCkTextareaField, BsStringField}
 import code.lib.{BaseModel, RogueMetaRecord}
-import code.lib.field.{BsStringField, BsCkTextareaField}
-import net.liftweb.common.{Box, Full}
+import net.liftweb.common.Full
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField}
-import net.liftweb.record.field.{EnumNameField, StringField, TextareaField}
 
 class Project private () extends MongoRecord[Project] with ObjectIdPk[Project] with BaseModel[Project] {
 
@@ -82,4 +81,6 @@ class Project private () extends MongoRecord[Project] with ObjectIdPk[Project] w
   override def toString = name.get
 }
 
-object Project extends Project with RogueMetaRecord[Project]
+object Project extends Project with RogueMetaRecord[Project] {
+  override def collectionName = "main.projects"
+}

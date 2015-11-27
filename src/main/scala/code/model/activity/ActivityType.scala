@@ -14,4 +14,6 @@ class ActivityType private() extends MongoRecord[ActivityType] with ObjectIdPk[A
   object name extends StringField(this, 200)
 }
 
-object ActivityType extends ActivityType with RogueMetaRecord[ActivityType]
+object ActivityType extends ActivityType with RogueMetaRecord[ActivityType] {
+  override def collectionName = "activity.activity_types"
+}

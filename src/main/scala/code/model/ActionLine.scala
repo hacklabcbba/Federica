@@ -29,4 +29,6 @@ class ActionLine private () extends MongoRecord[ActionLine] with ObjectIdPk[Acti
   override def toString = name.get
 }
 
-object ActionLine extends ActionLine with RogueMetaRecord[ActionLine]
+object ActionLine extends ActionLine with RogueMetaRecord[ActionLine] {
+  override def collectionName = "main.action_lines"
+}

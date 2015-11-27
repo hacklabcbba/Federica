@@ -20,4 +20,6 @@ class EventType private() extends MongoRecord[EventType] with ObjectIdPk[EventTy
   }
 }
 
-object EventType extends EventType with RogueMetaRecord[EventType]
+object EventType extends EventType with RogueMetaRecord[EventType] {
+  override def collectionName = "event.event_types"
+}

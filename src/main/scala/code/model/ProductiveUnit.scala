@@ -79,7 +79,9 @@ class ProductiveUnit private () extends MongoRecord[ProductiveUnit] with ObjectI
   }
 }
 
-object ProductiveUnit extends ProductiveUnit with RogueMetaRecord[ProductiveUnit]
+object ProductiveUnit extends ProductiveUnit with RogueMetaRecord[ProductiveUnit] {
+  override def collectionName = "main.prductive_units"
+}
 
 object ProductiveUnitType extends Enumeration {
   type ProductiveUnitType = Value

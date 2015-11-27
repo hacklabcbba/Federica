@@ -65,5 +65,6 @@ class Program private () extends MongoRecord[Program] with ObjectIdPk[Program] w
 }
 
 object Program extends Program with RogueMetaRecord[Program] {
+  override def collectionName = "main.programs"
   override def fieldOrder = List(name, responsible, email, phone, code, description)
 }

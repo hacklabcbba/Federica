@@ -2,10 +2,10 @@ package code
 package model
 package event
 
-import net.liftweb.mongodb.record.MongoRecord
-import net.liftweb.record.field.{EnumNameField, BooleanField}
-import net.liftweb.mongodb.record.field.{MongoListField, ObjectIdRefListField, DateField, ObjectIdPk}
 import code.lib.RogueMetaRecord
+import net.liftweb.mongodb.record.MongoRecord
+import net.liftweb.mongodb.record.field.{MongoListField, ObjectIdPk}
+import net.liftweb.record.field.{BooleanField, EnumNameField}
 import org.joda.time.DateTime
 
 
@@ -33,6 +33,7 @@ class Schedule private() extends MongoRecord[Schedule] with ObjectIdPk[Schedule]
 }
 
 object Schedule extends Schedule with RogueMetaRecord[Schedule]{
+  override def collectionName = "event.schedules"
 
 }
 

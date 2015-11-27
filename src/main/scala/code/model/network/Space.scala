@@ -3,13 +3,12 @@ package model
 package network
 
 import code.config.Site
+import code.lib.field.{BsCkTextareaField, BsEmailField, BsStringField}
 import code.lib.{BaseModel, RogueMetaRecord}
-import code.lib.field.{BsEmailField, BsStringField, BsCkTextareaField}
-import net.liftweb.common.{Box, Full}
+import net.liftweb.common.Full
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
-import net.liftweb.mongodb.record.field.{ObjectIdRefListField, ObjectIdRefField, ObjectIdPk}
-import net.liftweb.record.field.{TextareaField, EnumNameField, BooleanField, StringField}
+import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField}
 
 class Space private () extends MongoRecord[Space] with ObjectIdPk[Space] with BaseModel[Space] {
 
@@ -73,5 +72,6 @@ class Space private () extends MongoRecord[Space] with ObjectIdPk[Space] with Ba
 }
 
 object Space extends Space with RogueMetaRecord[Space] {
+  override def collectionName = "main.spaces"
   override def fieldOrder = List(name, description, city, country, email, web)
 }

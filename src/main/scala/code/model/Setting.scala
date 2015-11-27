@@ -2,11 +2,10 @@ package code
 package model
 
 import code.lib.RogueMetaRecord
+import code.model.SettingType.SettingType
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field._
 import net.liftweb.record.field._
-import net.liftweb.common.{Box, Full}
-import code.model.SettingType.SettingType
 
 
 class Setting private() extends MongoRecord[Setting] with ObjectIdPk[Setting]{
@@ -16,7 +15,8 @@ class Setting private() extends MongoRecord[Setting] with ObjectIdPk[Setting]{
   object settingValue extends MongoMapField[Setting, String](this)
 }
 
-object Setting extends Setting with RogueMetaRecord[Setting]{
+object Setting extends Setting with RogueMetaRecord[Setting] {
+  override def collectionName = "main.settings"
   def eventNumber: String = {
     val settings = findByName(SettingType.EventCode)
     val setting = settings.headOption.getOrElse(createEventNumber)
