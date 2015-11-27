@@ -1,15 +1,15 @@
 package code.lib.field
 
-import net.liftweb.record._
-import field.{TextareaTypedField, TextareaField, OptionalTextareaField}
 import net.liftmodules.extras.SnippetHelper
 import net.liftweb.common._
-import scala.xml.NodeSeq
-import net.liftweb.util.Helpers._
 import net.liftweb.http.S
-import net.liftweb.http.js.JsCmds.{Script, Run}
-import net.liftweb.util.{PCDataXmlParser, Html5}
-import scala.xml.Text
+import net.liftweb.http.js.JsCmds.Run
+import net.liftweb.record._
+import net.liftweb.record.field.{OptionalTextareaField, TextareaField, TextareaTypedField}
+import net.liftweb.util.Helpers._
+import net.liftweb.util.{Html5, PCDataXmlParser}
+
+import scala.xml.{NodeSeq, Text}
 
 trait BsTextareaTypedField extends TextareaTypedField with SnippetHelper {
   def isAutoFocus: Boolean = false
@@ -120,7 +120,10 @@ class BsCkTextareaField[OwnerType <: Record[OwnerType]](rec: OwnerType, maxLengt
     Run (
       """
         $(function() {
-          CKEDITOR.replace('""" + id + """');
+          CKEDITOR.replace('""" + id + """', {
+            extraPlugins: 'uploadimage',
+            uploadUrl: '/upload/image'
+          });
           for (var i in CKEDITOR.instances) {
             CKEDITOR.instances[i].on('blur', function() {
               CKEDITOR.instances[i].updateElement();// to update the textarea

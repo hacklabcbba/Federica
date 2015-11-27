@@ -32,7 +32,7 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
     "*" #>
     {
       "data-name=title *" #> title &
-      "data-name=column-name *" #> listFields.filter(field => field.shouldDisplay_?).map(field => field.displayName) &
+      "data-name=column-name *" #> listFields.map(field => field.displayName) &
       "data-name=add-item [href]" #> addUrl &
       "data-name=remove-items [onclick]" #> SHtml.ajaxInvoke(deleteItemsJsCmd _) &
       "data-name=items" #> meta.findAll.map(item => {

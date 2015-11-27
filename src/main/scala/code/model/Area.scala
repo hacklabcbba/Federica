@@ -13,7 +13,7 @@ import net.liftweb.util.FieldError
 import scala.xml.{Text, Elem}
 
 
-class Area private () extends MongoRecord[Area] with ObjectIdPk[Area] with BaseModel[Area]{
+class Area private () extends MongoRecord[Area] with ObjectIdPk[Area] with BaseModel[Area] {
 
   override def meta = Area
 

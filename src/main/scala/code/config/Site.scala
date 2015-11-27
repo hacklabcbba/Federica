@@ -562,9 +562,9 @@ object Site extends Locs {
 
   val backendBlogAdd = Menu.param[BlogPost](
     "Agregar entrada al blog", "Agregar entrada al blog",
-    s => Full(Service.createRecord),
+    s => Full(BlogPost.createRecord),
     s => "new") / "backend" / "blog" / "add" / * >>
-    User.HasRoleOrPermission(SuperAdmin, Servicios) >>
+    User.HasRoleOrPermission(SuperAdmin, Blog) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
@@ -572,12 +572,13 @@ object Site extends Locs {
     "Editar entrada del blog", "Editar entrada del blog",
     BlogPost.find,
     s => s.id.get.toString) / "backend" / "blog" / "edit" / * >>
-    User.HasRoleOrPermission(SuperAdmin, Servicios) >>
+    User.HasRoleOrPermission(SuperAdmin, Blog) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
   val backendBlog = MenuLoc(Menu.i("Módulo Blog") / "backend" / "blog" >>
-    User.HasRoleOrPermission(SuperAdmin, Blog) >> LeftMenuGroup submenus(
+    User.HasRoleOrPermission(SuperAdmin, Blog) >> LeftMenuGroup >>
+    TemplateBox(() => Templates("backend" :: "blog" :: "index" :: Nil)) submenus(
     backendBlogAdd, backendBlogEdit))
 
   val backendAdminModule = MenuLoc(Menu.i("Administración") / "backend" / "admin" >>
