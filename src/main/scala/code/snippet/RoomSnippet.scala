@@ -3,6 +3,8 @@ package snippet
 
 import code.config.Site
 import code.model.resource.Room
+import net.liftweb.util.{Helpers, CssSel}
+import Helpers._
 
 object RoomSnippet extends ListSnippet[Room] {
 
@@ -17,5 +19,15 @@ object RoomSnippet extends ListSnippet[Room] {
   def itemEditUrl(inst: Room): String = Site.backendRoomEdit.toLoc.calcHref(inst)
 
   override def listFields = List(meta.code, meta.name, meta.status, meta.isBookable, meta.isBookableShift)
+
+
+  def renderFrontEnd: CssSel = {
+    "data-name=space" #> meta.findAll.map(room => {
+      "data-name=code *" #> room.code.get &
+      "data-name=name *" #> room.name.get &
+      //ToDo images
+      "data-name=description *" #> room.description.asHtml
+    })
+  }
 
 }
