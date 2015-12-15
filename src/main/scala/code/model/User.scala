@@ -149,12 +149,52 @@ class User private () extends MongoAuthUser[User] with ObjectIdPk[User] with Bas
       valMaxLen(64, "Location must be 64 characters or less") _ ::
       super.validations
   }
-  object bio extends BsCkTextareaField(this, 500) {
+  object bio extends BsCkTextareaField(this, 5000) {
     override def displayName = "Bio"
 
     override def validations =
-      valMaxLen(160, "Bio must be 500 characters or less") _ ::
+      valMaxLen(5000, "Bio must be 500 characters or less") _ ::
       super.validations
+  }
+
+  object facebook extends BsStringField(this, 128) {
+    override def displayName = "Nombre de usuario en Facebook"
+    override def optional_? = true
+    override def validations =
+      valMaxLen(128, "Facebook must be 128 characters or less") _ ::
+        super.validations
+  }
+
+  object twitter extends BsStringField(this, 128) {
+    override def displayName = "Nombre de usuario en Twitter"
+    override def optional_? = true
+    override def validations =
+      valMaxLen(128, "Twitter must be 128 characters or less") _ ::
+        super.validations
+  }
+
+  object youtube extends BsStringField(this, 128) {
+    override def displayName = "Nombre de usuario en Youtube"
+    override def optional_? = true
+    override def validations =
+      valMaxLen(128, "Youtube must be 128 characters or less") _ ::
+        super.validations
+  }
+
+  object googleplus extends BsStringField(this, 128) {
+    override def displayName = "Nombre de usuario en Googleplus"
+    override def optional_? = true
+    override def validations =
+      valMaxLen(128, "Googleplus must be 128 characters or less") _ ::
+        super.validations
+  }
+
+  object instagram extends BsStringField(this, 128) {
+    override def displayName = "Nombre de usuario en Instagram"
+    override def optional_? = true
+    override def validations =
+      valMaxLen(128, "Instagram must be 128 characters or less") _ ::
+        super.validations
   }
 
   object isOnline extends BooleanField(this, false) {

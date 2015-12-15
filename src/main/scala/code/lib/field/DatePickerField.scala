@@ -56,7 +56,7 @@ class DatePickerField[OwnerType <: MongoRecord[OwnerType]](rec: OwnerType) exten
 
 
       S.fmapFunc((s: String) => setBox(parseDate(s))) { funcName =>
-        <div class="input-group date">
+        <div class="col-md-12">
           <input
           class="form-control"
           id={dateId}
@@ -84,10 +84,8 @@ class DatePickerField[OwnerType <: MongoRecord[OwnerType]](rec: OwnerType) exten
 
     S.appendJs(js)
 
-    <div class="row col-sm-12">
-      <div class="col-sm-7">{date}</div>
-    </div>
 
+    date
   }
 
   override def toForm: Box[NodeSeq] = Full(elem)

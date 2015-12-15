@@ -1,5 +1,5 @@
 <div data-lift="surround?with=base-wrap;at=content">
-    <main class="row blog-page blogpost-page">
+    <main class="row blog-page blogpost-page" data-lift="BlogSnippet.renderFrontEnd">
         <div class="col-md-12">
             <header>
                 <h2 class="no-margin-top title-page">
@@ -8,30 +8,30 @@
             </header>
             <div class="row margin-top-sm">
                 <div class="col-md-8 main-content blog-articles">
-                    <article class="row blog-article">
+                    <article class="row blog-article" data-name="post">
                         <div class="col-md-3">
                             <figure>
-                                <img src=images/sample1.jpg alt="" class="img-responsive"/>
+                                <img data-name="image" src=/images/sample1.jpg alt="" class="img-responsive"/>
                             </figure>
                         </div>
                         <div class="col-md-9">
                             <header>
-                                <h3 class="title-article">7 miradas a la bienal de arte urbano</h3>
+                                <h3 class="title-article"><a href="" data-name="title">7 miradas a la bienal de arte urbano</a></h3>
                                 <ul class="list-unstyled list-inline postblog-date">
                                     <li>
-                                        <span>Interaccion social</span> <span class="separator">|</span>
+                                        <span data-name="area">Interaccion social</span> <span class="separator">|</span>
                                     </li>
                                     <li>
                                         <span>Autor:</span>
-                                        <span>Interaccion social</span> <span class="separator">|</span>
+                                        <span data-name="author">Interaccion social</span> <span class="separator">|</span>
                                     </li>
                                     <li>
                                         <span>Fecha:</span>
-                                        <span>03 de noviembre</span>
+                                        <span data-name="date">03 de noviembre</span>
                                     </li>
                                 </ul>
                             </header>
-                            <div>
+                            <div data-name="content">
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ullamcorper viverra orci, lacinia ornare augue tincidunt vel. Aliquam sodales tincidunt consectetur. Nulla egestas eros sit amet erat bibendum, ac volutpat tortor dictum. Nullam fermentum ornare suscipit. </p>
                             </div>
 
@@ -45,7 +45,7 @@
                             <li class="active item">
                                 <a href="#">Categoria</a>
                             </li>
-                            <li class="item">
+                            <li class="item" data-name="areas">
                                 <a href="#">Item list</a>
                             </li>
                         </ul>

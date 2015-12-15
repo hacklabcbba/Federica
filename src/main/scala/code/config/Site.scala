@@ -218,7 +218,14 @@ object Site extends Locs {
 
   /* Blog */
   // Blog
-  val blog = MenuLoc(Menu.i("Blog") / "blog")
+  val entradaBlog = Menu.param[BlogPost](
+    "Ver entrada del blog", "Ver entrada del blog",
+    BlogPost.find,
+    s => s.id.get.toString) / "blog" / "post" / * >>
+    TemplateBox(() => Templates("blog" :: "post" :: Nil)) >>
+    Hidden
+
+  val blog = MenuLoc(Menu.i("Blog") / "blog" / "index" submenus(entradaBlog))
 
   val servicio =  Menu.param[Service](
     "Ver Servicio", "Ver Servicio",

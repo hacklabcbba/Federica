@@ -4,6 +4,7 @@ import code.config.MongoConfig
 import code.model.FileRecord
 import com.mongodb.gridfs.GridFS
 import net.liftweb.common.{Box, Full}
+import net.liftweb.http.js.HtmlFixer
 import net.liftweb.http.js.JsCmds.Run
 import net.liftweb.http.{S, SHtml}
 import net.liftweb.json._
@@ -12,10 +13,8 @@ import net.liftweb.mongodb.record.BsonRecord
 import net.liftweb.mongodb.record.field.BsonRecordField
 import net.liftweb.record.LifecycleCallbacks
 import net.liftweb.util.Helpers._
-import net.liftweb.util.Html5
 import org.bson.types.ObjectId
 import org.joda.time.DateTime
-import net.liftweb.http.js.HtmlFixer
 
 
 class FileField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
@@ -98,6 +97,43 @@ class FileField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
       ).apply(templateItem)
 
     Full(uploadedData)
+  }
+
+  def viewFile = {
+    val f = this.get
+    val previewData = f.fileType.get match {
+      case "image/png" =>
+        Some(<img src={s"/image/${f.fileId.get}"} title={f.fileName.get}/>)
+
+      case "image/jpeg" =>
+        Some(<img src={s"/image/${f.fileId.get}"} title={f.fileName.get}/>)
+
+      case "image/gif" =>
+        Some(<img src={s"/image/${f.fileId.get}"} title={f.fileName.get}/>)
+
+      case "application/pdf" =>
+        Some(<i class="fa fa-file-pdf-o fa-3x" title={f.fileName.get}/>)
+
+      case "application/zip" =>
+        Some(<i class="fa fa-file-zip-o fa-3x" title={f.fileName.get}/>)
+
+      case "application/rar" =>
+        Some(<i class="fa fa-file-pdf-o fa-3x" title={f.fileName.get}/>)
+
+      case "application/msword" =>
+        Some(<i class="fa fa-file-word-o fa-3x" title={f.fileName.get}/>)
+
+      case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" =>
+        Some(<i class="fa fa-file-excel-o fa-3x" title={f.fileName.get}/>)
+
+      case "application/octet-stream" =>
+        Some(<i class="fa fa-file fa-3x" title={f.fileName.get}/>)
+
+      case _ =>
+        Some(<i class="fa fa-file fa-3x" title={f.fileName.get}/>)
+    }
+
+    previewData
   }
 
   def previewFile = {

@@ -88,4 +88,32 @@ class BlogPost private() extends MongoRecord[BlogPost] with ObjectIdPk[BlogPost]
 
 object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
   override def collectionName = "main.blog_posts"
+
+  def findNext(inst: BlogPost): Box[BlogPost] = {
+    BlogPost
+      .where(_.id gt inst.id.get)
+      .and(_.id neqs inst.id.get)
+      .orderAsc(_.id)
+      .fetch(1)
+      .headOption
+  }
+
+  def findPrev(inst: BlogPost): Box[BlogPost] = {
+    BlogPost
+      .where(_.id lt inst.id.get)
+      .and(_.id neqs inst.id.get)
+      .orderAsc(_.id)
+      .fetch(1)
+      .headOption
+  }
+
+  def findRelated(inst: BlogPost, limit: Int): List[BlogPost] = {
+    BlogPost
+      .or(
+        _.where(_.tags in inst.tags.get),
+        _.where(_.area eqs inst.area.get))
+      .and(_.id neqs inst.id.get)
+      .limit(limit)
+      .fetch()
+  }
 }

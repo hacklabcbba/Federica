@@ -34,10 +34,11 @@ sealed trait UserSnippet extends SnippetHelper with Loggable {
     }): NodeSeq
 
   def header(xhtml: NodeSeq): NodeSeq = serve { user =>
-    <div id="user-header">
-      {gravatar(xhtml)}
-      <h3>{name(xhtml)}</h3>
-    </div>
+    name(xhtml)
+  }
+
+  def bio(xhtml: NodeSeq): NodeSeq =  serve {
+    user => user.bio.asHtml
   }
 
   def gravatar(xhtml: NodeSeq): NodeSeq = {
@@ -45,6 +46,48 @@ sealed trait UserSnippet extends SnippetHelper with Loggable {
 
     serve { user =>
       Gravatar.imgTag(user.email.get, size)
+    }
+  }
+
+  def socialNetworks: CssSel = {
+    for {
+      user <- user
+    } yield {
+      (user.facebook.valueBox match {
+        case Full(f) if f.trim.nonEmpty =>
+          "data-name=facebook-url [href]" #> s"https://www.facebook.com/$f" &
+          "data-name=facebook-username" #> f
+        case _ =>
+          "data-name=facebook" #> NodeSeq.Empty
+      }) &
+      (user.twitter.valueBox match {
+        case Full(f) if f.trim.nonEmpty =>
+          "data-name=twitter-url [href]" #> s"https://twitter.com/$f" &
+          "data-name=twitter-username" #> f
+        case _ =>
+          "data-name=twitter" #> NodeSeq.Empty
+      }) &
+      (user.youtube.valueBox match {
+        case Full(f) if f.trim.nonEmpty =>
+          "data-name=youtube-url [href]" #> s"https://www.youtube.com/user/$f" &
+          "data-name=youtube-username" #> f
+        case _ =>
+          "data-name=youtube" #> NodeSeq.Empty
+      }) &
+      (user.googleplus.valueBox match {
+        case Full(f) if f.trim.nonEmpty =>
+          "data-name=googleplus-url [href]" #> s"https://plus.google.com/+$f" &
+          "data-name=googleplus-username" #> f
+        case _ =>
+          "data-name=googleplus" #> NodeSeq.Empty
+      }) &
+      (user.instagram.valueBox match {
+        case Full(f) if f.trim.nonEmpty =>
+          "data-name=instagram-url [href]" #> s"https://www.instagram.com/$f" &
+           "data-name=instagram-username" #> f
+        case _ =>
+          "data-name=instagram" #> NodeSeq.Empty
+      })
     }
   }
 
