@@ -20,7 +20,7 @@ class EquipmentSpec extends BaseMongoSessionWordSpec {
 
       val quoteEquipment = EquipmentQuote
         .createRecord
-        .costType(EquipmentCost)
+        .costType(CostType.Day)
         .cost(50.00)
         .characteristics("15")
         .parameter("By day")
@@ -34,9 +34,7 @@ class EquipmentSpec extends BaseMongoSessionWordSpec {
         .name("SET OF 500W HALOGEN (Units)")
         .description("NOTE: GUARANTEED MONEY WILL BE TOGETHER WITH IDENTIFICATION CARD. THE AMOUNT OF Bs. 150.- TO THE" +
         " EQUIPMENT TO BE REQUESTED. ALL OUT AND RETURN OF EQUIPMENT IS")
-        .nameGroup("AMOUNT OF CONTRIBUTION BY USE OF EQUIPMENT AND OTHER")
-        .classType(EquipmentType)
-        .cost(quoteEquipment.id.get)
+        .classType(ClassType.EquipmentType)
 
       val errsEnvironment = equipment.validate
       if (errsEnvironment.length > 1) {

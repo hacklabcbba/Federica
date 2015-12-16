@@ -18,7 +18,7 @@ class PackageSpec extends BaseMongoSessionWordSpec {
       consumer.save(false)
 
       val quotePackage = RoomQuote.createRecord
-        .costType(PackageCost)
+        .costType(CostType.Day)
         .cost(280.00)
         .characteristics("Weekly (10% OFF)")
         .parameter("10 hrs. week")
@@ -33,7 +33,6 @@ class PackageSpec extends BaseMongoSessionWordSpec {
         "is made, before the workshop")
         .comboName("PACKAGE FOR WORKSHOPS IN THE DIGITAL LAB")
         .classType(PackageType)
-        .cost(quotePackage.id.get)
 
       val errsEnvironment = packageResourse.validate
       if (errsEnvironment.length > 1) {
