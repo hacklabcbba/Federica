@@ -355,23 +355,24 @@ object Site extends Locs {
       backendApprovedEventsWorkshops.menu,
       backendEventAdd))
 
-  val backendCallAdd = Menu.param[Room](
+  val backendCallAdd = Menu.param[Call](
     "Agregar convocatoria", "Agregar convocatoria",
-    s => Full(Room.createRecord),
+    s => Full(Call.createRecord),
     s => "new") / "backend" / "calls" / "add" / * >>
     User.HasRoleOrPermission(SuperAdmin, Convocatorias) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
-  val backendCallEdit = Menu.param[Room](
+  val backendCallEdit = Menu.param[Call](
     "Editar convocatoria", "Editar convocatoria",
-    Room.find,
+    Call.find,
     s => s.id.get.toString) / "backend" / "calls" / "edit" / * >>
     User.HasRoleOrPermission(SuperAdmin, Convocatorias) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
   val backendCalls = MenuLoc(Menu.i("Convocatorias ") / "backend" / "calls" >>
+    TemplateBox(() => Templates("backend" :: "calls" :: "index" :: Nil)) >>
     User.HasRoleOrPermission(SuperAdmin, Convocatorias) >> LeftMenuGroup submenus(
       backendCallAdd, backendCallEdit))
 
