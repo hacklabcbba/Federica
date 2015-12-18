@@ -42,10 +42,24 @@ class Room private() extends Resource[Room] {
     override def displayName = "Reservable por turnos"
   }
 
+  object photo1 extends FileField(this) {
+    override def displayName = "Foto"
+    override def toString = {
+      value.fileName.get
+    }
+  }
+
+  object photo2 extends FileField(this) {
+    override def displayName = "Foto"
+    override def toString = {
+      value.fileName.get
+    }
+  }
+
 }
 
 object Room extends Room with RogueMetaRecord[Room] {
   override def collectionName = "resource.resources"
 
-  override def fieldOrder = List(code, name)
+  override def fieldOrder = List(code, name, photo1, photo2)
 }
