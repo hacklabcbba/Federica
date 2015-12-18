@@ -335,19 +335,33 @@ object Site extends Locs {
   val backendApprovedEventsWorkshops = MenuLoc(Menu.i("Talleres") / "backend" / "events" / "workshops" >>
     User.HasRoleOrPermission(SuperAdmin, Eventos))
 
-  val backendCalendar = MenuLoc(Menu.i("Calendario") / "backend" / "events" / "calendar" >>
-    User.HasRoleOrPermission(SuperAdmin, Calendario))
-
   val backendResidencies = MenuLoc(Menu.i("Residencias") / "backend" / "events" / "residencies" >>
     User.HasRoleOrPermission(SuperAdmin, Residencias))
 
   val backendEvents = MenuLoc(Menu.i("Eventos") / "backend" / "events" >> RequireLoggedIn >>
     User.HasRoleOrPermission(SuperAdmin, Eventos) >> LeftMenuGroup submenus(
-    backendPendingEvents.menu, backendApprovedEvents.menu, backendCalendar.menu, backendResidencies.menu, backendApprovedEventsWorkshops.menu
+    backendPendingEvents.menu, backendApprovedEvents.menu, backendResidencies.menu, backendApprovedEventsWorkshops.menu
     ))
 
-  val backendCalls = MenuLoc(Menu.i("Convocatorias") / "backend" / "calls" >>
-    User.HasRoleOrPermission(SuperAdmin, Convocatorias) >> LeftMenuGroup)
+  val backendCallAdd = Menu.param[Room](
+    "Agregar convocatoria", "Agregar convocatoria",
+    s => Full(Room.createRecord),
+    s => "new") / "backend" / "calls" / "add" / * >>
+    User.HasRoleOrPermission(SuperAdmin, Convocatorias) >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendCallEdit = Menu.param[Room](
+    "Editar convocatoria", "Editar convocatoria",
+    Room.find,
+    s => s.id.get.toString) / "backend" / "calls" / "edit" / * >>
+    User.HasRoleOrPermission(SuperAdmin, Convocatorias) >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendCalls = MenuLoc(Menu.i("Convocatorias ") / "backend" / "calls" >>
+    User.HasRoleOrPermission(SuperAdmin, Convocatorias) >> LeftMenuGroup submenus(
+      backendCallAdd, backendCallEdit))
 
   val backendRoomAdd = Menu.param[Room](
     "Agregar sala", "Agregar sala",
@@ -452,6 +466,27 @@ object Site extends Locs {
     TemplateBox(() => Templates("backend" :: "process" :: "index" :: Nil)) submenus(
     backendProcessAdd, backendProcessEdit))
 
+  val backendActionLineAdd = Menu.param[ActionLine](
+    "Agregar linea de acción", "Agregar linea de acción",
+    s => Full(ActionLine.createRecord),
+    s => "new") / "backend" / "actionlines" / "add" / * >>
+    User.HasRoleOrPermission(SuperAdmin, LineasDeAccion) >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendActionLineEdit = Menu.param[ActionLine](
+    "Editar linea de acción", "Editar linea de acción",
+    ActionLine.find,
+    s => s.id.get.toString) / "backend" / "actionlines" / "edit" / * >>
+    User.HasRoleOrPermission(SuperAdmin, LineasDeAccion) >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendActionLines = MenuLoc(Menu.i("Lineas de acción") / "backend" / "actionlines" >>
+    User.HasRoleOrPermission(SuperAdmin, LineasDeAccion) >>
+    TemplateBox(() => Templates("backend" :: "actionlines" :: "index" :: Nil)) submenus(
+    backendActionLineAdd, backendActionLineEdit))
+
   val backendSpaceAdd = Menu.param[Space](
     "Agregar espacio", "Agregar espacio",
     s => Full(Space.createRecord),
@@ -532,7 +567,7 @@ object Site extends Locs {
     Hidden
 
   val backendUsers = MenuLoc(Menu.i("Usuarios") / "backend" / "users" >>
-    User.HasRoleOrPermission(SuperAdmin, Usuarios) >>
+    User.HasRoleOrPermission(SuperAdmin, Usuarios) >> LeftMenuGroup >>
     TemplateBox(() => Templates("backend" :: "users" :: "index" :: Nil)) submenus(
     backendUserAdd, backendUserEdit))
 
@@ -588,21 +623,29 @@ object Site extends Locs {
     TemplateBox(() => Templates("backend" :: "blog" :: "index" :: Nil)) submenus(
     backendBlogAdd, backendBlogEdit))
 
-  val backendAdminModule = MenuLoc(Menu.i("Administración") / "backend" / "admin" >>
-    User.HasRoleOrPermission(SuperAdmin, Administracion) >>
+  val backendOrganizacionModule = MenuLoc(Menu.i("Organización") / "backend" / "organizacion" >>
+    User.HasRoleOrPermission(SuperAdmin, Organizacion) >>
     LeftMenuGroup >>
     PlaceHolder submenus(
-    backendAreas.menu,
-    backendPrograms.menu,
-    backendProcess.menu,
-    backendRooms.menu,
-    backendServices.menu,
-    backendEquipments.menu,
-    backendSpaces.menu,
-    backendProjects.menu,
-    backendNetworks.menu,
-    backendPages.menu,
-    backendUsers.menu))
+      backendAreas.menu,
+      backendPrograms.menu,
+      backendProcess.menu,
+      backendActionLines.menu,
+      backendServices.menu))
+
+  val backendAmbientesModule = MenuLoc(Menu.i("Ambientes") / "backend" / "ambientes" >>
+    User.HasRoleOrPermission(SuperAdmin, Ambientes) >>
+    LeftMenuGroup >>
+    PlaceHolder submenus(
+      backendRooms.menu,
+      backendEquipments.menu))
+
+  val backendRedesModule = MenuLoc(Menu.i("Redes ") / "backend" / "redes" >>
+    User.HasRoleOrPermission(SuperAdmin, Redes) >>
+    LeftMenuGroup >>
+    PlaceHolder submenus(
+      backendNetworks.menu,
+      backendSpaces.menu))
 
   // Salas
 
@@ -631,10 +674,15 @@ object Site extends Locs {
     password.menu,
     editProfile.menu,
     backendMessages.menu,
-    backendAdminModule.menu,
     backendEvents.menu,
+    backendCalls.menu,
+    backendOrganizacionModule.menu,
+    backendAmbientesModule.menu,
+    backendRedesModule.menu,
+    backendUsers.menu,
     backendFiles.menu,
     backendBlog.menu,
+    backendPages.menu,
     Menu.i("Error") / "error" >> Hidden,
     Menu.i("404") / "404" >> Hidden,
     Menu.i("Throw") / "throw"  >> EarlyResponse(() => throw new Exception("This is only a test.")),
