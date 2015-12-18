@@ -25,7 +25,8 @@ object RoomSnippet extends ListSnippet[Room] {
     "data-name=space" #> meta.findAll.map(room => {
       "data-name=code *" #> room.code.get &
       "data-name=name *" #> room.name.get &
-      //ToDo images
+      "data-name=image1" #> room.photo1.viewFile &
+      "data-name=image1" #> room.photo1.viewFile &
       "data-name=description *" #> room.description.asHtml
     })
   }
