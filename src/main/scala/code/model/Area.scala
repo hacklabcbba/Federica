@@ -26,6 +26,20 @@ class Area private () extends MongoRecord[Area] with ObjectIdPk[Area] with BaseM
     override def toString = get
   }
 
+  object photo1 extends FileField(this) {
+    override def displayName = "Foto"
+    override def toString = {
+      value.fileName.get
+    }
+  }
+
+  object photo2 extends FileField(this) {
+    override def displayName = "Foto"
+    override def toString = {
+      value.fileName.get
+    }
+  }
+
   object description extends BsCkTextareaField(this, 1000) {
     override def displayName = "Descripción"
   }
@@ -79,7 +93,7 @@ class Area private () extends MongoRecord[Area] with ObjectIdPk[Area] with BaseM
 
 object Area extends Area with RogueMetaRecord[Area] {
   override def collectionName = "main.areas"
-  override def fieldOrder = List(name, responsible, email, phone, code, description, officeHoursBegins, officeHoursEnds)
+  override def fieldOrder = List(name, responsible, email, phone, code, photo1, photo2, description, officeHoursBegins, officeHoursEnds)
 }
 
 class OfficeHours extends BsonRecord[OfficeHours] {
