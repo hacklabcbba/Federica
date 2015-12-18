@@ -28,7 +28,7 @@ object RoomSnippet extends ListSnippet[Room] {
       "data-name=code *" #> room.code.get &
       "data-name=name *" #> room.name.get &
       "data-name=image1" #> room.photo1.viewFile &
-      "data-name=image2" #> room.photo1.viewFile &
+      "data-name=image2" #> room.photo2.viewFile &
       "data-name=description *" #> room.description.asHtml
     })
   }
