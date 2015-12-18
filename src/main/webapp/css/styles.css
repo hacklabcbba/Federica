@@ -625,6 +625,9 @@ body.page .list-description .caption-item {
 body .pagination a {
   color: #000;
 }
+body .content .main-content + .side > section:first-child h3 {
+  margin-top: 0;
+}
 /*----/----/ $HOME */
 .home main .events-container .menu-categories {
   position: relative;
@@ -1111,6 +1114,35 @@ body.page.dashboard .content {
 }
 .backend-wizard .pager li i {
   top: 3px;
+}
+/*----/----/ $USER PAGE */
+.user-page .socialnetworks li {
+  margin-bottom: 10px;
+}
+.user-page .socialnetworks li a {
+  color: #000;
+  text-transform: uppercase;
+}
+.user-page .socialnetworks li img {
+  margin-right: 10px;
+}
+/*----/----/ $SEARCH PAGE */
+.search-box {
+  margin-bottom: 10px !important;
+  overflow: hidden;
+}
+.search-box button {
+  border-left: none;
+  font-size: 26px;
+  color: #000;
+  line-height: 1;
+  padding: 0;
+}
+.search-result a {
+  color: #000;
+}
+.search-result strong {
+  color: #FF9A00;
 }
 /*----/ $FOOTER */
 body > footer {

@@ -10,7 +10,7 @@ object EventSnippet extends ListSnippet[Event] {
 
   val title = "Eventos"
 
-  val addUrl = "" //Site.backendEventAdd.calcHref(Event.createRecord)
+  val addUrl = Site.backendEventAdd.calcHref(Event.createRecord)
 
   def entityListUrl: String = Site.backendEvents.menu.loc.calcDefaultHref
 

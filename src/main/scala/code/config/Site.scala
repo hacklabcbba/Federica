@@ -1,6 +1,7 @@
 package code
 package config
 
+import code.model.event.Event
 import code.model.network._
 import code.model.resource.{Equipment, Room}
 import code.model.{User, _}
@@ -338,10 +339,21 @@ object Site extends Locs {
   val backendResidencies = MenuLoc(Menu.i("Residencias") / "backend" / "events" / "residencies" >>
     User.HasRoleOrPermission(SuperAdmin, Residencias))
 
+  val backendEventAdd = Menu.param[Event](
+    "Agregar evento", "Agregar evento",
+    s => Full(Event.createRecord),
+    s => "new") / "backend" / "events" / "add" / * >>
+    RequireLoggedIn >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
   val backendEvents = MenuLoc(Menu.i("Eventos") / "backend" / "events" >> RequireLoggedIn >>
-    User.HasRoleOrPermission(SuperAdmin, Eventos) >> LeftMenuGroup submenus(
-    backendPendingEvents.menu, backendApprovedEvents.menu, backendResidencies.menu, backendApprovedEventsWorkshops.menu
-    ))
+     LeftMenuGroup submenus(
+      backendPendingEvents.menu,
+      backendApprovedEvents.menu,
+      backendResidencies.menu,
+      backendApprovedEventsWorkshops.menu,
+      backendEventAdd))
 
   val backendCallAdd = Menu.param[Room](
     "Agregar convocatoria", "Agregar convocatoria",
