@@ -239,7 +239,13 @@ object Site extends Locs {
 
   /* Convocatorias */
   // Convocatorias
-  val convocatorias = MenuLoc(Menu.i("Convocatorias") / "convocatorias")
+  val convocatoria =  Menu.param[Call](
+    "Ver Convocatoria", "Ver Convocatoria",
+    Call.find,
+    s => s.id.get.toString) / "convocatoria" / * >>
+    TemplateBox(() => Templates("convocatoria" :: Nil)) >>
+    Hidden
+  val convocatorias = MenuLoc(Menu.i("Convocatorias") / "convocatorias" submenus(convocatoria))
 
   /* Contacto */
   // Contacto

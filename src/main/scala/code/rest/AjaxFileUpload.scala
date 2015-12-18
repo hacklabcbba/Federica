@@ -48,6 +48,9 @@ object AjaxFileUpload extends RestHelper {
           }
       })
 
+    case "file" :: fileName :: Nil Get req =>
+      serveFile(fileName, req, fileName => fileName)
+
     case "image" :: fileName :: Nil Get req =>
       serveSingleImage(fileName, req)
 
@@ -136,7 +139,7 @@ object AjaxFileUpload extends RestHelper {
 
               Full(req.testFor304(lastModified, "Expires" -> toInternetDate(millis + 10.days)) openOr {
               val headers =
-                ("Content-Disposition" -> ("attachment; filename="+ downloadFileName ) ) ::
+                ("Content-Disposition" -> ("attachment; filename="+ downloadFileName) ) ::
                 ("Content-Type" -> file.getContentType) ::
                 ("Pragma" -> "") ::
                 ("Cache-Control" -> "") ::

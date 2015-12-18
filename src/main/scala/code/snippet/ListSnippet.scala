@@ -28,6 +28,8 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
 
   val title: String
 
+  def items: List[BaseRecord] = meta.findAll
+
   def render = {
     "*" #>
     {
@@ -35,7 +37,7 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
       "data-name=column-name *" #> listFields.map(field => field.displayName) &
       "data-name=add-item [href]" #> addUrl &
       "data-name=remove-items [onclick]" #> SHtml.ajaxInvoke(deleteItemsJsCmd _) &
-      "data-name=items" #> meta.findAll.map(item => {
+      "data-name=items" #> items.map(item => {
         "type=checkbox" #> SHtml.ajaxCheckbox(false, s => selectItem(s, item)) &
         "data-name=column-data *" #> listFields.map(field => item.fieldByName(field.name).dmap("")(_.toString)) &
         "data-name=edit-item [href]" #> itemEditUrl(item) &

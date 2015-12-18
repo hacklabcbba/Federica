@@ -99,6 +99,8 @@ class FileField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
     Full(uploadedData)
   }
 
+  def url: String = s"/file/${this.get.fileId.get}"
+
   def viewFile = {
     val f = this.get
     val previewData = f.fileType.get match {

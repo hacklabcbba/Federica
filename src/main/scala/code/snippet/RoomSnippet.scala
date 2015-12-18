@@ -14,6 +14,8 @@ object RoomSnippet extends ListSnippet[Room] {
 
   val addUrl = Site.backendRoomAdd.calcHref(Room.createRecord)
 
+  override def items: List[Room] = meta.findAll.sortBy(_.code.get)
+
   def entityListUrl: String = Site.backendRooms.menu.loc.calcDefaultHref
 
   def itemEditUrl(inst: Room): String = Site.backendRoomEdit.toLoc.calcHref(inst)
@@ -22,11 +24,11 @@ object RoomSnippet extends ListSnippet[Room] {
 
 
   def renderFrontEnd: CssSel = {
-    "data-name=space" #> meta.findAll.map(room => {
+    "data-name=space" #> items.map(room => {
       "data-name=code *" #> room.code.get &
       "data-name=name *" #> room.name.get &
       "data-name=image1" #> room.photo1.viewFile &
-      "data-name=image1" #> room.photo1.viewFile &
+      "data-name=image2" #> room.photo1.viewFile &
       "data-name=description *" #> room.description.asHtml
     })
   }

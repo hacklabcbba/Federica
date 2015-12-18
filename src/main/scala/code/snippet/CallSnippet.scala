@@ -20,24 +20,24 @@ object CallSnippet extends ListSnippet[Call] {
   override def listFields = List(meta.name, meta.deadline)
 
   def renderFrontEnd: CssSel = {
-    "data-name=Call" #> meta.findAll.map(Call => {
-      "data-name=name *" #> Call.name.get &
-      //"data-name=name [href]" #> Site.servicio.calcHref(Call) &
-      "data-name=description *" #> Call.description.asHtml
+    "data-name=call" #> meta.findAll.map(call => {
+      "data-name=name *" #> call.name.get &
+      "data-name=name [href]" #> Site.convocatoria.calcHref(call) &
+      "data-name=description *" #> call.description.asHtmlCutted(300) &
+      "data-name=deadline *" #> call.deadline.toString &
+      "data-name=file [href]" #> call.file.url
     })
   }
 
-  /*def renderViewFrontEnd: CssSel = {
+  def renderViewFrontEnd: CssSel = {
     for {
-      service <- Site.Call.currentValue
+      call <- Site.convocatoria.currentValue
     } yield {
-      "data-name=image" #> service.photo.previewFile &
-        "data-name=name *" #> service.name.get &
-        "data-name=name [href]" #> Site.servicio.calcHref(service) &
-        "data-name=description *" #> service.description.asHtml &
-        "data-name=email *" #> service.email.get &
-        "data-name=responsible *" #> service.responsible.obj.dmap("")(_.name.get)
+      "data-name=name *" #> call.name.get &
+      "data-name=description *" #> call.description.asHtml &
+      "data-name=deadline *" #> call.deadline.toString &
+      "data-name=file [href]" #> call.file.url
     }
-  }*/
+  }
 
 }
