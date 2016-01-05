@@ -6,7 +6,7 @@ import java.util.UUID
 import javax.imageio.ImageIO
 
 import code.config.MongoConfig
-import code.model.FileRecord
+import code.model.{User, FileRecord}
 import code.model.resource.Room
 import com.foursquare.rogue.LiftRogue._
 import com.mongodb.gridfs.{GridFS, GridFSDBFile}
@@ -22,18 +22,31 @@ import org.joda.time.DateTime
 
 object AjaxFileUpload extends RestHelper {
 
+  protected def withUser(func: () => Box[JValue]): Box[LiftResponse] = {
+    for {
+      user <- User.currentUser ?~ "Usuario no encontrado"
+      res <- func()
+    } yield res
+  }
+
   serve {
 
-    case "upload" :: Nil Post req =>
-      val jValue = "files" -> req.uploadedFiles.map(file => {
-        saveFile(file)
-      })
-      response(jValue)
+    case "upload" :: Nil Post req => withUser { () =>
+      tryo {
+        val jValue = "files" -> req.uploadedFiles.map(file => {
+          saveFile(file)
+        })
+        jValue
+      }
+    }
 
-    case "upload" :: "image" :: Nil Post req =>
-      for {
-        file <- req.uploadedFiles.headOption
-      } yield responseImage(saveImage(file))
+    case "upload" :: "image" :: Nil Post req => withUser { () =>
+      tryo {
+        for {
+          file <- req.uploadedFiles.headOption
+        } yield saveImage(file)
+      }
+    }
 
 
 
