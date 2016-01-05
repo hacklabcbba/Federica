@@ -122,7 +122,9 @@ class BsCkTextareaField[OwnerType <: Record[OwnerType]](rec: OwnerType, maxLengt
         $(function() {
           CKEDITOR.replace('""" + id + """', {
             extraPlugins: 'uploadimage',
-            uploadUrl: '/upload/image'
+            uploadUrl: '/upload/image',
+            laguange: 'es',
+            removeButtons: 'CreateDiv,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenFieldBidiLtr,BidiRtl,Flash,Smiley,Language'
           });
           for (var i in CKEDITOR.instances) {
             CKEDITOR.instances[i].on('blur', function() {
