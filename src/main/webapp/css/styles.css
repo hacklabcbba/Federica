@@ -336,7 +336,7 @@ body > .wrapper > header .navbar-black {
 }
 body > header .navbar-black a,
 body > .wrapper > header .navbar-black a {
-  color: #6f6f6f;
+  color: #999;
 }
 body > header .navbar-black li a,
 body > .wrapper > header .navbar-black li a {
@@ -1023,6 +1023,7 @@ body.page.dashboard .content {
 .dashboard .dashboard-menu .dropdown-menu {
   position: relative;
   background: transparent;
+  padding-left: 10px;
 }
 .dashboard .dashboard-menu .navbar-nav > li {
   float: none;
@@ -1116,6 +1117,12 @@ body.page.dashboard .content {
   top: 3px;
 }
 /*----/----/ $USER PAGE */
+.page-user .form-horizontal .controls .form-control {
+  height: auto;
+}
+.user-page {
+  margin-top: 25px;
+}
 .user-page .socialnetworks li {
   margin-bottom: 10px;
 }
@@ -1263,4 +1270,4 @@ body > footer .footer-buttons a .title-link {
 body > footer .social-suscribe {
   padding-top: 50px;
 }
-/*# sourceMappingURL=/css/style.css.map */
+/*# sourceMappingURL=/federica/src/main/webapp/css/style.css.map */
