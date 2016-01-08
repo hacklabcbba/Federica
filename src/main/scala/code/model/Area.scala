@@ -94,6 +94,10 @@ class Area private () extends MongoRecord[Area] with ObjectIdPk[Area] with BaseM
 object Area extends Area with RogueMetaRecord[Area] {
   override def collectionName = "main.areas"
   override def fieldOrder = List(name, responsible, email, phone, code, photo1, photo2, description, officeHoursBegins, officeHoursEnds)
+
+  def findAllPublished: List[Area] = {
+    Area.where(_.isPublished eqs true).fetch()
+  }
 }
 
 class OfficeHours extends BsonRecord[OfficeHours] {

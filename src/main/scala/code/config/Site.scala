@@ -49,41 +49,6 @@ object Site extends Locs {
     Menu.i("Equipo Humano") / "equipo-humano" >> TopBarGroup
     ))
 
-  /* Áreas menu*/
-  // Áreas
-  val areas = MenuLoc(Menu.i("Ver Áreas") / "areas" >> TopBarGroup submenus(
-    // Áreas
-    Menu.i("Artes Escénicas") / "artes-escenicas" >> TopBarGroup submenus(
-      // Elenco mARTadero
-      Menu.i("Elenco mARTadero") / "elenco-martadero" >> TopBarGroup
-      ),
-    // Artes visuales
-    Menu.i("Artes Visuales") / "artes-visuales" >> TopBarGroup submenus(
-      // Bienal arte urbano
-      Menu.i("Bienal arte urbano") / "bienal-arte-urbano" >> TopBarGroup,
-      // CONART
-      Menu.i("Conart") / "conart" >> TopBarGroup
-      ),
-    // Musica
-    Menu.i("Música") / "musica" >> TopBarGroup,
-    // Arquitectura y Diseño Gráfico
-    Menu.i("Arquitectura y Diseño Gráfico") / "arquitectura-y-diseño-gráfico" >> TopBarGroup,
-    // Audiovisual
-    Menu.i("Audiovisual") / "audiovisual" >> TopBarGroup,
-    // Letras
-    Menu.i("Letras") / "letras" >> TopBarGroup submenus(
-      // La ubre amarga
-      Menu.i("La Ubre Amarga") / "la-ubre-amarga" >> TopBarGroup
-      ),
-    // Interaccion Social
-    Menu.i("Interacción Social") / "interaccion-social" >> TopBarGroup submenus(
-      // Jovenes Artivistas
-      Menu.i("Jóvenes artivistas") / "jovenes-artivistas" >> TopBarGroup,
-      // Enredarte con NADA
-      Menu.i("Enredarte con NADA") / "enredarte-con-nada" >> TopBarGroup
-      )
-    ))
-
   /* Programas */
   // Programas
   val programs = MenuLoc(Menu.i("Ver Programs") / "programs" >> TopBarGroup submenus(
@@ -237,6 +202,42 @@ object Site extends Locs {
 
   val servicios = MenuLoc(Menu.i("Servicios ") / "servicios" submenus(servicio))
 
+  val area =  Menu.param[Area](
+    "Ver Area", "Ver Area",
+    Area.find,
+    s => s.id.get.toString) / "area" / * >>
+    TemplateBox(() => Templates("area" :: Nil)) >>
+    Hidden
+
+  val areas = MenuLoc(Menu.i("Areas ") / "areas" submenus(area))
+
+  val proceso =  Menu.param[Process](
+    "Ver Proceso", "Ver Proceso",
+    Process.find,
+    s => s.id.get.toString) / "proceso" / * >>
+    TemplateBox(() => Templates("proceso" :: Nil)) >>
+    Hidden
+
+  val procesos = MenuLoc(Menu.i("Procesos ") / "procesos" submenus(proceso) >> Hidden)
+
+  val programa =  Menu.param[Program](
+    "Ver Programa", "Ver Programa",
+    Program.find,
+    s => s.id.get.toString) / "programa" / * >>
+    TemplateBox(() => Templates("programa" :: Nil)) >>
+    Hidden
+
+  val programas = MenuLoc(Menu.i("Programas ") / "programas" submenus(programa))
+
+  val red =  Menu.param[Network](
+    "Ver Red", "Ver Red",
+    Network.find,
+    s => s.id.get.toString) / "red" / * >>
+    TemplateBox(() => Templates("red" :: Nil)) >>
+    Hidden
+
+  val redes = MenuLoc(Menu.i("Redes ") / "redes" submenus(red) >> Hidden)
+
   /* Convocatorias */
   // Convocatorias
   val convocatoria =  Menu.param[Call](
@@ -256,32 +257,6 @@ object Site extends Locs {
     Menu.i("Mapa") / "mapa",
     // Como llegar
     Menu.i("Como llegar") / "como-llegar"
-    ))
-
-  /* Administracion */
-  // Administracion
-  //val administracion = MenuLoc(Menu.i("Administración") / "dashboard" >> LeftMenuGroup)
-
-  /* Menu Derecha */
-  /* Procesos */
-  // Procesos
-  val procesos = MenuLoc(Menu.i("Procesos") / "procesos" >> RightMenuGroup submenus(
-    // Procesos
-    Menu.param[Process]("Proceso", "Proceso",
-      Process.find _,
-      _.name.get
-    ) / "proceso" / * >> TemplateBox(() => Templates("proceso" :: Nil)) >> RightMenuGroup
-    ))
-
-
-  /* Redes */
-  // Redes
-  val redes = MenuLoc(Menu.i("Redes") / "redes" >> RightMenuGroup submenus(
-    // Red
-    Menu.param[Network]("Red", "Red",
-      Network.find _,
-      _.name.get
-    ) / "red" / * >> TemplateBox(() => Templates("red" :: Nil)) >> RightMenuGroup
     ))
 
   /* Entenados */
@@ -659,7 +634,7 @@ object Site extends Locs {
       backendRooms.menu,
       backendEquipments.menu))
 
-  val backendRedesModule = MenuLoc(Menu.i("Redes ") / "backend" / "redes" >>
+  val backendRedesModule = MenuLoc(Menu.i("Redes  ") / "backend" / "redes" >>
     User.HasRoleOrPermission(SuperAdmin, Redes) >>
     LeftMenuGroup >>
     PlaceHolder submenus(
@@ -719,6 +694,9 @@ object Site extends Locs {
     blog.menu,
     convocatorias.menu,
     servicios.menu,
+    procesos.menu,
+    programas.menu,
+    redes.menu,
     contacto.menu)
 
   /*

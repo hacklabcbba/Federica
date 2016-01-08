@@ -97,6 +97,18 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] w
 object Process extends Process with RogueMetaRecord[Process] {
   override def collectionName = "main.process"
   override def fieldOrder = List(name, processType, goal, description, area, program, administrator, history)
+
+  def findByArea(area: Area): List[Process] = {
+    Process
+      .where(_.area eqs area.id.get)
+      .fetch()
+  }
+
+  def findByProgram(program: Program): List[Process] = {
+    Process
+      .where(_.program eqs program.id.get)
+      .fetch()
+  }
 }
 
 object ProcessType extends Enumeration {
