@@ -21,9 +21,9 @@ import scala.xml._
 class DatePickerField[OwnerType <: MongoRecord[OwnerType]](rec: OwnerType) extends DateTimeField(rec) with Loggable {
   private val dateString = "MM/dd/yyyy"
 
-  private val dateStringLiteral = "MMMM d, yyyy"
+  private val dateStringLiteral = "EEEE d 'de' MMMM 'de' yyyy"
 
-  private val dateStringLiteralAndHour = "MMM d, yyyy - HH:mm"
+  private val dateStringLiteralAndHour = "EEEE d 'de' MMMM 'de' yyyy - HH:mm"
 
   private def parseDate(s: String): Box[java.util.Calendar] = {
     val formatter = DateTimeFormat.forPattern(dateString)
@@ -109,6 +109,6 @@ class DatePickerField[OwnerType <: MongoRecord[OwnerType]](rec: OwnerType) exten
 
   def formatedDateLiteralWithHour(locale: Locale) = formateDateLiteralWithHour(this.value.getTime, locale)
 
-  override def toString = formatDateLiteral(this.value.getTime, new Locale("es_ES"))
+  override def toString = formatDateLiteral(this.value.getTime, new Locale("es", "ES"))
 
 }

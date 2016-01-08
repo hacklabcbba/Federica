@@ -1,5 +1,6 @@
 package bootstrap.liftweb
 
+import java.util.Locale
 import javax.mail.internet.MimeMessage
 
 import code.config._
@@ -10,6 +11,7 @@ import net.liftmodules.extras.{Gravatar, LiftExtras}
 import net.liftmodules.mongoauth.MongoAuth
 import net.liftweb.common._
 import net.liftweb.http._
+import net.liftweb.http.provider.HTTPRequest
 import net.liftweb.util._
 
 /**
@@ -77,6 +79,10 @@ class Boot extends Loggable {
 
     // don't include the liftAjax.js code. It's served statically.
     LiftRules.autoIncludeAjaxCalc.default.set(() => () => (session: LiftSession) => false)
+
+    LiftRules.localeCalculator = localeCalculator
+
+    def localeCalculator(request: Box[HTTPRequest]): Locale = new Locale("es", "ES")
 
     LiftRules.dispatch.append(code.rest.AjaxFileUpload)
 
