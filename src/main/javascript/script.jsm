@@ -25,7 +25,6 @@ libs/flot/jquery.flot.js
 libs/fullcalendar/fullcalendar.js
 libs/input-mask/jquery.inputmask.js
 libs/ionslider/ion.rangeSlider.min.js
-libs/jQueryUI/jquery-ui.js
 libs/jvectormap/jquery-jvectormap-1.2.2.min.js
 libs/jvectormap/jquery-jvectormap-world-mill-en.js
 libs/knob/jquery.knob.js
