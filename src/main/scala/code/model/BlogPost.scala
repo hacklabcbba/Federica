@@ -4,10 +4,12 @@ package model
 import code.config.Site
 import code.lib.{BaseModel, RogueMetaRecord}
 import code.lib.field._
+import com.foursquare.rogue.LiftRogue
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField}
+import LiftRogue._
 
 import scala.xml.Elem
 
@@ -121,5 +123,33 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
       .and(_.id neqs inst.id.get)
       .limit(limit)
       .fetch()
+  }
+
+  def countByCategory(category: Box[String]): Long = category match {
+    case Full(cat) =>
+      BlogPost
+        .where(_.categorias contains Tag.createRecord.tag(cat))
+        .count
+    case _ =>
+      BlogPost
+        .count
+  }
+
+  def findByCategoryPage(category: Box[String], limit: Int, page: Int): List[BlogPost] = category match {
+    case Full(cat) =>
+      BlogPost
+        .where(_.categorias contains Tag.createRecord.tag(cat))
+        .paginate(limit)
+        .setPage(page)
+        .fetch()
+    case _ =>
+      BlogPost
+        .paginate(limit)
+        .setPage(page)
+        .fetch()
+  }
+
+  def findCategories: List[String] = {
+    BlogPost.distinct(_.categorias.subfield(_.tag)).toList.asInstanceOf[List[String]]
   }
 }

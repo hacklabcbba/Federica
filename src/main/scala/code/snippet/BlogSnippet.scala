@@ -2,20 +2,28 @@ package code.snippet
 
 import code.config
 import code.config.Site
+import code.lib.snippet.PaginatorSnippet
 import code.model.BlogPost
 import net.liftweb.common.{Full, Box}
+import net.liftweb.http.{ S, RequestVar, SHtml}
 import net.liftweb.util.{PassThru, CssSel, Helpers}
 import Helpers._
 
 import scala.xml.NodeSeq
 
-object BlogSnippet extends ListSnippet[BlogPost] {
+object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost] {
 
   val meta = BlogPost
 
   val title = "Entradas del blog"
 
   val addUrl = Site.backendBlogAdd.calcHref(BlogPost.createRecord)
+
+  override def itemsPerPage = 10
+
+  override def count = meta.countByCategory(S.param("category"))
+  
+  override def page = meta.findByCategoryPage(S.param("category"), itemsPerPage, curPage)
 
   def entityListUrl: String = Site.backendBlog.menu.loc.calcDefaultHref
 
@@ -38,7 +46,9 @@ object BlogSnippet extends ListSnippet[BlogPost] {
   }
 
   def renderFrontEnd: CssSel = {
-    "data-name=post" #> meta.findAll.map(post => {
+    val category = S.param("category")
+    "data-name=category *" #> category &
+    "data-name=post" #> page.map(post => {
       previewCss(post) &
       "data-name=title *" #> post.name.get &
       "data-name=area *" #> post.area.obj.dmap("")(_.name.get) &
@@ -46,7 +56,14 @@ object BlogSnippet extends ListSnippet[BlogPost] {
       "data-name=date *" #> post.date.toString &
       "data-name=title [href]" #> Site.entradaBlog.calcHref(post) &
       "data-name=content *" #> post.content.asHtmlCutted(200)
-    })
+    }) &
+    "data-name=all-categories [href]" #> Site.blog.fullUrl &
+    "data-name=categories" #> meta.findCategories.map(cat => {
+      "li [class+]" #> (if (category === cat) "active" else "") &
+      "a [href]" #> s"${Site.blog.fullUrl}?category=$cat" &
+      "a *" #> cat
+    }) &
+    paginate
   }
 
   def renderViewFrontEnd: CssSel = {
@@ -58,7 +75,7 @@ object BlogSnippet extends ListSnippet[BlogPost] {
       val related = BlogPost.findRelated(post, 3)
       imageCss(post) &
       "data-name=title *" #> post.name.get &
-        "data-name=area *" #> post.area.obj.dmap("")(_.name.get) &
+      "data-name=area *" #> post.area.obj.dmap("")(_.name.get) &
       "data-name=author *" #> post.author.obj.dmap("")(_.name.get) &
       "data-name=date *" #> post.date.toString &
       "data-name=title [href]" #> Site.entradaBlog.calcHref(post) &
