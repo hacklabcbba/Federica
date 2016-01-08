@@ -56,20 +56,15 @@ class DatePickerField[OwnerType <: MongoRecord[OwnerType]](rec: OwnerType) exten
 
 
       S.fmapFunc((s: String) => setBox(parseDate(s))) { funcName =>
-        <div class="col-md-12">
-          <input
-          class="form-control"
-          id={dateId}
-          type="text"
-          name={funcName}
-          value={valueBox.map(v => formatDate(v.getTime)).openOr("")}
-          tabindex={tabIndex toString}
-          readonly=""
-          />
-          <span class="input-group-btn">
-            <button id={dateButtonId} class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
-          </span>
-        </div>
+        <input
+        class="form-control"
+        id={dateId}
+        type="text"
+        name={funcName}
+        value={valueBox.map(v => formatDate(v.getTime)).openOr("")}
+        tabindex={tabIndex toString}
+        readonly=""
+        />
       }
     }
 
@@ -78,8 +73,7 @@ class DatePickerField[OwnerType <: MongoRecord[OwnerType]](rec: OwnerType) exten
         "$('#" + dateId + "').datepicker().on('changeDate', function(ev) {" +
         "$('#"+ dateId + "').datepicker('hide')" +
         "});" +
-        s"$$('#"+ dateButtonId + "').on('click', function(ev) { $('#"+ dateId + "').datepicker('show')});" +
-        "})"
+      "})"
     )
 
     S.appendJs(js)

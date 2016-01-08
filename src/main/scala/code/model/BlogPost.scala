@@ -24,7 +24,7 @@ class BlogPost private() extends MongoRecord[BlogPost] with ObjectIdPk[BlogPost]
   }
 
   object area extends ObjectIdRefField(this, Area) {
-    override def displayName = "Categoria"
+    override def displayName = "Área"
     override def toString = {
       this.obj.dmap("Indefinido..")(_.name.get)
     }
@@ -57,7 +57,13 @@ class BlogPost private() extends MongoRecord[BlogPost] with ObjectIdPk[BlogPost]
     override def displayName = "Contenido"
   }
 
-  object tags extends TagsField(this)
+  object categorias extends TagField(this) {
+    override def displayName = "Categorias"
+  }
+
+  object tags extends TagField(this) {
+    override def displayName = "Etiquetas"
+  }
 
   object author extends ObjectIdRefField(this, User) {
     override def defaultValueBox = User.currentUser.map(_.id.get)

@@ -64,7 +64,7 @@ object BlogSnippet extends ListSnippet[BlogPost] {
       "data-name=title [href]" #> Site.entradaBlog.calcHref(post) &
       "data-name=content *" #> post.content.asHtml &
       "data-name=tags" #> post.tags.get.map(tag => {
-        "data-name=tag *" #> tag
+        "data-name=tag *" #> tag.tag.get
       }) &
       prevItemCss(prev) &
       nextItemCss(next) &
