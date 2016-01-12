@@ -2,7 +2,8 @@ package code
 package model
 package event
 
-import code.lib.RogueMetaRecord
+import code.config.Site
+import code.lib.{BaseModel, RogueMetaRecord}
 import code.model.activity.Activity
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
@@ -14,9 +15,13 @@ import net.liftweb.util.Helpers._
 
 import scala.xml.Elem
 
-class Event private() extends MongoRecord[Event] with ObjectIdPk[Event]{
+class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with BaseModel[Event] {
 
   override def meta = Event
+
+  def title = "Eventos"
+
+  def entityListUrl = Site.backendEvents.menu.loc.calcDefaultHref
 
   object eventNumber extends StringField(this, 200) {
     override def displayName = "#"

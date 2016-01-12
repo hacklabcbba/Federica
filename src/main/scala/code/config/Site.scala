@@ -325,7 +325,15 @@ object Site extends Locs {
     s => Full(Event.createRecord),
     s => "new") / "backend" / "events" / "add" / * >>
     RequireLoggedIn >>
-    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    TemplateBox(() => Templates("backend" :: "record" :: "event-form-page" :: Nil)) >>
+    Hidden
+
+  val backendEventEdit = Menu.param[Event](
+    "Editar evento", "Editar evento",
+    Event.find,
+    s => s.id.get.toString) / "backend" / "events" / "edit" / * >>
+    User.HasRoleOrPermission(SuperAdmin, Convocatorias) >>
+    TemplateBox(() => Templates("backend" :: "record" :: "event-form-page" :: Nil)) >>
     Hidden
 
   val backendEvents = MenuLoc(Menu.i("Eventos") / "backend" / "events" >> RequireLoggedIn >>
@@ -334,7 +342,8 @@ object Site extends Locs {
       backendApprovedEvents.menu,
       backendResidencies.menu,
       backendApprovedEventsWorkshops.menu,
-      backendEventAdd))
+      backendEventAdd,
+      backendEventEdit))
 
   val backendCallAdd = Menu.param[Call](
     "Agregar convocatoria", "Agregar convocatoria",
