@@ -1,7 +1,90 @@
 <div data-lift="surround?with=base-wrap-backend;at=content">
-    <!-- form start -->
+    <div class="col-md-12" ng-app="EventApp">
+        <div class="notifications margin-bottom-xs ">
+        </div>
+        <header class="page-header">
+            <h2 class="no-margin-top title-page">
+                <i class="glyphicon glyphicon-menu-right border-circle"></i> Evento
+            </h2>
+        </header>
+
+        <div id="event-wizard" ng-controller="EventController">
+            <div class="navbar wizard-nav">
+                <div class="navbar-inner">
+                    <ul class="nav nav-pills">
+                        <li class="width-25-md" ng-class="{ active: currentTab == 'rooms'}"><a class="disabled">Salas</a></li>
+                        <li class="width-25-md" ng-class="{ active: currentTab == 'dates'}"><a class="disabled">Dias/Horario</a></li>
+                        <li class="width-25-md" ng-class="{ active: currentTab == 'equipment'}"><a class="disabled" >Equipos/Accesorios</a></li>
+                        <li class="width-25-md" ng-class="{ active: currentTab == 'info'}"><a class="disabled" >Información</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane" ng-class="{ active: currentTab == 'rooms'}" id="tab1">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-4" ng-repeat="room in rooms" ng-click="switchRoom(room)">
+                            <div class="panel" ng-class="isRoomSelected(room)">
+                                <div class="panel-heading"><h3 class="panel-title">{{room.code}}</h3></div>
+                                <div class="panel-body">
+                                    {{room.name}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" ng-class="{ active: currentTab == 'dates'}" id="tab2">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-12" ng-repeat="room in event.rooms">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading"><h3 class="panel-title">{{room.code}}</h3></div>
+                                <div class="panel-body">
+                                    <div class="col-sm-12 col-lg-4">
+                                        {{room.name}}
+                                    </div>
+                                    <div class="col-sm-12 col-lg-8">
+                                        <form class="form-inline">
+                                            <div ng-repeat="date in room.dates">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+                                                </div>
+                                                <div class="form-group" ng-show="room.isBookableShift">
+                                                    <label>Periodo</label>
+                                                    <select class="form-control">
+                                                    </select>
+                                                </div>
+                                                <button class="btn btn-danger" ng-click="removeDate(room, date)"><i class="fa fa-minus"></i></button>
+                                            </div>
+                                            <div>
+                                                <button ng-click="addDate(room)" class="btn btn-primary pull-right"><i class="fa fa-plus"></i></button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" ng-class="{ active: currentTab == 'equipment'}" id="tab3">
+                    3
+                </div>
+                <div class="tab-pane" ng-class="{ active: currentTab == 'info'}" id="tab4">
+                    4
+                </div>
+                <ul class="pager wizard">
+                    <li ng-show="currentTab != 'rooms'" class="previous"><a href="#" ng-click="gotoPrevTab(currentTab)"><i class="glyphicon glyphicon-menu-left"></i> Anterior </a></li>
+                    <li ng-show="currentTab != 'info'"  class="next"><a href="#" ng-click="gotoNextTab(currentTab)"> Siguiente <i class="glyphicon glyphicon-menu-right"></i></a></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
     <tail>
         <script data-lift="Angular"></script>
+        <script src="/js/angular-ui/ui-bootstrap-tpls-1.0.3.min.js"></script>
         <script data-lift="NgEventService"></script>
+        <script src="/js/EventController.js"></script>
     </tail>
 </div>

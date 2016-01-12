@@ -23,7 +23,7 @@ class Room private() extends Resource[Room] {
     override def displayName = "Código"
   }
 
-  object status extends BsStringField(this, 50) {
+  object isEnabled extends BooleanField(this) {
     override def displayName = "Estado"
   }
 
@@ -62,4 +62,10 @@ object Room extends Room with RogueMetaRecord[Room] {
   override def collectionName = "resource.resources"
 
   override def fieldOrder = List(code, name, photo1, photo2)
+
+  def findAllBookeableEnabled: List[Room] = {
+    Room
+      .where(_.isBookable eqs true)
+      .and(_.isEnabled eqs true).fetch()
+  }
 }

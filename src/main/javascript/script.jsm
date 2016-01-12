@@ -34,6 +34,7 @@ libs/slimScroll/jquery.slimscroll.js
 libs/sparkline/jquery.sparkline.js
 libs/timepicker/bootstrap-timepicker.min.js
 libs/tagmanager.js
+libs/lodash/lodash.min.js
 genso/adminlt.js
 
 

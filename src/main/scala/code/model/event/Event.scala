@@ -5,9 +5,11 @@ package event
 import code.config.Site
 import code.lib.{BaseModel, RogueMetaRecord}
 import code.model.activity.Activity
+import code.model.resource.Room
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.http.js.JsCmds._
+import net.liftweb.json.JsonAST.JArray
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field._
 import net.liftweb.record.field.{EnumNameField, StringField, TextareaField}
@@ -365,6 +367,14 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
   object values extends ObjectIdRefListField(this, Values) {
     override def displayName = "Principios"
   }
+
+  object rooms extends ObjectIdRefListField(this, Room) {
+    override def shouldDisplay_? = false
+
+    override def asJValue = JArray(objs.map(_.asJValue))
+  }
+
+
 }
 
 object Event extends Event with RogueMetaRecord[Event] {

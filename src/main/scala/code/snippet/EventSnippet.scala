@@ -3,8 +3,10 @@ package code.snippet
 import code.config.Site
 import code.model.Area
 import code.model.event.Event
+import code.model.resource.Room
 import net.liftmodules.ng.Angular._
 import net.liftweb.common.{Failure, Full}
+import net.liftweb.json.JsonAST.{JValue, JArray}
 import net.liftweb.util.Helpers._
 import net.liftweb.util.{CssSel, Helpers}
 
@@ -34,19 +36,23 @@ object EventSnippet extends ListSnippet[Event] {
 object NgEventService {
   def render = {
     renderIfNotAlreadyDefined(
-      angular.module("lift.pony")
-        .factory("ponyService", jsObjFactory()
-        .jsonCall("getBestPony", (arg: String) => {
-        // Return the best pony (server-side)
-        try {
-          Full(BestPony("pony"))
-        } catch {
-          case e:Exception => Failure(e.getMessage)
-        }
-      })
+      angular.module("federica.event")
+        .factory("EventService", jsObjFactory()
+          .jsonCall("listRooms", {
+            try {
+              Full(Room.findAllBookeableEnabled.map(_.asJValue))
+            } catch {
+              case e:Exception => Failure(e.getMessage)
+            }
+          })
+          .jsonCall("fetchEvent", {
+            try {
+              Full(Site.backendEventEdit.currentValue.openOr(Event.createRecord).asJValue)
+            } catch {
+              case e:Exception => Failure(e.getMessage)
+            }
+          })
         )
     )
   }
-
-  case class BestPony(name: String)
 }
