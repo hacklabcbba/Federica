@@ -4,8 +4,8 @@ package resource
 
 import code.config.Site
 import code.lib.RogueMetaRecord
-import code.lib.field.{BsEnumField, FileField}
-import net.liftweb.record.field.EnumField
+import code.lib.field.{BsDoubleField, BsEnumField, FileField}
+import net.liftweb.record.field.{DoubleField, EnumField}
 
 class Equipment private() extends Resource[Equipment] {
 
@@ -22,7 +22,11 @@ class Equipment private() extends Resource[Equipment] {
     }
   }
 
-  object cost extends BsEnumField(this, CostType) {
+  object costType extends BsEnumField(this, CostType) {
+    override def displayName = "Tipo de Costo"
+  }
+
+  object cost extends BsDoubleField(this, 0.0) {
     override def displayName = "Costo"
   }
 
