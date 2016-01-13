@@ -7,6 +7,8 @@ object EquipmentSnippet extends ListSnippet[Equipment] {
 
   val meta = Equipment
 
+  override def items: List[Equipment] = meta.findAll.sortBy(_.name.get)
+
   val title = "Equipos"
 
   val addUrl = Site.backendEquipmentAdd.calcHref(Equipment.createRecord)

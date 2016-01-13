@@ -9,6 +9,7 @@ import net.liftweb.http.{S, SHtml}
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{ObjectIdRefField, ObjectIdPk}
+import net.liftweb.record.LifecycleCallbacks
 import net.liftweb.record.field.{EnumField, EnumNameField}
 
 import scala.xml.Text
@@ -27,8 +28,13 @@ trait Resource[T <: MongoRecord[T]] extends MongoRecord[T] with ObjectIdPk[T] wi
     override def displayName = "Descripción"
   }
 
-  object classType extends EnumField(this.asInstanceOf[T], ClassType) {
+  object classType extends EnumField(this.asInstanceOf[T], ClassType) with LifecycleCallbacks {
     override def shouldDisplay_? = false
+    override def beforeSave: Unit = this.owner match {
+      case r: Room => classType.set(ClassType.RoomType)
+      case e: Equipment => classType.set(ClassType.EquipmentType)
+      case _ => classType.set(ClassType.PackageType)
+    }
   }
 }
 

@@ -23,10 +23,6 @@ class Room private() extends Resource[Room] {
     override def displayName = "Código"
   }
 
-  object isEnabled extends BooleanField(this) {
-    override def displayName = "Estado"
-  }
-
   object plane extends FileField(this) {
     override def displayName = "Plano"
     override def toString = {
@@ -56,6 +52,13 @@ class Room private() extends Resource[Room] {
     }
   }
 
+  object location extends FileField(this) {
+    override def displayName = "Ubicación"
+    override def toString = {
+      value.fileName.get
+    }
+  }
+
 }
 
 object Room extends Room with RogueMetaRecord[Room] {
@@ -66,6 +69,10 @@ object Room extends Room with RogueMetaRecord[Room] {
   def findAllBookeableEnabled: List[Room] = {
     Room
       .where(_.isBookable eqs true)
-      .and(_.isEnabled eqs true).fetch()
+      .fetch()
+  }
+
+  override def findAll: List[Room] = {
+    Room.where(_.classType eqs ClassType.RoomType).fetch()
   }
 }

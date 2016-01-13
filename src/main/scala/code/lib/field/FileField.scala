@@ -397,6 +397,8 @@ class FileField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
   """.stripMargin
   )
 
+  override def asJValue = super.asJValue
+
 }
 
 case class ItemFiles2Delete (fileId: String)

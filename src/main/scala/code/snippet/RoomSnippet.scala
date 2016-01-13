@@ -20,7 +20,7 @@ object RoomSnippet extends ListSnippet[Room] {
 
   def itemEditUrl(inst: Room): String = Site.backendRoomEdit.toLoc.calcHref(inst)
 
-  override def listFields = List(meta.code, meta.name, meta.isEnabled, meta.isBookable, meta.isBookableShift)
+  override def listFields = List(meta.code, meta.name, meta.isBookable, meta.isBookableShift)
 
 
   def renderFrontEnd: CssSel = {
