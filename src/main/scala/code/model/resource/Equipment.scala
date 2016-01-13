@@ -19,7 +19,6 @@ class Equipment private() extends Resource[Equipment] {
     override def toString = get
     override def isAutoFocus = false
     override def displayName = "Categoría"
-    override def validations = valMinLen(2, "longitud mínima") _ :: super.validations
   }
 
   object photo extends FileField(this) {

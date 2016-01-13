@@ -41,7 +41,7 @@ class EquipmentSpec extends BaseMongoSessionWordSpec {
         fail("Validation error: " + errsEnvironment.mkString(", "))
       }
 
-      equipment.validate.length should equal (0)
+      equipment.validate should equal (Nil)
       equipment.save(false)
 
     }
