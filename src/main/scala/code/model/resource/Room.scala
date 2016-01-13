@@ -69,6 +69,7 @@ object Room extends Room with RogueMetaRecord[Room] {
   def findAllBookeableEnabled: List[Room] = {
     Room
       .where(_.isBookable eqs true)
+      .and(_.classType eqs ClassType.RoomType)
       .fetch()
   }
 

@@ -4,8 +4,8 @@ package resource
 
 import code.config.Site
 import code.lib.RogueMetaRecord
-import code.lib.field.{BsDoubleField, BsEnumField, FileField}
-import net.liftweb.record.field.{DoubleField, EnumField}
+import code.lib.field._
+import net.liftweb.record.field.{BooleanField, DoubleField, EnumField}
 
 class Equipment private() extends Resource[Equipment] {
 
@@ -15,11 +15,22 @@ class Equipment private() extends Resource[Equipment] {
 
   override def meta = Equipment
 
+  object category extends BsStringField(this, 100) {
+    override def toString = get
+    override def isAutoFocus = false
+    override def displayName = "Categoría"
+    override def validations = valMinLen(2, "longitud mínima") _ :: super.validations
+  }
+
   object photo extends FileField(this) {
     override def displayName = "Foto"
     override def toString = {
       value.fileName.get
     }
+  }
+
+  object units extends BsIntField(this, 1) {
+    override def displayName = "Unidades"
   }
 
   object costType extends BsEnumField(this, CostType) {
@@ -32,6 +43,10 @@ class Equipment private() extends Resource[Equipment] {
 
   object equipmentType extends BsEnumField(this, EquipmentType) {
     override def displayName = "Tipo"
+  }
+
+  object isBookable extends BooleanField(this, false) {
+    override def displayName = "Reservable"
   }
 }
 
