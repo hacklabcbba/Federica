@@ -70,9 +70,9 @@ trait BaseModel[T <: MongoRecord[T]] extends MongoRecord[T] with SnippetHelper {
 
   def fieldsCss(fld: Field[_, T], fieldId: String, form: NodeSeq) = {
     "data-name=label" #> label(fld, fieldId) &
-      "data-name=form" #> form &
-      "data-name=help" #> help(fld) &
-      "data-name=msg" #> msg(fieldId)
+    "data-name=form" #> form &
+    "data-name=help" #> help(fld) &
+    "data-name=msg" #> msg(fieldId)
   } apply editFieldTemplate
 
   def editFieldTemplate =

@@ -123,6 +123,7 @@ class BsCkTextareaField[OwnerType <: Record[OwnerType]](rec: OwnerType, maxLengt
           CKEDITOR.replace('""" + id + """', {
             extraPlugins: 'uploadimage,imageresponsive',
             uploadUrl: '/upload/image',
+            allowedContent: true,
             laguange: 'es',
             removeButtons: 'CreateDiv,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenFieldBidiLtr,BidiRtl,Flash,Smiley,Language'
           });

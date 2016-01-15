@@ -4,7 +4,7 @@ package config
 import code.model.Widget
 import code.model.event.Event
 import code.model.network._
-import code.model.page.Page
+import code.model.Page
 import code.model.resource.{Equipment, Room}
 import code.model.{User, _}
 import net.liftmodules.mongoauth.Locs
@@ -250,6 +250,13 @@ object Site extends Locs {
     Hidden
   val convocatorias = MenuLoc(Menu.i("Convocatorias") / "convocatorias" submenus(convocatoria))
 
+  val pagina =  Menu.param[Page](
+    "Ver Pagina", "Ver Pagina",
+    Page.findByUrl,
+    s => s.id.get.toString) / "pagina" / * >>
+    TemplateBox(() => Templates("pagina" :: Nil)) >>
+    Hidden
+
   /* Contacto */
   // Contacto
   val contacto = MenuLoc(Menu.i("Contacto") / "contacto" submenus(
@@ -394,7 +401,7 @@ object Site extends Locs {
     s => Full(Page.createRecord),
     s => "new") / "backend" / "pages" / "add" / * >>
     User.HasRoleOrPermission(SuperAdmin, Paginas) >>
-    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    TemplateBox(() => Templates("backend" :: "record" :: "pages-form-page" :: Nil)) >>
     Hidden
 
   val backendPageEdit = Menu.param[Page](
@@ -402,7 +409,7 @@ object Site extends Locs {
     Page.find,
     s => s.id.get.toString) / "backend" / "pages" / "edit" / * >>
     User.HasRoleOrPermission(SuperAdmin, Widgets) >>
-    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    TemplateBox(() => Templates("backend" :: "record" :: "pages-form-page" :: Nil)) >>
     Hidden
 
   val backendPages = MenuLoc(Menu.i("Paginas") / "backend" / "pages" >>
@@ -724,11 +731,11 @@ object Site extends Locs {
     backendAmbientesModule.menu,
     backendRedesModule.menu,
     backendCalls.menu,
+    backendPages.menu,
     backendWidgets.menu,
     backendUsers.menu,
     backendFiles.menu,
     backendBlog.menu,
-    backendPages.menu,
     Menu.i("Error") / "error" >> Hidden,
     Menu.i("404") / "404" >> Hidden,
     Menu.i("Throw") / "throw"  >> EarlyResponse(() => throw new Exception("This is only a test.")),
@@ -745,6 +752,7 @@ object Site extends Locs {
     media.menu,
     blog.menu,
     convocatorias.menu,
+    pagina,
     servicios.menu,
     procesos.menu,
     programas.menu,
