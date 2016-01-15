@@ -1,6 +1,6 @@
 package code.model
 
-import code.lib.RogueMetaRecord
+import code.lib.{SortableModel, RogueMetaRecord}
 import net.liftweb.common.Full
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
@@ -8,7 +8,7 @@ import net.liftweb.mongodb.record.field.ObjectIdPk
 import net.liftweb.record.field.{StringField, TextareaField}
 
 
-class Principle private () extends MongoRecord[Principle] with ObjectIdPk[Principle]{
+class Principle private () extends MongoRecord[Principle] with ObjectIdPk[Principle] with SortableModel[Principle]{
 
   override def meta = Principle
 

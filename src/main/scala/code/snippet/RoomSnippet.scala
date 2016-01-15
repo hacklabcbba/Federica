@@ -4,17 +4,21 @@ package snippet
 import code.config.Site
 import code.model.resource.Room
 import net.liftweb.util.{Helpers, CssSel}
+import com.foursquare.rogue.LiftRogue
+import net.liftweb.http.js.JsCmd
+import net.liftweb.json.JsonAST.JValue
+import LiftRogue._
+import net.liftweb.util.Helpers
 import Helpers._
+import net.liftweb.http.js.JsCmds._
 
-object RoomSnippet extends ListSnippet[Room] {
+object RoomSnippet extends SortableSnippet[Room] {
 
   val meta = Room
 
   val title = "Ambiente"
 
   val addUrl = Site.backendRoomAdd.calcHref(Room.createRecord)
-
-  override def items: List[Room] = meta.findAll.sortBy(_.code.get)
 
   def entityListUrl: String = Site.backendRooms.menu.loc.calcDefaultHref
 
@@ -31,6 +35,17 @@ object RoomSnippet extends ListSnippet[Room] {
       "data-name=image2" #> room.photo2.viewFile &
       "data-name=description *" #> room.description.asHtml
     })
+  }
+
+
+  def updateOrderValue(json: JValue): JsCmd = {
+    implicit val formats = net.liftweb.json.DefaultFormats
+    for {
+      id <- tryo((json \ "id").extract[String])
+      order <- tryo((json \ "order").extract[Long])
+      item <- meta.find(id)
+    } yield meta.where(_.id eqs item.id.get).modify(_.order setTo order).updateOne()
+    Noop
   }
 
 }

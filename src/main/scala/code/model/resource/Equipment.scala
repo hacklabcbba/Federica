@@ -37,7 +37,7 @@ class Equipment private() extends Resource[Equipment] {
   }
 
   object cost extends BsDoubleField(this, 0.0) {
-    override def displayName = "Costo"
+    override def displayName = "Costo (Bolivianos)"
   }
 
   object equipmentType extends BsEnumField(this, EquipmentType) {
@@ -62,6 +62,7 @@ object CostType extends Enumeration {
   val Free = Value(1, "Gratuito")
   val Hour = Value(2, "Por hora")
   val Day = Value(3, "Por día")
+  val Unit = Value(4, "Unidad")
 }
 
 object EquipmentType extends Enumeration {

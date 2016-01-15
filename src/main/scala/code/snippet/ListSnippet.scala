@@ -1,12 +1,14 @@
 package code
 package snippet
 
-import code.lib.BaseModel
+import code.lib.{SortableModel, BaseModel}
 import net.liftmodules.extras.SnippetHelper
 import net.liftweb.common.{Box, Failure, Full}
+import net.liftweb.http.js.JE.JsVar
 import net.liftweb.http.js.JsCmd
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.http.{RequestVar, S, SHtml, Templates}
+import net.liftweb.json.JsonAST.JValue
 import net.liftweb.mongodb.record.{MongoMetaRecord, MongoRecord}
 import net.liftweb.record.Field
 import net.liftweb.util.Helpers._
@@ -38,6 +40,7 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
       "data-name=add-item [href]" #> addUrl &
       "data-name=remove-items [onclick]" #> SHtml.ajaxInvoke(deleteItemsJsCmd _) &
       "data-name=items" #> items.map(item => {
+        "data-name=items [id]" #> item.id.toString &
         "type=checkbox" #> SHtml.ajaxCheckbox(false, s => selectItem(s, item)) &
         "data-name=column-data *" #> listFields.map(field => item.fieldByName(field.name).dmap("")(_.toString)) &
         "data-name=edit-item [href]" #> itemEditUrl(item) &
@@ -75,6 +78,50 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
         S.error("Error desconocido")
     }
   }
+}
+
+trait SortableSnippet[BaseRecord <: MongoRecord[BaseRecord] with SortableModel[BaseRecord]] extends ListSnippet[BaseRecord] {
+  override def items: List[BaseRecord] = meta.findAll.sortBy(_.order.get)
+  override def render = {
+    val callbacks = Function(
+      "updateOrderValue",
+      List("json"),
+      SHtml.jsonCall(
+        JsVar("json"),
+        updateOrderValue _).exp.cmd
+    )
+    val sorteableScript = Run(
+      """
+        |var el = document.getElementById('items');
+        |var sortable = new Sortable(el, {
+        |  onEnd: function (/**Event*/evt) {
+        |    evt.oldIndex;  // element's old index within parent
+        |    evt.newIndex;  // element's new index within parent
+        |    updateOrderValue({ id: evt.item.id, order: evt.newIndex});
+        |  },
+        |});
+      """.stripMargin)
+    S.appendJs(callbacks)
+    S.appendJs(sorteableScript)
+
+    "*" #>
+      {
+        "data-name=title *" #> title &
+        "data-name=column-name *" #> listFields.map(field => field.displayName) &
+        "data-name=add-item [href]" #> addUrl &
+        "data-name=remove-items [onclick]" #> SHtml.ajaxInvoke(deleteItemsJsCmd _) &
+        "data-name=items" #> items.map(item => {
+          "data-name=items [id]" #> item.id.toString &
+          "type=checkbox" #> SHtml.ajaxCheckbox(false, s => selectItem(s, item)) &
+          "data-name=column-data *" #> listFields.map(field => item.fieldByName(field.name).dmap("")(_.toString)) &
+          "data-name=edit-item [href]" #> itemEditUrl(item) &
+          "data-name=remove-item [onclick]" #> SHtml.ajaxInvoke(() => deleteItemJsCmd(item))
+        }) &
+        "data-name=pagination" #> NodeSeq.Empty
+      }.apply(template)
+  }
+
+  def updateOrderValue(json: JValue): JsCmd
 }
 
 object CrudSnippet extends SnippetHelper {

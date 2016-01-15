@@ -1,6 +1,6 @@
 package code.model
 
-import code.lib.RogueMetaRecord
+import code.lib.{SortableModel, RogueMetaRecord}
 import net.liftweb.common.Full
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
@@ -8,7 +8,7 @@ import net.liftweb.mongodb.record.field.ObjectIdPk
 import net.liftweb.record.field.{StringField, TextareaField}
 
 
-class ActionLine private () extends MongoRecord[ActionLine] with ObjectIdPk[ActionLine]{
+class ActionLine private () extends MongoRecord[ActionLine] with ObjectIdPk[ActionLine] with SortableModel[ActionLine] {
 
   override def meta = ActionLine
 

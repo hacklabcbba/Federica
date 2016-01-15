@@ -3,7 +3,7 @@ package model
 
 import code.config.Site
 import code.lib.field.{BsCkTextareaField, BsEmailField, BsStringField, FileField}
-import code.lib.{BaseModel, RogueMetaRecord}
+import code.lib.{SortableModel, BaseModel, RogueMetaRecord}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.js.JsCmds.Run
 import net.liftweb.http.js.{HtmlFixer, JsCmd}
@@ -14,7 +14,7 @@ import net.liftweb.util.Helpers._
 
 import scala.xml.{Elem, Text}
 
-class Service private () extends MongoRecord[Service] with ObjectIdPk[Service] with BaseModel[Service] {
+class Service private () extends MongoRecord[Service] with ObjectIdPk[Service] with BaseModel[Service] with SortableModel[Service] {
 
   override def meta = Service
 

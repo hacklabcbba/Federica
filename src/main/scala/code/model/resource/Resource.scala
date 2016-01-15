@@ -2,7 +2,7 @@ package code
 package model
 package resource
 
-import code.lib.BaseModel
+import code.lib.{SortableModel, BaseModel}
 import code.lib.field.{BsCkTextareaField, BsTextareaField, BsStringField}
 import net.liftweb.common.Full
 import net.liftweb.http.{S, SHtml}
@@ -10,11 +10,11 @@ import net.liftweb.http.js.JsCmds._
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{ObjectIdRefField, ObjectIdPk}
 import net.liftweb.record.LifecycleCallbacks
-import net.liftweb.record.field.{EnumField, EnumNameField}
+import net.liftweb.record.field.{IntField, EnumField, EnumNameField}
 
 import scala.xml.Text
 
-trait Resource[T <: MongoRecord[T]] extends MongoRecord[T] with ObjectIdPk[T] with BaseModel[T] {
+trait Resource[T <: MongoRecord[T]] extends MongoRecord[T] with ObjectIdPk[T] with BaseModel[T] with SortableModel[T] {
   this: T =>
 
   val name = new BsStringField[T](this, 100) {

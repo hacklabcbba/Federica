@@ -1,6 +1,6 @@
 package code.model
 
-import code.lib.RogueMetaRecord
+import code.lib.{SortableModel, RogueMetaRecord}
 import code.lib.field.BsStringField
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
@@ -9,7 +9,7 @@ import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField}
 import net.liftweb.record.field.{EnumNameField, StringField}
 
-class ProductiveUnit private () extends MongoRecord[ProductiveUnit] with ObjectIdPk[ProductiveUnit] {
+class ProductiveUnit private () extends MongoRecord[ProductiveUnit] with ObjectIdPk[ProductiveUnit] with SortableModel[ProductiveUnit] {
 
   override def meta = ProductiveUnit
 

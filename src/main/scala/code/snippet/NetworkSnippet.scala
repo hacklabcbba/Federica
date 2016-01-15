@@ -2,8 +2,15 @@ package code.snippet
 
 import code.config.Site
 import code.model.network.Network
+import com.foursquare.rogue.LiftRogue
+import net.liftweb.http.js.JsCmd
+import net.liftweb.json.JsonAST.JValue
+import LiftRogue._
+import net.liftweb.util.Helpers
+import Helpers._
+import net.liftweb.http.js.JsCmds._
 
-object NetworkSnippet extends ListSnippet[Network] {
+object NetworkSnippet extends SortableSnippet[Network] {
 
   val meta = Network
 
@@ -16,5 +23,15 @@ object NetworkSnippet extends ListSnippet[Network] {
   def itemEditUrl(inst: Network): String = Site.backendNetworkEdit.toLoc.calcHref(inst)
 
   override def listFields = List(meta.name, meta.networkType, meta.administrator)
+
+  def updateOrderValue(json: JValue): JsCmd = {
+    implicit val formats = net.liftweb.json.DefaultFormats
+    for {
+      id <- tryo((json \ "id").extract[String])
+      order <- tryo((json \ "order").extract[Long])
+      item <- meta.find(id)
+    } yield meta.where(_.id eqs item.id.get).modify(_.order setTo order).updateOne()
+    Noop
+  }
 
 }

@@ -4,13 +4,13 @@ package network
 
 import code.config.Site
 import code.lib.field.{BsCkTextareaField, BsEmailField, BsStringField}
-import code.lib.{BaseModel, RogueMetaRecord}
+import code.lib.{SortableModel, BaseModel, RogueMetaRecord}
 import net.liftweb.common.Full
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField}
 
-class Space private () extends MongoRecord[Space] with ObjectIdPk[Space] with BaseModel[Space] {
+class Space private () extends MongoRecord[Space] with ObjectIdPk[Space] with BaseModel[Space] with SortableModel[Space] {
 
   override def meta = Space
 

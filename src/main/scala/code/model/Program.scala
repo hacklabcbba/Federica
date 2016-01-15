@@ -1,7 +1,7 @@
 package code.model
 
 import code.config.Site
-import code.lib.{BaseModel, RogueMetaRecord}
+import code.lib.{SortableModel, BaseModel, RogueMetaRecord}
 import code.lib.field.{BsPhoneField, BsEmailField, BsCkTextareaField, BsStringField}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
@@ -12,7 +12,7 @@ import net.liftweb.record.field.{StringField, TextareaField}
 import scala.xml.Elem
 
 
-class Program private () extends MongoRecord[Program] with ObjectIdPk[Program] with BaseModel[Program] {
+class Program private () extends MongoRecord[Program] with ObjectIdPk[Program] with BaseModel[Program] with SortableModel[Program]{
 
   override def meta = Program
 

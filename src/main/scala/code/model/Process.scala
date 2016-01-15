@@ -2,14 +2,14 @@ package code.model
 
 import code.config.Site
 import code.lib.field.{BsCkTextareaField, BsStringField}
-import code.lib.{BaseModel, RogueMetaRecord}
+import code.lib.{SortableModel, BaseModel, RogueMetaRecord}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField}
 import net.liftweb.record.field.EnumNameField
 
-class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] with BaseModel[Process] {
+class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] with BaseModel[Process] with SortableModel[Process]{
 
   override def meta = Process
 

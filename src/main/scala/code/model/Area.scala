@@ -2,7 +2,7 @@ package code.model
 
 import code.config.Site
 import code.lib.field._
-import code.lib.{BaseModel, RogueMetaRecord}
+import code.lib.{SortableModel, BaseModel, RogueMetaRecord}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.{BsonMetaRecord, BsonRecord, MongoRecord}
@@ -13,7 +13,7 @@ import net.liftweb.util.FieldError
 import scala.xml.{Text, Elem}
 
 
-class Area private () extends MongoRecord[Area] with ObjectIdPk[Area] with BaseModel[Area] {
+class Area private () extends MongoRecord[Area] with ObjectIdPk[Area] with BaseModel[Area] with SortableModel[Area] {
 
   override def meta = Area
 
@@ -89,6 +89,7 @@ class Area private () extends MongoRecord[Area] with ObjectIdPk[Area] with BaseM
   }
 
   override def toString = name.get
+
 }
 
 object Area extends Area with RogueMetaRecord[Area] {

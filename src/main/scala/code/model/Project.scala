@@ -2,13 +2,13 @@ package code.model
 
 import code.config.Site
 import code.lib.field.{BsCkTextareaField, BsStringField}
-import code.lib.{BaseModel, RogueMetaRecord}
+import code.lib.{SortableModel, BaseModel, RogueMetaRecord}
 import net.liftweb.common.Full
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField}
 
-class Project private () extends MongoRecord[Project] with ObjectIdPk[Project] with BaseModel[Project] {
+class Project private () extends MongoRecord[Project] with ObjectIdPk[Project] with BaseModel[Project] with SortableModel[Project] {
 
   override def meta = Project
 

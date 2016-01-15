@@ -2,10 +2,15 @@ package code.snippet
 
 import code.config.Site
 import code.model.Area
+import com.foursquare.rogue.LiftRogue
+import net.liftweb.http.js.JsCmd
+import net.liftweb.json.JsonAST.JValue
 import net.liftweb.util.{CssSel, Helpers}
 import Helpers._
+import net.liftweb.http.js.JsCmds._
+import LiftRogue._
 
-object AreaSnippet extends ListSnippet[Area] {
+object AreaSnippet extends SortableSnippet[Area] {
 
   val meta = Area
 
@@ -39,5 +44,15 @@ object AreaSnippet extends ListSnippet[Area] {
         "data-name=responsible *" #> service.responsible.obj.dmap("")(_.name.get)
     }
   }*/
+
+  def updateOrderValue(json: JValue): JsCmd = {
+    implicit val formats = net.liftweb.json.DefaultFormats
+    for {
+      id <- tryo((json \ "id").extract[String])
+      order <- tryo((json \ "order").extract[Long])
+      item <- meta.find(id)
+    } yield meta.where(_.id eqs item.id.get).modify(_.order setTo order).updateOne()
+    Noop
+  }
 
 }
