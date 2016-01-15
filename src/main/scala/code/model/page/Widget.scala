@@ -1,4 +1,5 @@
-package code.model
+package code
+package model
 
 import code.config.Site
 import code.lib.field._
@@ -7,13 +8,13 @@ import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.ObjectIdPk
 
 
-class Page private () extends MongoRecord[Page] with ObjectIdPk[Page] with BaseModel[Page]{
+class Widget private () extends MongoRecord[Widget] with ObjectIdPk[Widget] with BaseModel[Widget]{
 
-  override def meta = Page
+  override def meta = Widget
 
-  def title = "Página"
+  def title = "Widget"
 
-  def entityListUrl = Site.backendPages.menu.loc.calcDefaultHref
+  def entityListUrl = Site.backendWidgets.menu.loc.calcDefaultHref
 
   object name extends BsStringField(this, 500) {
     override def displayName = "Nombre"
@@ -24,15 +25,11 @@ class Page private () extends MongoRecord[Page] with ObjectIdPk[Page] with BaseM
     override def displayName = "Contenido"
   }
 
-  object key extends BsStringField(this, 100) {
-    override def displayName = "Key"
-  }
-
   override def toString = name.get
 }
 
-object Page extends Page with RogueMetaRecord[Page] {
-  override def collectionName = "main.pages"
+object Widget extends Widget with RogueMetaRecord[Widget] {
+  override def collectionName = "page.widgets"
   override def fieldOrder = List(name, body)
 
 }

@@ -11,6 +11,8 @@ object Permissions {
   val Eventos = Permission("Eventos")
   val Calendario = Permission("Calendario")
   val Convocatorias = Permission("Convocatorias")
+  val Paginas  = Permission("Paginas")
+  val Widgets = Permission("Widgets")
   val Residencias = Permission("Residencias")
   val Salas = Permission("Salas")
   val Espacios = Permission("Espacios")
@@ -28,10 +30,6 @@ object Permissions {
   val Redes = Permission("Redes")
   val Cotizaciones = Permission("Cotizaciones")
   val Estadisticas = Permission("Estadísticas")
-  //ToDO widgets no es soportado todavia
-  val Widgets = Permission("Widgets")
-  //ToDO paginas no es soportado todavia
-  val Paginas = Permission("Paginas")
 
   def list = List(
     Accesorios, Organizacion, Ambientes, Archivos, Areas, Blog, Calendario, Convocatorias, Cotizaciones, Espacios, Estadisticas, Eventos,

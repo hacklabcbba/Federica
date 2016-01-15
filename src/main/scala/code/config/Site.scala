@@ -1,8 +1,10 @@
 package code
 package config
 
+import code.model.Widget
 import code.model.event.Event
 import code.model.network._
+import code.model.page.Page
 import code.model.resource.{Equipment, Room}
 import code.model.{User, _}
 import net.liftmodules.mongoauth.Locs
@@ -366,6 +368,48 @@ object Site extends Locs {
     User.HasRoleOrPermission(SuperAdmin, Convocatorias) >> LeftMenuGroup submenus(
       backendCallAdd, backendCallEdit))
 
+  val backendWidgetAdd = Menu.param[Widget](
+    "Agregar widget", "Agregar widget",
+    s => Full(Widget.createRecord),
+    s => "new") / "backend" / "widgets" / "add" / * >>
+    User.HasRoleOrPermission(SuperAdmin, Widgets) >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendWidgetEdit = Menu.param[Widget](
+    "Editar widget", "Editar widget",
+    Widget.find,
+    s => s.id.get.toString) / "backend" / "widgets" / "edit" / * >>
+    User.HasRoleOrPermission(SuperAdmin, Widgets) >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendWidgets = MenuLoc(Menu.i("Widgets") / "backend" / "widgets" >>
+    TemplateBox(() => Templates("backend" :: "widgets" :: "index" :: Nil)) >>
+    User.HasRoleOrPermission(SuperAdmin, Widgets) >> LeftMenuGroup submenus(
+    backendWidgetAdd, backendWidgetEdit))
+
+  val backendPageAdd = Menu.param[Page](
+    "Agregar página", "Agregar página",
+    s => Full(Page.createRecord),
+    s => "new") / "backend" / "pages" / "add" / * >>
+    User.HasRoleOrPermission(SuperAdmin, Paginas) >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendPageEdit = Menu.param[Page](
+    "Editar página", "Editar página",
+    Page.find,
+    s => s.id.get.toString) / "backend" / "pages" / "edit" / * >>
+    User.HasRoleOrPermission(SuperAdmin, Widgets) >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendPages = MenuLoc(Menu.i("Paginas") / "backend" / "pages" >>
+    TemplateBox(() => Templates("backend" :: "pages" :: "index" :: Nil)) >>
+    User.HasRoleOrPermission(SuperAdmin, Widgets) >> LeftMenuGroup submenus(
+    backendPageAdd, backendPageEdit))
+
   val backendRoomAdd = Menu.param[Room](
     "Agregar sala", "Agregar sala",
     s => Full(Room.createRecord),
@@ -599,8 +643,6 @@ object Site extends Locs {
   val backendFiles = MenuLoc(Menu.i("Archivos") / "backend" / "files" >>
     User.HasRoleOrPermission(SuperAdmin, Archivos) >> LeftMenuGroup)
 
-  val backendPages = MenuLoc(Menu.i("Páginas") / "backend" / "pages" >> User.HasRoleOrPermission(SuperAdmin, Paginas))
-
 
   //Submenus equipos, accesorios y servicios
 
@@ -621,7 +663,7 @@ object Site extends Locs {
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
-  val backendBlog = MenuLoc(Menu.i("Módulo Blog") / "backend" / "blog" >>
+  val backendBlog = MenuLoc(Menu.i("Blog ") / "backend" / "blog" >>
     User.HasRoleOrPermission(SuperAdmin, Blog) >> LeftMenuGroup >>
     TemplateBox(() => Templates("backend" :: "blog" :: "index" :: Nil)) submenus(
     backendBlogAdd, backendBlogEdit))
@@ -678,10 +720,11 @@ object Site extends Locs {
     editProfile.menu,
     backendMessages.menu,
     backendEvents.menu,
-    backendCalls.menu,
     backendOrganizacionModule.menu,
     backendAmbientesModule.menu,
     backendRedesModule.menu,
+    backendCalls.menu,
+    backendWidgets.menu,
     backendUsers.menu,
     backendFiles.menu,
     backendBlog.menu,
