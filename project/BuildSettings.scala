@@ -35,7 +35,7 @@ object BuildSettings {
 
       // less
       (LessKeys.filter in (Compile, LessKeys.less)) := "*styles.less",
-      (LessKeys.mini in (Compile, LessKeys.less)) := true,
+      (LessKeys.mini in (Compile, LessKeys.less)) := false,
 
       // closure
       (ClosureKeys.prettyPrint in (Compile, ClosureKeys.closure)) := false,

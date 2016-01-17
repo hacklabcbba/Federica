@@ -342,7 +342,7 @@ body > .wrapper > header .navbar-black {
 }
 body > header .navbar-black a,
 body > .wrapper > header .navbar-black a {
-  color: #999;
+  color: #CCC8C8;
 }
 body > header .navbar-black li a,
 body > .wrapper > header .navbar-black li a {
@@ -413,11 +413,27 @@ body > header .navbar-second h1,
 body > .wrapper > header .navbar-second h1 {
   padding-top: 20px;
 }
+body > header .navbar-second .dropdown-toggle:hover + .dropdown-menu,
+body > .wrapper > header .navbar-second .dropdown-toggle:hover + .dropdown-menu,
+body > header .navbar-second .dropdown-menu:hover,
+body > .wrapper > header .navbar-second .dropdown-menu:hover {
+  display: block !important;
+}
+body > header .navbar-second .dropdown-menu .dropdown-menu,
+body > .wrapper > header .navbar-second .dropdown-menu .dropdown-menu {
+  top: 60%;
+  left: 100%;
+}
 body > header .navbar-second .submenu-black li a,
 body > .wrapper > header .navbar-second .submenu-black li a {
   font-size: 13px;
   padding: 5px 15px;
   color: #fff;
+}
+body > header .navbar-second .submenu-black li a:hover,
+body > .wrapper > header .navbar-second .submenu-black li a:hover {
+  color: #000;
+  background-color: #CCC8C8;
 }
 body > header .navbar-second .navbar-nav,
 body > .wrapper > header .navbar-second .navbar-nav {

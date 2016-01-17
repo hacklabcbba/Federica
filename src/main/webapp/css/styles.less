@@ -403,7 +403,7 @@ body > .wrapper > header {
   top:0;
   width: 100%;
   a {
-   color: #999;
+   color: #CCC8C8;
   }
   li a {
    text-transform: uppercase;
@@ -465,12 +465,24 @@ body > .wrapper > header {
   h1 {
    padding-top: 20px;
   }
+  .dropdown-toggle:hover + .dropdown-menu,
+  .dropdown-menu:hover {
+   display: block !important;
+  }
+  .dropdown-menu .dropdown-menu {
+   top: 60%;
+   left: 100%;
+  }
   .submenu-black {
    li a {
      font-size: 13px;
      padding: 5px 15px;
     color: #fff;
+    &:hover {
+     color:#000;
+     background-color:#CCC8C8;
     }
+   }
   }
   .navbar-nav {
    padding-top: 25px;
