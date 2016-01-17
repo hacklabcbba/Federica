@@ -624,6 +624,21 @@ body.page .list-description .caption-item {
 }
 body .pagination a {
   color: #000;
+  background: #fff;
+  border-color: #000 !important;
+  border-radius: 0 !important;
+}
+body .pagination a:hover {
+  background: #d4d4d4;
+  color: #000;
+}
+body .pagination .active a {
+  background: #000;
+  color: #fff;
+}
+body .pagination .active a:hover {
+  background: #000;
+  color: #fff;
 }
 body .content .main-content + .side > section:first-child h3 {
   margin-top: 0;

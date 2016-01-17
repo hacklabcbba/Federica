@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="css/vitamin.css"/>
+    <link rel="stylesheet" href="css/styles.css"/>
+    <link rel="stylesheet" href="css/gs-slidenav.css"/>
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/martadero.js"></script>
+</head>
+<body class="search-page page">
+    <header>
+        <div class="container-fluid navbar-black">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <h1>
+                    <span class="visually-hidden">mARTadero</span>
+                    <a href="../" class="navbar-brand"><img src="images/martadero-logo-white.png" alt=""/></a>
+                </h1>
+            </div>
+            <nav id="bs-navbar-black" class="collapse navbar-collapse pull-left">
+                <h2 class="visually-hidden">Menú de navegación</h2>
+                <ul class="nav navbar-nav  navbar-right">
+                    <li class="active"><a href="#">Agenda <span class="sr-only">(current)</span></a></li>
+                    <li class=""><a href="#">Participa</a></li>
+                    <li class=""><a href="#">Espacios</a></li>
+                    <li class=""><a href="#">Servicios</a></li>
+                    <li class=""><a href="#">Media</a></li>
+                    <li class=""><a href="#">Blog</a></li>
+                    <li class=""><a href="#">Convocatorios</a></li>
+                </ul>
+            </nav>
+            <div class="pull-right">
+                <ul class="list-inline list-unstyled socialmedia">
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-youtube-play"></i>
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+            <div class="pull-right search width-100-xs width-20-md width-20-lg margin-bottom-xs-xs">
+                <form action="" class="position-relative ">
+                    <input type="text" class="form-control search-box"/>
+                    <i class="fa fa-search"></i>
+                </form>
+            </div>
+        </div>
+        <div class="container-fluid navbar-second no-padding-right-md ">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <h1>
+                    <span class="visually-hidden">mARTadero</span>
+                    <a href="../" class="navbar-brand"><img src="images/logo-martadero.png" alt=""/></a>
+                </h1>
+            </div>
+            <nav id="bs-navbar" class="collapse navbar-collapse no-padding-right-md">
+                <h2 class="visually-hidden">Menú de navegación</h2>
+                <div class="login pull-right text-center">
+                    <!--
+                    <img src="images/login-ico.png" alt=""/>
+                    <div class="title-login">
+                        Reserva <br/>tu espacio
+                    </div>
+                    <ul class="list-unstyled no-margin login-options">
+                        <li class="new-register"><a href="#">Nuevo registro</a></li>
+                        <li id="login"><a href="#">Entrar</a></li>
+                    </ul>
+                    <div id="login-box">
+                        <h3>Iniciar sesión</h3>
+                        <div class="padding-xs">
+                            <form>
+                                <div class="input-container">
+                                    <input type="text" class="form-control"/>
+                                    <i class="glyphicon glyphicon-user"></i>
+                                </div>
+                                <div class="input-container">
+                                    <input type="password" class="form-control"/>
+                                    <i class="glyphicon glyphicon-lock"></i>
+                                </div>
+                                <div>
+                                    <input type="submit" class="form-control login-button" value="Iniciar sesión"/>
+                                </div>
+                            </form>
+                            <div class="login-socialmedia">
+                                <span class="display-inline-block box-title">o a través de </span>
+                                <div class="overflow-hidden">
+                                    <a href="#" class="display-inline-block pull-left text-center facebook"><i class="fa fa-facebook-f"></i></a>
+                                    <a href="#" class="display-inline-block pull-right text-center googleplus"><i class="fa fa-google-plus"></i></a>
+                                </div>
+                            </div>
+                            <div>
+                                <a href="#" class="btn login-button form-control">Crear cuenta</a>
+                            </div>
+                        </div>
+                    </div>
+                    -->
+                    <figure class="avatar">
+                        <img src="images/avatar.jpeg" alt="Nombre de usuario" class="img-circle img-responsive"/>
+                    </figure>
+                    <div class="user-name" id="login">
+                        <a href="#" >Nombre de usuario</a>
+                    </div>
+                    <div id="login-box" class="user-menu">
+                        <ul class="list-unstyled user-options">
+                            <li>
+                                <a href=""><i class="fa fa-wrench width-10-md"></i> <span class="width-90-md">Administrador digital</span></a>
+                            </li>
+                            <li>
+                                <a href=""><i class="fa fa-edit width-10-md"></i> <span class="width-90-md">Editar perfil</span></a>
+                            </li>
+                            <li>
+                                <a href=""><i class="fa fa-cog width-10-md"></i> <span class="width-90-md">Configuración</span></a>
+                            </li>
+                            <li>
+                                <a href=""><i class="fa fa-power-off width-10-md"></i> <span class="width-90-md">Salir</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <ul class="nav navbar-nav  navbar-right">
+                   <li class="dropdown">
+                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                           Quiénes somos <span class="caret"></span>
+                       </a>
+                       <ul class="dropdown-menu submenu-black">
+                           <li><a href="#">Option</a></li>
+                           <li><a href="#">Option</a></li>
+                           <li><a href="#">Option</a></li>
+                       </ul>
+                   </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            Áreas <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu submenu-black">
+                            <li><a href="#">Option</a></li>
+                            <li><a href="#">Option</a></li>
+                            <li><a href="#">Option</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            Programas <span class="caret"></span>
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            Principios <span class="caret"></span>
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            Conexiones <span class="caret"></span>
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            FONDART <span class="caret"></span></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            Apoyo <span class="caret"></span>
+                        </a>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+    </header>
+    <div class="container position-relative content">
+        <main class="row">
+            <div class="col-md-12">
+                <header>
+                    <h2 class="no-margin-top">
+                        Resultados de búsqueda
+                    </h2>
+                </header>
+                <div class="row search-result">
+                    <div class="col-md-7 main-content">
+                        <section class="search-box">
+                            <input type="text" class="form-control width-90"/>
+                            <button class="form-control width-10"><i class="fa fa-search "></i></button>
+                        </section>
+                        <article class="margin-bottom-md">
+                            <header>
+                                <h3><a href="#">Bienal del arte urbano</a></h3>
+                            </header>
+                            <p>
+                                ¿Por qué <strong>organizar</strong> conversatorios sobre literatura y video juegos? Sobre literatura y crimen? literatura y filoposia o poesía y gore? En qué coinciden los autores que aceptan darle vueltas a asuntos, aparentemente, tan disímiles? La respuesta a la primera pregunta, bien podría ser una nueva interrogante: ¿por qué no? y frente a la segunda, una igual de sencilla: cada uno de los invitados está más allá de su propia obra y no poseen reparos en meterle mano a este tipo de asuntos que muchas veces lindan con lo extraliterario.
+                            </p>
+                            <p>
+                                De este modo, “Conversaciones anómalas” pretende ser una alternativa tanto para escritores como lectores interesados en disfrutar de ciertas rarezas y de pequeñas joyas autoriales que le permitan atar o soltar cabos, antes de continuar ahondando en las anomalías con que la literatura ha contado siempre.
+                            </p>
+                            <a href="#" class="pull-right text-uppercase">+ Seguir leyendo</a>
+                        </article>
+                        <article class="margin-bottom-md">
+                            <header>
+                                <h3><a href="#">Bienal del arte urbano</a></h3>
+                            </header>
+                            <p>
+                                ¿Por qué <strong>organizar</strong> conversatorios sobre literatura y video juegos? Sobre literatura y crimen? literatura y filoposia o poesía y gore? En qué coinciden los autores que aceptan darle vueltas a asuntos, aparentemente, tan disímiles? La respuesta a la primera pregunta, bien podría ser una nueva interrogante: ¿por qué no? y frente a la segunda, una igual de sencilla: cada uno de los invitados está más allá de su propia obra y no poseen reparos en meterle mano a este tipo de asuntos que muchas veces lindan con lo extraliterario.
+                            </p>
+                            <p>
+                                De este modo, “Conversaciones anómalas” pretende ser una alternativa tanto para escritores como lectores interesados en disfrutar de ciertas rarezas y de pequeñas joyas autoriales que le permitan atar o soltar cabos, antes de continuar ahondando en las anomalías con que la literatura ha contado siempre.
+                            </p>
+                            <a href="#" class="pull-right text-uppercase">+ Seguir leyendo</a>
+                        </article>
+                        <article class="margin-bottom-md">
+                            <header>
+                                <h3><a href="#">Bienal del arte urbano</a></h3>
+                            </header>
+                            <p>
+                                ¿Por qué <strong>organizar</strong> conversatorios sobre literatura y video juegos? Sobre literatura y crimen? literatura y filoposia o poesía y gore? En qué coinciden los autores que aceptan darle vueltas a asuntos, aparentemente, tan disímiles? La respuesta a la primera pregunta, bien podría ser una nueva interrogante: ¿por qué no? y frente a la segunda, una igual de sencilla: cada uno de los invitados está más allá de su propia obra y no poseen reparos en meterle mano a este tipo de asuntos que muchas veces lindan con lo extraliterario.
+                            </p>
+                            <p>
+                                De este modo, “Conversaciones anómalas” pretende ser una alternativa tanto para escritores como lectores interesados en disfrutar de ciertas rarezas y de pequeñas joyas autoriales que le permitan atar o soltar cabos, antes de continuar ahondando en las anomalías con que la literatura ha contado siempre.
+                            </p>
+                            <a href="#" class="pull-right text-uppercase">+ Seguir leyendo</a>
+                        </article>
+                    </div>
+                    <div class="col-md-5 side">
+                        <section class="overflow-hidden">
+                            <h3>Suscribete a nuestra newspaper</h3>
+                            <form action="">
+                                <input type="email" class="form-control margin-bottom-xs"/>
+                                <a href="#" class="btn width-30-md text-uppercase">Reservar</a>
+                            </form>
+                        </section>
+                        <section class="overflow-hidden">
+                            <h3>Siguenos en redes sociales</h3>
+                            <ul class="list-unstyled list-inline">
+                                <li>
+                                    <a href="#"><img src="images/facebook.png" alt=""/></a>
+                                </li>
+                                <li>
+                                    <a href="#"><img src="images/twitter.png" alt=""/></a>
+                                </li>
+                                <li>
+                                    <a href="#"><img src="images/youtube.png" alt=""/></a>
+                                </li>
+                                <li>
+                                    <a href="#"><img src="images/red.png" alt=""/></a>
+                                </li>
+                                <li>
+                                    <a href="#"><img src="images/googleplus.png" alt=""/></a>
+                                </li>
+                                <li>
+                                    <a href="#"><img src="images/instagram.png" alt=""/></a>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="overflow-hidden requests-space">
+                            <h3>Solicia el espacio</h3>
+                            <figure>
+                                <img src="images/sample1.jpg" alt="" class="img-responsive"/>
+                            </figure>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <footer class="margin-top-md footer-page">
+        <div class="options-footer">
+            <div class="container position-relative">
+                <ul class="row footer-buttons">
+                    <li class="col-md-3">
+                        <a href="#">
+                            <span class="caption-title">
+                                Ver próximos
+                            </span>
+                            <span class="title-link">
+                                eventos
+                            </span>
+                        </a>
+                    </li>
+                    <li class="col-md-3">
+                        <a href="#">
+                            <span class="caption-title">
+                                Último en el
+                            </span>
+                            <span class="title-link">
+                                blog
+                            </span>
+                        </a>
+                    </li>
+                    <li class="col-md-3">
+                        <a href="#">
+                            <span class="caption-title">
+                                Conoce nuestros
+                            </span>
+                            <span class="title-link">
+                                servicios
+                            </span>
+                        </a>
+                    </li>
+                    <li class="col-md-3">
+                        <a href="#">
+                            <span class="caption-title">
+                                Reserva un
+                            </span>
+                            <span class="title-link">
+                                Espacio
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="row social-suscribe">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6 margin-bottom-xs-sm">
+                                <h2>
+                                    Únete a la conversación
+                                </h2>
+                                <ul class="list-inline list-unstyled">
+                                    <li>
+                                        <a href="#"><i class="fa fa-google-plus"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-facebook-f"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-twitter"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-youtube"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-instagram"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-tumblr"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-vine"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6 margin-bottom-xs-sm">
+                                <h2>
+                                    Recibe la información de mARTadero
+                                </h2>
+                                <div>
+                                    <input type="text" placeholder="Dirección de correo" class="control margin-right-md-xs width-70-md width-70-lg width-100-xs margin-bottom-xs"/><button class="btn white width-20-md width-20-lg width-80-xs center-block-xs">SUSCRIBIRSE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row last">
+                <div class="col-md-6">
+                    <ul class="list-inline list-unstyled text-left text-center-xs no-margin">
+                        <li >
+                            Proyecto generado por <a href="http://www.martadero.org/arte-cultura/quienes_somos.html" title="NADA"><strong>NADA</strong></a> <a href="http://www.martadero.org/arte-cultura/quienes_somos.html"><img src="images/logo_nada_web.jpg" alt="NADA" title="NADA" height="26" width="18" /></a> <span class="hidden-xs">&nbsp;&nbsp;&nbsp;&nbsp;|</span>
+                        </li>
+                        <li>
+                            Gestionado por <a href="http://www.fundacionimagen.org" title="Fundación Imagen" target="_blank"><strong>FundaciónImagen</strong></a> <a href="http://www.fundacionimagen.org" target="_blank"><img src="images/logo_fi_web.jpg" alt="Fundación Imagen" title="Fundación Imagen"/></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6 text-right copying text-center-xs">
+                    comparte los contenidos de esta página libremente <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" class="margin-left-md-sm" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+
+    </script>
+</body>
+</html>
