@@ -22,7 +22,7 @@ object NetworkSnippet extends SortableSnippet[Network] {
 
   def itemEditUrl(inst: Network): String = Site.backendNetworkEdit.toLoc.calcHref(inst)
 
-  override def listFields = List(meta.name, meta.networkType, meta.administrator)
+  override def listFields = List(meta.name, meta.scope)
 
   def updateOrderValue(json: JValue): JsCmd = {
     implicit val formats = net.liftweb.json.DefaultFormats

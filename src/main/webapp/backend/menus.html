@@ -1,0 +1,39 @@
+<div data-lift="surround?with=base-wrap-backend;at=content">
+    <div class="col-md-12" ng-app="EventApp">
+        <div class="notifications margin-bottom-xs ">
+        </div>
+        <header class="page-header">
+            <h2 class="no-margin-top title-page">
+                <i class="glyphicon glyphicon-menu-right border-circle"></i> Evento
+            </h2>
+        </header>
+
+        <div ng-controller="EventController">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">Panel heading without title</div>
+                        <div class="panel-body">
+                            Panel content
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">Panel heading without title <button class="btn btn-primary pull-right">Guardar Menú</button></div>
+                        <div class="panel-body">
+                            Panel content
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <tail>
+        <script data-lift="Angular"></script>
+        <script src="/js/angular-ui/ui-bootstrap-tpls-1.0.3.min.js"></script>
+        <script data-lift="NgEventService"></script>
+        <script src="/js/EventController.js"></script>
+    </tail>
+</div>

@@ -396,26 +396,10 @@ object Site extends Locs {
     User.HasRoleOrPermission(SuperAdmin, Widgets) >> LeftMenuGroup submenus(
     backendWidgetAdd, backendWidgetEdit))
 
-  val backendMenuItemAdd = Menu.param[MenuItem](
-    "Agregar menú", "Agregar menú",
-    s => Full(MenuItem.createRecord),
-    s => "new") / "backend" / "menus" / "add" / * >>
-    User.HasRoleOrPermission(SuperAdmin, MenuItems) >>
-    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
-    Hidden
 
-  val backendMenuItemEdit = Menu.param[MenuItem](
-    "Editar menú", "Editar menú",
-    MenuItem.find,
-    s => s.id.get.toString) / "backend" / "menus" / "edit" / * >>
-    User.HasRoleOrPermission(SuperAdmin, MenuItems) >>
-    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
-    Hidden
-
-  val backendMenuItems = MenuLoc(Menu.i("Widgets") / "backend" / "menus" >>
-    TemplateBox(() => Templates("backend" :: "menus" :: "index" :: Nil)) >>
-    User.HasRoleOrPermission(SuperAdmin, MenuItems) >> LeftMenuGroup submenus(
-    backendMenuItemAdd, backendMenuItemEdit))
+  val backendMenuItems = MenuLoc(Menu.i("Menus") / "backend" / "menus" >>
+    TemplateBox(() => Templates("backend" :: "menus" :: Nil)) >>
+    User.HasRoleOrPermission(SuperAdmin, MenuItems) >> LeftMenuGroup)
 
   val backendPageAdd = Menu.param[Page](
     "Agregar página", "Agregar página",
@@ -754,6 +738,7 @@ object Site extends Locs {
     backendCalls.menu,
     backendPages.menu,
     backendWidgets.menu,
+    backendMenuItems.menu,
     backendUsers.menu,
     backendFiles.menu,
     backendBlog.menu,
