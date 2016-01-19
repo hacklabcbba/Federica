@@ -11,7 +11,7 @@ import net.liftmodules.mongoauth.Locs
 import net.liftweb.common.Full
 import net.liftweb.http.{S, Templates}
 import net.liftweb.sitemap.Loc._
-import net.liftweb.sitemap._
+import net.liftweb.sitemap.{MenuItem => _, _}
 import DefaultRoles._
 import Permissions._
 
@@ -395,6 +395,27 @@ object Site extends Locs {
     TemplateBox(() => Templates("backend" :: "widgets" :: "index" :: Nil)) >>
     User.HasRoleOrPermission(SuperAdmin, Widgets) >> LeftMenuGroup submenus(
     backendWidgetAdd, backendWidgetEdit))
+
+  val backendMenuItemAdd = Menu.param[MenuItem](
+    "Agregar menú", "Agregar menú",
+    s => Full(MenuItem.createRecord),
+    s => "new") / "backend" / "menus" / "add" / * >>
+    User.HasRoleOrPermission(SuperAdmin, MenuItems) >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendMenuItemEdit = Menu.param[MenuItem](
+    "Editar menú", "Editar menú",
+    MenuItem.find,
+    s => s.id.get.toString) / "backend" / "menus" / "edit" / * >>
+    User.HasRoleOrPermission(SuperAdmin, MenuItems) >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendMenuItems = MenuLoc(Menu.i("Widgets") / "backend" / "menus" >>
+    TemplateBox(() => Templates("backend" :: "menus" :: "index" :: Nil)) >>
+    User.HasRoleOrPermission(SuperAdmin, MenuItems) >> LeftMenuGroup submenus(
+    backendMenuItemAdd, backendMenuItemEdit))
 
   val backendPageAdd = Menu.param[Page](
     "Agregar página", "Agregar página",
