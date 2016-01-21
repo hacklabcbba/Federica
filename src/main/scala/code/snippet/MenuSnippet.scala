@@ -50,6 +50,7 @@ object MenuSnippet extends SnippetHelper {
                 .name(page.name.get)
                 .url(Site.pagina.calcHref(page))
                 .kind(MenuItemKind.Page)
+                .order(menu.menuItems.get.size)
               menu.menuItems.set(menu.menuItems.get ++ List(menuItem))
             })
             menuBody.setHtml()
@@ -68,6 +69,7 @@ object MenuSnippet extends SnippetHelper {
               .name(externalMenuItemName)
               .url(externalMenuItemUrl)
               .kind(MenuItemKind.Custom)
+              .order(menu.menuItems.get.size)
             menu.menuItems.set(menu.menuItems.get ++ List(menuItem))
             menuBody.setHtml()
           }) &
