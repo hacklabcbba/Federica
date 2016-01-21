@@ -1,34 +1,83 @@
 <div data-lift="surround?with=base-wrap-backend;at=content">
-    <div class="col-md-12" ng-app="EventApp">
+    <div class="col-md-12" data-lift="MenuSnippet">
         <div class="notifications margin-bottom-xs ">
         </div>
         <header class="page-header">
             <h2 class="no-margin-top title-page">
-                <i class="glyphicon glyphicon-menu-right border-circle"></i> Evento
+                <i class="glyphicon glyphicon-menu-right border-circle"></i> Menús
             </h2>
         </header>
 
-        <div ng-controller="EventController">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="panel panel-warning">
-                        <div class="panel-heading">Panel heading without title</div>
-                        <div class="panel-body">
-                            Panel content
+        <div class="row">
+            <div class="col-md-12">
+                Edita tu menú abajo o <a href="#" data-name="create-menu">crea un nuevo menú.</a>
+            </div>
+        </div>
+        <div class="row" data-name="menu">
+            <div class="col-md-4">
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="paginas-header">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#paginas" aria-expanded="true" aria-controls="paginas">
+                                    Páginas
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="paginas" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="paginas-header">
+                            <div class="panel-body">
+                                <ul>
+                                    <li data-name="page"><input name="page" type="checkbox"> pagina</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="enlaces-header">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#enlaces" aria-expanded="false" aria-controls="collapseTwo">
+                                    Enlaces personalizados
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="enlaces" class="panel-collapse collapse" role="tabpanel" aria-labelledby="enlaces-header">
+                            <div class="panel-body">
+                                <div class="col-md-5">URL:</div><div class="col-md-7"><input name="menu-item-name" type="text"></div>
+                                <br>
+                                <br>
+                                <div class="col-md-5">Texto del enlace:</div><div class="col-md-7"><input name="menu-item-url" type="text"></div>
+                                <div class="col-md-12"><button data-name="add-to-menu" class="pull-right btn btn-primary">Añadir al menú</button></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-8">
-                    <div class="panel panel-warning">
-                        <div class="panel-heading">Panel heading without title <button class="btn btn-primary pull-right">Guardar Menú</button></div>
+            </div>
+            <div class="col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            Nombre del Menú: <input type="text" />
+                            <button class="pull-right btn btn-primary">Guardar Menú</button>
+                        </h4>
+                    </div>
+                    <div class="panel">
                         <div class="panel-body">
-                            Panel content
+                            <h5>Estructura del Menú</h5>
+
+                            Coloca cada elemento en el orden que prefieras. Haz click en la flecha que hay a la derecha del elemento para mostrar más opciones de configuración
+                            <ul class="list-group">
+                                <li class="list-group-item" data-name="menu-item">
+                                    Cras justo odio
+                                    <ul class="list-group">
+                                        <li class="list-group-item">Cras justo odio</li>
+                                    </ul>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
     <tail>
         <script data-lift="Angular"></script>

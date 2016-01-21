@@ -6,7 +6,7 @@ import code.model.event.Event
 import code.model.network._
 import code.model.Page
 import code.model.resource.{Equipment, Room}
-import code.model.{User, _}
+import code.model._
 import net.liftmodules.mongoauth.Locs
 import net.liftweb.common.Full
 import net.liftweb.http.{S, Templates}
@@ -397,9 +397,9 @@ object Site extends Locs {
     backendWidgetAdd, backendWidgetEdit))
 
 
-  val backendMenuItems = MenuLoc(Menu.i("Menus") / "backend" / "menus" >>
+  val backendMenus = MenuLoc(Menu.i("Menus") / "backend" / "menus" >>
     TemplateBox(() => Templates("backend" :: "menus" :: Nil)) >>
-    User.HasRoleOrPermission(SuperAdmin, MenuItems) >> LeftMenuGroup)
+    User.HasRoleOrPermission(SuperAdmin, Menus) >> LeftMenuGroup)
 
   val backendPageAdd = Menu.param[Page](
     "Agregar página", "Agregar página",
@@ -738,7 +738,7 @@ object Site extends Locs {
     backendCalls.menu,
     backendPages.menu,
     backendWidgets.menu,
-    backendMenuItems.menu,
+    backendMenus.menu,
     backendUsers.menu,
     backendFiles.menu,
     backendBlog.menu,

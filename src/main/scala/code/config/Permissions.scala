@@ -13,7 +13,7 @@ object Permissions {
   val Convocatorias = Permission("Convocatorias")
   val Paginas  = Permission("Paginas")
   val Widgets = Permission("Widgets")
-  val MenuItems = Permission("Menus")
+  val Menus = Permission("Menus")
   val Residencias = Permission("Residencias")
   val Salas = Permission("Salas")
   val Espacios = Permission("Espacios")
@@ -35,7 +35,7 @@ object Permissions {
   def list = List(
     Accesorios, Organizacion, Ambientes, Archivos, Areas, Blog, Calendario,
     Convocatorias, Cotizaciones, Espacios, Estadisticas, Eventos, Mensajes,
-    MenuItems, Paginas, Procesos, Programas, Proyectos, Redes, Residencias,
+    Menus, Paginas, Procesos, Programas, Proyectos, Redes, Residencias,
     Roles, Salas, Servicios, Solicitudes, Usuarios, Widgets)
 
 }

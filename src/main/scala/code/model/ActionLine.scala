@@ -1,18 +1,24 @@
 package code.model
 
-import code.lib.{SortableModel, RogueMetaRecord}
+import code.config.Site
+import code.lib.field.BsCkTextareaField
+import code.lib.{BaseModel, SortableModel, RogueMetaRecord}
 import net.liftweb.common.Full
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.ObjectIdPk
 import net.liftweb.record.field.{StringField, TextareaField}
 
-
-class ActionLine private () extends MongoRecord[ActionLine] with ObjectIdPk[ActionLine] with SortableModel[ActionLine] {
+class ActionLine private () extends MongoRecord[ActionLine] with ObjectIdPk[ActionLine] with BaseModel[ActionLine] with SortableModel[ActionLine] {
 
   override def meta = ActionLine
 
-  object name extends StringField(this, 500){
+  def title = "Linea de Acción"
+
+  def entityListUrl = Site.backendAreas.menu.loc.calcDefaultHref
+
+  object name extends StringField(this, 500) {
+    override def displayName = "Nombre"
     override def toString = get
     override def toForm = Full(SHtml.text(
       value,
@@ -20,15 +26,16 @@ class ActionLine private () extends MongoRecord[ActionLine] with ObjectIdPk[Acti
       "class" -> "form-control", "data-placeholder" -> "Ingrese nombre.."))
   }
 
-  object description extends TextareaField(this, 1000) {
-    override def toForm = {
-      Full(SHtml.textarea(value, v => set(v), "class"->"form-control", "data-placeholder" -> "Ingrese descripcion.." ))
-    }
+  object description extends BsCkTextareaField(this, 1000) {
+    override def displayName = "Descripción"
   }
 
   override def toString = name.get
 }
 
 object ActionLine extends ActionLine with RogueMetaRecord[ActionLine] {
+
   override def collectionName = "main.action_lines"
+
+  override def fieldOrder = List(name, description)
 }
