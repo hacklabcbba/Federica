@@ -4,7 +4,7 @@ package snippet
 import code.config.Site
 import code.model.Page
 import code.model.network.Network
-import code.model.page.{MenuItem, Menu}
+import code.model.page.{MenuItemKind, MenuItem, Menu}
 import com.foursquare.rogue.LiftRogue
 import net.liftmodules.extras.SnippetHelper
 import net.liftweb.http.{IdMemoizeTransform, RequestVar, SHtml}
@@ -14,6 +14,9 @@ import LiftRogue._
 import net.liftweb.util.{CssSel, Helpers}
 import Helpers._
 import net.liftweb.http.js.JsCmds._
+
+import scala.annotation.tailrec
+import scala.xml.NodeSeq
 
 object MenuSnippet extends SnippetHelper {
 
@@ -31,23 +34,76 @@ object MenuSnippet extends SnippetHelper {
         "*" #> SHtml.idMemoize(menuBody => {
           var externalMenuItemName = ""
           var externalMenuItemUrl = ""
-          var selectedPages = Nil
+          var selectedPages: List[Page] = Nil
+          def menuItems = menu.menuItems.get
           "data-name=page" #> pages.map(page => {
-            "type=checkbox" #> SHtml.ajaxCheckbox(false, value => menuBody.setHtml())
+            "type=checkbox" #> SHtml.ajaxCheckbox(false, value => value match {
+              case true => selectedPages = selectedPages ++ List(page)
+              case false => selectedPages = selectedPages.filter(_.id.get != page.id.get)
+            }) &
+            "span" #> page.name.get
           }) &
-            "@menu-item-name" #> SHtml.ajaxText(externalMenuItemName, s => {
-              externalMenuItemName = s
-              Noop
+          "data-name=add-to-menu-pages [onclick]" #> SHtml.ajaxInvoke(() => {
+            selectedPages.foreach(page => {
+              val menuItem = MenuItem
+                .createRecord
+                .name(page.name.get)
+                .url(Site.pagina.calcHref(page))
+                .kind(MenuItemKind.Page)
+              menu.menuItems.set(menu.menuItems.get ++ List(menuItem))
             })
+            menuBody.setHtml()
+          }) &
+          "@menu-item-name" #> SHtml.ajaxText(externalMenuItemName, s => {
+            externalMenuItemName = s
+            Noop
+          }) &
           "@menu-item-url" #> SHtml.ajaxText(externalMenuItemUrl, s => {
             externalMenuItemUrl = s
             Noop
           }) &
-            "data-name=add-to-menu [onclick]" #> SHtml.ajaxInvoke(() => mainBody.setHtml()) &
-            "@menu-name" #> SHtml.ajaxText("", s => Noop)
+          "data-name=add-to-menu-custom [onclick]" #> SHtml.ajaxInvoke(() => {
+            val menuItem = MenuItem
+              .createRecord
+              .name(externalMenuItemName)
+              .url(externalMenuItemUrl)
+              .kind(MenuItemKind.Custom)
+            menu.menuItems.set(menu.menuItems.get ++ List(menuItem))
+            menuBody.setHtml()
+          }) &
+          "@menu-name" #> SHtml.ajaxText(menu.name.get, s => {
+            menu.name(s)
+            Noop
+          }) &
+          "data-name=menu-save [onclick]" #> SHtml.ajaxInvoke(() => {
+            menu.save(true)
+            Noop
+          }) &
+          "data-name=menu-item" #> menuItems.map(menuItem => {
+            "data-name=menu-item-name" #> menuItem.name.get &
+            "data-name=menu-item-childs" #> generateChildMenuItems(menuItem)
+          })
         })
       })
     })
+  }
+
+  private def generateChildMenuItems(menuItem: MenuItem): NodeSeq = {
+    val template =
+      <ul class="list-group">
+        <li data-name="menu-item" class="list-group-item">Cras justo odio</li>
+        <ul data-name="menu-item-childs"></ul>
+      </ul>
+
+    if (menuItem.childs.get.isEmpty) {
+      NodeSeq.Empty
+    } else {
+      ("data-name=menu-item" #> menuItem.childs.get.map(child => {
+        "data-name=menu-item *" #> child.name.get &
+        "data-name=menu-item-childs" #> generateChildMenuItems(child)
+      })).apply(template)
+    }
+
   }
 
   private def addMenu(body: IdMemoizeTransform): JsCmd = {

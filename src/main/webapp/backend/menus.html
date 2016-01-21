@@ -27,8 +27,9 @@
                         <div id="paginas" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="paginas-header">
                             <div class="panel-body">
                                 <ul>
-                                    <li data-name="page"><input name="page" type="checkbox"> pagina</li>
+                                    <li data-name="page"><input name="page" type="checkbox"> <span>pagina</span></li>
                                 </ul>
+                                <div class="col-md-12"><button data-name="add-to-menu-pages" class="pull-right btn btn-primary">Añadir al menú</button></div>
                             </div>
                         </div>
                     </div>
@@ -46,7 +47,7 @@
                                 <br>
                                 <br>
                                 <div class="col-md-5">Texto del enlace:</div><div class="col-md-7"><input name="menu-item-url" type="text"></div>
-                                <div class="col-md-12"><button data-name="add-to-menu" class="pull-right btn btn-primary">Añadir al menú</button></div>
+                                <div class="col-md-12"><button data-name="add-to-menu-custom" class="pull-right btn btn-primary">Añadir al menú</button></div>
                             </div>
                         </div>
                     </div>
@@ -56,8 +57,8 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            Nombre del Menú: <input type="text" />
-                            <button class="pull-right btn btn-primary">Guardar Menú</button>
+                            Nombre del Menú: <input type="text" name="menu-name"/>
+                            <button class="pull-right btn btn-primary" data-name="menu-save">Guardar Menú</button>
                         </h4>
                     </div>
                     <div class="panel">
@@ -67,10 +68,8 @@
                             Coloca cada elemento en el orden que prefieras. Haz click en la flecha que hay a la derecha del elemento para mostrar más opciones de configuración
                             <ul class="list-group">
                                 <li class="list-group-item" data-name="menu-item">
-                                    Cras justo odio
-                                    <ul class="list-group">
-                                        <li class="list-group-item">Cras justo odio</li>
-                                    </ul>
+                                    <span data-name="menu-item-name">Cras justo odio</span>
+                                    <ul data-name="menu-item-childs"></ul>
                                 </li>
                             </ul>
                         </div>

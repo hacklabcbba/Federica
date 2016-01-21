@@ -51,9 +51,23 @@ class MenuItem extends BsonRecord[MenuItem] {
 
   object childs extends BsonRecordListField(this, MenuItem)
 
+  object kind extends BsEnumField(this, MenuItemKind) {
+    override def displayName = "Tipo"
+  }
+
+  object order extends BsIntField(this, 0) {
+    override def displayName = "Posición"
+  }
+
   object menu extends ObjectIdRefField(this, Menu) {
     override def shouldDisplay_? = false
   }
 }
 
 object MenuItem extends MenuItem with BsonMetaRecord[MenuItem]
+
+object MenuItemKind extends Enumeration {
+  type MenuItemKind = Value
+  val Page = Value(1, "Página")
+  val Custom = Value(2, "Personalizado")
+}
