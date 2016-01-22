@@ -92,13 +92,9 @@ trait SortableSnippet[BaseRecord <: MongoRecord[BaseRecord] with SortableModel[B
     )
     val sorteableScript = Run(
       """
-        |var el = document.getElementById('items');
-        |var sortable = new Sortable(el, {
-        |  onEnd: function (/**Event*/evt) {
-        |    evt.oldIndex;  // element's old index within parent
-        |    evt.newIndex;  // element's new index within parent
-        |    updateOrderValue({ id: evt.item.id, order: evt.newIndex});
-        |  },
+        |$("#items").sortable({}).on('sortupdate', function(e, ui) {
+        |  console.log(e);
+        |  console.log(ui);
         |});
       """.stripMargin)
     S.appendJs(callbacks)

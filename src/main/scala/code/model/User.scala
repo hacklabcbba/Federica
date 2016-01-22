@@ -73,7 +73,9 @@ class User private () extends MongoAuthUser[User] with ObjectIdPk[User] with Bas
   object password extends PasswordField(this, 6, 32) {
     override def displayName = "Contraseña"
     override def elem = S.fmapFunc(S.SFuncHolder(s => {
-      this.setBox(PasswordField.hashpw(s))
+      if (s != this.get) {
+        this.setBox(PasswordField.hashpw(s))
+      }
     })) {
       funcName => <input type="password" maxlength={maxLength.toString}
                          name={funcName}
