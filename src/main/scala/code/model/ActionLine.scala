@@ -15,7 +15,7 @@ class ActionLine private () extends MongoRecord[ActionLine] with ObjectIdPk[Acti
 
   def title = "Linea de Acción"
 
-  def entityListUrl = Site.backendAreas.menu.loc.calcDefaultHref
+  def entityListUrl = Site.backendActionLines.menu.loc.calcDefaultHref
 
   object name extends StringField(this, 500) {
     override def displayName = "Nombre"
