@@ -367,5 +367,9 @@ object SystemUser {
       .roles(List(DefaultRoles.SuperAdmin.id.get))
       .save(true)
   }
+
+  def resetPassWord = {
+    user.password("asdf1234", true).save(true)
+  }
 }
 
