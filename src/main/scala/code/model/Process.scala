@@ -8,6 +8,7 @@ import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField}
 import net.liftweb.record.field.EnumNameField
+import net.liftweb.http.js.JsCmds.Noop
 
 class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] with BaseModel[Process] with SortableModel[Process]{
 
@@ -57,6 +58,22 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] w
         "class" -> "select2 form-control",
         "data-placeholder" -> "Seleccione area.."
       )(a => set(a.id.get)))
+    }
+  }
+
+  object transversalArea extends ObjectIdRefField(this, TransversalArea) {
+
+    override def displayName = "Área transversal"
+    override def toString = this.obj.dmap("")(_.name.get)
+    val list = TransversalArea.findAll
+    val default = list.headOption
+    override def toForm = {
+      Full(SHtml.ajaxSelectElem(list, default,
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione area transversal..")(p => {
+        set(p.id.get)
+        Noop
+      }))
     }
   }
 

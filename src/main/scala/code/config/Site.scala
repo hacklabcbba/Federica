@@ -479,9 +479,29 @@ object Site extends Locs {
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
-  val backendAreas = MenuLoc(Menu.i("Áreas") / "backend" / "areas" >> User.HasRoleOrPermission(SuperAdmin, Areas) >>
-    TemplateBox(() => Templates("backend" :: "areas" :: "index" :: Nil)) submenus(
+  val backendAreas = MenuLoc(Menu.i("Áreas") / "backend" / "transversalareas" >> User.HasRoleOrPermission(SuperAdmin, Areas) >>
+    TemplateBox(() => Templates("backend" :: "transversalareas" :: "index" :: Nil)) submenus(
     backendAreaAdd, backendAreaEdit))
+
+  val backendTransversableAreaAdd = Menu.param[TransversalArea](
+    "Agregar área transversal", "Agregar área transaversal",
+    s => Full(TransversalArea.createRecord),
+    s => "new") / "backend" / "transversablareas" / "add" / * >>
+    User.HasRoleOrPermission(SuperAdmin, AreasTransversales) >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendTransversableAreaEdit = Menu.param[TransversalArea](
+    "Editar área transversal", "Editar área transversal",
+    TransversalArea.find,
+    s => s.id.get.toString) / "backend" / "transversablareas" / "edit" / * >>
+    User.HasRoleOrPermission(SuperAdmin, AreasTransversales) >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendTransversableAreas = MenuLoc(Menu.i("Áreas transversales") / "backend" / "transversablareas" >> User.HasRoleOrPermission(SuperAdmin, AreasTransversales) >>
+    TemplateBox(() => Templates("backend" :: "transversalareas" :: "index" :: Nil)) submenus(
+    backendTransversableAreaAdd, backendTransversableAreaEdit))
 
   val backendProgramAdd = Menu.param[Program](
     "Agregar programa", "Agregar programa",
@@ -685,6 +705,7 @@ object Site extends Locs {
     LeftMenuGroup >>
     PlaceHolder submenus(
       backendAreas.menu,
+      backendTransversableAreas.menu,
       backendPrograms.menu,
       backendProcess.menu,
       backendActionLines.menu,

@@ -103,6 +103,22 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
     }
   }
 
+  object transversalArea extends ObjectIdRefField(this, TransversalArea) {
+
+    override def displayName = "Área transversal"
+    override def toString = this.obj.dmap("")(_.name.get)
+    val list = TransversalArea.findAll
+    val default = list.headOption
+    override def toForm = {
+      Full(SHtml.ajaxSelectElem(list, default,
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione area transversal..")(p => {
+        set(p.id.get)
+        Noop
+      }))
+    }
+  }
+
   object process extends ObjectIdRefField(this, Process) {
     override def displayName = "Proceso"
     val list = Process.findAll

@@ -56,6 +56,22 @@ class ProductiveUnit private () extends MongoRecord[ProductiveUnit] with ObjectI
     }
   }
 
+  object transversalArea extends ObjectIdRefField(this, TransversalArea) {
+
+    override def displayName = "Área transversal"
+    override def toString = this.obj.dmap("")(_.name.get)
+    val list = TransversalArea.findAll
+    val default = list.headOption
+    override def toForm = {
+      Full(SHtml.ajaxSelectElem(list, default,
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione area transversal..")(p => {
+        set(p.id.get)
+        Noop
+      }))
+    }
+  }
+
   object program extends ObjectIdRefField(this, Program){
     override def optional_? = true
     override def toString = Program.find(get).dmap("")(_.name.get)

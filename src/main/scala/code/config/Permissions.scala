@@ -18,6 +18,7 @@ object Permissions {
   val Salas = Permission("Salas")
   val Espacios = Permission("Espacios")
   val Areas = Permission("Áreas")
+  val AreasTransversales = Permission("Áreas transversales")
   val Programas = Permission("Programas")
   val Procesos = Permission("Procesos")
   val LineasDeAccion = Permission("Lineas de acción")
@@ -33,7 +34,7 @@ object Permissions {
   val Estadisticas = Permission("Estadísticas")
 
   def list = List(
-    Accesorios, Organizacion, Ambientes, Archivos, Areas, Blog, Calendario,
+    Accesorios, Organizacion, Ambientes, Archivos, Areas, AreasTransversales, Blog, Calendario,
     Convocatorias, Cotizaciones, Espacios, Estadisticas, Eventos, Mensajes,
     Menus, Paginas, Procesos, Programas, Proyectos, Redes, Residencias,
     Roles, Salas, Servicios, Solicitudes, Usuarios, Widgets)
