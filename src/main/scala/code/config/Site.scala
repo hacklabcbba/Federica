@@ -492,7 +492,7 @@ object Site extends Locs {
     Hidden
 
   val backendTransversableAreas = MenuLoc(Menu.i("Áreas transversales") / "backend" / "transversableareas" >> User.HasRoleOrPermission(SuperAdmin, AreasTransversales) >>
-    TemplateBox(() => Templates("backend" :: "transversalareas" :: "index" :: Nil)) submenus(
+    TemplateBox(() => Templates("backend" :: "transversableareas" :: "index" :: Nil)) submenus(
     backendTransversableAreaAdd, backendTransversableAreaEdit))
 
   val backendProgramAdd = Menu.param[Program](
