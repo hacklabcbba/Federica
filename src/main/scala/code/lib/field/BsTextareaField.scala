@@ -123,7 +123,6 @@ class BsCkTextareaField[OwnerType <: Record[OwnerType]](rec: OwnerType, maxLengt
           CKEDITOR.replace('""" + id + """', {
             extraPlugins: 'uploadimage,imageresponsive',
             uploadUrl: '/upload/image',
-            allowedContent: true,
             laguange: 'es',
             removeButtons: 'CreateDiv,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenFieldBidiLtr,BidiRtl,Flash,Smiley,Language'
           });
@@ -151,3 +150,85 @@ class BsCkTextareaField[OwnerType <: Record[OwnerType]](rec: OwnerType, maxLengt
     )
 }
 
+class BsCkUnsecureTextareaField[OwnerType <: Record[OwnerType]](rec: OwnerType, maxLength: Int)
+  extends TextareaField(rec, maxLength) with BsTextareaTypedField {
+
+  private def elem = {
+    val fieldId: String = randomString(12)
+
+    S.fmapFunc(S.SFuncHolder(this.setFromAny(_))) {
+      funcName =>
+
+        S.appendJs(script(fieldId))
+
+        <textarea name={funcName}
+                  rows={textareaRows.toString}
+                  cols={textareaCols.toString}
+                  tabindex={tabIndex.toString}
+                  id={fieldId}
+                  class="form-control">{valueBox openOr ""}</textarea> % autofocus(isAutoFocus)
+      //S.appendJs(script(fieldId))
+    }
+  }
+
+  override def asHtml = {
+    PCDataXmlParser(value) match {
+      case node@Full(_) => node
+      case _ => PCDataXmlParser(s"<div>$value</div>")
+    }
+  }
+
+  def asHtmlCutted(size: Int) = {
+
+    def value(s: String) = (s.size > size)  match {
+      case true => s.take(size) + "..."
+      case _ => s
+    }
+    PCDataXmlParser(get) match {
+      case node@Full(_) => {
+        node.map(s => <div>{value(s.text)}</div>)
+      }
+      case _ => PCDataXmlParser(s"<div>${get}</div>").map(s => <div>{value(s.text)}</div>)
+    }
+  }
+
+  private def readOnlyField = <div class="form-control-static">{asHtml}</div>
+
+  override def toForm: Box[NodeSeq] = if (isEditable) Full(this.elem) else Full(readOnlyField)
+
+  override def asJValue = super.asJValue
+
+  private def script(id: String) =
+    Run (
+      """
+        $(function() {
+          CKEDITOR.replace('""" + id + """', {
+            extraPlugins: 'uploadimage,imageresponsive',
+            uploadUrl: '/upload/image',
+            allowedContent: true,
+            laguange: 'es',
+            removeButtons: 'CreateDiv,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenFieldBidiLtr,BidiRtl,Flash,Smiley,Language'
+          });
+          for (var i in CKEDITOR.instances) {
+            CKEDITOR.instances[i].on('blur', function() {
+              CKEDITOR.instances[i].updateElement();// to update the textarea
+            });
+            CKEDITOR.instances[i].on('keyup', function() {
+              CKEDITOR.instances[i].updateElement();// to update the textarea
+            });
+            CKEDITOR.instances[i].on('paste', function() {
+              CKEDITOR.instances[i].updateElement();// to update the textarea
+            });
+            CKEDITOR.instances[i].on('change', function() {
+              CKEDITOR.instances[i].updateElement();// to update the textarea
+            });
+            CKEDITOR.instances[i].on('keypress', function() {
+              CKEDITOR.instances[i].updateElement();// to update the textarea
+            });
+            CKEDITOR.instances[i].on('keydown', function() {
+              CKEDITOR.instances[i].updateElement();// to update the textarea
+            });
+          };
+        });""".stripMargin
+    )
+}

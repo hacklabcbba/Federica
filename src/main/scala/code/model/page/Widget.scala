@@ -21,7 +21,7 @@ class Widget private () extends MongoRecord[Widget] with ObjectIdPk[Widget] with
     override def toString = get
   }
 
-  object body extends BsCkTextareaField(this, 1000) {
+  object body extends BsCkUnsecureTextareaField(this, 1000) {
     override def displayName = "Contenido"
   }
 
