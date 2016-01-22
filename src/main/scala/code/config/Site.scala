@@ -486,7 +486,7 @@ object Site extends Locs {
   val backendTransversableAreaAdd = Menu.param[TransversalArea](
     "Agregar área transversal", "Agregar área transaversal",
     s => Full(TransversalArea.createRecord),
-    s => "new") / "backend" / "transversablareas" / "add" / * >>
+    s => "new") / "backend" / "transversableareas" / "add" / * >>
     User.HasRoleOrPermission(SuperAdmin, AreasTransversales) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
@@ -494,12 +494,12 @@ object Site extends Locs {
   val backendTransversableAreaEdit = Menu.param[TransversalArea](
     "Editar área transversal", "Editar área transversal",
     TransversalArea.find,
-    s => s.id.get.toString) / "backend" / "transversablareas" / "edit" / * >>
+    s => s.id.get.toString) / "backend" / "transversableareas" / "edit" / * >>
     User.HasRoleOrPermission(SuperAdmin, AreasTransversales) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
-  val backendTransversableAreas = MenuLoc(Menu.i("Áreas transversales") / "backend" / "transversablareas" >> User.HasRoleOrPermission(SuperAdmin, AreasTransversales) >>
+  val backendTransversableAreas = MenuLoc(Menu.i("Áreas transversales") / "backend" / "transversableareas" >> User.HasRoleOrPermission(SuperAdmin, AreasTransversales) >>
     TemplateBox(() => Templates("backend" :: "transversalareas" :: "index" :: Nil)) submenus(
     backendTransversableAreaAdd, backendTransversableAreaEdit))
 
