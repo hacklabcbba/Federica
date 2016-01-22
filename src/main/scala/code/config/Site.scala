@@ -471,7 +471,7 @@ object Site extends Locs {
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
-  val backendAreas = MenuLoc(Menu.i("Áreas") / "backend" / "transversalareas" >> User.HasRoleOrPermission(SuperAdmin, Areas) >>
+  val backendAreas = MenuLoc(Menu.i("Áreas") / "backend" / "areas" >> User.HasRoleOrPermission(SuperAdmin, Areas) >>
     TemplateBox(() => Templates("backend" :: "transversalareas" :: "index" :: Nil)) submenus(
     backendAreaAdd, backendAreaEdit))
 
