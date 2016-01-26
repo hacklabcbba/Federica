@@ -85,6 +85,14 @@ object MenuSnippet extends SnippetHelper {
           var externalMenuItemUrl = ""
           var selectedPages: List[Page] = Nil
           def menuItems = menu.menuItems.get
+          "#enlaces-header [id+]" #> menuContainerId &
+          "#accordion [id+]" #> menuContainerId &
+          "data-name=paginas [data-parent+]" #> menuContainerId &
+          "data-name=paginas [href+]" #> menuContainerId &
+          "#paginas [id+]" #> menuContainerId &
+          "data-name=enlaces [data-parent+]" #> menuContainerId &
+          "data-name=enlaces [href+]" #> menuContainerId &
+          "#enlaces [id+]" #> menuContainerId &
           "data-name=page" #> pages.map(page => {
             "type=checkbox" #> SHtml.ajaxCheckbox(false, value => value match {
               case true => selectedPages = selectedPages ++ List(page)

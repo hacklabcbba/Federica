@@ -5,6 +5,7 @@ package page
 import code.config.Site
 import code.lib.field._
 import code.lib.{BaseModel, RogueMetaRecord}
+import net.liftweb.common.Box
 import net.liftweb.mongodb.record.{BsonMetaRecord, BsonRecord, MongoRecord}
 import net.liftweb.mongodb.record.field.{BsonRecordListField, ObjectIdRefField, ObjectIdPk}
 
@@ -34,6 +35,10 @@ class Menu private () extends MongoRecord[Menu] with ObjectIdPk[Menu] with BaseM
 object Menu extends Menu with RogueMetaRecord[Menu] {
   override def collectionName = "page.menus"
   override def fieldOrder = List(name)
+
+  def findByName(name: String): Box[Menu] = {
+    Menu.where(_.name eqs name).fetch(1).headOption
+  }
 
 }
 
