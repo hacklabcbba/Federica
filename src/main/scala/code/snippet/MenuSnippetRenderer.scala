@@ -23,14 +23,40 @@ import scala.xml.NodeSeq
 
 object MenuSnippetRenderer extends SnippetHelper {
 
-  def render = {
+  def render: CssSel = {
     for {
       name <- S.attr("name")
       menu <- Menu.findByName(name)
     } yield {
-      "*" #> "*"
+      "li" #> menu.menuItems.get.map(menuItem => {
+        "a *" #> menuItem.name.get &
+        "a [href]" #> menuItem.url.get &
+        "data-name=menu-item-childs" #>  generateChildMenuItems(menuItem)
+      })
     }
+  }
 
+  private def generateChildMenuItems(menuItem: MenuItem): NodeSeq = {
+    val template =
+      <ul class="dropdown-menu submenu-black">
+        <li>
+          <a href="#">
+            Quiénes somos <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu submenu-black" data-name="menu-item-childs">
+          </ul>
+        </li>
+      </ul>
+    if (menuItem.children.get.isEmpty) {
+      NodeSeq.Empty
+    } else {
+      ("li" #> menuItem.children.get.map(child => {
+        "a *" #> menuItem.name.get &
+        "a [class]" #> (if (child.children.get.isEmpty) "" else "dropdown-toggle") &
+        "a [href]" #> menuItem.url.get &
+        "data-name=menu-item-childs" #> generateChildMenuItems(child)
+      })).apply(template)
+    }
   }
 
 }
