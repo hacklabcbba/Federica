@@ -7,8 +7,10 @@ import code.model.network.Network
 import code.model.page.{MenuItemKind, MenuItem, Menu}
 import com.foursquare.rogue.LiftRogue
 import net.liftmodules.extras.SnippetHelper
-import net.liftweb.http.{IdMemoizeTransform, RequestVar, SHtml}
+import net.liftweb.http.js.JE.JsVar
+import net.liftweb.http.{S, IdMemoizeTransform, RequestVar, SHtml}
 import net.liftweb.http.js.JsCmd
+import net.liftweb.json.DefaultFormats
 import net.liftweb.json.JsonAST.JValue
 import LiftRogue._
 import net.liftweb.util.{CssSel, Helpers}
@@ -26,12 +28,61 @@ object MenuSnippet extends SnippetHelper {
 
   def menus = Menu.findAll
 
+  private def toMenuItem(item: MenuItemCaseClass, menu: Menu): MenuItem = {
+    MenuItem
+      .createRecord
+      .name(item.name)
+      .url(item.url)
+      .kind(MenuItemKind.withName(item.kind))
+      .menu(menu.id.get)
+      .children(item.children.map(child => toMenuItem(child, menu)))
+  }
+
+  private def updateTree(menu: Menu, json: JValue): JsCmd = {
+    implicit val formats = DefaultFormats
+    for {
+      items <- tryo(json.extract[List[MenuItemCaseClass]])
+    } yield {
+      menu.menuItems(items.map(s => toMenuItem(s, menu)))
+    }
+    Noop
+  }
+
   def render: CssSel = {
     val pages = Page.findAll
     "*" #> SHtml.idMemoize(mainBody => {
       "data-name=create-menu [onclick]" #> SHtml.ajaxInvoke(() => addMenu(mainBody)) &
       "data-name=menu" #> menusRequestVar.get.map(menu => {
         "*" #> SHtml.idMemoize(menuBody => {
+          val menuContainerId = nextFuncName
+          val callbacks = Function(
+            "updateTree" + menuContainerId,
+            List("json"),
+            SHtml.jsonCall(
+              JsVar("json"),
+              (json: JValue) => updateTree(menu, json)
+          ))
+          val sorteableScript = Run(
+            ("""
+              $('#""" + menuContainerId + """').nestedSortable({
+              |            handle: 'span',
+              |            items: 'li',
+              |            tolerance: 'pointer',
+              |            maxLevels: 3,
+              |            toleranceElement: '> span',
+              |            isTree: true,
+              |            sort: function(ev) {
+              |              console.log(ev);
+              |              //console.log($('#""" + menuContainerId + """').nestedSortable('toHierarchy', {startDepthCount: 0}));
+              |              var res = processItems($('#""" + menuContainerId + """').nestedSortable('toHierarchy', {startDepthCount: 0}));
+              |              console.log(res);
+              |              updateTree""" + menuContainerId + """({ items: JSON.stringify(res)});
+              |            }
+              |        });
+            """).stripMargin)
+          S.appendJs(callbacks)
+          S.appendJs(sorteableScript)
+
           var externalMenuItemName = ""
           var externalMenuItemUrl = ""
           var selectedPages: List[Page] = Nil
@@ -50,7 +101,6 @@ object MenuSnippet extends SnippetHelper {
                 .name(page.name.get)
                 .url(Site.pagina.calcHref(page))
                 .kind(MenuItemKind.Page)
-                .order(menu.menuItems.get.size)
               menu.menuItems.set(menu.menuItems.get ++ List(menuItem))
             })
             menuBody.setHtml()
@@ -69,10 +119,10 @@ object MenuSnippet extends SnippetHelper {
               .name(externalMenuItemName)
               .url(externalMenuItemUrl)
               .kind(MenuItemKind.Custom)
-              .order(menu.menuItems.get.size)
             menu.menuItems.set(menu.menuItems.get ++ List(menuItem))
             menuBody.setHtml()
           }) &
+          "data-name=menu-container [id]" #> menuContainerId &
           "@menu-name" #> SHtml.ajaxText(menu.name.get, s => {
             menu.name(s)
             Noop
@@ -82,7 +132,12 @@ object MenuSnippet extends SnippetHelper {
             Noop
           }) &
           "data-name=menu-item" #> menuItems.map(menuItem => {
-            "data-name=menu-item-name" #> menuItem.name.get &
+            "data-name=menu-item [id]" #> s"menuItem_$nextFuncName" &
+            "data-name=menu-item [data-url]" #> menuItem.url.get &
+            "data-name=menu-item [data-title]" #> menuItem.name.get &
+            "data-name=menu-item [data-kind]" #> menuItem.kind.get.toString &
+            "data-name=menu-item-name *" #> menuItem.name.get &
+            "data-name=menu-item [data-name]" #> menuItem.name.get &
             "data-name=menu-item-childs" #> generateChildMenuItems(menuItem)
           })
         })
@@ -92,15 +147,17 @@ object MenuSnippet extends SnippetHelper {
 
   private def generateChildMenuItems(menuItem: MenuItem): NodeSeq = {
     val template =
-      <ul class="list-group">
-        <li data-name="menu-item" class="list-group-item">Cras justo odio</li>
-        <ul data-name="menu-item-childs"></ul>
-      </ul>
+      <ol class="list-group" >
+        <li data-name="menu-item" class="list-group-item"><span data-name="menu-item-name">Cras justo odio</span></li>
+        <ol data-name="menu-item-childs" class="list-group sortable">
+        </ol>
+      </ol>
 
-    if (menuItem.childs.get.isEmpty) {
-      NodeSeq.Empty
+    if (menuItem.children.get.isEmpty) {
+      <ol data-name="menu-item-childs" class="list-group">
+      </ol>
     } else {
-      ("data-name=menu-item" #> menuItem.childs.get.map(child => {
+      ("data-name=menu-item" #> menuItem.children.get.map(child => {
         "data-name=menu-item *" #> child.name.get &
         "data-name=menu-item-childs" #> generateChildMenuItems(child)
       })).apply(template)
@@ -113,5 +170,7 @@ object MenuSnippet extends SnippetHelper {
     menusRequestVar.set(menusRequestVar.get ++ List(menu))
     body.setHtml()
   }
+
+  case class MenuItemCaseClass(name: String, url: String, kind: String, children: List[MenuItemCaseClass])
 
 }

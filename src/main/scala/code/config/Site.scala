@@ -232,7 +232,7 @@ object Site extends Locs {
   val programas = MenuLoc(Menu.i("Programas ") / "programas" submenus(programa))
 
   val red =  Menu.param[Network](
-    "Ver Red", "Ver Red",
+    "Ver red", "Ver red",
     Network.find,
     s => s.id.get.toString) / "red" / * >>
     TemplateBox(() => Templates("red" :: Nil)) >>

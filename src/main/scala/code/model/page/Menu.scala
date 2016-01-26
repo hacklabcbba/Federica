@@ -49,14 +49,10 @@ class MenuItem extends BsonRecord[MenuItem] {
     override def displayName = "URL"
   }
 
-  object childs extends BsonRecordListField(this, MenuItem)
+  object children extends BsonRecordListField(this, MenuItem)
 
   object kind extends BsEnumField(this, MenuItemKind) {
     override def displayName = "Tipo"
-  }
-
-  object order extends BsIntField(this, 0) {
-    override def displayName = "Posición"
   }
 
   object menu extends ObjectIdRefField(this, Menu) {

@@ -50,6 +50,13 @@ object Network extends Network with RogueMetaRecord[Network] {
   override def collectionName = "main.networks"
   override def fieldOrder =
     List(name, description, spaces)
+
+  override def find(s: String) = {
+    println("KEY:"+s)
+    val res = super.find(s)
+    println("RES:" + res)
+    res
+  }
 }
 
 object NetworkType extends Enumeration {

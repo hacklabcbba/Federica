@@ -36,6 +36,8 @@ libs/timepicker/bootstrap-timepicker.min.js
 libs/tagmanager.js
 libs/lodash/lodash.min.js
 libs/sortable.min.js
+libs/jquery-ui/jquery-ui.min.js
+libs/jquery.mjs.nestedSortable.js
 genso/adminlt.js
 
 
