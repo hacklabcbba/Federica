@@ -66,11 +66,11 @@ object MenuSnippet extends SnippetHelper {
           val sorteableScript = Run(
             ("""
               $('#""" + menuContainerId + """').nestedSortable({
-              |            handle: 'span',
+              |            handle: 'div',
               |            items: 'li',
               |            tolerance: 'pointer',
               |            maxLevels: 3,
-              |            toleranceElement: '> span',
+              |            toleranceElement: '> div',
               |            isTree: true,
               |            sort: function(ev) {
               |              console.log(ev);
@@ -126,19 +126,21 @@ object MenuSnippet extends SnippetHelper {
             Noop
           }) &
           "data-name=menu-save [onclick]" #> SHtml.jsonCall(Call("processData", JString(menuContainerId)), (json: JValue) => {
-            println("JSON:" + json)
             updateTree(menu, json)
-            println("MENUITEMS:"+menu.menuItems.get.size)
             menu.save(true)
             Noop & sorteableScript
           }) &
           "data-name=menu-item" #> menuItems.map(menuItem => {
-            "data-name=menu-item [id]" #> s"menuItem_$nextFuncName" &
+            val menuId = s"menuItem_$nextFuncName"
+            "data-name=menu-item [id]" #> menuId &
             "data-name=menu-item [data-url]" #> menuItem.url.get &
             "data-name=menu-item [data-title]" #> menuItem.name.get &
             "data-name=menu-item [data-kind]" #> menuItem.kind.get.toString &
             "data-name=menu-item-name *" #> menuItem.name.get &
             "data-name=menu-item [data-name]" #> menuItem.name.get &
+            "data-name=remove [onclick]" #> SHtml.ajaxInvoke(() => {
+              Run("$('#" + menuId + "').remove();")
+            }) &
             "data-name=menu-item-childs" #> generateChildMenuItems(menuItem)
           })
         })
@@ -150,7 +152,11 @@ object MenuSnippet extends SnippetHelper {
     val template =
       <ol class="list-group" >
         <li data-name="menu-item" class="list-group-item">
-          <span data-name="menu-item-name">Cras justo odio</span>
+          <div>
+            <span data-name="menu-item-name">Cras justo odio</span>
+            <button data-name="remove" type="button" class="btn btn-danger pull-right"><i class="fa fa-remove"></i></button>
+          </div>
+          <br/>
           <ol data-name="menu-item-childs" class="list-group sortable">
           </ol>
         </li>
@@ -161,12 +167,16 @@ object MenuSnippet extends SnippetHelper {
       </ol>
     } else {
       ("data-name=menu-item" #> menuItem.children.get.map(child => {
+        val menuId = s"menuItem_$nextFuncName"
         "data-name=menu-item [data-url]" #> menuItem.url.get &
         "data-name=menu-item [data-title]" #> menuItem.name.get &
         "data-name=menu-item [data-kind]" #> menuItem.kind.get.toString &
         "data-name=menu-item-name *" #> menuItem.name.get &
         "data-name=menu-item [data-name]" #> menuItem.name.get &
-        "data-name=menu-item [id]" #> s"menuItem_$nextFuncName" &
+        "data-name=menu-item [id]" #> menuId &
+        "data-name=remove [onclick]" #> SHtml.ajaxInvoke(() => {
+          Run("$('#" + menuId + "').remove();")
+        }) &
         "data-name=menu-item-childs" #> generateChildMenuItems(child)
       })).apply(template)
     }
