@@ -85,6 +85,9 @@
         <script src="/js/EventController.js"></script>
         <script type="text/javascript">
             //<![CDATA[
+            var processData = function(id) {
+              return processItems($('#'+ id).nestedSortable('toHierarchy', {startDepthCount: 0}));
+            };
             var processItems = function(array) {
                 return _.map(_.filter(array, function(item) {
                   return item;

@@ -7,11 +7,12 @@ import code.model.network.Network
 import code.model.page.{MenuItemKind, MenuItem, Menu}
 import com.foursquare.rogue.LiftRogue
 import net.liftmodules.extras.SnippetHelper
-import net.liftweb.http.js.JE.JsVar
+import net.liftweb.http.js.JE.{Call, JsVar}
 import net.liftweb.http.{S, IdMemoizeTransform, RequestVar, SHtml}
-import net.liftweb.http.js.JsCmd
+import net.liftweb.http.js.{JsExp, JsCmd}
+import JsExp._
 import net.liftweb.json.DefaultFormats
-import net.liftweb.json.JsonAST.JValue
+import net.liftweb.json.JsonAST.{JString, JValue}
 import LiftRogue._
 import net.liftweb.util.{CssSel, Helpers}
 import Helpers._
@@ -43,7 +44,7 @@ object MenuSnippet extends SnippetHelper {
     for {
       items <- tryo(json.extract[List[MenuItemCaseClass]])
     } yield {
-      menu.menuItems(items.map(s => toMenuItem(s, menu)))
+      menu.menuItems.set(items.map(s => toMenuItem(s, menu)))
     }
     Noop
   }
@@ -74,9 +75,6 @@ object MenuSnippet extends SnippetHelper {
               |            sort: function(ev) {
               |              console.log(ev);
               |              //console.log($('#""" + menuContainerId + """').nestedSortable('toHierarchy', {startDepthCount: 0}));
-              |              var res = processItems($('#""" + menuContainerId + """').nestedSortable('toHierarchy', {startDepthCount: 0}));
-              |              console.log(res);
-              |              updateTree""" + menuContainerId + """({ items: JSON.stringify(res)});
               |            }
               |        });
             """).stripMargin)
@@ -103,7 +101,7 @@ object MenuSnippet extends SnippetHelper {
                 .kind(MenuItemKind.Page)
               menu.menuItems.set(menu.menuItems.get ++ List(menuItem))
             })
-            menuBody.setHtml()
+            menuBody.setHtml() & sorteableScript
           }) &
           "@menu-item-name" #> SHtml.ajaxText(externalMenuItemName, s => {
             externalMenuItemName = s
@@ -120,16 +118,19 @@ object MenuSnippet extends SnippetHelper {
               .url(externalMenuItemUrl)
               .kind(MenuItemKind.Custom)
             menu.menuItems.set(menu.menuItems.get ++ List(menuItem))
-            menuBody.setHtml()
+            menuBody.setHtml() & sorteableScript
           }) &
           "data-name=menu-container [id]" #> menuContainerId &
           "@menu-name" #> SHtml.ajaxText(menu.name.get, s => {
             menu.name(s)
             Noop
           }) &
-          "data-name=menu-save [onclick]" #> SHtml.ajaxInvoke(() => {
+          "data-name=menu-save [onclick]" #> SHtml.jsonCall(Call("processData", JString(menuContainerId)), (json: JValue) => {
+            println("JSON:" + json)
+            updateTree(menu, json)
+            println("MENUITEMS:"+menu.menuItems.get.size)
             menu.save(true)
-            Noop
+            Noop & sorteableScript
           }) &
           "data-name=menu-item" #> menuItems.map(menuItem => {
             "data-name=menu-item [id]" #> s"menuItem_$nextFuncName" &
@@ -148,9 +149,11 @@ object MenuSnippet extends SnippetHelper {
   private def generateChildMenuItems(menuItem: MenuItem): NodeSeq = {
     val template =
       <ol class="list-group" >
-        <li data-name="menu-item" class="list-group-item"><span data-name="menu-item-name">Cras justo odio</span></li>
-        <ol data-name="menu-item-childs" class="list-group sortable">
-        </ol>
+        <li data-name="menu-item" class="list-group-item">
+          <span data-name="menu-item-name">Cras justo odio</span>
+          <ol data-name="menu-item-childs" class="list-group sortable">
+          </ol>
+        </li>
       </ol>
 
     if (menuItem.children.get.isEmpty) {
@@ -158,7 +161,12 @@ object MenuSnippet extends SnippetHelper {
       </ol>
     } else {
       ("data-name=menu-item" #> menuItem.children.get.map(child => {
-        "data-name=menu-item *" #> child.name.get &
+        "data-name=menu-item [data-url]" #> menuItem.url.get &
+        "data-name=menu-item [data-title]" #> menuItem.name.get &
+        "data-name=menu-item [data-kind]" #> menuItem.kind.get.toString &
+        "data-name=menu-item-name *" #> menuItem.name.get &
+        "data-name=menu-item [data-name]" #> menuItem.name.get &
+        "data-name=menu-item [id]" #> s"menuItem_$nextFuncName" &
         "data-name=menu-item-childs" #> generateChildMenuItems(child)
       })).apply(template)
     }
