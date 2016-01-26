@@ -253,7 +253,7 @@ object Site extends Locs {
   val pagina =  Menu.param[Page](
     "Ver Pagina", "Ver Pagina",
     Page.findByUrl,
-    s => s.id.get.toString) / "pagina" / * >>
+    s => s.url.get) / "pagina" / * >>
     TemplateBox(() => Templates("pagina" :: Nil)) >>
     Hidden
 
