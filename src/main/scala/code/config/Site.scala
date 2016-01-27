@@ -206,8 +206,8 @@ object Site extends Locs {
 
   val area =  Menu.param[Area](
     "Ver Area", "Ver Area",
-    Area.find,
-    s => s.id.get.toString) / "area" / * >>
+    Area.findByUrl,
+    s => s.url.get.toString) / "area" / * >>
     TemplateBox(() => Templates("area" :: Nil)) >>
     Hidden
 
@@ -224,8 +224,8 @@ object Site extends Locs {
 
   val programa =  Menu.param[Program](
     "Ver Programa", "Ver Programa",
-    Program.find,
-    s => s.id.get.toString) / "programa" / * >>
+    Program.findByUrl,
+    s => s.url.get.toString) / "programa" / * >>
     TemplateBox(() => Templates("programa" :: Nil)) >>
     Hidden
 

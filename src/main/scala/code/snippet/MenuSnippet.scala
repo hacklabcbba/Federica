@@ -136,7 +136,7 @@ object MenuSnippet extends SnippetHelper {
           "data-name=menu-save [onclick]" #> SHtml.jsonCall(Call("processData", JString(menuContainerId)), (json: JValue) => {
             updateTree(menu, json)
             menu.save(true)
-            Noop & sorteableScript
+            RedirectTo(Site.backendMenus.fullUrl)
           }) &
           "data-name=menu-item" #> menuItems.map(menuItem => {
             val menuId = s"menuItem_$nextFuncName"
