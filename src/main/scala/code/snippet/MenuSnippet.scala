@@ -176,11 +176,11 @@ object MenuSnippet extends SnippetHelper {
     } else {
       ("data-name=menu-item" #> menuItem.children.get.map(child => {
         val menuId = s"menuItem_$nextFuncName"
-        "data-name=menu-item [data-url]" #> menuItem.url.get &
-        "data-name=menu-item [data-title]" #> menuItem.name.get &
-        "data-name=menu-item [data-kind]" #> menuItem.kind.get.toString &
-        "data-name=menu-item-name *" #> menuItem.name.get &
-        "data-name=menu-item [data-name]" #> menuItem.name.get &
+        "data-name=menu-item [data-url]" #> child.url.get &
+        "data-name=menu-item [data-title]" #> child.name.get &
+        "data-name=menu-item [data-kind]" #> child.kind.get.toString &
+        "data-name=menu-item-name *" #> child.name.get &
+        "data-name=menu-item [data-name]" #> child.name.get &
         "data-name=menu-item [id]" #> menuId &
         "data-name=remove [onclick]" #> SHtml.ajaxInvoke(() => {
           Run("$('#" + menuId + "').remove();")

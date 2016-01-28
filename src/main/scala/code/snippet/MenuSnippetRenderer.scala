@@ -51,9 +51,9 @@ object MenuSnippetRenderer extends SnippetHelper {
       NodeSeq.Empty
     } else {
       ("li" #> menuItem.children.get.map(child => {
-        "a *" #> menuItem.name.get &
+        "a *" #> child.name.get &
         "a [class]" #> (if (child.children.get.isEmpty) "" else "dropdown-toggle") &
-        "a [href]" #> menuItem.url.get &
+        "a [href]" #> child.url.get &
         "data-name=menu-item-childs" #> generateChildMenuItems(child)
       })).apply(template)
     }
