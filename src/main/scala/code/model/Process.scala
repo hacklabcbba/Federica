@@ -22,10 +22,6 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] w
     override def displayName = "Nombre"
   }
 
-  object goal extends BsCkTextareaField(this, 1000) {
-    override def displayName = "Objetivo"
-  }
-
   object description extends BsCkTextareaField(this, 1000) {
     override def displayName = "Descripción"
   }
@@ -94,22 +90,6 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] w
     }
   }
 
-  object processType extends EnumNameField(this, ProcessType) {
-    override def displayName = "Tipo"
-    override def toForm =
-      Full(SHtml.selectObj[Box[ProcessType.Value]](
-        buildDisplayList,
-        Full(valueBox),
-        s => setBox(s),
-        "class" -> "select2 form-control",
-        "data-placeholder" -> "Seleccione tipo.."
-      ))
-  }
-
-  object history extends BsCkTextareaField(this, 1000) {
-    override def displayName = "Historia"
-  }
-
   object url extends BsStringField(this, 500) {
     override def displayName = "Url"
   }
@@ -119,7 +99,7 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] w
 
 object Process extends Process with RogueMetaRecord[Process] {
   override def collectionName = "main.process"
-  override def fieldOrder = List(name, processType, goal, description, area, program, administrator, history)
+  override def fieldOrder = List(name, description, area, program, administrator)
 
   def findByArea(area: Area): List[Process] = {
     Process

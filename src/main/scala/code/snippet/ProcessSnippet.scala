@@ -6,7 +6,7 @@ import com.foursquare.rogue.LiftRogue
 import net.liftweb.http.js.JsCmd
 import net.liftweb.json.JsonAST.JValue
 import LiftRogue._
-import net.liftweb.util.Helpers
+import net.liftweb.util.{CssSel, Helpers}
 import Helpers._
 import net.liftweb.http.js.JsCmds._
 
@@ -22,7 +22,17 @@ object ProcessSnippet extends SortableSnippet[Process] {
 
   def itemEditUrl(inst: Process): String = Site.backendProcessEdit.toLoc.calcHref(inst)
 
-  override def listFields = List(meta.name, meta.processType, meta.administrator)
+  override def listFields = List(meta.name, meta.administrator)
+
+  def renderViewFrontEnd: CssSel = {
+    for {
+      linea <- Site.lineaDeAccion.currentValue
+    } yield {
+      "data-name=name *" #> linea.name.get &
+        "data-name=name [href]" #> Site.lineaDeAccion.calcHref(linea) &
+        "data-name=description *" #> linea.description.asHtml
+    }
+  }
 
   def updateOrderValue(json: JValue): JsCmd = {
     implicit val formats = net.liftweb.json.DefaultFormats

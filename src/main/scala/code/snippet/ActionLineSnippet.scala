@@ -33,18 +33,15 @@ object ActionLineSnippet extends SortableSnippet[ActionLine] {
     })
   }
 
-  /*def renderViewFrontEnd: CssSel = {
+  def renderViewFrontEnd: CssSel = {
     for {
-      service <- Site.area.currentValue
+      linea <- Site.lineaDeAccion.currentValue
     } yield {
-      "data-name=image" #> service.photo.previewFile &
-        "data-name=name *" #> service.name.get &
-        "data-name=name [href]" #> Site.servicio.calcHref(service) &
-        "data-name=description *" #> service.description.asHtml &
-        "data-name=email *" #> service.email.get &
-        "data-name=responsible *" #> service.responsible.obj.dmap("")(_.name.get)
+      "data-name=name *" #> linea.name.get &
+      "data-name=name [href]" #> Site.lineaDeAccion.calcHref(linea) &
+      "data-name=description *" #> linea.description.asHtml
     }
-  }*/
+  }
 
   def updateOrderValue(json: JValue): JsCmd = {
     implicit val formats = net.liftweb.json.DefaultFormats
