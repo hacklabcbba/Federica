@@ -20,7 +20,7 @@ angular.module('EventApp', ['federica.event', 'ui.bootstrap'])
     if (_.includes($scope.event.rooms, room)) {
       return 'panel-primary';
     } else {
-      return 'panel-success';
+      return 'panel-default';
     }
   }
 
