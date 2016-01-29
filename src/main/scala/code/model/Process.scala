@@ -110,6 +110,10 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] w
     override def displayName = "Historia"
   }
 
+  object url extends BsStringField(this, 500) {
+    override def displayName = "Url"
+  }
+
   override def toString = name.get
 }
 
@@ -127,6 +131,10 @@ object Process extends Process with RogueMetaRecord[Process] {
     Process
       .where(_.program eqs program.id.get)
       .fetch()
+  }
+
+  def findByUrl(url: String): Box[Process] = {
+    Process.where(_.url eqs url).fetch(1).headOption
   }
 }
 

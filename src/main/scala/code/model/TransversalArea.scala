@@ -88,6 +88,10 @@ class TransversalArea private () extends MongoRecord[TransversalArea] with Objec
     override def displayName = "Publicado"
   }
 
+  object url extends BsStringField(this, 500) {
+    override def displayName = "Url"
+  }
+
   override def toString = name.get
 
 }
@@ -98,5 +102,9 @@ object TransversalArea extends TransversalArea with RogueMetaRecord[TransversalA
 
   def findAllPublished: List[TransversalArea] = {
     TransversalArea.where(_.isPublished eqs true).fetch()
+  }
+
+  def findByUrl(url: String): Box[TransversalArea] = {
+    TransversalArea.where(_.url eqs url).fetch(1).headOption
   }
 }

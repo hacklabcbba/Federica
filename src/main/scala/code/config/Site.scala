@@ -213,14 +213,32 @@ object Site extends Locs {
 
   val areas = MenuLoc(Menu.i("Areas ") / "areas" submenus(area))
 
+  val areaTransversal =  Menu.param[TransversalArea](
+    "Ver Area transversal", "Ver Area transversal",
+    TransversalArea.findByUrl,
+    s => s.url.get.toString) / "areatransversal" / * >>
+    TemplateBox(() => Templates("area" :: Nil)) >>
+    Hidden
+
+  val areasTransversales = MenuLoc(Menu.i("Areas transversal ") / "areastransversales" submenus(areaTransversal))
+
   val proceso =  Menu.param[Process](
     "Ver Proceso", "Ver Proceso",
-    Process.find,
-    s => s.id.get.toString) / "proceso" / * >>
+    Process.findByUrl,
+    s => s.url.get.toString) / "proceso" / * >>
     TemplateBox(() => Templates("proceso" :: Nil)) >>
     Hidden
 
   val procesos = MenuLoc(Menu.i("Procesos ") / "procesos" submenus(proceso) >> Hidden)
+
+  val lineaDeAccion =  Menu.param[ActionLine](
+    "Ver Linea de Acción", "Ver Linea de Acción",
+    ActionLine.findByUrl,
+    s => s.url.get.toString) / "linea-de-accion" / * >>
+    TemplateBox(() => Templates("linea-de-accion" :: Nil)) >>
+    Hidden
+
+  val lineasDeAccion = MenuLoc(Menu.i("Lineas de acción ") / "lineas-de-accion" submenus(lineaDeAccion) >> Hidden)
 
   val programa =  Menu.param[Program](
     "Ver Programa", "Ver Programa",
@@ -283,16 +301,6 @@ object Site extends Locs {
       Menu.i("Pi Producciones") / "pi-producciones" >> RightMenuGroup
       )
   ))
-
-  /* Lineas de accion*/
-  // Lineas de accion
-  val lineasDeAccion = MenuLoc(Menu.i("Líneas de Acción") / "lineas-de-accion" >> RightMenuGroup submenus(
-    // Linea de accion
-    Menu.param[Network]("Linea de acción", "Linea de acción",
-      Network.find _,
-      _.name.get
-    ) / "red" / * >> TemplateBox(() => Templates("red" :: Nil)) >> RightMenuGroup
-    ))
 
 
 
@@ -800,6 +808,8 @@ object Site extends Locs {
     procesos.menu,
     programas.menu,
     redes.menu,
+    areasTransversales.menu,
+    lineasDeAccion.menu,
     contacto.menu)
 
   /*

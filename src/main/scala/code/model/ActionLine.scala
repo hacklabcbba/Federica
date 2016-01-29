@@ -1,9 +1,9 @@
 package code.model
 
 import code.config.Site
-import code.lib.field.BsCkTextareaField
+import code.lib.field.{BsStringField, BsCkTextareaField}
 import code.lib.{BaseModel, SortableModel, RogueMetaRecord}
-import net.liftweb.common.Full
+import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.ObjectIdPk
@@ -30,6 +30,10 @@ class ActionLine private () extends MongoRecord[ActionLine] with ObjectIdPk[Acti
     override def displayName = "Descripción"
   }
 
+  object url extends BsStringField(this, 500) {
+    override def displayName = "Url"
+  }
+
   override def toString = name.get
 }
 
@@ -38,4 +42,8 @@ object ActionLine extends ActionLine with RogueMetaRecord[ActionLine] {
   override def collectionName = "main.action_lines"
 
   override def fieldOrder = List(name, description)
+
+  def findByUrl(url: String): Box[ActionLine] = {
+    ActionLine.where(_.url eqs url).fetch(1).headOption
+  }
 }
