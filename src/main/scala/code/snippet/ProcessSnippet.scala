@@ -26,11 +26,11 @@ object ProcessSnippet extends SortableSnippet[Process] {
 
   def renderViewFrontEnd: CssSel = {
     for {
-      linea <- Site.lineaDeAccion.currentValue
+      proceso <- Site.proceso.currentValue
     } yield {
-      "data-name=name *" #> linea.name.get &
-        "data-name=name [href]" #> Site.lineaDeAccion.calcHref(linea) &
-        "data-name=description *" #> linea.description.asHtml
+      "data-name=name *" #> proceso.name.get &
+      "data-name=name [href]" #> Site.proceso.calcHref(proceso) &
+      "data-name=description *" #> proceso.description.asHtml
     }
   }
 
