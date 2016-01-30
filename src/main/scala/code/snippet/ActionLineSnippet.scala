@@ -5,6 +5,7 @@ import code.config.Site
 import code.model.ActionLine
 import com.foursquare.rogue.LiftRogue
 import com.foursquare.rogue.LiftRogue._
+import net.liftmodules.extras.SnippetHelper
 import net.liftweb.http.js.JsCmd
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.json.JsonAST.JValue
@@ -33,16 +34,6 @@ object ActionLineSnippet extends SortableSnippet[ActionLine] {
     })
   }
 
-  def renderViewFrontEnd: CssSel = {
-    for {
-      linea <- Site.lineaDeAccion.currentValue
-    } yield {
-      "data-name=name *" #> linea.name.get &
-      "data-name=name [href]" #> Site.lineaDeAccion.calcHref(linea) &
-      "data-name=description *" #> linea.description.asHtml
-    }
-  }
-
   def updateOrderValue(json: JValue): JsCmd = {
     implicit val formats = net.liftweb.json.DefaultFormats
     for {
@@ -53,4 +44,12 @@ object ActionLineSnippet extends SortableSnippet[ActionLine] {
     Noop
   }
 
+}
+
+class LineaAccion(linea: ActionLine) extends SnippetHelper {
+  def renderViewFrontEnd: CssSel = {
+    "data-name=name *" #> linea.name.get &
+    "data-name=name [href]" #> Site.lineaDeAccion.calcHref(linea) &
+    "data-name=description *" #> linea.description.asHtml
+  }
 }

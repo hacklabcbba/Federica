@@ -334,7 +334,7 @@ class EventSpec extends BaseMongoSessionWordSpec {
     val process = Process.createRecord
       .name("Proceso 1")
       .description("descripcion del proceso")
-     
+
     val errorsList = process.validate
     if (errorsList.length > 1) {
       fail("Validation error: " + errorsList.mkString(", "))

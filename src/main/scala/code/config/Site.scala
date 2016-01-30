@@ -216,8 +216,8 @@ object Site extends Locs {
   val areaTransversal =  Menu.param[TransversalArea](
     "Ver Area transversal", "Ver Area transversal",
     TransversalArea.findByUrl,
-    s => s.url.get.toString) / "areatransversal" / * >>
-    TemplateBox(() => Templates("area" :: Nil)) >>
+    s => s.url.get) / "areatransversal" / * >>
+    TemplateBox(() => Templates("areatransversal" :: Nil)) >>
     Hidden
 
   val areasTransversales = MenuLoc(Menu.i("Areas transversal ") / "areastransversales" submenus(areaTransversal))
@@ -225,7 +225,7 @@ object Site extends Locs {
   val proceso =  Menu.param[Process](
     "Ver Proceso", "Ver Proceso",
     Process.findByUrl,
-    s => s.url.get.toString) / "proceso" / * >>
+    s => s.url.get) / "proceso" / * >>
     TemplateBox(() => Templates("proceso" :: Nil)) >>
     Hidden
 

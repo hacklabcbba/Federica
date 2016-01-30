@@ -3,6 +3,7 @@ package code.snippet
 import code.config.Site
 import code.model.network.Network
 import com.foursquare.rogue.LiftRogue
+import net.liftmodules.extras.SnippetHelper
 import net.liftweb.common.Box
 import net.liftweb.http.js.JsCmd
 import net.liftweb.json.JsonAST.JValue
@@ -25,20 +26,6 @@ object NetworkSnippet extends SortableSnippet[Network] {
 
   override def listFields = List(meta.name, meta.scope)
 
-  def renderViewFrontEnd: CssSel = {
-    for {
-      r <- Box.legacyNullTest(Site.red.currentValue)
-      red <- {
-        println("NULL:"+r)
-        r
-      }
-    } yield {
-      "data-name=name *" #> red.name.get &
-      "data-name=name [href]" #> Site.red.calcHref(red) &
-      "data-name=description *" #> red.description.asHtml
-    }
-  }
-
   def updateOrderValue(json: JValue): JsCmd = {
     implicit val formats = net.liftweb.json.DefaultFormats
     for {
@@ -49,4 +36,13 @@ object NetworkSnippet extends SortableSnippet[Network] {
     Noop
   }
 
+}
+
+
+class RedesSnippet(red: Network) extends SnippetHelper {
+  def renderViewFrontEnd: CssSel = {
+    "data-name=name *" #> red.name.get &
+    "data-name=name [href]" #> Site.red.calcHref(red) &
+    "data-name=description *" #> red.description.asHtml
+  }
 }
