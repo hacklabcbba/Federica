@@ -323,7 +323,8 @@ textarea.form-control {
   color: #222;
 }
 /*----/ $HEADER */
-body > header {
+body > header,
+.backend .wrapper > header {
   padding-top: 51px;
 }
 body > header,
