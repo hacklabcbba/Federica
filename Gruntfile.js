@@ -8,7 +8,7 @@ module.exports = function(grunt) {
         options: {
           sourceMap: true,
           sourceMapFilename: 'src/main/webapp/css/style.css.map', // where file is generated and located
-          sourceMapURL: '/federica/src/main/webapp/css/style.css.map', // the complete url and filename put in the compiled css file
+          sourceMapURL: 'style.css.map', // the complete url and filename put in the compiled css file
           sourceMapRootpath: '/federica/' // adds this path onto the sourcemap filename and less file paths
         },
         files: {
