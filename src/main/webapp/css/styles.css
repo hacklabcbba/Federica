@@ -323,7 +323,8 @@ textarea.form-control {
   color: #222;
 }
 /*----/ $HEADER */
-body > header {
+body > header,
+.backend .wrapper > header {
   padding-top: 51px;
 }
 body > header,
@@ -337,6 +338,7 @@ body > .wrapper > header .navbar-black {
   background: #000000;
   border-bottom: 1px solid #fff;
   position: fixed;
+  z-index: 1000;
   top: 0;
   width: 100%;
 }
@@ -948,6 +950,9 @@ body .content .main-content + .side > section:first-child h3 {
 .media-page a {
   color: #000;
 }
+.media-page .btn {
+  text-transform: uppercase;
+}
 .media-page .font-image {
   border-radius: 5px;
   background: #9d9d9d;
@@ -1307,4 +1312,4 @@ body > footer .footer-buttons a .title-link {
 body > footer .social-suscribe {
   padding-top: 50px;
 }
-/*# sourceMappingURL=/federica/src/main/webapp/css/style.css.map */
+/*# sourceMappingURL=style.css.map */

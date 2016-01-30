@@ -35,7 +35,10 @@
 
 
             <div class="row events">
-                <article class=" col-md-6 event ">
+                <div class="left-content width-50"></div>
+                <div class="right-content width-50"></div>
+
+                <article class=" col-md-12 event 1">
                     <div class="category artesescenicas">
                         Artes escénicas
                     </div>
@@ -46,7 +49,7 @@
                         <a href="#" class="btn white">más info</a>
                     </div>
                 </article>
-                <article class=" col-md-6 event feature">
+                <article class=" col-md-12 event 2 feature">
                     <div class="tag-feature">
                         <div class="tag-feature-title">
                             Evento<br/> destacado
@@ -65,7 +68,7 @@
                         <a href="#" class="btn white">más info</a>
                     </div>
                 </article>
-                <article class=" col-md-6 event hola">
+                <article class=" col-md-12 event 3 ">
                     <div class="category artesescenicas">
                         Artes escénicas
                     </div>
@@ -76,7 +79,7 @@
                         <a href="#" class="btn white">más info</a>
                     </div>
                 </article>
-                <article class=" col-md-6 event">
+                <article class=" col-md-12 event 4">
                     <div class="category artesvisuales">
                         Artes visuales
                     </div>
@@ -87,7 +90,7 @@
                         <a href="#" class="btn white">más info</a>
                     </div>
                 </article>
-                <article class=" col-md-6 event">
+                <article class=" col-md-12 event 5">
                     <div class="category artesvisuales">
                         Artes visuales
                     </div>
@@ -98,7 +101,7 @@
                         <a href="#" class="btn white">más info</a>
                     </div>
                 </article>
-                <article class=" col-md-6 event feature">
+                <article class=" col-md-12 event 6 feature">
                     <div class="tag-feature">
                         <div class="tag-feature-title">
                             Evento</br> destacado
@@ -117,7 +120,7 @@
                         <a href="#" class="btn white">más info</a>
                     </div>
                 </article>
-                <article class=" col-md-6 event">
+                <article class=" col-md-12 event 7">
                     <div class="category artesescenicas">
                         Artes escénicas
                     </div>
@@ -128,7 +131,7 @@
                         <a href="#" class="btn white">más info</a>
                     </div>
                 </article>
-                <article class=" col-md-6 event feature">
+                <article class=" col-md-12 event 8">
                     <div class="tag-feature">
                         <div class="tag-feature-title">
                             Evento</br> destacado
@@ -147,7 +150,7 @@
                         <a href="#" class="btn white">más info</a>
                     </div>
                 </article>
-                <article class=" col-md-6 event feature">
+                <article class=" col-md-12 event 9 feature">
                     <div class="tag-feature">
                         <div class="tag-feature-title">
                             Evento</br> destacado
@@ -166,7 +169,7 @@
                         <a href="#" class="btn white">más info</a>
                     </div>
                 </article>
-                <article class=" col-md-6 event feature">
+                <article class=" col-md-12 event 10 feature">
                     <div class="tag-feature">
                         <div class="tag-feature-title">
                             Evento</br> destacado
@@ -185,7 +188,7 @@
                         <a href="#" class="btn white">más info</a>
                     </div>
                 </article>
-                <article class=" col-md-6 event">
+                <article class=" col-md-12 event 11">
                     <div class="category artesvisuales">
                         Artes visuales
                     </div>
@@ -196,7 +199,29 @@
                         <a href="#" class="btn white">más info</a>
                     </div>
                 </article>
-                <article class=" col-md-6 event">
+                <article class=" col-md-12 event 12">
+                    <div class="category artesesvisuales">
+                        Artes visuales
+                    </div>
+                    <img src="images/sample1.jpg" alt=""/>
+                    <div class="events-summary">
+                        <h3><a href="#">Evento Arte Urbano...</a></h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto dolores aliquid, delectus sit animi blanditiis est necessitatibus labore deleniti alias.</p>
+                        <a href="#" class="btn white">más info</a>
+                    </div>
+                </article>
+                <article class=" col-md-12 event 13">
+                    <div class="category artesesvisuales">
+                        Artes visuales
+                    </div>
+                    <img src="images/sample1.jpg" alt=""/>
+                    <div class="events-summary">
+                        <h3><a href="#">Evento Arte Urbano...</a></h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto dolores aliquid, delectus sit animi blanditiis est necessitatibus labore deleniti alias.</p>
+                        <a href="#" class="btn white">más info</a>
+                    </div>
+                </article>
+                <article class=" col-md-12 event 14">
                     <div class="category artesesvisuales">
                         Artes visuales
                     </div>
@@ -214,5 +239,15 @@
             </div>
         </section>
     </main>
+    <script>
+        $(".events > .event:odd").addClass("odd");
+        $(".events > .event:even").addClass("even");
+        $(".events > .odd").detach().appendTo(".left-content");
+        $(".events > .even").detach().appendTo(".right-content");
+        $(".left-content > .feature + .feature + .event")
+
+
+
+    </script>
     <!-- Content -->
 </div>

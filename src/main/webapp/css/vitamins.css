@@ -1,6 +1,5 @@
 /*------------------------------------*\
-                                     * Company: Campaign Partners, Inc.
-* Project: Campaign RAMP
+* Project: Vitamins for Bootstrap
 * Version: 1.0
 * Copyright 2015. All Rights Reserved. No License Granted.
 \*------------------------------------*/
@@ -97,8 +96,16 @@ h1, h2, h3, h4, h5, h6 {
     display:block ;
 }
 
+.display-none {
+    display:none;
+}
+
 .overflow-hidden {
     overflow: hidden;
+}
+
+.overflow-auto {
+    overflow: auto;
 }
 
 @media (max-width:767px ){
@@ -184,9 +191,80 @@ h1, h2, h3, h4, h5, h6 {
     position: static;
 }
 
-/*----*----*----* $BOX MODEL */
+.top-0 {
+    top: 0;
+}
+
+.top-xs {
+    top:15px;
+}
+
+.right-0 {
+    right: 0;
+}
+
+.right-xs {
+    right: 15px;
+}
+
+.right-sm {
+    right: 30px;
+}
+
+.right-md {
+    right: 60px;
+}
+
+.bottom-0 {
+    bottom: 0;
+}
+
+.bottom-xs {
+    bottom: 15px;
+}
+
+.left-0 {
+    left:0;
+}
+
+/*----*----*----* $FLOAT */
+
+.no-float {
+ float: none !important;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float:right;
+}
+
+/*----/----/----/ $BOX MODEL */
+
+.width-auto {
+    width: auto;
+}
+
+.height-auto {
+    height: auto;
+}
+
 .padding-xs {
     padding: 15px;
+}
+
+.padding-sm {
+    padding: 30px;
+}
+
+.padding-md {
+    padding: 60px;
+}
+
+.padding-lg {
+    padding: 120px;
 }
 
 .no-padding {
@@ -464,15 +542,16 @@ h1, h2, h3, h4, h5, h6 {
 
 }
 
-@media (min-width:768px) and (max-width: 991px) {
-    .margin-top-sm {
-        margin-top: 30px;
-    }
+@media (min-width:992px) and (max-width: 991px) {
+
 }
 
-@media (min-width: 992px) and (max-width: 1199px) {
+@media (min-width: 992px) {
     .margin-top-md {
         margin-top: 60px;
+    }
+    .margin-top-sm {
+        margin-top: 30px;
     }
 }
 
@@ -1078,7 +1157,9 @@ h1, h2, h3, h4, h5, h6 {
 /*
 *----*----*----* $TEXT
 */
-
+.text-center {
+    text-align: center;
+}
 
 @media (max-width: 767px) {
     .text-left-xs {
