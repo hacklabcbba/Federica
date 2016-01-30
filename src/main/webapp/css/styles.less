@@ -472,8 +472,11 @@ body > .wrapper > header {
    display: block !important;
   }
   .dropdown-menu .dropdown-menu {
-   top: -3px;
+   top: 0px;
    left: 100%;
+  }
+  .dropdown-menu li {
+   position: relative;
   }
   .submenu-black {
    li a {
@@ -542,7 +545,8 @@ body > .wrapper > header {
      .user-options {
       margin-bottom: 0;
       li {
-       margin-bottom: 8px;
+       margin-bottom: 10px;
+       overflow: hidden;
        &:last-child {
         margin-bottom: 0;
        }
@@ -550,7 +554,7 @@ body > .wrapper > header {
       span {
        border-bottom: 1px solid #fff;
        display: inline-block;
-       padding-bottom: 5px;
+       padding-bottom: 8px;
        margin-left: -5px;
       }
      }

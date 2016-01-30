@@ -423,8 +423,12 @@ body > .wrapper > header .navbar-second .dropdown-menu:hover {
 }
 body > header .navbar-second .dropdown-menu .dropdown-menu,
 body > .wrapper > header .navbar-second .dropdown-menu .dropdown-menu {
-  top: -3px;
+  top: 0px;
   left: 100%;
+}
+body > header .navbar-second .dropdown-menu li,
+body > .wrapper > header .navbar-second .dropdown-menu li {
+  position: relative;
 }
 body > header .navbar-second .submenu-black li a,
 body > .wrapper > header .navbar-second .submenu-black li a {
@@ -505,7 +509,8 @@ body > .wrapper > header .navbar-second .login #login-box.user-menu .user-option
 }
 body > header .navbar-second .login #login-box.user-menu .user-options li,
 body > .wrapper > header .navbar-second .login #login-box.user-menu .user-options li {
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  overflow: hidden;
 }
 body > header .navbar-second .login #login-box.user-menu .user-options li:last-child,
 body > .wrapper > header .navbar-second .login #login-box.user-menu .user-options li:last-child {
@@ -515,7 +520,7 @@ body > header .navbar-second .login #login-box.user-menu .user-options span,
 body > .wrapper > header .navbar-second .login #login-box.user-menu .user-options span {
   border-bottom: 1px solid #fff;
   display: inline-block;
-  padding-bottom: 5px;
+  padding-bottom: 8px;
   margin-left: -5px;
 }
 body > header .navbar-second .login #login-box h3,
