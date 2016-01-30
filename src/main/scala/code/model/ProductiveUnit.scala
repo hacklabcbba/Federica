@@ -45,28 +45,55 @@ class ProductiveUnit private () extends MongoRecord[ProductiveUnit] with ObjectI
 
   object area extends ObjectIdRefField(this, Area) {
     override def optional_? = true
-    override def toString = Area.find(get).dmap("")(_.name.get)
-    val listAreas = Area.findAll
-    val defaultArea = listAreas.headOption
+
+    override def displayName = "Área"
+
+    override def toString = {
+      this.obj.dmap("Indefinido..")(_.name.get)
+    }
+
     override def toForm = {
-      Full(SHtml.ajaxSelectElem(listAreas, defaultArea)(a => {
-        set(a.id.get)
-        Noop
-      }))
+      Full(SHtml.selectObj[Option[Area]](availableOptions, Full(this.obj),
+        (p: Option[Area]) => {
+          setBox(p.map(_.id.get))
+        },
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione area transversal.."))
+    }
+
+    def availableOptions = (None -> "Ninguna") :: Area.findAll.map(s => Some(s) -> s.toString)
+  }
+
+  object transversalArea extends ObjectIdRefField(this, TransversalArea) {
+    override def optional_? = true
+
+    override def displayName = "Área transversal"
+
+    override def toString = this.obj.dmap("")(_.name.get)
+
+    val list = (None -> "Ninguna") :: TransversalArea.findAll.map(s => Some(s) -> s.toString)
+
+    override def toForm = {
+      Full(SHtml.selectObj[Option[TransversalArea]](list, Full(this.obj),
+        (p: Option[TransversalArea]) => {
+          setBox(p.map(_.id.get))
+        },
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione area transversal.."))
     }
   }
 
   object program extends ObjectIdRefField(this, Program){
     override def optional_? = true
     override def toString = Program.find(get).dmap("")(_.name.get)
-    val listProgram = Program.findAll
-    val defaultProgram= listProgram.headOption
-
+    val list = (None -> "Ninguno") :: Program.findAll.map(s => Some(s) -> s.toString)
     override def toForm = {
-      Full(SHtml.ajaxSelectElem(listProgram, defaultProgram)(p => {
-        set(p.id.get)
-        Noop
-      }))
+      Full(SHtml.selectObj[Option[Program]](list, Full(this.obj),
+        (p: Option[Program]) => {
+          setBox(p.map(_.id.get))
+        },
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione programa.."))
     }
   }
 

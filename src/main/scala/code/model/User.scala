@@ -73,8 +73,9 @@ class User private () extends MongoAuthUser[User] with ObjectIdPk[User] with Bas
   object password extends PasswordField(this, 6, 32) {
     override def displayName = "Contraseña"
     override def elem = S.fmapFunc(S.SFuncHolder(s => {
-      this.set(_)
-      this.hashIt
+      if (s != this.get) {
+        this.setBox(PasswordField.hashpw(s))
+      }
     })) {
       funcName => <input type="password" maxlength={maxLength.toString}
                          name={funcName}
@@ -366,6 +367,10 @@ object SystemUser {
       .password("asdf1234", true) // TODO: set me
       .roles(List(DefaultRoles.SuperAdmin.id.get))
       .save(true)
+  }
+
+  def resetPassword = {
+    user.password("asdf1234", true).save(true)
   }
 }
 

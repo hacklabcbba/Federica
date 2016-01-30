@@ -6,7 +6,7 @@ import com.foursquare.rogue.LiftRogue
 import net.liftweb.http.js.JsCmd
 import net.liftweb.json.JsonAST.JValue
 import LiftRogue._
-import net.liftweb.util.Helpers
+import net.liftweb.util.{CssSel, Helpers}
 import Helpers._
 import net.liftweb.http.js.JsCmds._
 
@@ -23,6 +23,18 @@ object ProgramSnippet extends SortableSnippet[Program] {
   def itemEditUrl(inst: Program): String = Site.backendProgramEdit.toLoc.calcHref(inst)
 
   override def listFields = List(meta.name, meta.responsible, meta.email)
+
+  def renderViewFrontEnd: CssSel = {
+    for {
+      programa <- Site.programa.currentValue
+    } yield {
+      "data-name=name *" #> programa.name.get &
+      "data-name=name [href]" #> Site.programa.calcHref(programa) &
+      "data-name=description *" #> programa.description.asHtml &
+      "data-name=email *" #> programa.email.get &
+      "data-name=responsible *" #> programa.responsible.obj.dmap("")(_.name.get)
+    }
+  }
 
   def updateOrderValue(json: JValue): JsCmd = {
     implicit val formats = net.liftweb.json.DefaultFormats

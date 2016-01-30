@@ -14,71 +14,13 @@
         <h2 class="visually-hidden">Menú de navegación</h2>
 
         <div data-lift="UserTopbar"></div>
-        <ul class="nav navbar-nav  navbar-left">
+        <ul class="nav navbar-nav  navbar-left" data-lift="MenuSnippetRenderer.render?name=header-white">
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                     Quiénes somos <span class="caret"></span>
                 </a>
-                <ul class="dropdown-menu submenu-black">
-                    <li><a href="#">Equipo Humano</a></li>
-                    <li><a href="#">Conexiones</a></li>
-                    <li>
-                        <a href="#" class="dropdown-toggle" >
-                            Quiénes somos <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu submenu-black">
-                            <li><a href="#">aaaaaa</a></li>
-                            <li><a href="#">vvvvvvv</a></li>
-                            <li>
-                                <a href="#" class="dropdown-toggle" >
-                                    Quiénes somos <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu submenu-black">
-                                    <li><a href="#">aaaaaa</a></li>
-                                    <li><a href="#">vvvvvvv</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
+                <ul class="dropdown-menu submenu-black" data-name="menu-item-childs">
                 </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                    Áreas <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu submenu-black">
-                    <li data-lift="MenuGenerator.areas"><a href="#">Option</a></li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                    Programas <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu submenu-black">
-                    <li data-lift="MenuGenerator.programs"><a href="#">Option</a></li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                    Principios <span class="caret"></span>
-                </a>
-            </li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                    Redes <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu submenu-black">
-                    <li data-lift="MenuGenerator.networks"><a href="#">Option</a></li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                    FONDART <span class="caret"></span></a>
-            </li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                    Apoyo <span class="caret"></span>
-                </a>
             </li>
         </ul>
 

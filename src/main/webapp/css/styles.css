@@ -337,6 +337,7 @@ body > .wrapper > header .navbar-black {
   background: #000000;
   border-bottom: 1px solid #fff;
   position: fixed;
+  z-index: 1000;
   top: 0;
   width: 100%;
 }

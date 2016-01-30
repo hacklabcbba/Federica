@@ -8,6 +8,7 @@ import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField}
 import net.liftweb.record.field.EnumNameField
+import net.liftweb.http.js.JsCmds.Noop
 
 class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] with BaseModel[Process] with SortableModel[Process]{
 
@@ -19,10 +20,6 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] w
 
   object name extends BsStringField(this, 500) {
     override def displayName = "Nombre"
-  }
-
-  object goal extends BsCkTextareaField(this, 1000) {
-    override def displayName = "Objetivo"
   }
 
   object description extends BsCkTextareaField(this, 1000) {
@@ -46,17 +43,35 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] w
   }
 
   object area extends ObjectIdRefField(this, Area) {
-    override def displayName = "Área"
     override def optional_? = true
-    override def toString = obj.dmap("")(_.name.get)
-    val listAreas = Area.findAll
+    override def displayName = "Área"
+    override def toString = {
+      this.obj.dmap("Indefinido..")(_.name.get)
+    }
     override def toForm = {
-      Full(SHtml.selectElem(
-        listAreas,
-        obj,
+      Full(SHtml.selectObj[Option[Area]](availableOptions, Full(this.obj),
+        (p: Option[Area]) => {
+          setBox(p.map(_.id.get))
+        },
         "class" -> "select2 form-control",
-        "data-placeholder" -> "Seleccione area.."
-      )(a => set(a.id.get)))
+        "data-placeholder" -> "Seleccione area transversal.."))
+    }
+
+    def availableOptions = (None -> "Ninguna") :: Area.findAll.map(s => Some(s) -> s.toString)
+  }
+
+  object transversalArea extends ObjectIdRefField(this, TransversalArea) {
+    override def optional_? = true
+    override def displayName = "Área transversal"
+    override def toString = this.obj.dmap("")(_.name.get)
+    val list = (None -> "Ninguna") :: TransversalArea.findAll.map(s => Some(s) -> s.toString)
+    override def toForm = {
+      Full(SHtml.selectObj[Option[TransversalArea]](list, Full(this.obj),
+        (p: Option[TransversalArea]) => {
+          setBox(p.map(_.id.get))
+        },
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione area transversal.."))
     }
   }
 
@@ -64,31 +79,19 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] w
     override def displayName = "Programa"
     override def optional_? = true
     override def toString = obj.dmap("")(_.name.get)
-    val listProgram = Program.findAll
+    val list = (None -> "Ninguno") :: Program.findAll.map(s => Some(s) -> s.toString)
     override def toForm = {
-      Full(SHtml.selectElem(
-        listProgram,
-        obj,
+      Full(SHtml.selectObj[Option[Program]](list, Full(this.obj),
+        (p: Option[Program]) => {
+          setBox(p.map(_.id.get))
+        },
         "class" -> "select2 form-control",
-        "data-placeholder" -> "Seleccione program.."
-      )(s => set(s.id.get)))
+        "data-placeholder" -> "Seleccione prorgrama.."))
     }
   }
 
-  object processType extends EnumNameField(this, ProcessType) {
-    override def displayName = "Tipo"
-    override def toForm =
-      Full(SHtml.selectObj[Box[ProcessType.Value]](
-        buildDisplayList,
-        Full(valueBox),
-        s => setBox(s),
-        "class" -> "select2 form-control",
-        "data-placeholder" -> "Seleccione tipo.."
-      ))
-  }
-
-  object history extends BsCkTextareaField(this, 1000) {
-    override def displayName = "Historia"
+  object url extends BsStringField(this, 500) {
+    override def displayName = "Url"
   }
 
   override def toString = name.get
@@ -96,7 +99,7 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] w
 
 object Process extends Process with RogueMetaRecord[Process] {
   override def collectionName = "main.process"
-  override def fieldOrder = List(name, processType, goal, description, area, program, administrator, history)
+  override def fieldOrder = List(name, description, area, program, administrator)
 
   def findByArea(area: Area): List[Process] = {
     Process
@@ -108,6 +111,10 @@ object Process extends Process with RogueMetaRecord[Process] {
     Process
       .where(_.program eqs program.id.get)
       .fetch()
+  }
+
+  def findByUrl(url: String): Box[Process] = {
+    Process.where(_.url eqs url).fetch(1).headOption
   }
 }
 

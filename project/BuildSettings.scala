@@ -38,7 +38,7 @@ object BuildSettings {
       (LessKeys.mini in (Compile, LessKeys.less)) := true,
 
       // closure
-      (ClosureKeys.prettyPrint in (Compile, ClosureKeys.closure)) := false,
+      (ClosureKeys.prettyPrint in (Compile, ClosureKeys.closure)) := true,
 
       // add managed resources, where less and closure publish to, to the webapp
       (webappResources in Compile) <+= (resourceManaged in Compile)

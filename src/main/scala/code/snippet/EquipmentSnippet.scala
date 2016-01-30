@@ -24,7 +24,7 @@ object EquipmentSnippet extends SortableSnippet[Equipment] {
 
   def itemEditUrl(inst: Equipment): String = Site.backendEquipmentEdit.toLoc.calcHref(inst)
 
-  override def listFields = List(meta.name, meta.cost, meta.equipmentType)
+  override def listFields = List(meta.category, meta.name, meta.cost, meta.costType, meta.equipmentType)
 
   def updateOrderValue(json: JValue): JsCmd = {
     implicit val formats = net.liftweb.json.DefaultFormats

@@ -8,9 +8,9 @@ import net.liftweb.mongodb.record.field.ObjectIdPk
 import net.liftweb.record.field.{StringField, TextareaField}
 
 
-class Principle private () extends MongoRecord[Principle] with ObjectIdPk[Principle] with SortableModel[Principle]{
+class Value private () extends MongoRecord[Value] with ObjectIdPk[Value] with SortableModel[Value]{
 
-  override def meta = Principle
+  override def meta = Value
 
   object name extends StringField(this, 500){
     override def toString = get
@@ -31,6 +31,6 @@ class Principle private () extends MongoRecord[Principle] with ObjectIdPk[Princi
   override def toString = name.get
 }
 
-object Principle extends Principle with RogueMetaRecord[Principle] {
-  override def collectionName = "main.principles"
+object Value extends Value with RogueMetaRecord[Value] {
+  override def collectionName = "main.values"
 }

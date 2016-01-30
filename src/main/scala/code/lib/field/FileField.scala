@@ -16,6 +16,8 @@ import net.liftweb.util.Helpers._
 import org.bson.types.ObjectId
 import org.joda.time.DateTime
 
+import scala.xml.NodeSeq
+
 
 class FileField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
   extends BsonRecordField(rec, FileRecord)
@@ -39,6 +41,7 @@ class FileField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
 
     S.appendJs(script)
     Full(
+      previewFile.getOrElse(NodeSeq.Empty) ++
       <div class={containerFieldId} >
         <div class={containerInputId} >
           <input class="fileupload" type="file" name="files" data-url={uploadPath} id={id} />

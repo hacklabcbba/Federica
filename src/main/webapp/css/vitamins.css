@@ -104,6 +104,10 @@ h1, h2, h3, h4, h5, h6 {
     overflow: hidden;
 }
 
+.overflow-auto {
+    overflow: auto;
+}
+
 @media (max-width:767px ){
     .display-inline-xs {
         display: inline;
@@ -187,6 +191,42 @@ h1, h2, h3, h4, h5, h6 {
     position: static;
 }
 
+.top-0 {
+    top: 0;
+}
+
+.top-xs {
+    top:15px;
+}
+
+.right-0 {
+    right: 0;
+}
+
+.right-xs {
+    right: 15px;
+}
+
+.right-sm {
+    right: 30px;
+}
+
+.right-md {
+    right: 60px;
+}
+
+.bottom-0 {
+    bottom: 0;
+}
+
+.bottom-xs {
+    bottom: 15px;
+}
+
+.left-0 {
+    left:0;
+}
+
 /*----*----*----* $FLOAT */
 
 .no-float {
@@ -202,6 +242,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /*----/----/----/ $BOX MODEL */
+
+.width-auto {
+    width: auto;
+}
+
+.height-auto {
+    height: auto;
+}
+
 .padding-xs {
     padding: 15px;
 }
@@ -1108,7 +1157,9 @@ h1, h2, h3, h4, h5, h6 {
 /*
 *----*----*----* $TEXT
 */
-
+.text-center {
+    text-align: center;
+}
 
 @media (max-width: 767px) {
     .text-left-xs {

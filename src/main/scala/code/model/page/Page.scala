@@ -28,7 +28,7 @@ class Page private () extends MongoRecord[Page] with ObjectIdPk[Page] with BaseM
     override def toString = get
   }
 
-  object body extends BsCkTextareaField(this, 1000) {
+  object body extends BsCkUnsecureTextareaField(this, 1000) {
     override def displayName = "Contenido"
   }
 

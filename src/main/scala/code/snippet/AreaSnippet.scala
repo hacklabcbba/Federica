@@ -32,18 +32,18 @@ object AreaSnippet extends SortableSnippet[Area] {
     })
   }
 
-  /*def renderViewFrontEnd: CssSel = {
+  def renderViewFrontEnd: CssSel = {
     for {
-      service <- Site.area.currentValue
+      area <- Site.area.currentValue
     } yield {
-      "data-name=image" #> service.photo.previewFile &
-        "data-name=name *" #> service.name.get &
-        "data-name=name [href]" #> Site.servicio.calcHref(service) &
-        "data-name=description *" #> service.description.asHtml &
-        "data-name=email *" #> service.email.get &
-        "data-name=responsible *" #> service.responsible.obj.dmap("")(_.name.get)
+      "data-name=image [src]" #> area.photo1.url &
+      "data-name=name *" #> area.name.get &
+      "data-name=name [href]" #> Site.area.calcHref(area) &
+      "data-name=description *" #> area.description.asHtml &
+      "data-name=email *" #> area.email.get &
+      "data-name=responsible *" #> area.responsible.obj.dmap("")(_.name.get)
     }
-  }*/
+  }
 
   def updateOrderValue(json: JValue): JsCmd = {
     implicit val formats = net.liftweb.json.DefaultFormats

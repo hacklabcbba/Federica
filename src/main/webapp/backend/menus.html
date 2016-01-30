@@ -1,0 +1,111 @@
+<div data-lift="surround?with=base-wrap-backend;at=content">
+    <div class="col-md-12" data-lift="MenuSnippet">
+        <div class="notifications margin-bottom-xs ">
+        </div>
+        <header class="page-header">
+            <h2 class="no-margin-top title-page">
+                <i class="glyphicon glyphicon-menu-right border-circle"></i> Menús
+            </h2>
+        </header>
+
+        <div class="row">
+            <div class="col-md-12">
+                Edita tu menú abajo o <a href="#" data-name="create-menu">crea un nuevo menú.</a>
+            </div>
+        </div>
+        <div class="row" data-name="menu">
+            <div class="col-md-4">
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="paginas-header">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-name="paginas" data-parent="#accordion" href="#paginas" aria-expanded="true" aria-controls="paginas">
+                                    Páginas
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="paginas" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="paginas-header">
+                            <div class="panel-body">
+                                <ul>
+                                    <li data-name="page"><input name="page" type="checkbox"> <span>pagina</span></li>
+                                </ul>
+                                <div class="col-md-12"><button data-name="add-to-menu-pages" class="pull-right btn btn-primary">Añadir al menú</button></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="enlaces-header">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-name="enlaces" data-toggle="collapse" data-parent="#accordion" href="#enlaces" aria-expanded="false" aria-controls="collapseTwo">
+                                    Enlaces personalizados
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="enlaces" class="panel-collapse collapse" role="tabpanel" aria-labelledby="enlaces-header">
+                            <div class="panel-body">
+                                <div class="col-md-5">Texto del enlace:</div><div class="col-md-7"><input name="menu-item-name" type="text"></div>
+                                <br>
+                                <br>
+                                <div class="col-md-5">URL:</div><div class="col-md-7"><input name="menu-item-url" type="text"></div>
+                                <div class="col-md-12"><button data-name="add-to-menu-custom" class="pull-right btn btn-primary">Añadir al menú</button></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            Nombre del Menú: <input type="text" name="menu-name"/>
+                            <button class="pull-right btn btn-primary" data-name="menu-save">Guardar Menú</button>
+                        </h4>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-body">
+                            <h5>Estructura del Menú</h5>
+
+                            Coloca cada elemento en el orden que prefieras. Haz click en la flecha que hay a la derecha del elemento para mostrar más opciones de configuración
+                            <ol class="list-group nested-sortable" data-name="menu-container">
+                                <li class="list-group-item" data-name="menu-item">
+                                    <div>
+                                        <span data-name="menu-item-name">Cras justo odio</span> <button data-name="remove" type="button" class="btn btn-danger pull-right"><i class="fa fa-remove"></i></button>
+                                    </div>
+                                    <br/>
+                                    <ol data-name="menu-item-childs"></ol>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <tail>
+        <script data-lift="Angular"></script>
+        <script src="/js/angular-ui/ui-bootstrap-tpls-1.0.3.min.js"></script>
+        <script data-lift="NgEventService"></script>
+        <script src="/js/EventController.js"></script>
+        <script type="text/javascript">
+            //<![CDATA[
+            var processData = function(id) {
+              return processItems($('#'+ id).nestedSortable('toHierarchy', {startDepthCount: 0}));
+            };
+            var processItems = function(array) {
+                return _.map(_.filter(array, function(item) {
+                  return item;
+                }), function(item) {
+                  var i = {};
+                  if (item.children) {
+                    i = { name: item.name, url: item.url, kind: item.kind, children: processItems(item.children) };
+                  } else {
+                    i = { name: item.name, url: item.url, kind: item.kind, children: [] };
+                  }
+                  return i;
+                });
+            }
+            //]]>
+        </script>
+
+    </tail>
+</div>

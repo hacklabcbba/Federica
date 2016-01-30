@@ -10,6 +10,7 @@ import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField}
 import LiftRogue._
+import net.liftweb.http.js.JsCmds.Noop
 
 import scala.xml.Elem
 
@@ -26,22 +27,36 @@ class BlogPost private() extends MongoRecord[BlogPost] with ObjectIdPk[BlogPost]
   }
 
   object area extends ObjectIdRefField(this, Area) {
+    override def optional_? = true
     override def displayName = "Área"
     override def toString = {
       this.obj.dmap("Indefinido..")(_.name.get)
     }
-    override def toForm: Box[Elem] = {
-      Full(
-        SHtml.selectElem(
-          availableOptions,
-          obj,
-          "class" -> "select2 form-control",
-          "data-placeholder" -> "Seleccione vategoria.."
-        )(s => set(s.id.get))
-      )
+    override def toForm = {
+      Full(SHtml.selectObj[Option[Area]](availableOptions, Full(this.obj),
+        (p: Option[Area]) => {
+          setBox(p.map(_.id.get))
+        },
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione area transversal.."))
     }
 
-    def availableOptions = Area.findAll
+    def availableOptions = (None -> "Ninguna") :: Area.findAll.map(s => Some(s) -> s.toString)
+  }
+
+  object transversalArea extends ObjectIdRefField(this, TransversalArea) {
+    override def optional_? = true
+    override def displayName = "Área transversal"
+    override def toString = this.obj.dmap("")(_.name.get)
+    val list = (None -> "Ninguna") :: TransversalArea.findAll.map(s => Some(s) -> s.toString)
+    override def toForm = {
+      Full(SHtml.selectObj[Option[TransversalArea]](list, Full(this.obj),
+        (p: Option[TransversalArea]) => {
+          setBox(p.map(_.id.get))
+        },
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione area transversal.."))
+    }
   }
 
   object date extends DatePickerField(this) {

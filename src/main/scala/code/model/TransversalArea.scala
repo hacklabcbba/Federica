@@ -13,13 +13,13 @@ import net.liftweb.util.FieldError
 import scala.xml.{Text, Elem}
 
 
-class Area private () extends MongoRecord[Area] with ObjectIdPk[Area] with BaseModel[Area] with SortableModel[Area] {
+class TransversalArea private () extends MongoRecord[TransversalArea] with ObjectIdPk[TransversalArea] with BaseModel[TransversalArea] with SortableModel[TransversalArea] {
 
-  override def meta = Area
+  override def meta = TransversalArea
 
   def title = "Área"
 
-  def entityListUrl = Site.backendAreas.menu.loc.calcDefaultHref
+  def entityListUrl = Site.backendTransversableAreas.menu.loc.calcDefaultHref
 
   object name extends BsStringField(this, 500) {
     override def displayName = "Nombre"
@@ -96,43 +96,15 @@ class Area private () extends MongoRecord[Area] with ObjectIdPk[Area] with BaseM
 
 }
 
-object Area extends Area with RogueMetaRecord[Area] {
-  override def collectionName = "main.areas"
+object TransversalArea extends TransversalArea with RogueMetaRecord[TransversalArea] {
+  override def collectionName = "main.transversal_areas"
   override def fieldOrder = List(name, responsible, email, phone, code, photo1, photo2, description, officeHoursBegins, officeHoursEnds)
 
-  def findAllPublished: List[Area] = {
-    Area.where(_.isPublished eqs true).fetch()
+  def findAllPublished: List[TransversalArea] = {
+    TransversalArea.where(_.isPublished eqs true).fetch()
   }
 
-  def findByUrl(url: String): Box[Area] = {
-    Area.where(_.url eqs url).fetch(1).headOption
-  }
-}
-
-class OfficeHours extends BsonRecord[OfficeHours] {
-  def meta = OfficeHours
-
-  object hours extends IntField(this) {
-    override def displayName = "Hora"
-    override def validations =
-      valHour("La hora debe estar entre 0 y 23") _ ::
-        super.validations
-    def valHour(msg: => String)(value: Int): List[FieldError] = {
-      if (value >= 0 && value < 24) Nil
-      else List(FieldError(this, Text(msg)))
-    }
-  }
-
-  object minutes extends IntField(this) {
-    override def displayName = "Minutos"
-    override def validations =
-      valMinute("El minuto debe estar entre 0 y 59") _ ::
-        super.validations
-    def valMinute(msg: => String)(value: Int): List[FieldError] = {
-      if (value >= 0 && value < 59) Nil
-      else List(FieldError(this, Text(msg)))
-    }
+  def findByUrl(url: String): Box[TransversalArea] = {
+    TransversalArea.where(_.url eqs url).fetch(1).headOption
   }
 }
-
-object OfficeHours extends OfficeHours with BsonMetaRecord[OfficeHours]

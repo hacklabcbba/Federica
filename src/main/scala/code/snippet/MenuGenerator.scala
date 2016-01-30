@@ -24,7 +24,7 @@ object MenuGenerator extends SnippetHelper {
           }
 
           <li class="dropdown">
-            <a href={Site.area.calcHref(area)} class="dropdown-toggle" data-toggle="dropdown">{area.name.get} <b class="caret"></b></a>
+            <a href={Site.area.calcHref(area)} class="dropdown-toggle">{area.name.get}</a>
             <ul class="dropdown-menu">{ dropdown }</ul>
           </li>
         }
@@ -46,7 +46,7 @@ object MenuGenerator extends SnippetHelper {
           }
 
           <li class="dropdown">
-            <a href={Site.programa.calcHref(program)} class="dropdown-toggle" data-toggle="dropdown">{program.name.get} <b class="caret"></b></a>
+            <a href={Site.programa.calcHref(program)} class="dropdown-toggle">{program.name.get}</a>
             <ul class="dropdown-menu">{ dropdown }</ul>
           </li>
         }

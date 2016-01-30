@@ -61,6 +61,10 @@ class Program private () extends MongoRecord[Program] with ObjectIdPk[Program] w
     override def displayName = "Descripción"
   }
 
+  object url extends BsStringField(this, 500) {
+    override def displayName = "Url"
+  }
+
   override def toString = name.get
 }
 
@@ -70,5 +74,9 @@ object Program extends Program with RogueMetaRecord[Program] {
 
   def findAllPublished: List[Program] = {
     Program.findAll
+  }
+
+  def findByUrl(url: String): Box[Program] = {
+    Program.where(_.url eqs url).fetch(1).headOption
   }
 }

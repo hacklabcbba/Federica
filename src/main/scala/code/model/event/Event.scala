@@ -88,32 +88,48 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
   }
 
   object area extends ObjectIdRefField(this, Area) {
-
+    override def optional_? = true
     override def displayName = "Área"
-    override def toString = this.obj.dmap("")(_.name.get)
-    val list = Area.findAll
-    val default = list.headOption
+    override def toString = {
+      this.obj.dmap("Indefinido..")(_.name.get)
+    }
     override def toForm = {
-      Full(SHtml.ajaxSelectElem(list, default,
+      Full(SHtml.selectObj[Option[Area]](availableOptions, Full(this.obj),
+        (p: Option[Area]) => {
+          setBox(p.map(_.id.get))
+        },
         "class" -> "select2 form-control",
-        "data-placeholder" -> "Seleccione area..")(p => {
-          set(p.id.get)
-          Noop
-      }))
+        "data-placeholder" -> "Seleccione area transversal.."))
+    }
+
+    def availableOptions = (None -> "Ninguna") :: Area.findAll.map(s => Some(s) -> s.toString)
+  }
+
+  object transversalArea extends ObjectIdRefField(this, TransversalArea) {
+    override def optional_? = true
+    override def displayName = "Área transversal"
+    override def toString = this.obj.dmap("")(_.name.get)
+    val list = (None -> "Ninguna") :: TransversalArea.findAll.map(s => Some(s) -> s.toString)
+    override def toForm = {
+      Full(SHtml.selectObj[Option[TransversalArea]](list, Full(this.obj),
+        (p: Option[TransversalArea]) => {
+          setBox(p.map(_.id.get))
+        },
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione area transversal.."))
     }
   }
 
   object process extends ObjectIdRefField(this, Process) {
     override def displayName = "Proceso"
-    val list = Process.findAll
-    val default = list.headOption
+    val list = (None -> "Ninguno") :: Process.findAll.map(s => Some(s) -> s.toString)
     override def toForm = {
-      Full(SHtml.ajaxSelectElem(list, default,
+      Full(SHtml.selectObj[Option[Process]](list, Full(this.obj),
+        (p: Option[Process]) => {
+          setBox(p.map(_.id.get))
+        },
         "class" -> "select2 form-control",
-        "data-placeholder" -> "Seleccione un proceso..")(p => {
-        set(p.id.get)
-        Noop
-      }))
+        "data-placeholder" -> "Seleccione proceso.."))
     }
   }
 
@@ -138,15 +154,14 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
     override def displayName = "Unidad productiva"
     override def optional_? = true
     override def toString = this.obj.dmap("")(_.name.get)
-    val list = ProductiveUnit.findAll
-    val default = list.headOption
+    val list = (None -> "Ninguno") :: ProductiveUnit.findAll.map(s => Some(s) -> s.toString)
     override def toForm = {
-      Full(SHtml.ajaxSelectElem(list, default,
+      Full(SHtml.selectObj[Option[ProductiveUnit]](list, Full(this.obj),
+        (p: Option[ProductiveUnit]) => {
+          setBox(p.map(_.id.get))
+        },
         "class" -> "select2 form-control",
-        "data-placeholder" -> "Seleccione unidad productiva..")(p => {
-        set(p.id.get)
-        Noop
-      }))
+        "data-placeholder" -> "Seleccione unidad productiva.."))
     }
   }
 
