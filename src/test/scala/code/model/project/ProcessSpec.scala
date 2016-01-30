@@ -44,12 +44,6 @@ class ProcessSpec extends BaseMongoSessionWordSpec {
         .createRecord
         .description("Include information about recent international progress in the field of the research, and the " +
           "relationship of this proposal to work in the field generally")
-        .goal("Link phases of the research plan/approach with the anticipated timeline")
-        .history("The Joint Centre for History and Economics is delighted to announce the History Project, an initiative" +
-          "supported by the Institute for New Economic Thinking, with the object of encouraging a new generation of " +
-          "historians of the economy and economic life. At a time when the need for historical understanding of large-scale" +
-          "economic changes is extraordinarily great, the Project seeks to provide support for young historians who are " +
-          "interested in economic history, the history of economic thought, and political and cultural histories of economic life. ")
         .name("Big History Project")
 
       val errsProcess = process.validate
