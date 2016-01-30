@@ -872,9 +872,24 @@ body .content .main-content + .side > section:first-child h3 {
 .convocations-page .convocation {
   margin-bottom: 30px;
   border-right: 1px solid #ccc;
+  height: 315px;
 }
 .convocations-page .convocation:nth-child(4n+0) {
   border-right: none;
+}
+.convocations-page .convocation > header h3 {
+  max-height: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.convocations-page .convocation .btn {
+  position: absolute;
+  bottom: 0;
+}
+.convocations-page .convocation .description {
+  max-height: 153px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .convocations-page .convocation .convocation-date .ico {
   font-size: 25px;

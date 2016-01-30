@@ -942,8 +942,23 @@ body > .wrapper > header {
  .convocation {
   margin-bottom: 30px;
   border-right: 1px solid #ccc;
+  height: 315px;
   &:nth-child(4n+0){
    border-right: none;
+  }
+  > header h3 {
+   max-height: 80px;
+   overflow: hidden;
+   text-overflow: ellipsis;
+  }
+  .btn {
+   position: absolute;
+   bottom: 0;
+  }
+  .description {
+   max-height: 153px;
+   overflow: hidden;
+   text-overflow: ellipsis;
   }
   .convocation-date {
    .ico {
