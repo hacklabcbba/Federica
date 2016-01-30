@@ -605,6 +605,9 @@ body h5,
 body h6 {
   font-weight: normal;
 }
+body .ui-sortable-handle:hover {
+  cursor: grab;
+}
 body.backend {
   padding-bottom: 40px;
 }
@@ -1013,6 +1016,11 @@ body .content .main-content + .side > section:first-child h3 {
   margin-bottom: 20px;
 }
 /*----/----/ $BACKEND */
+.backend .option-secction {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  margin-left: 20px;
+}
 .backend .btn.black:hover {
   color: #fff;
 }
