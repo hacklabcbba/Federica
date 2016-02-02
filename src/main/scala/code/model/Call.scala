@@ -8,7 +8,7 @@ import net.liftweb.common.Full
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb
 import net.liftweb.mongodb.record.MongoRecord
-import net.liftweb.mongodb.record.field.ObjectIdPk
+import net.liftweb.mongodb.record.field.{ObjectIdRefField, ObjectIdPk}
 import net.liftweb.record.field.{StringField, TextareaField}
 import com.foursquare.rogue._
 import org.joda.time.{DateTime, DateTimeZone}
@@ -44,6 +44,39 @@ class Call private () extends MongoRecord[Call] with ObjectIdPk[Call] with BaseM
 
   object deadline extends DatePickerField(this) {
     override def displayName = "Plazo"
+  }
+
+  object area extends ObjectIdRefField(this, Area) {
+    override def optional_? = true
+    override def displayName = "Área"
+    override def toString = {
+      this.obj.dmap("Indefinido..")(_.name.get)
+    }
+    override def toForm = {
+      Full(SHtml.selectObj[Option[Area]](availableOptions, Full(this.obj),
+        (p: Option[Area]) => {
+          setBox(p.map(_.id.get))
+        },
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione area transversal.."))
+    }
+
+    def availableOptions = (None -> "Ninguna") :: Area.findAll.map(s => Some(s) -> s.toString)
+  }
+
+  object program extends ObjectIdRefField(this, Program) {
+    override def displayName = "Programa"
+    override def optional_? = true
+    override def toString = obj.dmap("")(_.name.get)
+    val list = (None -> "Ninguno") :: Program.findAll.map(s => Some(s) -> s.toString)
+    override def toForm = {
+      Full(SHtml.selectObj[Option[Program]](list, Full(this.obj),
+        (p: Option[Program]) => {
+          setBox(p.map(_.id.get))
+        },
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione prorgrama.."))
+    }
   }
 
   override def toString = name.get
