@@ -30,10 +30,10 @@ object Dependencies {
   val liftFoBo = "net.liftmodules" %% "fobo_2.6"    % "1.4"
 
   // Rogue
-  val rogueField      = "com.foursquare" %% "rogue-field"         % "2.4.0" intransitive()
-  val rogueCore       = "com.foursquare" %% "rogue-core"          % "2.4.0" intransitive()
-  val rogueLift       = "com.foursquare" %% "rogue-lift"          % "2.4.0" intransitive()
-  val rogueIndex      = "com.foursquare" %% "rogue-index"         % "2.4.0" intransitive()
+  val rogueField = "com.foursquare" %% "rogue-field" % "2.5.0" intransitive()
+  val rogueCore = "com.foursquare" %% "rogue-core" % "2.5.1" intransitive()
+  val rogueLift = "com.foursquare" %% "rogue-lift" % "2.5.1" intransitive()
+  val rogueIndex = "com.foursquare" %% "rogue-index" % "2.5.1" intransitive()
 
   // Jetty
   val jettyWebapp = "org.eclipse.jetty" % "jetty-webapp" % Ver.jetty
