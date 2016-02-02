@@ -46,19 +46,45 @@
                             <div class="panel panel-primary">
                                 <div class="panel-heading"><h3 class="panel-title">{{room.code}}</h3></div>
                                 <div class="panel-body">
-                                    <div class="col-sm-12 col-lg-4">
+                                    <div class="col-sm-12 col-lg-2">
                                         {{room.name}}
                                     </div>
-                                    <div class="col-sm-12 col-lg-8">
+                                    <div class="col-sm-12 col-lg-5">
+                                        <input type="radio" name="reservation-kind-{{room._id}}" ng-model="room.bookingKind" value="Single"> Dias sueltos<br>
+                                        <input type="radio" name="reservation-kind-{{room._id}}" ng-model="room.bookingKind" value="Period"> Dias continuos (ej: exposiciones)<br>
+                                        <input type="radio" name="reservation-kind-{{room._id}}" ng-model="room.bookingKind" value="Different"> Dias discontinuos en un intervalo (ej: todos los martes del mes)<br>
+                                    </div>
+                                    <div class="col-sm-12 col-lg-5" ng-show="room.bookingKind == 'Period'">
+                                        <label>Fecha de inicio:</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </div>
+                                        <label>Fecha de conclusión:</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Turno</label>
+                                            <select class="form-control">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-lg-5" ng-show="room.bookingKind == 'Single'">
                                         <form class="form-inline">
                                             <div ng-repeat="date in room.dates">
                                                 <div class="input-group">
                                                     <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
-              <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
-              </span>
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
                                                 </div>
-                                                <div class="form-group" ng-show="room.isBookableShift">
+                                                <div class="form-group">
                                                     <label>Turno</label>
                                                     <select class="form-control">
                                                     </select>
@@ -69,6 +95,32 @@
                                                 <button ng-click="addDate(room)" class="btn btn-primary pull-right"><i class="fa fa-plus"></i></button>
                                             </div>
                                         </form>
+                                    </div>
+                                    <div class="col-sm-12 col-lg-5" ng-show="room.bookingKind == 'Different'">
+                                        <label>Fecha de inicio:</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </div>
+                                        <label>Fecha de conclusión:</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Seleccione los dias</label>
+                                            <input type="checkbox"> Lunes <input type="checkbox"> Martes <input type="checkbox"> Miercoles <input type="checkbox"> Jueves
+                                            <input type="checkbox"> Viernes <input type="checkbox"> Sabado <input type="checkbox"> Domingo
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Turno</label>
+                                            <select class="form-control">
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
