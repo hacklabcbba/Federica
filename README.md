@@ -1,4 +1,5 @@
 FEDERICA
+--------
 
 Plataforma (CMS libre) pensada y creada para que cualquier organización, colectivo o institución pueda contar con una herramienta eficaz para la optimización de su trabajo en el día a día. A través de Federica puedes gestionar tanto tus capitales humanos, físicos y simbólicos a través de un sencillo sistema web en el que hacer que la participación sea de la manera más fluida posible.
 
