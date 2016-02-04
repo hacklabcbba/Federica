@@ -322,7 +322,10 @@ class Room private() extends Resource[Room] {
 object Room extends Room with RogueMetaRecord[Room] {
   override def collectionName = "resource.resources"
 
-  override def fieldOrder = List(code, name, photo1, photo2)
+  override def fieldOrder = List(
+    code, name, photo1, photo2, isBookable,
+    isBookableShift, capacity, order, plane,
+    location, description, areasCost, programsCost)
 
   def findAllBookeableEnabled: List[Room] = {
     Room
