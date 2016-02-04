@@ -213,7 +213,7 @@ class User private () extends MongoAuthUser[User] with ObjectIdPk[User] with Bas
   }
 
   def profileScreenFields = new FieldContainer {
-    def allFields = List(name, location, bio)
+    def allFields = List(username, email, locale, timezone, name, location, bio)
   }
 
   def registerScreenFields = new FieldContainer {

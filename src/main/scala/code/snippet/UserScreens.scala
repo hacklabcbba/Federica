@@ -45,22 +45,22 @@ sealed trait BasePasswordScreen {
   def pwdMaxLength: Int = 32
 
   val passwordField = password(pwdName, "", trim,
-    valMinLen(pwdMinLength, "Password must be at least "+pwdMinLength+" characters"),
-    valMaxLen(pwdMaxLength, "Password must be "+pwdMaxLength+" characters or less"),
+    valMinLen(pwdMinLength, "La contraseña debe contener por lo menos "+pwdMinLength+" caracteres"),
+    valMaxLen(pwdMaxLength, "La contraseña debe tener menos de "+pwdMaxLength+" caracteres"),
     "tabindex" -> "1"
   )
-  val confirmPasswordField = password("Confirm Password", "", trim, "tabindex" -> "1")
+  val confirmPasswordField = password("Confirmar contraseña", "", trim, "tabindex" -> "1")
 
   def passwordsMustMatch(): Errors = {
     if (passwordField.is != confirmPasswordField.is)
-      List(FieldError(confirmPasswordField, "Passwords must match"))
+      List(FieldError(confirmPasswordField, "Las contraseñas deben coincidir"))
     else Nil
   }
 }
 
 
 object PasswordScreen extends BaseCurrentUserScreen with BasePasswordScreen {
-  override def pwdName = "New Password"
+  override def pwdName = "Nueva contraseña"
   override def validations = passwordsMustMatch _ :: super.validations
 
   def finish() {
@@ -69,7 +69,7 @@ object PasswordScreen extends BaseCurrentUserScreen with BasePasswordScreen {
     userVar.is.saveBox match {
       case Empty => S.warning("Empty save")
       case Failure(msg, _, _) => S.error(msg)
-      case Full(_) => S.notice("New password saved")
+      case Full(_) => S.notice("Nueva contraseña guardada")
     }
   }
 }
