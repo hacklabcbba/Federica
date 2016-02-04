@@ -1,6 +1,7 @@
 package code
 package snippet
 
+import code.lib.js.Bootstrap
 import code.lib.{SortableModel, BaseModel}
 import net.liftmodules.extras.SnippetHelper
 import net.liftweb.common.{Box, Failure, Full}
@@ -44,7 +45,7 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
         "type=checkbox" #> SHtml.ajaxCheckbox(false, s => selectItem(s, item)) &
         "data-name=column-data *" #> listFields.map(field => item.fieldByName(field.name).dmap("")(_.toString)) &
         "data-name=edit-item [href]" #> itemEditUrl(item) &
-        "data-name=remove-item [onclick]" #> SHtml.ajaxInvoke(() => deleteItemJsCmd(item))
+        "data-name=remove-item [onclick]" #> SHtml.ajaxInvoke(() => deleteItemModalJsCmd(item))
       })
     }.apply(template)
   }
@@ -66,6 +67,28 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
       case _ =>
         S.error("Error desconocido")
     }
+  }
+
+  def deleteItemModalJsCmd(inst: BaseRecord): JsCmd = {
+    Bootstrap.Modal(
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Eliminar</h4>
+          </div>
+          <div class="modal-body">
+            ¿Estas seguro de elimar este item?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" onclick={SHtml.ajaxInvoke(() => {
+              deleteItemJsCmd(inst)
+            })._2.toJsCmd}>Si</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   def deleteItemJsCmd(item: BaseRecord): JsCmd = {
