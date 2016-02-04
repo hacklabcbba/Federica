@@ -21,8 +21,16 @@ sealed trait BaseCurrentUserScreen extends BaseScreen {
   object userVar extends ScreenVar(User.currentUser.openOr(User.createRecord))
 
   override def localSetup {
-    Referer(Site.account.url)
+    Referer(Site.editProfile.url)
   }
+
+  override def cancelButton: Elem = <button class="btn btn-danger">
+    {S.?("Cancelar")}
+  </button>
+
+  override def finishButton: Elem = <button class="btn btn-success">
+    {S.?("Actualizar")}
+  </button>
 }
 
 object AccountScreen extends BaseCurrentUserScreen {
