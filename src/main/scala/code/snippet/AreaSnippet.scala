@@ -22,7 +22,7 @@ object AreaSnippet extends SortableSnippet[Area] {
 
   def itemEditUrl(inst: Area): String = Site.backendAreaEdit.toLoc.calcHref(inst)
 
-  override def listFields = List(meta.name, meta.responsible, meta.email)
+  override def listFields = List(meta.name, meta.responsible, meta.email, meta.url)
 
   def renderFrontEnd: CssSel = {
     "data-name=area" #> meta.findAll.map(area => {

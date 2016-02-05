@@ -44,6 +44,10 @@ class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] w
     override def displayName = "Alcance"
   }
 
+  object url extends BsStringField(this, 500) {
+    override def displayName = "Url"
+  }
+
 }
 
 object Network extends Network with RogueMetaRecord[Network] {
@@ -56,6 +60,10 @@ object Network extends Network with RogueMetaRecord[Network] {
     val res = super.find(s)
     println("RES:" + res)
     res
+  }
+
+  def findByUrl(url: String): Box[Network] = {
+    Network.where(_.url eqs url).fetch(1).headOption
   }
 }
 
