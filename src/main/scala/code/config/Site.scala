@@ -251,8 +251,8 @@ object Site extends Locs {
 
   val red =  Menu.param[Network](
     "Ver red", "Ver red",
-    Network.find,
-    s => s.id.get.toString) / "red" / * >>
+    Network.findByUrl,
+    s => s.url.get.toString) / "red" / * >>
     TemplateBox(() => Templates("red" :: Nil)) >>
     Hidden
 
