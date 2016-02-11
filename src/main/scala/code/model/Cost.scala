@@ -21,11 +21,11 @@ class Cost extends BsonRecord[Cost] {
     override def optional_? = true
   }
 
-  object costCSPrivate extends BsDoubleField(this, 0.0) {
+  object costCSAreaCoord extends BsDoubleField(this, 0.0) {
     override def displayName = "C.S"
   }
 
-  object costSSPrivate extends BsDoubleField(this, 0.0) {
+  object costSSAreaCoord extends BsDoubleField(this, 0.0) {
     override def displayName = "S.S"
   }
 
@@ -42,6 +42,14 @@ class Cost extends BsonRecord[Cost] {
   }
 
   object costSSAssociate extends BsDoubleField(this, 0.0) {
+    override def displayName = "S.S"
+  }
+
+  object costCSNewArtist extends BsDoubleField(this, 0.0) {
+    override def displayName = "C.S"
+  }
+
+  object costSSNewArtist extends BsDoubleField(this, 0.0) {
     override def displayName = "S.S"
   }
 
@@ -66,6 +74,14 @@ class Cost extends BsonRecord[Cost] {
   }
 
   object costSSInst2 extends BsDoubleField(this, 0.0) {
+    override def displayName = "S.S"
+  }
+
+  object costCSInst3 extends BsDoubleField(this, 0.0) {
+    override def displayName = "C.S"
+  }
+
+  object costSSInst3 extends BsDoubleField(this, 0.0) {
     override def displayName = "S.S"
   }
 
