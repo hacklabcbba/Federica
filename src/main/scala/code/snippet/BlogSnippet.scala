@@ -62,7 +62,10 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
       "data-name=title [href]" #> Site.entradaBlog.calcHref(post) &
       "data-name=content *" #> post.content.asHtmlCutted(200)
     }) &
-    "data-name=all-categories [href]" #> Site.blog.fullUrl &
+    "data-name=all-categories" #> {
+      "li [class+]" #> (if (category.isEmpty) "active" else "") &
+      "a [href]" #> Site.blog.fullUrl
+    } &
     "data-name=categories" #> meta.findCategories.map(cat => {
       "li [class+]" #> (if (category === cat) "active" else "") &
       "a [href]" #> s"${Site.blog.fullUrl}?category=$cat" &
