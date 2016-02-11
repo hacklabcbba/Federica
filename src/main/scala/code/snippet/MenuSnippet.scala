@@ -2,7 +2,7 @@ package code
 package snippet
 
 import code.config.Site
-import code.model.Page
+import code.model._
 import code.model.network.Network
 import code.model.page.{MenuItemKind, MenuItem, Menu}
 import com.foursquare.rogue.LiftRogue
@@ -51,6 +51,14 @@ object MenuSnippet extends SnippetHelper {
 
   def render: CssSel = {
     val pages = Page.findAll
+    val areas = Area.findAll
+    val transversalAreas = TransversalArea.findAll
+    val programs = Program.findAll
+    val processes = Process.findAll
+    val actionLines = ActionLine.findAll
+    val values = Value.findAll
+    val services = Service.findAll
+
     "*" #> SHtml.idMemoize(mainBody => {
       "data-name=create-menu [onclick]" #> SHtml.ajaxInvoke(() => addMenu(mainBody)) &
       "data-name=menu" #> menusRequestVar.get.map(menu => {
@@ -84,12 +92,42 @@ object MenuSnippet extends SnippetHelper {
           var externalMenuItemName = ""
           var externalMenuItemUrl = ""
           var selectedPages: List[Page] = Nil
+          var selectedAreas: List[Area] = Nil
+          var selectedPrograms: List[Program] = Nil
+          var selectedTransversalAreas: List[TransversalArea] = Nil
+          var selectedProcess: List[Process] = Nil
+          var selectedActionLines: List[ActionLine] = Nil
+          var selectedValues: List[Value] = Nil
+          var selectedServices: List[Service] = Nil
+
           def menuItems = menu.menuItems.get
+
           "#enlaces-header [id+]" #> menuContainerId &
           "#accordion [id+]" #> menuContainerId &
           "data-name=paginas [data-parent+]" #> menuContainerId &
           "data-name=paginas [href+]" #> menuContainerId &
           "#paginas [id+]" #> menuContainerId &
+          "data-name=areas [data-parent+]" #> menuContainerId &
+          "data-name=areas [href+]" #> menuContainerId &
+          "#areas [id+]" #> menuContainerId &
+          "data-name=programs [data-parent+]" #> menuContainerId &
+          "data-name=programs [href+]" #> menuContainerId &
+          "#programs [id+]" #> menuContainerId &
+          "data-name=transversalareas [data-parent+]" #> menuContainerId &
+          "data-name=transversalareas [href+]" #> menuContainerId &
+          "#transversalareas [id+]" #> menuContainerId &
+          "data-name=processes [data-parent+]" #> menuContainerId &
+          "data-name=processes [href+]" #> menuContainerId &
+          "#processes [id+]" #> menuContainerId &
+          "data-name=actionlines [data-parent+]" #> menuContainerId &
+          "data-name=actionlines [href+]" #> menuContainerId &
+          "#actionlines [id+]" #> menuContainerId &
+          "data-name=values [data-parent+]" #> menuContainerId &
+          "data-name=values [href+]" #> menuContainerId &
+          "#values [id+]" #> menuContainerId &
+          "data-name=services [data-parent+]" #> menuContainerId &
+          "data-name=services [href+]" #> menuContainerId &
+          "#services [id+]" #> menuContainerId &
           "data-name=enlaces [data-parent+]" #> menuContainerId &
           "data-name=enlaces [href+]" #> menuContainerId &
           "#enlaces [id+]" #> menuContainerId &
@@ -107,6 +145,132 @@ object MenuSnippet extends SnippetHelper {
                 .name(page.name.get)
                 .url(Site.pagina.calcHref(page))
                 .kind(MenuItemKind.Page)
+              menu.menuItems.set(menu.menuItems.get ++ List(menuItem))
+            })
+            menuBody.setHtml() & sorteableScript
+          }) &
+          "data-name=area" #> areas.map(area => {
+            "type=checkbox" #> SHtml.ajaxCheckbox(false, value => value match {
+              case true => selectedAreas = selectedAreas ++ List(area)
+              case false => selectedAreas = selectedAreas.filter(_.id.get != area.id.get)
+            }) &
+              "span" #> area.name.get
+          }) &
+          "data-name=add-to-menu-areas [onclick]" #> SHtml.ajaxInvoke(() => {
+            selectedAreas.foreach(area => {
+              val menuItem = MenuItem
+                .createRecord
+                .name(area.name.get)
+                .url(Site.area.calcHref(area))
+                .kind(MenuItemKind.Area)
+              menu.menuItems.set(menu.menuItems.get ++ List(menuItem))
+            })
+            menuBody.setHtml() & sorteableScript
+          }) &
+          "data-name=program" #> programs.map(program => {
+            "type=checkbox" #> SHtml.ajaxCheckbox(false, value => value match {
+              case true => selectedPrograms = selectedPrograms ++ List(program)
+              case false => selectedPrograms = selectedPrograms.filter(_.id.get != program.id.get)
+            }) &
+              "span" #> program.name.get
+          }) &
+          "data-name=add-to-menu-programs [onclick]" #> SHtml.ajaxInvoke(() => {
+            selectedPrograms.foreach(program => {
+              val menuItem = MenuItem
+                .createRecord
+                .name(program.name.get)
+                .url(Site.programa.calcHref(program))
+                .kind(MenuItemKind.Program)
+              menu.menuItems.set(menu.menuItems.get ++ List(menuItem))
+            })
+            menuBody.setHtml() & sorteableScript
+          }) &
+          "data-name=transversalarea" #> transversalAreas.map(ta => {
+            "type=checkbox" #> SHtml.ajaxCheckbox(false, value => value match {
+              case true => selectedTransversalAreas = selectedTransversalAreas ++ List(ta)
+              case false => selectedTransversalAreas = selectedTransversalAreas.filter(_.id.get != ta.id.get)
+            }) &
+              "span" #> ta.name.get
+          }) &
+          "data-name=add-to-menu-transversalareas [onclick]" #> SHtml.ajaxInvoke(() => {
+            selectedTransversalAreas.foreach(ta => {
+              val menuItem = MenuItem
+                .createRecord
+                .name(ta.name.get)
+                .url(Site.areaTransversal.calcHref(ta))
+                .kind(MenuItemKind.TransversalArea)
+              menu.menuItems.set(menu.menuItems.get ++ List(menuItem))
+            })
+            menuBody.setHtml() & sorteableScript
+          }) &
+          "data-name=process" #> processes.map(process => {
+            "type=checkbox" #> SHtml.ajaxCheckbox(false, value => value match {
+              case true => selectedProcess = selectedProcess ++ List(process)
+              case false => selectedProcess = selectedProcess.filter(_.id.get != process.id.get)
+            }) &
+              "span" #> process.name.get
+          }) &
+          "data-name=add-to-menu-processes [onclick]" #> SHtml.ajaxInvoke(() => {
+            selectedProcess.foreach(ps => {
+              val menuItem = MenuItem
+                .createRecord
+                .name(ps.name.get)
+                .url(Site.proceso.calcHref(ps))
+                .kind(MenuItemKind.Process)
+              menu.menuItems.set(menu.menuItems.get ++ List(menuItem))
+            })
+            menuBody.setHtml() & sorteableScript
+          }) &
+          "data-name=actionline" #> actionLines.map(al => {
+            "type=checkbox" #> SHtml.ajaxCheckbox(false, value => value match {
+              case true => selectedActionLines = selectedActionLines ++ List(al)
+              case false => selectedActionLines = selectedActionLines.filter(_.id.get != al.id.get)
+            }) &
+              "span" #> al.name.get
+          }) &
+          "data-name=add-to-menu-actionline [onclick]" #> SHtml.ajaxInvoke(() => {
+            selectedActionLines.foreach(al => {
+              val menuItem = MenuItem
+                .createRecord
+                .name(al.name.get)
+                .url(Site.lineaDeAccion.calcHref(al))
+                .kind(MenuItemKind.ActionLine)
+              menu.menuItems.set(menu.menuItems.get ++ List(menuItem))
+            })
+            menuBody.setHtml() & sorteableScript
+          }) &
+          "data-name=value" #> values.map(v => {
+            "type=checkbox" #> SHtml.ajaxCheckbox(false, value => value match {
+              case true => selectedValues = selectedValues ++ List(v)
+              case false => selectedValues = selectedValues.filter(_.id.get != v.id.get)
+            }) &
+              "span" #> v.name.get
+          }) &
+          "data-name=add-to-menu-values [onclick]" #> SHtml.ajaxInvoke(() => {
+            selectedValues.foreach(value=> {
+              val menuItem = MenuItem
+                .createRecord
+                .name(value.name.get)
+                //.url(Site.principios.calcHref(value))
+                .kind(MenuItemKind.ValueKind)
+              menu.menuItems.set(menu.menuItems.get ++ List(menuItem))
+            })
+            menuBody.setHtml() & sorteableScript
+          }) &
+          "data-name=service" #> services.map(service => {
+            "type=checkbox" #> SHtml.ajaxCheckbox(false, value => value match {
+              case true => selectedServices = selectedServices ++ List(service)
+              case false => selectedServices = selectedServices.filter(_.id.get != service.id.get)
+            }) &
+              "span" #> service.name.get
+          }) &
+          "data-name=add-to-menu-services [onclick]" #> SHtml.ajaxInvoke(() => {
+            selectedServices.foreach(service => {
+              val menuItem = MenuItem
+                .createRecord
+                .name(service.name.get)
+                .url(Site.servicio.calcHref(service))
+                .kind(MenuItemKind.Service)
               menu.menuItems.set(menu.menuItems.get ++ List(menuItem))
             })
             menuBody.setHtml() & sorteableScript

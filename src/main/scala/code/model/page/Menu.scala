@@ -71,4 +71,11 @@ object MenuItemKind extends Enumeration {
   type MenuItemKind = Value
   val Page = Value(1, "Página")
   val Custom = Value(2, "Personalizado")
+  val Program = Value(3, "Programa")
+  val Process = Value(4, "Proceso")
+  val ValueKind = Value(5, "Principio")
+  val TransversalArea = Value(6, "Area transversal")
+  val Service = Value(7, "Servicio")
+  val Area = Value(8, "Area")
+  val ActionLine = Value(9, "Linea de acción")
 }
