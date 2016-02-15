@@ -10,6 +10,7 @@ import net.liftweb.http.js.{HtmlFixer, JsCmd}
 import net.liftweb.http.{IdMemoizeTransform, S, SHtml}
 import net.liftweb.mongodb.record.field.{BsonRecordListField, ObjectIdPk, ObjectIdRefField}
 import net.liftweb.mongodb.record.{BsonMetaRecord, BsonRecord, MongoRecord}
+import net.liftweb.record.field.EnumField
 import net.liftweb.util.Helpers._
 
 import scala.xml.{Elem, Text}
@@ -51,6 +52,11 @@ class Service private () extends MongoRecord[Service] with ObjectIdPk[Service] w
 
   object email extends BsEmailField(this, 100) {
     override def displayName = "Correo eléctronico"
+  }
+
+  object serviceType extends EnumField(this, ServiceType)  {
+    override def shouldDisplay_? = true
+    override def displayName = "Tipo"
   }
 
   object photo extends FileField(this) {
@@ -145,6 +151,14 @@ class Service private () extends MongoRecord[Service] with ObjectIdPk[Service] w
 object Service extends Service with RogueMetaRecord[Service] {
   override def collectionName = "main.services"
   override def fieldOrder = List(name, description, responsible, photo, email)
+
+  def findAllUPIs: List[Service] = {
+    Service.where(_.serviceType eqs ServiceType.UPI).fetch()
+  }
+
+  def findAllUPAs: List[Service] = {
+    Service.where(_.serviceType eqs ServiceType.UPA).fetch()
+  }
 }
 
 
@@ -160,3 +174,9 @@ class PreviousWork extends BsonRecord[PreviousWork] {
 }
 
 object PreviousWork extends PreviousWork with BsonMetaRecord[PreviousWork]
+
+object ServiceType extends Enumeration {
+  type ServiceType = Value
+  val UPI = Value(1, "UPI")
+  val UPA = Value(2, "UPA")
+}
