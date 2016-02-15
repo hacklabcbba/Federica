@@ -10,6 +10,29 @@ import net.liftweb.json.JsonAST.{JValue, JArray}
 import net.liftweb.util.Helpers._
 import net.liftweb.util.{CssSel, Helpers}
 
+object PendingEventSnippet extends ListSnippet[Event] {
+
+  val meta = Event
+
+  val title = "Solicitudes"
+
+  val addUrl = Site.backendEventAdd.calcHref(Event.createRecord)
+
+  def entityListUrl: String = Site.backendEvents.menu.loc.calcDefaultHref
+
+  def itemEditUrl(inst: Event): String = Site.backendEventEdit.toLoc.calcHref(inst)
+
+  override def listFields = List(meta.name, meta.place)
+
+  def renderFrontEnd: CssSel = {
+    "data-name=area" #> meta.findAll.map(event => {
+      "data-name=name *" #> event.name.get &
+      "data-name=description *" #> event.description.asHtml
+    })
+  }
+
+}
+
 object EventSnippet extends ListSnippet[Event] {
 
   val meta = Event
@@ -22,7 +45,7 @@ object EventSnippet extends ListSnippet[Event] {
 
   def itemEditUrl(inst: Event): String = Site.backendEventEdit.toLoc.calcHref(inst)
 
-  override def listFields = List(meta.name, meta.place)
+  override def listFields = List(meta.name, meta.place, meta.status)
 
   def renderFrontEnd: CssSel = {
     "data-name=area" #> meta.findAll.map(event => {
