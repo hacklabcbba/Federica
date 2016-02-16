@@ -24,7 +24,7 @@ object ActionLineSnippet extends SortableSnippet[ActionLine] {
 
   def itemEditUrl(inst: ActionLine): String = Site.backendActionLineEdit.toLoc.calcHref(inst)
 
-  override def listFields = List(meta.name, meta.description)
+  override def listFields = List(meta.name, meta.description, meta.url)
 
   def renderFrontEnd: CssSel = {
     "data-name=area" #> meta.findAll.map(area => {

@@ -22,7 +22,7 @@ object ProgramSnippet extends SortableSnippet[Program] {
 
   def itemEditUrl(inst: Program): String = Site.backendProgramEdit.toLoc.calcHref(inst)
 
-  override def listFields = List(meta.name, meta.responsible, meta.email)
+  override def listFields = List(meta.name, meta.responsible, meta.email, meta.url)
 
   def renderViewFrontEnd: CssSel = {
     for {

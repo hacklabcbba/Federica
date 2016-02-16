@@ -51,13 +51,21 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
     "data-name=post" #> page.map(post => {
       previewCss(post) &
       "data-name=title *" #> post.name.get &
-      "data-name=area *" #> post.area.obj.dmap("")(_.name.get) &
+      (if (post.area.obj.isEmpty)
+        "data-name=area" #> NodeSeq.Empty else
+        "data-name=area-name *" #> post.area.obj.dmap("")(_.name.get)) &
+      (if (post.transversalArea.obj.isEmpty)
+        "data-name=transversalarea" #> NodeSeq.Empty
+      else "data-name=transversalarea-name *" #> post.transversalArea.obj.dmap("")(_.name.get)) &
       "data-name=author *" #> post.author.obj.dmap("")(_.name.get) &
       "data-name=date *" #> post.date.toString &
       "data-name=title [href]" #> Site.entradaBlog.calcHref(post) &
       "data-name=content *" #> post.content.asHtmlCutted(200)
     }) &
-    "data-name=all-categories [href]" #> Site.blog.fullUrl &
+    "data-name=all-categories" #> {
+      "li [class+]" #> (if (category.isEmpty) "active" else "") &
+      "a [href]" #> Site.blog.fullUrl
+    } &
     "data-name=categories" #> meta.findCategories.map(cat => {
       "li [class+]" #> (if (category === cat) "active" else "") &
       "a [href]" #> s"${Site.blog.fullUrl}?category=$cat" &

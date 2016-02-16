@@ -40,7 +40,7 @@ class TransversalArea private () extends MongoRecord[TransversalArea] with Objec
     }
   }
 
-  object description extends BsCkTextareaField(this, 1000) {
+  object description extends BsCkUnsecureTextareaField(this, 1000) {
     override def displayName = "Descripción"
   }
 

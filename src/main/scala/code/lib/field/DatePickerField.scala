@@ -11,23 +11,23 @@ import net.liftweb.http.S
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.json._
 import net.liftweb.mongodb.record.MongoRecord
-import net.liftweb.record.field.DateTimeField
+import net.liftweb.mongodb.record.field.DateField
 import net.liftweb.util.Helpers._
 import org.joda.time.format.DateTimeFormat
-import org.joda.time.{DateTimeField => JDateTimeField}
+import org.joda.time.{DateTimeField => JDateTimeField, DateTime}
 
 import scala.xml._
 
-class DatePickerField[OwnerType <: MongoRecord[OwnerType]](rec: OwnerType) extends DateTimeField(rec) with Loggable {
+class DatePickerField[OwnerType <: MongoRecord[OwnerType]](rec: OwnerType) extends DateField(rec) with Loggable {
   private val dateString = "MM/dd/yyyy"
 
   private val dateStringLiteral = "EEEE d 'de' MMMM 'de' yyyy"
 
   private val dateStringLiteralAndHour = "EEEE d 'de' MMMM 'de' yyyy - HH:mm"
 
-  private def parseDate(s: String): Box[java.util.Calendar] = {
+  private def parseDate(s: String): Box[Date] = {
     val formatter = DateTimeFormat.forPattern(dateString)
-    val dt = tryo( formatter.parseDateTime( s ).toGregorianCalendar)
+    val dt = tryo( formatter.parseDateTime( s ).toDate)
     dt
   }
 
@@ -61,7 +61,7 @@ class DatePickerField[OwnerType <: MongoRecord[OwnerType]](rec: OwnerType) exten
         id={dateId}
         type="text"
         name={funcName}
-        value={valueBox.map(v => formatDate(v.getTime)).openOr("")}
+        value={valueBox.map(v => formatDate(v)).openOr("")}
         tabindex={tabIndex toString}
         readonly=""
         />
@@ -84,13 +84,13 @@ class DatePickerField[OwnerType <: MongoRecord[OwnerType]](rec: OwnerType) exten
 
   override def toForm: Box[NodeSeq] = Full(elem)
 
-  override def asJValue: JValue = JInt(value.getTimeInMillis)
+  override def asJValue: JValue = JInt(value.getTime)
 
   private def viewElem: NodeSeq = {
     val dateButtonId: String = randomString(12)
     val date: NodeSeq = {
       <div class="input-group date">
-        {valueBox.map(v => formatDate(v.getTime)).openOr("")}
+        {valueBox.map(v => formatDate(v)).openOr("")}
         <span class="input-group-btn">
           <button id={dateButtonId} class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
         </span>
@@ -105,10 +105,10 @@ class DatePickerField[OwnerType <: MongoRecord[OwnerType]](rec: OwnerType) exten
 
   override def asHtml = viewElem
 
-  def formatedDate(locale: Locale) = formatDateLiteral(this.value.getTime, locale)
+  def formatedDate(locale: Locale) = formatDateLiteral(this.value, locale)
 
-  def formatedDateLiteralWithHour(locale: Locale) = formateDateLiteralWithHour(this.value.getTime, locale)
+  def formatedDateLiteralWithHour(locale: Locale) = formateDateLiteralWithHour(this.value, locale)
 
-  override def toString = formatDateLiteral(this.value.getTime, new Locale("es", "ES"))
+  override def toString = formatDateLiteral(this.value, new Locale("es", "ES"))
 
 }

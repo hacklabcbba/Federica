@@ -3,7 +3,7 @@ package model
 package resource
 
 import code.lib.{SortableModel, BaseModel}
-import code.lib.field.{BsCkTextareaField, BsTextareaField, BsStringField}
+import code.lib.field.{BsCkUnsecureTextareaField, BsCkTextareaField, BsTextareaField, BsStringField}
 import net.liftweb.common.Full
 import net.liftweb.http.{S, SHtml}
 import net.liftweb.http.js.JsCmds._
@@ -24,7 +24,7 @@ trait Resource[T <: MongoRecord[T]] extends MongoRecord[T] with ObjectIdPk[T] wi
     override def validations = valMinLen(2, "longitud mínima") _ :: super.validations
   }
 
-  val description = new BsCkTextareaField[T](this, 512) {
+  val description = new BsCkUnsecureTextareaField[T](this, 1000) {
     override def displayName = "Descripción"
   }
 

@@ -83,32 +83,15 @@ class Room private() extends Resource[Room] {
           </div> ++
           <div class="row">
             <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Privado</label>
+              <label data-name="label" class="control-label col-md-6" for="email_id">Coordinador de área</label>
               <div class="col-md-3">
-                {cost.costCSPrivate.toForm openOr NodeSeq.Empty}
+                {cost.costCSAreaCoord.toForm openOr NodeSeq.Empty}
                 <span class="input-group-addon">
                   Bs.
                 </span>
               </div>
               <div class="col-md-3">
-                {cost.costSSPrivate.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-            </div>
-          </div> ++
-          <div class="row">
-            <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Coordinador</label>
-              <div class="col-md-3">
-                {cost.costCSCoord.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-              <div class="col-md-3">
-                {cost.costSSCoord.toForm openOr NodeSeq.Empty}
+                {cost.costSSAreaCoord.toForm openOr NodeSeq.Empty}
                 <span class="input-group-addon">
                   Bs.
                 </span>
@@ -134,7 +117,24 @@ class Room private() extends Resource[Room] {
           </div> ++
           <div class="row">
             <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Artista</label>
+              <label data-name="label" class="control-label col-md-6" for="email_id">Artista nacional emergente / internacional autogestionado</label>
+              <div class="col-md-3">
+                {cost.costCSNewArtist.toForm openOr NodeSeq.Empty}
+                <span class="input-group-addon">
+                  Bs.
+                </span>
+              </div>
+              <div class="col-md-3">
+                {cost.costSSNewArtist.toForm openOr NodeSeq.Empty}
+                <span class="input-group-addon">
+                  Bs.
+                </span>
+              </div>
+            </div>
+          </div> ++
+          <div class="row">
+            <div class="form-group margin-bottom-xs">
+              <label data-name="label" class="control-label col-md-6" for="email_id">Artista nacional e internacional consolidado</label>
               <div class="col-md-3">
                 {cost.costCSArtist.toForm openOr NodeSeq.Empty}
                 <span class="input-group-addon">
@@ -151,7 +151,7 @@ class Room private() extends Resource[Room] {
           </div> ++
           <div class="row">
             <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Institución cultural con fines de lucro</label>
+              <label data-name="label" class="control-label col-md-6" for="email_id">Organización de Gestión Cultural</label>
               <div class="col-md-3">
                 {cost.costCSInst1.toForm openOr NodeSeq.Empty}
                 <span class="input-group-addon">
@@ -168,7 +168,7 @@ class Room private() extends Resource[Room] {
           </div> ++
           <div class="row">
             <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Institución cultural sin fines de lucro</label>
+              <label data-name="label" class="control-label col-md-6" for="email_id">Organización sin fines de lucro</label>
               <div class="col-md-3">
                 {cost.costCSInst2.toForm openOr NodeSeq.Empty}
                 <span class="input-group-addon">
@@ -177,6 +177,23 @@ class Room private() extends Resource[Room] {
               </div>
               <div class="col-md-3">
                 {cost.costSSInst2.toForm openOr NodeSeq.Empty}
+                <span class="input-group-addon">
+                  Bs.
+                </span>
+              </div>
+            </div>
+          </div> ++
+          <div class="row">
+            <div class="form-group margin-bottom-xs">
+              <label data-name="label" class="control-label col-md-6" for="email_id">Organización con fines de lucro</label>
+              <div class="col-md-3">
+                {cost.costCSInst3.toForm openOr NodeSeq.Empty}
+                <span class="input-group-addon">
+                  Bs.
+                </span>
+              </div>
+              <div class="col-md-3">
+                {cost.costSSInst3.toForm openOr NodeSeq.Empty}
                 <span class="input-group-addon">
                   Bs.
                 </span>
@@ -209,32 +226,15 @@ class Room private() extends Resource[Room] {
           </div> ++
           <div class="row">
             <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Privado</label>
+              <label data-name="label" class="control-label col-md-6" for="email_id">Coordinador de área</label>
               <div class="col-md-3">
-                {cost.costCSPrivate.toForm openOr NodeSeq.Empty}
+                {cost.costCSAreaCoord.toForm openOr NodeSeq.Empty}
                 <span class="input-group-addon">
                   Bs.
                 </span>
               </div>
               <div class="col-md-3">
-                {cost.costSSPrivate.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-            </div>
-          </div> ++
-          <div class="row">
-            <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Coordinador</label>
-              <div class="col-md-3">
-                {cost.costCSCoord.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-              <div class="col-md-3">
-                {cost.costSSCoord.toForm openOr NodeSeq.Empty}
+                {cost.costSSAreaCoord.toForm openOr NodeSeq.Empty}
                 <span class="input-group-addon">
                   Bs.
                 </span>
@@ -260,7 +260,24 @@ class Room private() extends Resource[Room] {
           </div> ++
           <div class="row">
             <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Artista</label>
+              <label data-name="label" class="control-label col-md-6" for="email_id">Artista nacional emergente / internacional autogestionado</label>
+              <div class="col-md-3">
+                {cost.costCSNewArtist.toForm openOr NodeSeq.Empty}
+                <span class="input-group-addon">
+                  Bs.
+                </span>
+              </div>
+              <div class="col-md-3">
+                {cost.costSSNewArtist.toForm openOr NodeSeq.Empty}
+                <span class="input-group-addon">
+                  Bs.
+                </span>
+              </div>
+            </div>
+          </div> ++
+          <div class="row">
+            <div class="form-group margin-bottom-xs">
+              <label data-name="label" class="control-label col-md-6" for="email_id">Artista nacional e internacional consolidado</label>
               <div class="col-md-3">
                 {cost.costCSArtist.toForm openOr NodeSeq.Empty}
                 <span class="input-group-addon">
@@ -277,7 +294,7 @@ class Room private() extends Resource[Room] {
           </div> ++
           <div class="row">
             <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Institución cultural con fines de lucro</label>
+              <label data-name="label" class="control-label col-md-6" for="email_id">Organización de Gestión Cultural</label>
               <div class="col-md-3">
                 {cost.costCSInst1.toForm openOr NodeSeq.Empty}
                 <span class="input-group-addon">
@@ -294,7 +311,7 @@ class Room private() extends Resource[Room] {
           </div> ++
           <div class="row">
             <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Institución cultural sin fines de lucro</label>
+              <label data-name="label" class="control-label col-md-6" for="email_id">Organización sin fines de lucro</label>
               <div class="col-md-3">
                 {cost.costCSInst2.toForm openOr NodeSeq.Empty}
                 <span class="input-group-addon">
@@ -303,6 +320,23 @@ class Room private() extends Resource[Room] {
               </div>
               <div class="col-md-3">
                 {cost.costSSInst2.toForm openOr NodeSeq.Empty}
+                <span class="input-group-addon">
+                  Bs.
+                </span>
+              </div>
+            </div>
+          </div> ++
+          <div class="row">
+            <div class="form-group margin-bottom-xs">
+              <label data-name="label" class="control-label col-md-6" for="email_id">Organización con fines de lucro</label>
+              <div class="col-md-3">
+                {cost.costCSInst3.toForm openOr NodeSeq.Empty}
+                <span class="input-group-addon">
+                  Bs.
+                </span>
+              </div>
+              <div class="col-md-3">
+                {cost.costSSInst3.toForm openOr NodeSeq.Empty}
                 <span class="input-group-addon">
                   Bs.
                 </span>
@@ -322,7 +356,10 @@ class Room private() extends Resource[Room] {
 object Room extends Room with RogueMetaRecord[Room] {
   override def collectionName = "resource.resources"
 
-  override def fieldOrder = List(code, name, photo1, photo2)
+  override def fieldOrder = List(
+    code, name, photo1, photo2, isBookable,
+    isBookableShift, capacity, order, plane,
+    location, description, areasCost, programsCost)
 
   def findAllBookeableEnabled: List[Room] = {
     Room

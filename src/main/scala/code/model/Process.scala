@@ -1,7 +1,7 @@
 package code.model
 
 import code.config.Site
-import code.lib.field.{BsCkTextareaField, BsStringField}
+import code.lib.field.{BsCkUnsecureTextareaField, BsCkTextareaField, BsStringField}
 import code.lib.{SortableModel, BaseModel, RogueMetaRecord}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
@@ -22,7 +22,7 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] w
     override def displayName = "Nombre"
   }
 
-  object description extends BsCkTextareaField(this, 1000) {
+  object description extends BsCkUnsecureTextareaField(this, 1000) {
     override def displayName = "Descripción"
   }
 
@@ -99,7 +99,7 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] w
 
 object Process extends Process with RogueMetaRecord[Process] {
   override def collectionName = "main.process"
-  override def fieldOrder = List(name, description, area, program, administrator)
+  override def fieldOrder = List(name, administrator, area, program, transversalArea, order, description)
 
   def findByArea(area: Area): List[Process] = {
     Process

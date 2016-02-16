@@ -11,6 +11,7 @@ angular.module('EventApp', ['federica.event', 'ui.bootstrap'])
         return r._id === room._id;
       });
     } else {
+      room.bookingKind = 'Single';
       $scope.event.rooms.push(room);
     }
     $log.log($scope.event.rooms);

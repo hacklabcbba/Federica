@@ -2,7 +2,7 @@ package code.model
 
 import code.config.Site
 import code.lib.{SortableModel, BaseModel, RogueMetaRecord}
-import code.lib.field.{BsPhoneField, BsEmailField, BsCkTextareaField, BsStringField}
+import code.lib.field._
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
@@ -57,7 +57,7 @@ class Program private () extends MongoRecord[Program] with ObjectIdPk[Program] w
     override def toString = get
   }
 
-  object description extends BsCkTextareaField(this, 1000) {
+  object description extends BsCkUnsecureTextareaField(this, 1000) {
     override def displayName = "Descripción"
   }
 

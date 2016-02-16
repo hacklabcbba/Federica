@@ -23,7 +23,7 @@ object ProcessSnippet extends SortableSnippet[Process] {
 
   def itemEditUrl(inst: Process): String = Site.backendProcessEdit.toLoc.calcHref(inst)
 
-  override def listFields = List(meta.name, meta.administrator)
+  override def listFields = List(meta.name, meta.administrator, meta.url)
 
   def updateOrderValue(json: JValue): JsCmd = {
     implicit val formats = net.liftweb.json.DefaultFormats

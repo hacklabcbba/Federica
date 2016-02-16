@@ -169,16 +169,16 @@ object UserLogin extends Loggable {
               else ExtSession.deleteExtCookie()
               RedirectTo(LoginRedirect.openOr(Site.dashboard.url))
             case _ =>
-              S.error("Invalid credentials")
+              S.error("El email o el password son incorrectos")
               Noop
           }
         }
         else if (email.length <= 0 && password.length > 0) {
-          S.error("id_email_err", "Please enter an email")
+          S.error("login_err", "El email o el password son incorrectos")
           Noop
         }
         else if (password.length <= 0 && email.length > 0) {
-          S.error("id_password_err", "Please enter a password")
+          S.error("login_err", "El email o el password son incorrectos")
           Noop
         }
         else if (email.length > 0) {
@@ -194,11 +194,11 @@ object UserLogin extends Loggable {
           }
         }
         else {
-          S.error("id_email_err", "Please enter an email address")
+          S.error("login_err", "El email o el password son incorrectos")
           Noop
         }
       }) openOr {
-        S.error("id_email_err", "Please enter an email address")
+        S.error("login_err", "El email o el password son incorrectos")
         Noop
       }
     }

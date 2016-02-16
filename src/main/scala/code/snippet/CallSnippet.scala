@@ -20,7 +20,7 @@ object CallSnippet extends ListSnippet[Call] {
   override def listFields = List(meta.name, meta.deadline)
 
   def renderFrontEnd: CssSel = {
-    "data-name=call" #> meta.findAll.map(call => {
+    "data-name=call" #> meta.findAllCurrent.map(call => {
       "data-name=name *" #> call.name.get &
       "data-name=name [href]" #> Site.convocatoria.calcHref(call) &
       "data-name=description *" #> call.description.asHtmlCutted(300) &

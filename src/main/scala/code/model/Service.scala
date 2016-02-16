@@ -2,7 +2,7 @@ package code
 package model
 
 import code.config.Site
-import code.lib.field.{BsCkTextareaField, BsEmailField, BsStringField, FileField}
+import code.lib.field._
 import code.lib.{SortableModel, BaseModel, RogueMetaRecord}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.js.JsCmds.Run
@@ -10,6 +10,7 @@ import net.liftweb.http.js.{HtmlFixer, JsCmd}
 import net.liftweb.http.{IdMemoizeTransform, S, SHtml}
 import net.liftweb.mongodb.record.field.{BsonRecordListField, ObjectIdPk, ObjectIdRefField}
 import net.liftweb.mongodb.record.{BsonMetaRecord, BsonRecord, MongoRecord}
+import net.liftweb.record.field.EnumField
 import net.liftweb.util.Helpers._
 
 import scala.xml.{Elem, Text}
@@ -26,7 +27,7 @@ class Service private () extends MongoRecord[Service] with ObjectIdPk[Service] w
     override def displayName = "Nombre"
   }
 
-  object description extends BsCkTextareaField(this, 500) {
+  object description extends BsCkUnsecureTextareaField(this, 500) {
     override def displayName = "Descripción"
   }
 
@@ -53,6 +54,11 @@ class Service private () extends MongoRecord[Service] with ObjectIdPk[Service] w
     override def displayName = "Correo eléctronico"
   }
 
+  object serviceType extends EnumField(this, ServiceType)  {
+    override def shouldDisplay_? = true
+    override def displayName = "Tipo"
+  }
+
   object photo extends FileField(this) {
     override def displayName = "Foto"
     override def toString = {
@@ -60,6 +66,7 @@ class Service private () extends MongoRecord[Service] with ObjectIdPk[Service] w
     }
   }
 
+  /*
   object previousWork extends BsonRecordListField(this, PreviousWork) with HtmlFixer {
     override def displayName = "Trabajos previos"
     def deleteJsCmd(body: IdMemoizeTransform, service: Service, previousWork: PreviousWork): JsCmd = {
@@ -138,6 +145,7 @@ class Service private () extends MongoRecord[Service] with ObjectIdPk[Service] w
       Run("$(" + xml + ").modal();")
     }
   }
+  */
 
   override def toString = name.get
 }
@@ -145,6 +153,14 @@ class Service private () extends MongoRecord[Service] with ObjectIdPk[Service] w
 object Service extends Service with RogueMetaRecord[Service] {
   override def collectionName = "main.services"
   override def fieldOrder = List(name, description, responsible, photo, email)
+
+  def findAllUPIs: List[Service] = {
+    Service.where(_.serviceType eqs ServiceType.UPI).fetch()
+  }
+
+  def findAllUPAs: List[Service] = {
+    Service.where(_.serviceType eqs ServiceType.UPA).fetch()
+  }
 }
 
 
@@ -160,3 +176,9 @@ class PreviousWork extends BsonRecord[PreviousWork] {
 }
 
 object PreviousWork extends PreviousWork with BsonMetaRecord[PreviousWork]
+
+object ServiceType extends Enumeration {
+  type ServiceType = Value
+  val UPI = Value(1, "UPI")
+  val UPA = Value(2, "UPA")
+}
