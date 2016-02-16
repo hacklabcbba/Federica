@@ -32,7 +32,7 @@ class Value private () extends MongoRecord[Value] with ObjectIdPk[Value] with Ba
 
   object description extends BsCkUnsecureTextareaField(this, 1000) {
     override def displayName = "Descripción"
-    
+
   }
 
   //ToDo mapa de area -> descripcion de como interactura, programa -> descripcion, area de apoyo -> descripcion
@@ -88,7 +88,7 @@ class Value private () extends MongoRecord[Value] with ObjectIdPk[Value] with Ba
                 {definition.description.toForm openOr NodeSeq.Empty}
               </div>
             </div>
-          </div>
+          </div> ++ <br/> ++ <br/>
       }}
     }
 
@@ -101,7 +101,7 @@ class Value private () extends MongoRecord[Value] with ObjectIdPk[Value] with Ba
     override def displayName = "Definición por área transversal"
     private var newDefs: List[Definition] = Nil
     override def toForm: Box[NodeSeq] = Full {
-      Program.findAll.foldLeft(NodeSeq.Empty){ case (node, at) => {
+      TransversalArea.findAll.foldLeft(NodeSeq.Empty){ case (node, at) => {
         val definition = this.value.find(d => d.transversalArea.get == at.id.get).getOrElse{
           val c = Definition.createRecord.transversalArea(at.id.get)
           newDefs = newDefs ++ List(c)
@@ -166,7 +166,7 @@ class Definition extends BsonRecord[Definition ] {
     override def optional_? = true
   }
 
-  object description extends BsTextareaField(this, 1000) {
+  object description extends BsCkUnsecureTextareaField(this, 1000) {
     override def displayName = "Definición"
   }
 }
