@@ -2,7 +2,7 @@ package code
 package model
 
 import code.config.Site
-import code.lib.field.{BsCkTextareaField, BsEmailField, BsStringField, FileField}
+import code.lib.field._
 import code.lib.{SortableModel, BaseModel, RogueMetaRecord}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.js.JsCmds.Run
@@ -27,7 +27,7 @@ class Service private () extends MongoRecord[Service] with ObjectIdPk[Service] w
     override def displayName = "Nombre"
   }
 
-  object description extends BsCkTextareaField(this, 500) {
+  object description extends BsCkUnsecureTextareaField(this, 500) {
     override def displayName = "Descripción"
   }
 

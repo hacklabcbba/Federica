@@ -3,7 +3,7 @@ package model
 package network
 
 import code.config.Site
-import code.lib.field.{BsCkTextareaField, BsEmailField, BsStringField}
+import code.lib.field.{BsCkUnsecureTextareaField, BsCkTextareaField, BsEmailField, BsStringField}
 import code.lib.{SortableModel, BaseModel, RogueMetaRecord}
 import net.liftweb.common.Full
 import net.liftweb.http.SHtml
@@ -22,7 +22,7 @@ class Space private () extends MongoRecord[Space] with ObjectIdPk[Space] with Ba
     override def displayName = "Nombre"
   }
 
-  object description extends BsCkTextareaField(this, 500) {
+  object description extends BsCkUnsecureTextareaField(this, 500) {
     override def displayName = "Descripción"
   }
 

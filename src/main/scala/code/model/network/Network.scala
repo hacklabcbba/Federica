@@ -3,7 +3,7 @@ package model
 package network
 
 import code.config.Site
-import code.lib.field.{BsCkTextareaField, BsStringField}
+import code.lib.field.{BsCkUnsecureTextareaField, BsCkTextareaField, BsStringField}
 import code.lib.{SortableModel, BaseModel, RogueMetaRecord}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
@@ -23,7 +23,7 @@ class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] w
     override def displayName = "Nombre"
   }
 
-  object description extends BsCkTextareaField(this, 500){
+  object description extends BsCkUnsecureTextareaField(this, 500){
     override def displayName = "Descripción"
   }
 

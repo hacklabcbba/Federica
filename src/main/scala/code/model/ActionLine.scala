@@ -1,7 +1,7 @@
 package code.model
 
 import code.config.Site
-import code.lib.field.{BsStringField, BsCkTextareaField}
+import code.lib.field.{BsCkUnsecureTextareaField, BsStringField, BsCkTextareaField}
 import code.lib.{BaseModel, SortableModel, RogueMetaRecord}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
@@ -26,7 +26,7 @@ class ActionLine private () extends MongoRecord[ActionLine] with ObjectIdPk[Acti
       "class" -> "form-control", "data-placeholder" -> "Ingrese nombre.."))
   }
 
-  object description extends BsCkTextareaField(this, 1000) {
+  object description extends BsCkUnsecureTextareaField(this, 1000) {
     override def displayName = "Descripción"
   }
 
