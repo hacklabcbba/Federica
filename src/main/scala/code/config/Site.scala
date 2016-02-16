@@ -240,6 +240,15 @@ object Site extends Locs {
 
   val lineasDeAccion = MenuLoc(Menu.i("Lineas de acción ") / "lineas-de-accion" submenus(lineaDeAccion) >> Hidden)
 
+  val enfoqueTransversal =  Menu.param[TransversalApproach](
+    "Ver Enfoque Transversal", "Ver Enfoque Transversal",
+    TransversalApproach.findByUrl,
+    s => s.url.get.toString) / "enfoque-transversal" / * >>
+    TemplateBox(() => Templates("enfoque-transversal" :: Nil)) >>
+    Hidden
+
+  val enfoquesTransversales = MenuLoc(Menu.i("Enfoques transversales ") / "enfoques-transversales" submenus(enfoqueTransversal) >> Hidden)
+
   val programa =  Menu.param[Program](
     "Ver Programa", "Ver Programa",
     Program.findByUrl,
@@ -566,6 +575,27 @@ object Site extends Locs {
     TemplateBox(() => Templates("backend" :: "actionlines" :: "index" :: Nil)) submenus(
     backendActionLineAdd, backendActionLineEdit))
 
+  val backendTransversalApproachAdd = Menu.param[TransversalApproach](
+    "Agregar enfoque transversal", "Agregar enfoque transversal",
+    s => Full(TransversalApproach.createRecord),
+    s => "new") / "backend" / "transversalapproaches" / "add" / * >>
+    User.HasRoleOrPermission(SuperAdmin, EnfoquesTransversales) >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendTransversalApproachEdit = Menu.param[TransversalApproach](
+    "Editar enfoque transversal", "Editar enfoque transversal",
+    TransversalApproach.find,
+    s => s.id.get.toString) / "backend" / "transversalapproaches" / "edit" / * >>
+    User.HasRoleOrPermission(SuperAdmin, EnfoquesTransversales) >>
+    TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
+    Hidden
+
+  val backendTransversalApproaches = MenuLoc(Menu.i("Enfoques Transversales") / "backend" / "transversalapproaches" >>
+    User.HasRoleOrPermission(SuperAdmin, EnfoquesTransversales) >>
+    TemplateBox(() => Templates("backend" :: "transversalapproaches" :: "index" :: Nil)) submenus(
+    backendTransversalApproachAdd, backendTransversalApproachEdit))
+
   val backendValueAdd = Menu.param[Value](
     "Agregar principio", "Agregar principio",
     s => Full(Value.createRecord),
@@ -726,6 +756,7 @@ object Site extends Locs {
       backendTransversableAreas.menu,
       backendProcess.menu,
       backendActionLines.menu,
+      backendTransversalApproaches.menu,
       backendValues.menu,
       backendServices.menu))
 
@@ -810,6 +841,7 @@ object Site extends Locs {
     redes.menu,
     areasTransversales.menu,
     lineasDeAccion.menu,
+    enfoquesTransversales.menu,
     contacto.menu)
 
   /*

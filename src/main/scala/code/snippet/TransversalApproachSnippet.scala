@@ -1,0 +1,54 @@
+package code.snippet
+
+import code.config.Site
+import code.model.TransversalApproach
+import com.foursquare.rogue.LiftRogue
+import com.foursquare.rogue.LiftRogue._
+import net.liftmodules.extras.SnippetHelper
+import net.liftweb.http.js.JsCmd
+import net.liftweb.http.js.JsCmds._
+import net.liftweb.json.JsonAST.JValue
+import net.liftweb.util.Helpers._
+import net.liftweb.util.{CssSel, Helpers}
+
+object TransversalApproachSnippet extends SortableSnippet[TransversalApproach] {
+
+  val meta = TransversalApproach
+
+  val title = "Enfoques transversales"
+
+  val addUrl = Site.backendTransversalApproachAdd.calcHref(TransversalApproach.createRecord)
+
+  def entityListUrl: String = Site.backendTransversalApproaches.menu.loc.calcDefaultHref
+
+  def itemEditUrl(inst: TransversalApproach): String = Site.backendTransversalApproachEdit.toLoc.calcHref(inst)
+
+  override def listFields = List(meta.name, meta.description, meta.url)
+
+  def renderFrontEnd: CssSel = {
+    "data-name=area" #> meta.findAll.map(area => {
+      "data-name=name *" #> area.name.get &
+      //"data-name=name [href]" #> Site.servicio.calcHref(area) &
+      "data-name=description *" #> area.description.asHtml
+    })
+  }
+
+  def updateOrderValue(json: JValue): JsCmd = {
+    implicit val formats = net.liftweb.json.DefaultFormats
+    for {
+      id <- tryo((json \ "id").extract[String])
+      order <- tryo((json \ "order").extract[Long])
+      item <- meta.find(id)
+    } yield meta.where(_.id eqs item.id.get).modify(_.order setTo order).updateOne()
+    Noop
+  }
+
+}
+
+class EnfoqueTransversal(ta: TransversalApproach) extends SnippetHelper {
+  def renderViewFrontEnd: CssSel = {
+    "data-name=name *" #> ta.name.get &
+    "data-name=name [href]" #> Site.enfoqueTransversal.calcHref(ta) &
+    "data-name=description *" #> ta.description.asHtml
+  }
+}

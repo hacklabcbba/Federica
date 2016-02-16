@@ -23,6 +23,7 @@ object Permissions {
   val Programas = Permission("Programas")
   val Procesos = Permission("Procesos")
   val LineasDeAccion = Permission("Lineas de acción")
+  val EnfoquesTransversales = Permission("Enfoques transversales")
   val Proyectos = Permission("Proyectos")
   val Archivos = Permission("Archivos")
   val Accesorios = Permission("Accessorios (Equipos y Herramientas)")
