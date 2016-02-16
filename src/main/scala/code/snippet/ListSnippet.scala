@@ -135,7 +135,7 @@ trait SortableSnippet[BaseRecord <: MongoRecord[BaseRecord] with SortableModel[B
           "type=checkbox" #> SHtml.ajaxCheckbox(false, s => selectItem(s, item)) &
           "data-name=column-data *" #> listFields.map(field => item.fieldByName(field.name).dmap("")(_.toString)) &
           "data-name=edit-item [href]" #> itemEditUrl(item) &
-          "data-name=remove-item [onclick]" #> SHtml.ajaxInvoke(() => deleteItemJsCmd(item))
+          "data-name=remove-item [onclick]" #> SHtml.ajaxInvoke(() => deleteItemModalJsCmd(item))
         }) &
         "data-name=pagination" #> NodeSeq.Empty
       }.apply(template)
