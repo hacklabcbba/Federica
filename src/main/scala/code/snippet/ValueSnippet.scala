@@ -23,7 +23,7 @@ object ValueSnippet extends SortableSnippet[Value] {
 
   def itemEditUrl(inst: Value): String = Site.backendValueEdit.toLoc.calcHref(inst)
 
-  override def listFields = List(meta.name, meta.description, meta.areasDefinitions, meta.programsDefinitions, meta.transvesalAreasDefinitions)
+  override def listFields = List(meta.name, meta.url)
 
   def renderViewFrontEnd: CssSel = {
     for {
