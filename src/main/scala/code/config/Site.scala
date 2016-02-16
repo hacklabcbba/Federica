@@ -49,102 +49,7 @@ object Site extends Locs {
     // Sobre el mARTadero
     Menu.i("Sobre mARTadero") / "sobre-martadero" >> TopBarGroup,
     Menu.i("Equipo Humano") / "equipo-humano" >> TopBarGroup
-    ))
-
-  /* Programas */
-  // Programas
-  val programs = MenuLoc(Menu.i("Ver Programs") / "programs" >> TopBarGroup submenus(
-    // formARTe
-    Menu.i("formARTe") / "formarte" >> TopBarGroup,
-    // Taller de creatividad infantil
-    Menu.i("Taller de Creatividad Infantil") / "tallerinfantil" >> TopBarGroup,
-    // Taller de creatividad infantil
-    Menu.i("Acción Urbana") / "accion-urbana" >> TopBarGroup submenus(
-      // Plataforma Vecinal
-      Menu.i("Plataforma Vecinal") / "plataforma-vecinal" >> TopBarGroup,
-      // Paseo de las Artes
-      Menu.i("Paseo de las Artes") / "paseo-de-las-artes" >> TopBarGroup
-      ),
-    // Vivo y Verde
-    Menu.i("Vivo y Verde") / "vivo-y-verde" >> TopBarGroup,
-    // Vivo y Verde
-    Menu.i("Vivero de Emprendimientos Artístico Culturales") / "vivero-de-emprendimientos-artistico-culturales" >> TopBarGroup,
-    // Políticas Culturales y Redes
-    Menu.i("Políticas Culturales y Redes") / "politicas-culturales-y-redes" >> TopBarGroup,
-    // Residencias Artísticas PRANA
-    Menu.i("Residencias Artísticas PRANA") / "prana" >> TopBarGroup
-    ))
-
-  /* Areas de apoyo */
-  // Areas de apoyo
-  val supportAreas = MenuLoc(Menu.i("Áreas de apoyo") / "areas-de-apoyo" >> TopBarGroup submenus(
-    // Direccion
-    Menu.i("Dirección") / "direccion" >> TopBarGroup,
-    // Gestion de Proyectos
-    Menu.i("Gestión de Proyectos") / "gestion-de-proyectos" >> TopBarGroup,
-    // Contabilidad
-    Menu.i("Contabilidad") / "contabilidad" >> TopBarGroup,
-    // Administracion de espacios
-    Menu.i("Administración de espacios") / "administracion-de-espacios" >> TopBarGroup,
-    // Programación
-    Menu.i("Programación") / "programacion" >> TopBarGroup,
-    // Comunicación
-    Menu.i("Comunicación") / "comunicacion" >> TopBarGroup submenus(
-      // Hacklab
-      Menu.i("Hacklab") / "hacklab" >> TopBarGroup,
-      // Comun&ca
-      Menu.i("Comun&ca") / "comunica" >> TopBarGroup
-      )
-    ))
-
-  /* Principios */
-  // Principios
-  val principios = MenuLoc(Menu.i("Principios") / "principios" >> TopBarGroup submenus(
-    // Principios
-    Menu.i("Innovación") / "innovacion" >> TopBarGroup,
-    // Investigacion
-    Menu.i("Investigación") / "investigacion" >> TopBarGroup,
-    // Experimentacion
-    Menu.i("Experimentación") / "experimentacion" >> TopBarGroup,
-    // Rigor Conceptual y Formal
-    Menu.i("Rigor Conceptual y Formal") / "rigor-conceptual-formal" >> TopBarGroup,
-    // Integracion
-    Menu.i("Integración") / "integracion" >> TopBarGroup,
-    // Intercambio de conocimiento y experiencias
-    Menu.i("Intercambio de Conocimiento y Experiencias") / "intercambio-de-conocimiento-y-experciencias" >> TopBarGroup,
-    // Interculturalidad
-    Menu.i("Interculturalidad") / "interculturalidad" >> TopBarGroup
-    ))
-
-  /* FONDART */
-  // FONDART
-  val fondArt = MenuLoc(Menu.i("FONDART") / "fondart" >> TopBarGroup submenus(
-    //Solicitud FONDART
-    Menu.i("Solicitud FONDART") / "solicitud-fondart" >> TopBarGroup
-    ))
-
-  /* Apoya */
-  // apoya
-  val apoya = MenuLoc(Menu.i("Apoya") / "apoya" >> TopBarGroup submenus(
-    // Hivos
-    Menu.i("Hivos") / "hivos" >> TopBarGroup,
-    // Conexion
-    Menu.i("Conexion") / "conexion" >> TopBarGroup,
-    // Solidar AOS Suiza
-    Menu.i("Solidar AOS Suiza") / "solidar-aos-suiza" >> TopBarGroup,
-    // CAF
-    Menu.i("CAF") / "caf" >> TopBarGroup,
-    // Cooperación Italiana
-    Menu.i("Cooperación Italiana") / "cooperacion-italiana" >> TopBarGroup,
-    // Nos ayudan a enriquecer el espacio
-    Menu.i("Nos ayudan a enriquecer el espacio") / "nos-ayudan-a-enriquecer-el-espacio" >> TopBarGroup,
-    // Nos apoyaron
-    Menu.i("Nos apoyaron") / "nos-apoyaron" >> TopBarGroup,
-    // Nos apoyan corresponsablemente
-    Menu.i("Nos apoyan corresponsablemente") / "nos-apoyan-corresponsablemente" >> TopBarGroup,
-    // Nos apoyan voluntarios de
-    Menu.i("Nos apoyan voluntarios de") / "nos-apoyan-voluntarios-de" >> TopBarGroup
-    ))
+  ))
 
   /* Menu Izquierdo */
   /* Agenda */
@@ -212,6 +117,15 @@ object Site extends Locs {
     Hidden
 
   val areas = MenuLoc(Menu.i("Areas ") / "areas" submenus(area))
+
+  val principio =  Menu.param[Value](
+    "Ver Principio", "Ver Principio",
+    Value.findByUrl,
+    s => s.url.get.toString) / "principio" / * >>
+    TemplateBox(() => Templates("principio" :: Nil)) >>
+    Hidden
+
+  val principios = MenuLoc(Menu.i("Principios ") / "principios" submenus(principio))
 
   val areaTransversal =  Menu.param[TransversalArea](
     "Ver Area transversal", "Ver Area transversal",
@@ -823,11 +737,6 @@ object Site extends Locs {
     Menu.i("Throw") / "throw"  >> EarlyResponse(() => throw new Exception("This is only a test.")),
     who.menu,
     areas.menu,
-    programs.menu,
-    supportAreas.menu,
-    principios.menu,
-    fondArt.menu,
-    apoya.menu,
     agenda.menu,
     participa.menu,
     espacios.menu,
