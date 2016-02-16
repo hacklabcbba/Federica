@@ -66,6 +66,7 @@ class Service private () extends MongoRecord[Service] with ObjectIdPk[Service] w
     }
   }
 
+  /*
   object previousWork extends BsonRecordListField(this, PreviousWork) with HtmlFixer {
     override def displayName = "Trabajos previos"
     def deleteJsCmd(body: IdMemoizeTransform, service: Service, previousWork: PreviousWork): JsCmd = {
@@ -144,6 +145,7 @@ class Service private () extends MongoRecord[Service] with ObjectIdPk[Service] w
       Run("$(" + xml + ").modal();")
     }
   }
+  */
 
   override def toString = name.get
 }
