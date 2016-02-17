@@ -1,45 +1,43 @@
 <div data-lift="surround?with=base-wrap;at=content">
-    <div class="login pull-right text-center" data-lift="UserLogin">
-        <img src="images/login-ico.png" alt=""/>
-        <div class="title-login">
-            Reserva <br/>tu espacio
-        </div>
-        <ul class="list-unstyled no-margin login-options">
-            <li class="new-register"><a href="/register">Nuevo registro</a></li>
-            <li id="login"><a href="/login">Entrar</a></li>
-        </ul>
-        <div id="login-box">
-            <h3>Iniciar sesión</h3>
-            <div class="padding-xs">
-                <form data-lift="form.ajax">
-                    <div class="input-container">
-                        <input type="email" class="form-control" placeholder="Correo electrónico" id="id_email" name="email" />
-                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                        <span data-alertid="id_email_err" form-alert=""></span>
-                        <i class="glyphicon glyphicon-user"></i>
+    <div class="login " data-lift="UserLogin">
+        <main class="row">
+            <div class="col-md-12">
+                <header>
+                    <h2 class="no-margin-top title-page">
+                        <i class="glyphicon glyphicon-menu-right border-circle"></i> Inicia sesión
+                    </h2>
+                </header>
+                <div class="row">
+                    <div class="col-md-5">
+                        <p>Si no tienes cuenta de usuario puede registrarte <a href="/register">aquí</a></p>
                     </div>
-                    <div class="input-container">
-                        <input type="password" class="form-control" placeholder="Contraseña" id="id_password" />
-                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                        <span data-alertid="id_password_err" form-alert=""></span>
-                        <i class="glyphicon glyphicon-lock"></i>
+                    <div class="col-md-7">
+                        <form action="" class="register-form" data-lift="form.ajax">
+                            <div class="form-horizontal">
+                                <div class="form-group margin-bottom-xs">
+                                    <label class="col-md-12 control-label ">Email</label>
+                                    <div class="col-md-12"><input class="form-control input-lg" placeholder="Introduce tu Correo electrónico" id="id_email" name="email"  type="email"></div>
+                                </div>
+                                <div class="form-group margin-bottom-xs">
+                                    <label class="col-md-12 control-label ">Contraseña</label>
+                                    <div class="col-md-12"><input class="form-control input-lg" placeholder="Introduce tu cotraseña"  type="text" placeholder="Contraseña" id="id_password" /></div>
+                                </div>
+                                <div class="margin-bottom-xs overflow-hidden">
+                                    <input id="id_submit" />
+                                    <input type="submit" class="form-control login-button btn text-uppercase width-30-md" value="Iniciar sesión"/>
+                                </div>
+                                <div class="login-socialmedia">
+                                    <span class="display-inline-block box-title">o a través de </span>
+                                    <div class="overflow-hidden">
+                                        <a href="#" class="d    isplay-inline-block pull-left text-center facebook"><i class="fa fa-facebook-f"></i></a>
+                                        <a href="#" class="display-inline-block pull-right text-center googleplus"><i class="fa fa-google-plus"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <div>
-                        <input id="id_submit" />
-                        <input type="submit" class="form-control login-button" value="Iniciar sesión"/>
-                    </div>
-                </form>
-                <div class="login-socialmedia">
-                    <span class="display-inline-block box-title">o a través de </span>
-                    <div class="overflow-hidden">
-                        <a href="#" class="display-inline-block pull-left text-center facebook"><i class="fa fa-facebook-f"></i></a>
-                        <a href="#" class="display-inline-block pull-right text-center googleplus"><i class="fa fa-google-plus"></i></a>
-                    </div>
-                </div>
-                <div>
-                    <a href="/register" class="btn login-button form-control">Crear cuenta</a>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
 </div>
