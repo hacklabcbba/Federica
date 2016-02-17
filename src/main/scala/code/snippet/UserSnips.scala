@@ -155,6 +155,7 @@ object UserLogin extends Loggable {
     var remember = User.loginCredentials.is.isRememberMe
 
     def doSubmit(): JsCmd = {
+      val referer = S.referer.openOr("/dashboard")
       S.param("email").map(e => {
         val email = e.toLowerCase.trim
         // save the email and remember entered in the session var
@@ -167,7 +168,7 @@ object UserLogin extends Loggable {
               User.logUserIn(user, true)
               if (remember) User.createExtSession(user.id.get)
               else ExtSession.deleteExtCookie()
-              RedirectTo(LoginRedirect.openOr(Site.dashboard.url))
+              RedirectTo(LoginRedirect.openOr(referer))
             case _ =>
               S.error("El email o el password son incorrectos")
               Noop
