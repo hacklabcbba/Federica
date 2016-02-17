@@ -78,6 +78,11 @@ h6 {
   font-weight: bold;
   text-transform: uppercase;
 }
+h2,
+h3,
+h4 {
+  color: #FF9A00;
+}
 p {
   text-align: justify;
 }
@@ -107,7 +112,7 @@ input.white {
 /*----/----/ $CLASSES */
 .border-circle {
   border-radius: 100%;
-  border: 2px solid #000;
+  border: 2px solid #FF9A00;
   width: 30px;
   height: 30px;
 }
@@ -619,6 +624,10 @@ body.page .list-description .caption-item {
   font-weight: bold;
   font-size: 14px;
 }
+body *[data-alertid="login_err"] ul {
+  padding: 0;
+  list-style: none;
+}
 body .pagination a {
   color: #000;
   background: #fff;
@@ -636,6 +645,9 @@ body .pagination .active a {
 body .pagination .active a:hover {
   background: #000;
   color: #fff;
+}
+body .pagination .active a:active {
+  text-decoration: none;
 }
 body .content .main-content + .side > section:first-child h3 {
   margin-top: 0;
@@ -723,8 +735,6 @@ body .login-socialmedia .googleplus {
 .home main .events-container .events .event {
   transition: all 0.2s ease 0.2s;
   background: rgba(23, 23, 23, 0.6);
-  border-bottom: 1px solid #fff;
-  border-right: 1px solid #fff;
   height: 275px;
 }
 .home main .events-container .events .event:hover {
@@ -859,6 +869,17 @@ body .login-socialmedia .googleplus {
   border-top: 1px solid #000;
   border-bottom: 1px solid #000;
 }
+#event-wizard .pager.wizard {
+  position: fixed;
+  top: 270px;
+  width: 975px;
+  border: 1px solid #ccc;
+  background: rgba(255, 255, 255, 0.5);
+  z-index: 100;
+}
+#event-wizard .pager li > a {
+  background: none;
+}
 /*----/----/ $REGISTER */
 .register-page .register-form > * {
   margin-bottom: 20px;
@@ -901,15 +922,31 @@ body .login-socialmedia .googleplus {
 }
 /*----/----/ $SERVICES */
 .services-page .service {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  border-right: 1px solid #ccc;
+  height: 315px;
 }
 .services-page .service figure {
   height: 100px;
   overflow: hidden;
+  text-align: center;
+}
+.services-page .service figure img {
+  height: 100px;
+  width: auto;
+  display: inline-block;
 }
 .services-page .service h3 {
   margin-top: 5px;
   font-size: 18px;
+  max-height: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.services-page .service .description {
+  max-height: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 /*----/----/ $BLOG */
 .blog-page .blog-articles .title-article {
