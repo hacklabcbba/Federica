@@ -143,6 +143,15 @@ class User private () extends MongoAuthUser[User] with ObjectIdPk[User] with Bas
       valMaxLen(64, "Name must be 64 characters or less") _ ::
       super.validations
   }
+
+  object lastName extends BsStringField(this, 64) {
+    override def displayName = "Apellidos"
+
+    override def validations =
+      valMaxLen(64, "Name must be 64 characters or less") _ ::
+        super.validations
+  }
+
   object location extends BsStringField(this, 64) {
     override def displayName = "Lugar"
 
@@ -198,6 +207,22 @@ class User private () extends MongoAuthUser[User] with ObjectIdPk[User] with Bas
         super.validations
   }
 
+  object gnusocial extends BsStringField(this, 128) {
+    override def displayName = "Nombre de usuario en gnusocial"
+    override def optional_? = true
+    override def validations =
+      valMaxLen(128, "gnusocial must be 128 characters or less") _ ::
+        super.validations
+  }
+
+  object flickr extends BsStringField(this, 128) {
+    override def displayName = "Nombre de usuario en Flickr"
+    override def optional_? = true
+    override def validations =
+      valMaxLen(128, "gnusocial must be 128 characters or less") _ ::
+        super.validations
+  }
+
   object isOnline extends BooleanField(this, false) {
     override def shouldDisplay_? = false
     override def asHtml =
@@ -229,6 +254,12 @@ object User extends User with ProtoAuthUserMeta[User] with RogueMetaRecord[User]
   import net.liftweb.mongodb.BsonDSL._
 
   override def collectionName = "user.users"
+
+  override def fieldOrder = List(
+    name, lastName, email, timezone,
+    locale, permissions, bio, gnusocial,
+    facebook, twitter, youtube, instagram,
+    flickr, verified, password)
 
   createIndex((email.name -> 1), true)
   createIndex((username.name -> 1), true)
