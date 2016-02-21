@@ -103,7 +103,7 @@
   text-transform: uppercase;
  }
 
-h2, h3, h4 {
+h2 a, h3 a, h4 a {
  color: #FF9A00;
 }
 
@@ -140,7 +140,7 @@ h2, h3, h4 {
 /*----/----/ $CLASSES */
  .border-circle {
   border-radius: 100%;
-  border:2px solid #FF9A00;
+  border:2px solid #000;
   width: 30px;
   height: 30px;
 
@@ -941,15 +941,15 @@ body > .wrapper > header {
 
 #event-wizard {
  .pager.wizard {
-  position: fixed;
-  top: 270px;
-  width: 975px;
-  border: 1px solid #ccc;
-  background: rgba(255,255,255,0.5);
+  border: none;
+  background:  #555555 ;
   z-index: 100;
  }
  .pager li > a {
   background: none;
+  color: #fff;
+  font-size: 15px;
+  line-height: 1;
  }
 }
 
@@ -1368,6 +1368,16 @@ body.page.dashboard .content {
   }
  }
  .pager li {
+  &:first-child {
+   i {
+    margin-right: 5px;
+   }
+  }
+  &:last-child {
+   i {
+    margin-left: 5px;
+   }
+  }
   &.disabled {
    a {
     color: #777;
@@ -1384,7 +1394,10 @@ body.page.dashboard .content {
    }
   }
   i {
-   top:3px;
+   top: 1px;
+   border: 1px solid #fff;
+   border-radius: 50%;
+   padding: 2px;
   }
  }
 }
