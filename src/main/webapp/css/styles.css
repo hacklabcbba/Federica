@@ -285,6 +285,39 @@ textarea.form-control {
 .related-articles .title {
   font-size: 14px;
 }
+/*----/----/ $WIDGETS */
+.widgets.last-convocations .fa {
+  font-size: 22px;
+}
+.widgets.last-convocations .data {
+  font-size: 12px;
+  line-height: 1;
+  margin-left: 5px;
+}
+.widgets.last-convocations .title {
+  font-size: 16px;
+  margin-top: 3px;
+}
+.widgets.last-convocations .item {
+  margin-bottom: 15px;
+}
+.widgets.last-blog {
+  font-size: 13px;
+}
+.widgets.last-blog .title {
+  font-size: 16px;
+  margin-top: 0px;
+  margin-bottom: 3px;
+}
+.widgets.last-blog .info {
+  font-size: 12px;
+}
+.widgets.last-blog .description {
+  margin-top: 5px;
+}
+.widgets.last-blog .item {
+  margin-bottom: 15px;
+}
 /*----/----/ $COMPLEMENTS */
 .border-bottom-separation {
   padding-bottom: 20px;
