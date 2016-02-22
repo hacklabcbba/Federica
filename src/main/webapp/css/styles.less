@@ -373,6 +373,23 @@ h2 a, h3 a, h4 a {
    margin-bottom: 15px;
   }
  }
+ &.events-here {
+  font-size: 13px;
+  .title {
+   font-size:16px;
+   margin-top: 0px;
+   margin-bottom: 3px;
+  }
+  .info {
+   font-size: 12px;
+  }
+  .description {
+   margin-top: 5px;
+  }
+  .item {
+   margin-bottom: 15px;
+  }
+ }
 }
 
 
@@ -1221,6 +1238,15 @@ body > .wrapper > header {
  .space {
   margin-bottom: 20px;
  }
+ &.space-page {
+  .datas {
+   .label-title {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 18px;
+   }
+  }
+ }
 }
 
 /*----/----/ $LOGIN */
@@ -1393,7 +1419,7 @@ body.page.dashboard .content {
     }
   }
   .tab-content {
-   padding: 50px 20px;
+   padding: 0px 20px;
    form {
     input {
      &:after {
@@ -1402,6 +1428,15 @@ body.page.dashboard .content {
       position: absolute;
       right: 0;
      }
+    }
+   }
+   .table-equipment {
+    th {
+     text-align: center;
+    }
+    td,
+    th {
+     padding: 7px;
     }
    }
   }

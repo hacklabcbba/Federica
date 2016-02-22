@@ -132,7 +132,128 @@
                     </div>
                 </div>
                 <div class="tab-pane" ng-class="{ active: currentTab == 'equipment'}" id="tab3">
-                    3
+                    <div class="table-responsive">
+                        <table class="table-equipment">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Equipo</th>
+                                    <th>Sala</th>
+                                    <th>Dia</th>
+                                    <th>De Horas</th>
+                                    <th>a Horas</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox"/>
+                                    </td>
+                                    <td>
+                                        <img src="http://bo.ookly.com/pics/bo/2014/10/2f90ed9d-eb0d-4c3c-b5d3-7495f35af3c2_120.jpg" alt="" />
+                                    </td>
+                                    <td>
+                                        Data Epson 500 lumenes RGB/HDMI/VGA
+                                    </td>
+                                    <td>
+                                        <select name="" id="">
+                                            <option value="">Sala 1</option>
+                                            <option value="">Sala 2</option>
+                                            <option value="">Sala 3</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <select name="" id="">
+                                            <option value="">18:00</option>
+                                            <option value="">18:00</option>
+                                            <option value="">18:00</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="" id="">
+                                            <option value="">19:00</option>
+                                            <option value="">19:00</option>
+                                            <option value="">19:00</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <div class="text-center">
+                                            Añade otra reserva
+                                            de este equipo
+
+                                        </div>
+                                        <div class="text-center">
+                                            <a href="#" class="btn btn-primary" style="line-height: 0">
+                                                <i class="fa fa-plus" ></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox"/>
+                                    </td>
+                                    <td>
+                                        <img src="http://bo.ookly.com/pics/bo/2014/10/2f90ed9d-eb0d-4c3c-b5d3-7495f35af3c2_120.jpg" alt="" />
+                                    </td>
+                                    <td>
+                                        Data Epson 500 lumenes RGB/HDMI/VGA
+                                    </td>
+                                    <td>
+                                        <select name="" id="">
+                                            <option value="">Sala 1</option>
+                                            <option value="">Sala 2</option>
+                                            <option value="">Sala 3</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <select name="" id="">
+                                            <option value="">18:00</option>
+                                            <option value="">18:00</option>
+                                            <option value="">18:00</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="" id="">
+                                            <option value="">19:00</option>
+                                            <option value="">19:00</option>
+                                            <option value="">19:00</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <div class="text-center">
+                                            Añade otra reserva
+                                            de este equipo
+
+                                        </div>
+                                        <div class="text-center">
+                                            <a href="#" class="btn btn-primary" style="line-height: 0">
+                                                <i class="fa fa-plus" ></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="tab-pane" ng-class="{ active: currentTab == 'info'}" id="tab4">
                     4

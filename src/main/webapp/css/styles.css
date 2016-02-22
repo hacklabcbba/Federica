@@ -318,6 +318,23 @@ textarea.form-control {
 .widgets.last-blog .item {
   margin-bottom: 15px;
 }
+.widgets.events-here {
+  font-size: 13px;
+}
+.widgets.events-here .title {
+  font-size: 16px;
+  margin-top: 0px;
+  margin-bottom: 3px;
+}
+.widgets.events-here .info {
+  font-size: 12px;
+}
+.widgets.events-here .description {
+  margin-top: 5px;
+}
+.widgets.events-here .item {
+  margin-bottom: 15px;
+}
 /*----/----/ $COMPLEMENTS */
 .border-bottom-separation {
   padding-bottom: 20px;
@@ -1100,6 +1117,11 @@ body .login-socialmedia .googleplus {
 .space-page .space {
   margin-bottom: 20px;
 }
+.space-page.space-page .datas .label-title {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 18px;
+}
 /*----/----/ $LOGIN */
 .login .login-socialmedia a {
   color: #fff;
@@ -1239,13 +1261,20 @@ body.page.dashboard .content {
   padding: 20px;
 }
 .backend-wizard #event-wizard .tab-content {
-  padding: 50px 20px;
+  padding: 0px 20px;
 }
 .backend-wizard #event-wizard .tab-content form input:after {
   content: "X";
   color: #EE5757;
   position: absolute;
   right: 0;
+}
+.backend-wizard #event-wizard .tab-content .table-equipment th {
+  text-align: center;
+}
+.backend-wizard #event-wizard .tab-content .table-equipment td,
+.backend-wizard #event-wizard .tab-content .table-equipment th {
+  padding: 7px;
 }
 .backend-wizard .pager li:first-child i {
   margin-right: 5px;
