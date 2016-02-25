@@ -102,6 +102,7 @@ object MenuSnippet extends SnippetHelper {
 
           def menuItems = menu.menuItems.get
 
+          "data-name=menu-name" #> menu.name.get &
           "#enlaces-header [id+]" #> menuContainerId &
           "#accordion [id+]" #> menuContainerId &
           "data-name=paginas [data-parent+]" #> menuContainerId &
