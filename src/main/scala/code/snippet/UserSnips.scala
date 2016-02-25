@@ -170,7 +170,7 @@ object UserLogin extends Loggable {
               else ExtSession.deleteExtCookie()
               RedirectTo(LoginRedirect.openOr(referer))
             case _ =>
-              S.error("El email o el password son incorrectos")
+              S.error("login_err", "El email o el password son incorrectos")
               Noop
           }
         }
