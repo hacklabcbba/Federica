@@ -25,7 +25,7 @@ object CallSnippet extends ListSnippet[Call] {
       "data-name=name [href]" #> Site.convocatoria.calcHref(call) &
       "data-name=description *" #> call.description.asHtmlCutted(300) &
       "data-name=deadline *" #> call.deadline.toString &
-      "data-name=file [href]" #> call.file.url
+      "data-name=file [href]" #> (if (call.file.get.fileId.get.nonEmpty) call.file.url else Site.convocatoria.calcHref(call))
     })
   }
 
