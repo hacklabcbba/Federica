@@ -12,6 +12,7 @@ import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{ObjectIdRefListField, ObjectIdPk, ObjectIdRefField}
 import LiftRogue._
 import net.liftweb.http.js.JsCmds.Noop
+import net.liftweb.record.field.BooleanField
 
 import scala.xml.Elem
 
@@ -165,6 +166,11 @@ class BlogPost private() extends MongoRecord[BlogPost] with ObjectIdPk[BlogPost]
     }
   }
 
+  object isPublished extends BooleanField(this, false) {
+    override def displayName = "Publicado?"
+    override def name = "is_published"
+  }
+
 
 }
 
@@ -176,7 +182,7 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
     name, categories, tags, photo,
     area, program, transversalArea,
     values, actionLines, process,
-    date, content)
+    date, content, isPublished)
 
   def findNext(inst: BlogPost): Box[BlogPost] = {
     BlogPost
@@ -225,6 +231,34 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
         .fetch()
     case _ =>
       BlogPost
+        .paginate(limit)
+        .setPage(page)
+        .fetch()
+  }
+
+  def countPublishedByCategory(category: Box[String]): Long = category match {
+    case Full(cat) =>
+      BlogPost
+        .where(_.categories contains Tag.createRecord.tag(cat))
+        .and(_.isPublished eqs true)
+        .count
+    case _ =>
+      BlogPost
+        .where(_.isPublished eqs true)
+        .count
+  }
+
+  def findPublishedByCategoryPage(category: Box[String], limit: Int, page: Int): List[BlogPost] = category match {
+    case Full(cat) =>
+      BlogPost
+        .where(_.categories contains Tag.createRecord.tag(cat))
+        .and(_.isPublished eqs true)
+        .paginate(limit)
+        .setPage(page)
+        .fetch()
+    case _ =>
+      BlogPost
+        .where(_.isPublished eqs true)
         .paginate(limit)
         .setPage(page)
         .fetch()
