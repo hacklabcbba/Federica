@@ -4,14 +4,14 @@ package network
 
 import code.config.Site
 import code.lib.field.{BsCkUnsecureTextareaField, BsCkTextareaField, BsStringField}
-import code.lib.{SortableModel, BaseModel, RogueMetaRecord}
+import code.lib.{WithUrl, SortableModel, BaseModel, RogueMetaRecord}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField, ObjectIdRefListField}
 import net.liftweb.record.field.EnumNameField
 
-class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] with BaseModel[Network] with SortableModel[Network] {
+class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] with BaseModel[Network] with SortableModel[Network] with WithUrl[Network] {
 
   override def meta = Network
 
@@ -44,9 +44,7 @@ class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] w
     override def displayName = "Alcance"
   }
 
-  object url extends BsStringField(this, 500) {
-    override def displayName = "Url"
-  }
+  def urlString: String = Site.red.calcHref(this)
 
 }
 

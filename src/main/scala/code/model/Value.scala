@@ -2,7 +2,7 @@ package code.model
 
 import code.config.Site
 import code.lib.field.{BsCkUnsecureTextareaField, BsTextareaField, BsStringField}
-import code.lib.{BaseModel, SortableModel, RogueMetaRecord}
+import code.lib.{WithUrl, BaseModel, SortableModel, RogueMetaRecord}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.{BsonMetaRecord, BsonRecord, MongoRecord}
@@ -13,7 +13,7 @@ import net.liftweb.record.field.{StringField, TextareaField}
 import scala.xml.NodeSeq
 
 
-class Value private () extends MongoRecord[Value] with ObjectIdPk[Value] with BaseModel[Value] with SortableModel[Value] {
+class Value private () extends MongoRecord[Value] with ObjectIdPk[Value] with BaseModel[Value] with SortableModel[Value] with WithUrl[Value]{
 
   override def meta = Value
 
@@ -127,9 +127,7 @@ class Value private () extends MongoRecord[Value] with ObjectIdPk[Value] with Ba
     }
   }
 
-  object url extends BsStringField(this, 500) {
-    override def displayName = "Url"
-  }
+  def urlString: String = Site.principio.calcHref(this)
 
   override def toString = name.get
 }

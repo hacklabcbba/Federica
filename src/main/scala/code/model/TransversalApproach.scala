@@ -2,14 +2,14 @@ package code.model
 
 import code.config.Site
 import code.lib.field.{BsCkUnsecureTextareaField, BsStringField, BsCkTextareaField}
-import code.lib.{BaseModel, SortableModel, RogueMetaRecord}
+import code.lib.{WithUrl, BaseModel, SortableModel, RogueMetaRecord}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.ObjectIdPk
 import net.liftweb.record.field.{StringField, TextareaField}
 
-class TransversalApproach private () extends MongoRecord[TransversalApproach] with ObjectIdPk[TransversalApproach] with BaseModel[TransversalApproach] with SortableModel[TransversalApproach] {
+class TransversalApproach private () extends MongoRecord[TransversalApproach] with ObjectIdPk[TransversalApproach] with BaseModel[TransversalApproach] with SortableModel[TransversalApproach] with WithUrl[TransversalApproach] {
 
   override def meta = TransversalApproach
 
@@ -30,9 +30,7 @@ class TransversalApproach private () extends MongoRecord[TransversalApproach] wi
     override def displayName = "Descripción"
   }
 
-  object url extends BsStringField(this, 500) {
-    override def displayName = "Url"
-  }
+  def urlString: String = Site.enfoqueTransversal.calcHref(this)
 
   override def toString = name.get
 }

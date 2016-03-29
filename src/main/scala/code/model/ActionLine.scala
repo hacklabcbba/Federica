@@ -2,14 +2,14 @@ package code.model
 
 import code.config.Site
 import code.lib.field.{BsCkUnsecureTextareaField, BsStringField, BsCkTextareaField}
-import code.lib.{BaseModel, SortableModel, RogueMetaRecord}
+import code.lib.{WithUrl, BaseModel, SortableModel, RogueMetaRecord}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.ObjectIdPk
 import net.liftweb.record.field.{StringField, TextareaField}
 
-class ActionLine private () extends MongoRecord[ActionLine] with ObjectIdPk[ActionLine] with BaseModel[ActionLine] with SortableModel[ActionLine] {
+class ActionLine private () extends MongoRecord[ActionLine] with ObjectIdPk[ActionLine] with BaseModel[ActionLine] with SortableModel[ActionLine] with WithUrl[ActionLine] {
 
   override def meta = ActionLine
 
@@ -28,10 +28,6 @@ class ActionLine private () extends MongoRecord[ActionLine] with ObjectIdPk[Acti
 
   object description extends BsCkUnsecureTextareaField(this, 1000) {
     override def displayName = "Descripción"
-  }
-
-  object url extends BsStringField(this, 500) {
-    override def displayName = "Url"
   }
 
   override def toString = name.get

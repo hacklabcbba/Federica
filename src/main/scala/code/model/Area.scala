@@ -92,6 +92,10 @@ class Area private () extends MongoRecord[Area] with ObjectIdPk[Area] with BaseM
     override def displayName = "Url"
   }
 
+  object group extends BsStringField(this, 128) {
+    override def displayName = "Grupo"
+  }
+
   override def toString = name.get
 
 }
@@ -102,7 +106,7 @@ object Area extends Area with RogueMetaRecord[Area] {
     name, responsible, email, phone,
     photo1, photo2, officeHoursBegins,
     officeHoursEnds, url, isPublished,
-    order, description)
+    order, description, group)
 
   def findAllPublished: List[Area] = {
     Area.where(_.isPublished eqs true).fetch()

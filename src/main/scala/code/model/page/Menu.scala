@@ -4,7 +4,7 @@ package page
 
 import code.config.Site
 import code.lib.field._
-import code.lib.{BaseModel, RogueMetaRecord}
+import code.lib.{WithUrl, BaseModel, RogueMetaRecord}
 import net.liftweb.common.Box
 import net.liftweb.mongodb.record.{BsonMetaRecord, BsonRecord, MongoRecord}
 import net.liftweb.mongodb.record.field.{BsonRecordListField, ObjectIdRefField, ObjectIdPk}
@@ -12,7 +12,7 @@ import net.liftweb.mongodb.record.field.{BsonRecordListField, ObjectIdRefField, 
 import scala.annotation.tailrec
 
 
-class Menu private () extends MongoRecord[Menu] with ObjectIdPk[Menu] with BaseModel[Menu]{
+class Menu private () extends MongoRecord[Menu] with ObjectIdPk[Menu] with BaseModel[Menu] {
 
   override def meta = Menu
 
@@ -42,16 +42,12 @@ object Menu extends Menu with RogueMetaRecord[Menu] {
 
 }
 
-class MenuItem extends BsonRecord[MenuItem] {
+class MenuItem extends BsonRecord[MenuItem] with WithUrl[MenuItem] {
 
   def meta = MenuItem
 
   object name extends BsStringField(this, 100) {
     override def displayName = "Nombre"
-  }
-
-  object url extends BsStringField(this, 500) {
-    override def displayName = "URL"
   }
 
   object children extends BsonRecordListField(this, MenuItem)
@@ -63,6 +59,8 @@ class MenuItem extends BsonRecord[MenuItem] {
   object menu extends ObjectIdRefField(this, Menu) {
     override def shouldDisplay_? = false
   }
+
+  def urlString: String = url.get
 }
 
 object MenuItem extends MenuItem with BsonMetaRecord[MenuItem]

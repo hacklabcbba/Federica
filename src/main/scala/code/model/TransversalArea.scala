@@ -2,7 +2,7 @@ package code.model
 
 import code.config.Site
 import code.lib.field._
-import code.lib.{SortableModel, BaseModel, RogueMetaRecord}
+import code.lib.{WithUrl, SortableModel, BaseModel, RogueMetaRecord}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.{BsonMetaRecord, BsonRecord, MongoRecord}
@@ -13,7 +13,7 @@ import net.liftweb.util.FieldError
 import scala.xml.{Text, Elem}
 
 
-class TransversalArea private () extends MongoRecord[TransversalArea] with ObjectIdPk[TransversalArea] with BaseModel[TransversalArea] with SortableModel[TransversalArea] {
+class TransversalArea private () extends MongoRecord[TransversalArea] with ObjectIdPk[TransversalArea] with BaseModel[TransversalArea] with SortableModel[TransversalArea] with WithUrl[TransversalArea] {
 
   override def meta = TransversalArea
 
@@ -88,9 +88,7 @@ class TransversalArea private () extends MongoRecord[TransversalArea] with Objec
     override def displayName = "Publicado"
   }
 
-  object url extends BsStringField(this, 500) {
-    override def displayName = "Url"
-  }
+  def urlString: String = Site.areaTransversal.calcHref(this)
 
   override def toString = name.get
 

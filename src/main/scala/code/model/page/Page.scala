@@ -4,7 +4,7 @@ package model
 import code.config.Site
 import code.lib.field._
 import code.lib.js.Bootstrap
-import code.lib.{BaseModel, RogueMetaRecord}
+import code.lib.{WithUrl, BaseModel, RogueMetaRecord}
 import net.liftweb.common.Box
 import net.liftweb.http.js.JsCmds.RedirectTo
 import net.liftweb.http.{IdMemoizeTransform, SHtml, S}
@@ -15,7 +15,7 @@ import net.liftweb.util.{Helpers, CssSel}
 import scala.xml.NodeSeq
 import Helpers._
 
-class Page private () extends MongoRecord[Page] with ObjectIdPk[Page] with BaseModel[Page]{
+class Page private () extends MongoRecord[Page] with ObjectIdPk[Page] with BaseModel[Page] with WithUrl[Page] {
 
   override def meta = Page
 
@@ -30,10 +30,6 @@ class Page private () extends MongoRecord[Page] with ObjectIdPk[Page] with BaseM
 
   object body extends BsCkUnsecureTextareaField(this, 1000) {
     override def displayName = "Contenido"
-  }
-
-  object url extends BsStringField(this, 500) {
-    override def displayName = "Url"
   }
 
   object widgets extends ObjectIdRefListField(this, Widget) {

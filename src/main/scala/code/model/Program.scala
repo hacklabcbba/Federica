@@ -1,7 +1,7 @@
 package code.model
 
 import code.config.Site
-import code.lib.{SortableModel, BaseModel, RogueMetaRecord}
+import code.lib.{WithUrl, SortableModel, BaseModel, RogueMetaRecord}
 import code.lib.field._
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
@@ -12,7 +12,7 @@ import net.liftweb.record.field.{StringField, TextareaField}
 import scala.xml.Elem
 
 
-class Program private () extends MongoRecord[Program] with ObjectIdPk[Program] with BaseModel[Program] with SortableModel[Program]{
+class Program private () extends MongoRecord[Program] with ObjectIdPk[Program] with BaseModel[Program] with SortableModel[Program] with WithUrl[Program] {
 
   override def meta = Program
 
@@ -61,9 +61,7 @@ class Program private () extends MongoRecord[Program] with ObjectIdPk[Program] w
     override def displayName = "Descripción"
   }
 
-  object url extends BsStringField(this, 500) {
-    override def displayName = "Url"
-  }
+  def urlString: String = Site.programa.calcHref(this)
 
   override def toString = name.get
 }

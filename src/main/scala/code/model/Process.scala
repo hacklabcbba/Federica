@@ -2,7 +2,7 @@ package code.model
 
 import code.config.Site
 import code.lib.field.{BsCkUnsecureTextareaField, BsCkTextareaField, BsStringField}
-import code.lib.{SortableModel, BaseModel, RogueMetaRecord}
+import code.lib.{WithUrl, SortableModel, BaseModel, RogueMetaRecord}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
@@ -10,7 +10,7 @@ import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField}
 import net.liftweb.record.field.EnumNameField
 import net.liftweb.http.js.JsCmds.Noop
 
-class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] with BaseModel[Process] with SortableModel[Process]{
+class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] with BaseModel[Process] with SortableModel[Process] with WithUrl[Process] {
 
   override def meta = Process
 
@@ -90,9 +90,7 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] w
     }
   }
 
-  object url extends BsStringField(this, 500) {
-    override def displayName = "Url"
-  }
+  def urlString: String = Site.proceso.calcHref(this)
 
   override def toString = name.get
 }
