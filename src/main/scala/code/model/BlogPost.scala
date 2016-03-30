@@ -171,6 +171,8 @@ class BlogPost private() extends MongoRecord[BlogPost] with ObjectIdPk[BlogPost]
     override def name = "is_published"
   }
 
+  override def toString = name.get
+
 
 }
 
