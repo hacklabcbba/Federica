@@ -5,11 +5,11 @@ package activity
 import code.lib.RogueMetaRecord
 import code.model.event.CostInfo
 import code.model.resource._
-import net.liftweb.mongodb.record.MongoRecord
+import net.liftweb.mongodb.record.{BsonMetaRecord, BsonRecord, MongoRecord}
 import net.liftweb.mongodb.record.field._
 import net.liftweb.record.field.StringField
 
-class Activity private() extends MongoRecord[Activity] with ObjectIdPk[Activity]{
+class Activity private() extends BsonRecord[Activity] {
 
   override def meta = Activity
 
@@ -24,8 +24,6 @@ class Activity private() extends MongoRecord[Activity] with ObjectIdPk[Activity]
   object date extends DateField(this)
 }
 
-object Activity extends Activity with RogueMetaRecord[Activity] {
-  override def collectionName = "activity.activities"
-}
+object Activity extends Activity with BsonMetaRecord[Activity]
 
 

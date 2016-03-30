@@ -53,7 +53,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
   object costInfo extends BsDoubleField(this, 0.0) {
     override def displayName = "Costo"
   }
-  
+
   object area extends ObjectIdRefField(this, Area) {
     override def optional_? = true
     override def displayName = "Área"
@@ -88,7 +88,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
     }
   }
 
-  object activities extends ObjectIdRefListField(this, Activity) {
+  object activities extends BsonRecordListField(this, Activity) {
     override def displayName = "Actividades"
   }
 
