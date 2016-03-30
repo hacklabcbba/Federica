@@ -65,10 +65,19 @@ class Room private() extends Resource[Room] {
     }
   }
 
+
+  object isResidence extends BooleanField(this, false) {
+    override def displayName = "Residencia"
+  }
+
   object areasCost extends BsonRecordListField(this, Cost) with LifecycleCallbacks {
     override def displayName = "Costos por area"
     private var newCosts: List[Cost] = Nil
     override def toForm: Box[NodeSeq] = Full {
+      if (isResidence.get) residenceForm else regularForm
+    }
+
+    private def regularForm = {
       Area.findAll.foldLeft(NodeSeq.Empty){ case (node, area) => {
         val cost = this.value.find(cost => cost.area.get == area.id.get).getOrElse{
           val c = Cost.createRecord.area(area.id.get)
@@ -203,6 +212,73 @@ class Room private() extends Resource[Room] {
       }}
     }
 
+    private def residenceForm = {
+      Area.findAll.foldLeft(NodeSeq.Empty){ case (node, area) => {
+        val cost = this.value.find(cost => cost.area.get == area.id.get).getOrElse{
+          val c = Cost.createRecord.area(area.id.get)
+          newCosts = newCosts ++ List(c)
+          c
+        }
+        node ++
+          <div class="row">
+            <div class="col-md-6"><h5>{area.name.get}</h5></div>
+            <div class="col-md-3">Becado</div>
+            <div class="col-md-3">Autogestionado</div>
+          </div> ++
+          <div class="row">
+            <div class="form-group margin-bottom-xs">
+              <label data-name="label" class="control-label col-md-6" for="email_id">Categoría A</label>
+              <div class="col-md-3">
+                {cost.costBecadoCatA.toForm openOr NodeSeq.Empty}
+                <span class="input-group-addon">
+                  Bs.
+                </span>
+              </div>
+              <div class="col-md-3">
+                {cost.costAutogestionadoCatA.toForm openOr NodeSeq.Empty}
+                <span class="input-group-addon">
+                  Bs.
+                </span>
+              </div>
+            </div>
+          </div> ++
+          <div class="row">
+            <div class="form-group margin-bottom-xs">
+              <label data-name="label" class="control-label col-md-6" for="email_id">Categoría B</label>
+              <div class="col-md-3">
+                {cost.costBecadoCatB.toForm openOr NodeSeq.Empty}
+                <span class="input-group-addon">
+                  Bs.
+                </span>
+              </div>
+              <div class="col-md-3">
+                {cost.costAutogestionadoCatB.toForm openOr NodeSeq.Empty}
+                <span class="input-group-addon">
+                  Bs.
+                </span>
+              </div>
+            </div>
+          </div> ++
+          <div class="row">
+            <div class="form-group margin-bottom-xs">
+              <label data-name="label" class="control-label col-md-6" for="email_id">Categoría C</label>
+              <div class="col-md-3">
+                {cost.costBecadoCatC.toForm openOr NodeSeq.Empty}
+                <span class="input-group-addon">
+                  Bs.
+                </span>
+              </div>
+              <div class="col-md-3">
+                {cost.costAutogestionadoCatC.toForm openOr NodeSeq.Empty}
+                <span class="input-group-addon">
+                  Bs.
+                </span>
+              </div>
+            </div>
+          </div>
+      }}
+    }
+
     override def beforeSave: Unit = {
       this.set(this.get ++ newCosts)
     }
@@ -212,6 +288,10 @@ class Room private() extends Resource[Room] {
     override def displayName = "Costos por programa"
     private var newCosts: List[Cost] = Nil
     override def toForm: Box[NodeSeq] = Full {
+      if (isResidence.get) residenceForm else regularForm
+    }
+
+    private def regularForm = {
       Program.findAll.foldLeft(NodeSeq.Empty){ case (node, program) => {
         val cost = this.value.find(cost => cost.program.get == program.id.get).getOrElse{
           val c = Cost.createRecord.program(program.id.get)
@@ -337,6 +417,73 @@ class Room private() extends Resource[Room] {
               </div>
               <div class="col-md-3">
                 {cost.costSSInst3.toForm openOr NodeSeq.Empty}
+                <span class="input-group-addon">
+                  Bs.
+                </span>
+              </div>
+            </div>
+          </div>
+      }}
+    }
+
+    private def residenceForm = {
+      Program.findAll.foldLeft(NodeSeq.Empty){ case (node, program) => {
+        val cost = this.value.find(cost => cost.program.get == program.id.get).getOrElse{
+          val c = Cost.createRecord.program(program.id.get)
+          newCosts = newCosts ++ List(c)
+          c
+        }
+        node ++
+          <div class="row">
+            <div class="col-md-6"><h5>{program.name.get}</h5></div>
+            <div class="col-md-3">Becado</div>
+            <div class="col-md-3">Autogestionado</div>
+          </div> ++
+          <div class="row">
+            <div class="form-group margin-bottom-xs">
+              <label data-name="label" class="control-label col-md-6" for="email_id">Categoría A</label>
+              <div class="col-md-3">
+                {cost.costBecadoCatA.toForm openOr NodeSeq.Empty}
+                <span class="input-group-addon">
+                  Bs.
+                </span>
+              </div>
+              <div class="col-md-3">
+                {cost.costAutogestionadoCatA.toForm openOr NodeSeq.Empty}
+                <span class="input-group-addon">
+                  Bs.
+                </span>
+              </div>
+            </div>
+          </div> ++
+          <div class="row">
+            <div class="form-group margin-bottom-xs">
+              <label data-name="label" class="control-label col-md-6" for="email_id">Categoría B</label>
+              <div class="col-md-3">
+                {cost.costBecadoCatB.toForm openOr NodeSeq.Empty}
+                <span class="input-group-addon">
+                  Bs.
+                </span>
+              </div>
+              <div class="col-md-3">
+                {cost.costAutogestionadoCatB.toForm openOr NodeSeq.Empty}
+                <span class="input-group-addon">
+                  Bs.
+                </span>
+              </div>
+            </div>
+          </div> ++
+          <div class="row">
+            <div class="form-group margin-bottom-xs">
+              <label data-name="label" class="control-label col-md-6" for="email_id">Categoría C</label>
+              <div class="col-md-3">
+                {cost.costBecadoCatC.toForm openOr NodeSeq.Empty}
+                <span class="input-group-addon">
+                  Bs.
+                </span>
+              </div>
+              <div class="col-md-3">
+                {cost.costAutogestionadoCatC.toForm openOr NodeSeq.Empty}
                 <span class="input-group-addon">
                   Bs.
                 </span>

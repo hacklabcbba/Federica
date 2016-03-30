@@ -85,6 +85,30 @@ class Cost extends BsonRecord[Cost] {
     override def displayName = "S.S"
   }
 
+  object costBecadoCatA extends BsDoubleField(this, 0.0) {
+    override def displayName = "Costo Becado - Categoria A"
+  }
+
+  object costBecadoCatB extends BsDoubleField(this, 0.0) {
+    override def displayName = "Costo Becado - Categoria B"
+  }
+
+  object costBecadoCatC extends BsDoubleField(this, 0.0) {
+    override def displayName = "Costo Becado - Categoria C"
+  }
+
+  object costAutogestionadoCatA extends BsDoubleField(this, 0.0) {
+    override def displayName = "Costo Autogestionado - Categoria A"
+  }
+
+  object costAutogestionadoCatB extends BsDoubleField(this, 0.0) {
+    override def displayName = "Costo Autogestionado - Categoria B"
+  }
+
+  object costAutogestionadoCatC extends BsDoubleField(this, 0.0) {
+    override def displayName = "Costo Autogestionado - Categoria C"
+  }
+
 }
 
 object Cost extends Cost with BsonMetaRecord[Cost]
