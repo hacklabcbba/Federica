@@ -4,13 +4,14 @@ import code.config.Site
 import code.model.Area
 import code.model.event.Event
 import code.model.resource.Room
+import net.liftmodules.extras.SnippetHelper
 import net.liftmodules.ng.Angular._
 import net.liftweb.common.{Failure, Full}
 import net.liftweb.json.JsonAST.{JValue, JArray}
 import net.liftweb.util.Helpers._
 import net.liftweb.util.{CssSel, Helpers}
 
-object PendingEventSnippet extends ListSnippet[Event] {
+object PendingEventSnippet extends ListSnippet[Event] with SnippetHelper {
 
   val meta = Event
 
@@ -22,13 +23,21 @@ object PendingEventSnippet extends ListSnippet[Event] {
 
   def itemEditUrl(inst: Event): String = Site.backendEventEdit.toLoc.calcHref(inst)
 
-  override def listFields = List(meta.name, meta.place)
+  override def listFields = List(meta.name)
 
   def renderFrontEnd: CssSel = {
     "data-name=area" #> meta.findAll.map(event => {
       "data-name=name *" #> event.name.get &
       "data-name=description *" #> event.description.asHtml
     })
+  }
+
+  def form: CssSel = {
+    (for {
+      event <- (Site.backendEventAdd.currentValue.toList ++ Site.backendEventEdit.currentValue.toList).headOption
+    } yield {
+      "data-name=form" #> event.toForm
+    }) getOrElse "data-name=form" #> "ERROR"
   }
 
 }
@@ -45,7 +54,7 @@ object EventSnippet extends ListSnippet[Event] {
 
   def itemEditUrl(inst: Event): String = Site.backendEventEdit.toLoc.calcHref(inst)
 
-  override def listFields = List(meta.name, meta.place, meta.status)
+  override def listFields = List(meta.name, meta.status)
 
   def renderFrontEnd: CssSel = {
     "data-name=area" #> meta.findAll.map(event => {
