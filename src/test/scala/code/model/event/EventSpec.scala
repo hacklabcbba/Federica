@@ -190,7 +190,7 @@ class EventSpec extends BaseMongoSessionWordSpec {
     }
 
     activity.validate.length should equal (0)
-    activity.save(false)
+    activity
   }
 
   def createActivityType(name: String): ActivityType = {
