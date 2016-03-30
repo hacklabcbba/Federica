@@ -30,6 +30,8 @@ class ActionLine private () extends MongoRecord[ActionLine] with ObjectIdPk[Acti
     override def displayName = "Descripción"
   }
 
+  def urlString: String = Site.lineaDeAccion.calcHref(this)
+
   override def toString = name.get
 }
 

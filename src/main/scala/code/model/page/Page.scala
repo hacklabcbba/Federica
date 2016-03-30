@@ -84,6 +84,8 @@ class Page private () extends MongoRecord[Page] with ObjectIdPk[Page] with BaseM
     </div>
   }
 
+  def urlString: String = Site.pagina.calcHref(this)
+
   override def toString = name.get
 }
 
