@@ -4,11 +4,12 @@ package event
 
 import code.config.{DefaultRoles, Site}
 import code.lib.field._
+import code.lib.js.Bootstrap
 import code.lib.{BaseModel, RogueMetaRecord}
-import code.model.activity.Activity
+import code.model.event.Activity
 import code.model.resource.Room
 import net.liftweb.common.{Box, Full}
-import net.liftweb.http.{S, SHtml}
+import net.liftweb.http.{IdMemoizeTransform, S, SHtml}
 import net.liftweb.http.js.JsCmd
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.json.JsonAST.JArray
@@ -17,7 +18,7 @@ import net.liftweb.mongodb.record.field._
 import net.liftweb.record.field._
 import net.liftweb.util.Helpers._
 
-import scala.xml.Elem
+import scala.xml.{NodeSeq, Elem}
 
 class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with BaseModel[Event] {
 
@@ -25,7 +26,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
 
   def title = "Eventos"
 
-  def entityListUrl = Site.backendEvents.menu.loc.calcDefaultHref
+  def entityListUrl = Site.backendPendingEvents.menu.loc.calcDefaultHref
 
   object eventNumber extends StringField(this, 200) {
     override def displayName = "#"
@@ -91,6 +92,81 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
 
   object activities extends BsonRecordListField(this, Activity) {
     override def displayName = "Actividades"
+    private def modalBody(body: IdMemoizeTransform, activity: Activity, isNew: Boolean): NodeSeq = {
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form data-lift="form.ajax?classform-horizontal">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Actividad</h4>
+            </div>
+            <div class="modal-body">
+              {activity.toFieldset(activity.fields)}
+            </div>
+            <div class="modal-footer">
+              {SHtml.ajaxSubmit(if (isNew) "Guardar" else "Actualizar", () => {
+                if (isNew) {
+                  activities.set(activities.get ++ List(activity))
+                  Bootstrap.Modal.close() &
+                  body.setHtml()
+                } else {
+                  Bootstrap.Modal.close() &
+                  body.setHtml()
+                }
+              }, "class" -> "btn btn-success")}
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    }
+
+    private def elem = {
+      ("*" #> SHtml.idMemoize(body => {
+        "data-name=activity" #> this.get.map(activity => {
+          "data-name=name *" #> activity.name.get &
+          "data-name=kind *" #> activity.kind.get.toString &
+          "data-name=room *" #> activity.room.obj.dmap("")(_.name.get) &
+          "data-name=date *" #> activity.date.toString() &
+          "data-name=edit [onclick]" #> SHtml.ajaxInvoke(() => Bootstrap.Modal(modalBody(body, activity, false))) &
+          "data-name=delete [onclick]" #> SHtml.ajaxInvoke(() => {
+            activities.set(activities.get.filter(s => s != activity))
+            Bootstrap.Modal.close() &
+            body.setHtml()
+          })
+        }) &
+        "data-name=add [onclick]" #> SHtml.ajaxInvoke(() => Bootstrap.Modal(modalBody(body, Activity.createRecord, true)))
+      })).apply(template)
+    }
+    private def template = {
+      <div class="col-sm-12 col-lg-12">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Tipo</th>
+              <th>Sala</th>
+              <th>Fecha</th>
+              <th>&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-name="activity">
+              <td data-name="name"></td>
+              <td data-name="kind"></td>
+              <td data-name="room"></td>
+              <td data-name="date"></td>
+              <td>
+                <a href="#" class="btn btn-success" data-name="edit">Editar</a>
+                <a href="#" class="btn btn-danger" data-name="delete">Eliminar</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <a href="#" data-name="add" class="btn btn-success"><i class="fa fa-plus"></i></a>
+      </div>
+    }
+    override def toForm = Full(elem)
   }
 
   object description extends BsCkTextareaField(this, 1000) {
@@ -130,8 +206,74 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
     override def displayName = "Apoya"
   }
 
-  object pressRoom extends ObjectIdRefField(this, PressNotes) {
+  object pressRoom extends BsonRecordListField(this, PressNotes) {
     override def displayName = "Sala de prensa"
+    private def modalBody(body: IdMemoizeTransform, pressNote: PressNotes, isNew: Boolean): NodeSeq = {
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form data-lift="form.ajax?classform-horizontal">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Actividad</h4>
+            </div>
+            <div class="modal-body">
+              {pressNote.toFieldset(pressNote.fields)}
+            </div>
+            <div class="modal-footer">
+              {SHtml.ajaxSubmit(if (isNew) "Guardar" else "Actualizar", () => {
+              if (isNew) {
+                pressRoom.set(pressRoom.get ++ List(pressNote))
+                Bootstrap.Modal.close() &
+                  body.setHtml()
+              } else {
+                Bootstrap.Modal.close() &
+                  body.setHtml()
+              }
+            }, "class" -> "btn btn-success")}
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    }
+
+    private def elem = {
+      ("*" #> SHtml.idMemoize(body => {
+        "data-name=activity" #> this.get.map(pr => {
+          "data-name=name *" #> pr.name.get &
+          "data-name=edit [onclick]" #> SHtml.ajaxInvoke(() => Bootstrap.Modal(modalBody(body, pr, false))) &
+          "data-name=delete [onclick]" #> SHtml.ajaxInvoke(() => {
+            pressRoom.set(pressRoom.get.filter(s => s != pr))
+            Bootstrap.Modal.close() &
+              body.setHtml()
+          })
+        }) &
+        "data-name=add [onclick]" #> SHtml.ajaxInvoke(() => Bootstrap.Modal(modalBody(body, PressNotes.createRecord, true)))
+      })).apply(template)
+    }
+    private def template = {
+      <div class="col-sm-12 col-lg-12">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-name="activity">
+              <td data-name="name"></td>
+              <td>
+                <a href="#" class="btn btn-success" data-name="edit">Editar</a>
+                <a href="#" class="btn btn-danger" data-name="delete">Eliminar</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <a href="#" data-name="add" class="btn btn-success"><i class="fa fa-plus"></i></a>
+      </div>
+    }
+    override def toForm = Full(elem)
   }
 
   object quote extends BsDoubleField(this, 0.0) {
@@ -140,7 +282,13 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
 
   object status extends EnumNameField(this, StatusType) {
     override def displayName = "Estado"
-    override def shouldDisplay_? = false
+    override def shouldDisplay_? =
+      User.hasAnyRoles(
+        List(
+          DefaultRoles.Admin.id.get,
+          DefaultRoles.CoordGeneral.id.get,
+          DefaultRoles.SuperAdmin.id.get
+        ))
   }
 
   object eventKind extends EnumNameField(this, EventKind) {
@@ -176,7 +324,6 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
       super.toForm
     }
   }
-
 
   object rooms extends ObjectIdRefListField(this, Room) {
     override def shouldDisplay_? = false
@@ -230,12 +377,14 @@ object Event extends Event with RogueMetaRecord[Event] {
     isOutstanding, organizer, handlers, collaborators, supports,
     description, hours, costInfo, quote,
     image, isLogoEnabled, applicantType,
-    activities, pressRoom, specificRequirements, residenciaNorte, residenciaSud)
+    activities, pressRoom, specificRequirements, residenciaNorte, residenciaSud, status)
 }
 
 object StatusType extends Enumeration {
   type StatusType = Value
-  val Approved, Rejected, Draft = Value
+  val Approved = Value("Aprovado")
+  val Rejected = Value("Rechazado")
+  val Draft = Value("Borrador")
 }
 
 object ApplicantType extends Enumeration {

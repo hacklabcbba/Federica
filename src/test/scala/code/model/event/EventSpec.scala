@@ -6,7 +6,7 @@ import code.model.ProductiveUnit
 import code.model.project._
 import org.joda.time.DateTime
 import code.model.resource._
-import code.model.activity.{ActivityType, Activity}
+import code.model.activity.ActivityType
 import code.model.resource.CostType._
 import code.model.resource.ClassType._
 
