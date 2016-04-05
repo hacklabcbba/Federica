@@ -6,7 +6,6 @@ import code.model.ProductiveUnit
 import code.model.project._
 import org.joda.time.DateTime
 import code.model.resource._
-import code.model.activity.ActivityType
 import code.model.resource.CostType._
 import code.model.resource.ClassType._
 
@@ -177,11 +176,10 @@ class EventSpec extends BaseMongoSessionWordSpec {
 
     val activity = Activity
       .createRecord
-      .activityType(activityType.id.get)
+      .kind(EventKind.Bienal)
       .description(desc)
       .name(name)
-      .rooms(room.id.get :: Nil)
-      .packages(packageResource.id.get :: Nil)
+      .room(room.id.get)
       .date(date1.toDate)
 
     val errsActivity= activity.validate
@@ -191,16 +189,6 @@ class EventSpec extends BaseMongoSessionWordSpec {
 
     activity.validate.length should equal (0)
     activity
-  }
-
-  def createActivityType(name: String): ActivityType = {
-
-    val activityType = ActivityType
-      .createRecord
-      .name(name)
-
-    activityType.validate.length should equal (0)
-    activityType.save(false)
   }
 
   def createPackageResource: ResourcePackage = {
