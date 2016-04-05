@@ -512,6 +512,7 @@ object Room extends Room with RogueMetaRecord[Room] {
     Room
       .where(_.isBookable eqs true)
       .and(_.classType eqs ClassType.RoomType)
+      .orderAsc(_.order)
       .fetch()
   }
 
