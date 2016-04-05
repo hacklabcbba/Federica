@@ -3,12 +3,13 @@ package model
 package event
 
 import code.config.{DefaultRoles, Site}
-import code.lib.field.{BsDoubleField, BsCkTextareaField, FileField, BsStringField}
+import code.lib.field._
 import code.lib.{BaseModel, RogueMetaRecord}
 import code.model.activity.Activity
 import code.model.resource.Room
 import net.liftweb.common.{Box, Full}
-import net.liftweb.http.SHtml
+import net.liftweb.http.{S, SHtml}
+import net.liftweb.http.js.JsCmd
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.json.JsonAST.JArray
 import net.liftweb.mongodb.record.MongoRecord
@@ -98,10 +99,13 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
 
   object requirements extends BsCkTextareaField(this, 1000) {
     override def displayName = "Requerimientos"
+
+    override def toForm = super.toForm.map(s => <div id="requirements_div">{s}</div>)
   }
 
   object destinedTo extends BsStringField(this, 200) {
     override def displayName = "Destinado a"
+    override def toForm = super.toForm.map(s => <div id="destinedTo_div">{s}</div>)
   }
 
   object specificRequirements extends BsCkTextareaField(this, 1000) {
@@ -141,6 +145,36 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
 
   object eventKind extends EnumNameField(this, EventKind) {
     override def displayName = "Tipo de evento"
+    val toggleExtraFields = new JsCmd {
+      def toJsCmd =
+        """
+           |var eventKindElem = jQuery('#eventKind_id');
+           |var showHideFieldsFn = function() {
+           |  if ($( "#eventKind_id option:selected" ).text() == 'Taller') {
+           |    jQuery('#destinedTo_div').parent().show();
+           |    jQuery('#requirements_div').parent().show();
+           |    jQuery('#residenciaNorte_div').parent().hide();
+           |    jQuery('#residenciaSud_div').parent().hide();
+           |  } else if ($( "#eventKind_id option:selected" ).text() == 'Residencia Artística') {
+           |    jQuery('#residenciaNorte_div').parent().show();
+           |    jQuery('#residenciaSud_div').parent().show();
+           |    jQuery('#destinedTo_div').parent().hide();
+           |    jQuery('#requirements_div').parent().hide();
+           |  } else {
+           |    jQuery('#destinedTo_div').parent().hide();
+           |    jQuery('#requirements_div').parent().hide();
+           |    jQuery('#residenciaNorte_div').parent().hide();
+           |    jQuery('#residenciaSud_div').parent().hide();
+           |  }
+           |}
+           |eventKindElem.on('change', showHideFieldsFn);
+           |showHideFieldsFn();
+           """.stripMargin
+    }
+    override def toForm = {
+      S.appendJs(OnLoad(toggleExtraFields))
+      super.toForm
+    }
   }
 
 
@@ -167,6 +201,16 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
     }
   }
 
+  object residenciaNorte extends BsIntField(this, 0) {
+    override def displayName = "Residencias NORTE - Nº de personas. (Máximo 14)"
+    override def toForm = super.toForm.map(s => <div id="residenciaNorte_div">{s}</div>)
+  }
+
+  object residenciaSud extends BsIntField(this, 0) {
+    override def displayName = "Residencias SUR - Nº de personas. (Máximo 8)"
+    override def toForm = super.toForm.map(s => <div id="residenciaSud_div">{s}</div>)
+  }
+
   object isLogoEnabled extends BooleanField(this, false) {
     override def displayName = "¿Pondrá el logo del mARTadero en sus materiales de difusión?"
   }
@@ -186,7 +230,7 @@ object Event extends Event with RogueMetaRecord[Event] {
     isOutstanding, organizer, handlers, collaborators, supports,
     description, hours, costInfo, quote,
     image, isLogoEnabled, applicantType,
-    activities, pressRoom, specificRequirements)
+    activities, pressRoom, specificRequirements, residenciaNorte, residenciaSud)
 }
 
 object StatusType extends Enumeration {
@@ -211,7 +255,7 @@ object EventKind extends Enumeration {
   val ResidenciaArtistica = Value("Residencia Artística")
   val Bienal = Value("Bienal")
   val Concierto = Value("Concierto")
-  val Concurso = Value("")
+  val Concurso = Value("Concurso")
   val ConferenciadePrensa = Value("Conferencia de Prensa")
   val Congreso = Value("Congreso")
   val Conversatorio = Value("Conversatorio")
