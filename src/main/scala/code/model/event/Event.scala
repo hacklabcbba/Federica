@@ -17,6 +17,8 @@ import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field._
 import net.liftweb.record.field._
 import net.liftweb.util.Helpers._
+import org.bson.types.ObjectId
+import net.liftweb.json.JsonDSL._
 
 import scala.xml.{NodeSeq, Elem}
 
@@ -326,9 +328,20 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
   }
 
   object rooms extends ObjectIdRefListField(this, Room) {
-    override def shouldDisplay_? = false
+    override def shouldDisplay_? = true
+
+    override def displayName = ""
 
     override def asJValue = JArray(objs.map(_.asJValue))
+
+
+    override def toForm = Full(
+      SHtml.hidden(values => {
+        val ids = values.split(",").toList.map(new ObjectId(_))
+        ids.foreach(println(_))
+        this.setFromAny(ids)
+      }, this.objs.map(_.id.get).mkString(","), "id" -> "rooms")
+    )
   }
 
   object isOutstanding extends BooleanField(this, false) {
@@ -377,12 +390,12 @@ object Event extends Event with RogueMetaRecord[Event] {
     isOutstanding, organizer, handlers, collaborators, supports,
     description, hours, costInfo, quote,
     image, isLogoEnabled, applicantType,
-    activities, pressRoom, specificRequirements, residenciaNorte, residenciaSud, status)
+    activities, pressRoom, specificRequirements, residenciaNorte, residenciaSud, status, rooms)
 }
 
 object StatusType extends Enumeration {
   type StatusType = Value
-  val Approved = Value("Aprovado")
+  val Approved = Value("Aprobado")
   val Rejected = Value("Rechazado")
   val Draft = Value("Borrador")
 }

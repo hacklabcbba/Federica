@@ -14,11 +14,13 @@ angular.module('EventApp', ['federica.event', 'ui.bootstrap'])
       room.bookingKind = 'Single';
       $scope.event.rooms.push(room);
     }
+    var rooms = angular.element(document.querySelector( '#rooms' ));
     $log.log($scope.event.rooms);
+    rooms.val(_.pluck($scope.event.rooms,'_id').join(','))
   }
 
   $scope.isRoomSelected = function(room) {
-    if (_.includes($scope.event.rooms, room)) {
+    if (_.some($scope.event.rooms, function(item) { return room._id === item._id; })) {
       return 'panel-primary';
     } else {
       return 'panel-default';
@@ -152,10 +154,10 @@ angular.module('EventApp', ['federica.event', 'ui.bootstrap'])
     };
 
   //init
-  EventService.listRooms().then(function(response) {
-    $scope.rooms = response;
-  });
   EventService.fetchEvent().then(function(response) {
     $scope.event = response;
+  });
+  EventService.listRooms().then(function(response) {
+    $scope.rooms = response;
   });
 });
