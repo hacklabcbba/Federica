@@ -1,4 +1,5 @@
 # sudo mkdir -p /srv/federica/mongo-data/db
+# test
 mongo:
   image: dockerfile/mongodb
   command: "/usr/bin/mongod --noprealloc --smallfiles"
