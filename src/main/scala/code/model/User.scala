@@ -348,6 +348,54 @@ object User extends User with ProtoAuthUserMeta[User] with RogueMetaRecord[User]
     }
   }
 
+  def sendEmailConfirmation(user: User): Unit = {
+    import net.liftweb.util.Mailer._
+
+    val tokenUrl = S.hostAndPath + "/confirmation/" + user.id
+    val msgTxt =
+      """
+        |Tu cuenta en nuestro sitio web %s ha sido creado.
+        |
+        |Para confirmar y terminar el proceso haga click en el siguiente enlace o copie y pegue en su navegador web
+        |
+        |%s
+        |
+        |Gracias,
+        |%s
+      """.format(siteName, tokenUrl, user.name.get).stripMargin
+
+    println(msgTxt)
+
+    sendMail(
+      From(MongoAuth.systemFancyEmail),
+      Subject("%s Confirmacion de creacion de cuenta".format(siteName)),
+      To(user.fancyEmail),
+      PlainMailBodyType(msgTxt)
+    )
+  }
+
+  def sendPasswordRecovery(user: User): Unit = {
+    import net.liftweb.util.Mailer._
+
+    val tokenUrl = S.hostAndPath + "/recovery/password/" + user.id
+
+    val msgTxt =
+      """"
+        |Haz olvidado tu contraseña?
+        |Para recuperar tu contraseña debes hacer click en el siguiente enlace o copiar y pegar en tu navegador web.
+        |%s
+      """.format(tokenUrl).stripMargin
+
+    println(msgTxt)
+
+    sendMail(
+      From(MongoAuth.systemFancyEmail),
+      Subject("%s Recuperar contraseña".format(siteName)),
+      To(user.fancyEmail),
+      PlainMailBodyType(msgTxt)
+    )
+  }
+
   /*
    * ExtSession
    */

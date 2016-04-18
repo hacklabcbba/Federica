@@ -6,6 +6,7 @@ import javax.mail.internet.MimeMessage
 
 import net.liftweb._
 import common._
+import net.liftweb.util.Mailer.{From, Subject, To, XHTMLMailBodyType}
 import util._
 
 /*

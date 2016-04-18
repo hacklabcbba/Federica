@@ -2,6 +2,7 @@ package code
 package snippet
 
 import code.config.Site
+import code.lib.ReCaptcha
 import code.model.{LoginCredentials, User}
 import net.liftmodules.extras.{Gravatar, SnippetHelper}
 import net.liftmodules.mongoauth.LoginRedirect
@@ -11,6 +12,7 @@ import net.liftweb.http.js.JsCmd
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.http.{S, SHtml}
 import net.liftweb.util.Helpers._
+import net.liftweb.util.Mailer.{From, Subject, To}
 import net.liftweb.util._
 
 import scala.xml._
@@ -147,6 +149,101 @@ object ProfileLocUser extends UserSnippet {
   }
 }
 
+object UserConfirmation extends Loggable {
+  def render = {
+    val message = (for {
+      user <- Site.emailConfirmation.currentValue
+    } yield {
+      val userValidated = user.verified(true)
+      User.update(userValidated)
+
+      "Felicidades su cuenta ha sido creada con exito. Ahora usted puede ingresar al sistema."
+
+    }).openOr("Ocurrio un error. Porfavor intente nuevamente.")
+
+    "data-name=message" #> message
+  }
+}
+
+object UserResetPassword extends Loggable {
+  var repeatPwd = ""
+  var pwd = ""
+
+  def doSubmit() = {
+    (for {
+      user <- Site.passwordRecovery.currentValue
+    } yield {
+      if(pwd == repeatPwd) {
+        user.password.set(pwd)
+        RedirectTo("/", () => S.notice("Un correo electronico ha sido enviado a su cuenta con instrucciones para acceder."))
+      } else {
+        S.error("recovery_err", "Las contraseñas no coinciden")
+        Noop
+      }
+    }) openOr Noop
+  }
+
+  def render = {
+    "data-name=password" #> SHtml.ajaxText("", s => {
+      pwd = s
+      Noop
+    }, "type" -> "password") &
+      "data-name=repeatPwd" #> SHtml.ajaxText("", s => {
+        repeatPwd = s
+        Noop
+      }, "type" -> "password") &
+    "data-name=submit" #> SHtml.ajaxSubmit("Enviar", doSubmit)
+  }
+}
+
+object UserRegister extends Loggable with ReCaptcha {
+  def render = {
+    //form vars
+    var newUser = User.createRecord
+    var repeatPwd = ""
+    var pwd = ""
+
+    def doSubmit(): JsCmd = {
+      newUser.username(newUser.email.get)
+      if(validateCaptcha.isDefined){
+        // invalid captcha error message
+        S.error("captchaError", "Invalid captcha")
+        reloadCaptcha
+      } else {
+        newUser.validate match {
+          case Nil =>
+            if(pwd == repeatPwd) {
+              newUser.verified(false)
+              val user = newUser.save(true)
+              User.sendEmailConfirmation(user)
+              RedirectTo("/", () => S.notice("Un correo electronico ha sido enviado a su cuenta con instrucciones para acceder."))
+            } else {
+              S.error("register_err", "Las contraseñas no coinciden")
+              Noop
+            }
+          case error: List[FieldError] =>
+            S.error(error)
+            Noop
+        }
+      }
+    }
+
+    "data-name=name" #> newUser.name.toForm &
+    "data-name=lastName" #> newUser.lastName.toForm &
+    "data-name=email" #> newUser.email.toForm &
+    "data-name=password" #> SHtml.ajaxText("", s => {
+      pwd = s
+      Noop
+    }, "type" -> "password") &
+    "data-name=repeatPwd" #> SHtml.ajaxText("", s => {
+      repeatPwd = s
+      Noop
+    }, "type" -> "password") &
+    "data-name=captcha" #> captchaXhtml &
+    "data-name=submit" #> SHtml.ajaxSubmit("Enviar", doSubmit)
+  }
+}
+
 object UserLogin extends Loggable {
 
   def render = {
@@ -205,9 +302,25 @@ object UserLogin extends Loggable {
     }
 
     "#id_email [value]" #> User.loginCredentials.is.email &
-      "#id_password" #> SHtml.password(password, password = _) &
-      "name=remember" #> SHtml.checkbox(remember, remember = _) &
-      "#id_submit" #> SHtml.hidden(doSubmit)
+    "#id_password" #> SHtml.password(password, password = _) &
+    "name=remember" #> SHtml.checkbox(remember, remember = _) &
+    "data-name=recoverPwd [onclick]" #> SHtml.ajaxInvoke(() => {
+      println("credenciales " + S.param("email"))
+      S.param("email") match {
+        case Full(email) =>
+          User.findByEmail(email) match {
+            case Full(user) =>
+              User.sendPasswordRecovery(user)
+              S.notice("login_not", "Se envio un email a su cuenta con instrucciones para acceder a su cuenta de mARTadero.")
+            case _ =>
+              S.error("recovery_err", "Usuario no encontrado.")
+          }
+        case _ =>
+          S.error("recovery_err", "Ingrese un correo electronico.")
+      }
+      Noop
+    }) &
+    "#id_submit" #> SHtml.hidden(doSubmit)
   }
 }
 

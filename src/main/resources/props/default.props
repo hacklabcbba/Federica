@@ -3,3 +3,6 @@ mail.smtp.user=
 mail.smtp.pass=
 
 mongo.default.port=27017
+
+recaptcha.publicKey=6Lf5pR0TAAAAAL0zb0CvzxShVXKf4WHCjwMBZFRJ
+recaptcha.privateKey=6Lf5pR0TAAAAAPIeuYiNHmZVrsLdbMd4T4B0mzKe

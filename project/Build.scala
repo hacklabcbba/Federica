@@ -22,6 +22,7 @@ object LiftProjectBuild extends Build {
         imaging,
         angularJs,
         liftNg,
+        reCaptcha,
         liftFoBo
       ) ++
       test(scalatest) ++
