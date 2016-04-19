@@ -1,19 +1,19 @@
 package code
 package model
 
-import code.config.{Permissions, DefaultRoles, Site}
+import code.config.{DefaultRoles, Permissions, Site}
 import code.lib.field.{BsCkTextareaField, BsEmailField, BsStringField}
 import code.lib.{BaseModel, RogueMetaRecord}
 import net.liftmodules.mongoauth._
 import net.liftmodules.mongoauth.field._
 import net.liftmodules.mongoauth.model._
 import net.liftweb.common._
-import net.liftweb.http.{BooleanField => _, S, SHtml, StringField => _, _}
+import net.liftweb.http.{S, SHtml, BooleanField => _, StringField => _, _}
 import net.liftweb.mongodb.record.field._
 import net.liftweb.record.field.{PasswordField => _, _}
 import net.liftweb.sitemap.Loc.If
 import net.liftweb.util.Helpers._
-import net.liftweb.util.{FieldContainer, FieldError}
+import net.liftweb.util.{FieldContainer, FieldError, Props}
 import org.bson.types.ObjectId
 import org.joda.time.DateTime
 
@@ -351,7 +351,7 @@ object User extends User with ProtoAuthUserMeta[User] with RogueMetaRecord[User]
   def sendEmailConfirmation(user: User): Unit = {
     import net.liftweb.util.Mailer._
 
-    val tokenUrl = S.hostAndPath + "/confirmation/" + user.id
+    val tokenUrl = Props.get("default.host", "http://localhost:8080") + "/confirmation/" + user.id
     val msgTxt =
       """
         |Tu cuenta en nuestro sitio web %s ha sido creado.
@@ -375,7 +375,7 @@ object User extends User with ProtoAuthUserMeta[User] with RogueMetaRecord[User]
   def sendPasswordRecovery(user: User): Unit = {
     import net.liftweb.util.Mailer._
 
-    val tokenUrl = S.hostAndPath + "/recovery/password/" + user.id
+    val tokenUrl = Props.get("default.host", "http://localhost:8080") + "/recovery/password/" + user.id
 
     val msgTxt =
       """"
