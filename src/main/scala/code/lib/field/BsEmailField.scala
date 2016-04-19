@@ -22,6 +22,9 @@ trait BsEmailTypedField extends EmailTypedField with SnippetHelper {
     S.fmapFunc(S.SFuncHolder(this.setFromAny(_))) {
       funcName =>
         <div class="col-md-12">
+          <span class="input-group-addon">
+            <i class="fa fa-envelope"></i>
+          </span>
           {<input type="email"
                   id={fieldId}
                   name={funcName}

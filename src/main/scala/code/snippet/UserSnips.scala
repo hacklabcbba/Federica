@@ -150,23 +150,19 @@ object ProfileLocUser extends UserSnippet {
   }
 }
 
-object UserConfirmation extends Loggable {
-  def render = {
-    val message = (for {
-      user <- Site.emailConfirmation.currentValue
-    } yield {
-      val userValidated = user.verified(true)
-      User.update(userValidated)
-
-      "Felicidades su cuenta ha sido creada con exito. Ahora usted puede ingresar al sistema."
-
-    }).openOr("Ocurrio un error. Porfavor intente nuevamente.")
+object UserConfirmation extends SnippetHelper {
+  def render: CssSel = for {
+    user <- Site.emailConfirmation.currentValue ?~ "Ocurrio un error. Porfavor intente nuevamente."
+  } yield {
+    val userValidated = user.verified(true)
+    User.update(userValidated)
+    val message = "Felicidades su cuenta ha sido creada con exito. Ahora usted puede ingresar al sistema."
 
     "data-name=message" #> message
   }
 }
 
-object UserResetPassword extends Loggable {
+object UserResetPassword extends SnippetHelper {
   var repeatPwd = ""
   var pwd = ""
 
@@ -185,7 +181,7 @@ object UserResetPassword extends Loggable {
     }) openOr Noop
   }
 
-  def render = {
+  def render: CssSel = {
     "data-name=password" #> SHtml.ajaxText("", s => {
       pwd = s
       Noop
@@ -198,8 +194,8 @@ object UserResetPassword extends Loggable {
   }
 }
 
-object UserRegister extends Loggable with ReCaptcha {
-  def render = {
+object UserRegister extends ReCaptcha with SnippetHelper {
+  def render: CssSel = {
     //form vars
     var newUser = User.createRecord
     var repeatPwd = ""
@@ -247,9 +243,9 @@ object UserRegister extends Loggable with ReCaptcha {
   }
 }
 
-object UserLogin extends Loggable {
+object UserLogin extends Loggable with SnippetHelper {
 
-  def render = {
+  def render: CssSel = {
     // form vars
     var password = ""
     var remember = User.loginCredentials.is.isRememberMe
@@ -319,9 +315,9 @@ object UserLogin extends Loggable {
   }
 }
 
-object EmailRecovery extends Loggable {
+object EmailRecovery extends SnippetHelper {
   var email = ""
-  def render = {
+  def render: CssSel = {
     "data-name=email" #> SHtml.ajaxText("", s => {
       email = s
     }) &

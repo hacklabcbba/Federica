@@ -15,8 +15,8 @@ import net.liftweb.util.Props
 
 trait ReCaptcha {
 
-  protected def reCaptchaPublicKey: String = Props.get("recaptcha.publicKey").getOrElse("")
-  protected def reCaptchaPrivateKey: String = Props.get("recaptcha.privateKey").getOrElse("")
+  val reCaptchaPublicKey: String = Props.get("recaptcha.publicKey", "")
+  val reCaptchaPrivateKey: String = Props.get("recaptcha.privateKey", "")
 
   protected def reCaptchaOptions = ("theme" -> "white") ~ ("lang" -> S.containerRequest.flatMap(_.locale).map(_.getLanguage).getOrElse("en"))
 
@@ -44,8 +44,12 @@ trait ReCaptcha {
     def checkAnswer(remoteAddr: String, challenge: String, uresponse: String): Box[String] = {
       val reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse)
       reCaptchaResponse.isValid() match {
-        case true => Empty
-        case false => Full(S.?("reCaptcha." + reCaptchaResponse.getErrorMessage))
+        case true =>
+          println("es valido")
+          Empty
+        case false =>
+          println("no es valido")
+          Full(S.?("reCaptcha." + reCaptchaResponse.getErrorMessage))
       }
     }
     val res = for (
