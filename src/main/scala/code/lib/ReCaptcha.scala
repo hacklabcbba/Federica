@@ -27,8 +27,7 @@ trait ReCaptcha {
 
     <xml:group>
       <script>
-        var RecaptchaOptions ={ Unparsed(RecaptchaOptions) }
-        ;
+        var RecaptchaOptions ={ Unparsed(RecaptchaOptions) };
       </script>
       <script type="text/javascript" src={ "http://api.recaptcha.net/challenge?k=" + reCaptchaPublicKey }></script>
       <noscript>
@@ -45,10 +44,8 @@ trait ReCaptcha {
       val reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse)
       reCaptchaResponse.isValid() match {
         case true =>
-          println("es valido")
           Empty
         case false =>
-          println("no es valido")
           Full(S.?("reCaptcha." + reCaptchaResponse.getErrorMessage))
       }
     }
