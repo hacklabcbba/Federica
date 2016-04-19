@@ -678,11 +678,6 @@ body *[data-alertid="login_err"] ul {
   padding: 0;
   list-style: none;
 }
-body *[data-alertid="login_not"] ul {
-  padding: 0;
-  list-style: none;
-  color: #fff;
-}
 body .pagination a {
   color: #000;
   background: #fff;

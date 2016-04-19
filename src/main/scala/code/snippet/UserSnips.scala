@@ -190,7 +190,7 @@ object UserResetPassword extends SnippetHelper {
         repeatPwd = s
         Noop
       }, "type" -> "password") &
-    "data-name=submit" #> SHtml.ajaxSubmit("Enviar", doSubmit)
+    "data-name=submit" #> SHtml.ajaxOnSubmit(doSubmit)
   }
 }
 
