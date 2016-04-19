@@ -163,16 +163,14 @@ object UserConfirmation extends SnippetHelper {
 }
 
 object UserResetPassword extends SnippetHelper {
-  var repeatPwd = ""
-  var pwd = ""
 
-  def doSubmit() = {
+  def doSubmit(pwd: String, repeatPwd: String): JsCmd = {
+
     (for {
       user <- Site.passwordRecovery.currentValue
     } yield {
       if((pwd == repeatPwd) && !pwd.trim.isEmpty) {
-        user.password.setBox(PasswordField.hashpw(pwd))
-        User.update(user)
+        user.password(pwd, true).update
         RedirectTo("/", () => S.notice("Su contraseña ha sido cambiado con exito."))
       } else {
         S.error("recovery_err", "Las contraseñas no coinciden")
@@ -182,6 +180,8 @@ object UserResetPassword extends SnippetHelper {
   }
 
   def render: CssSel = {
+    var repeatPwd = ""
+    var pwd = ""
     "data-name=password" #> SHtml.ajaxText("", s => {
       pwd = s
       Noop
@@ -190,7 +190,7 @@ object UserResetPassword extends SnippetHelper {
         repeatPwd = s
         Noop
       }, "type" -> "password") &
-    "data-name=submit" #> SHtml.ajaxOnSubmit(doSubmit)
+    "data-name=submit" #> SHtml.ajaxOnSubmit(() => doSubmit(pwd, repeatPwd))
   }
 }
 
@@ -212,9 +212,8 @@ object UserRegister extends ReCaptcha with SnippetHelper {
           case Nil =>
             if((pwd == repeatPwd) && !pwd.trim.isEmpty) {
               newUser.verified(false)
-              newUser.password.setBox(PasswordField.hashpw(pwd))
-              val user = newUser.save(true)
-              User.sendEmailConfirmation(user)
+              newUser.password(pwd, true).save(true)
+              User.sendEmailConfirmation(newUser)
               RedirectTo("/", () => S.notice("Un correo electronico ha sido enviado a su cuenta con instrucciones para acceder."))
             } else {
               S.error("register_err", "Las contraseñas no coinciden")
