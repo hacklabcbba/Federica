@@ -6,6 +6,7 @@ import code.lib.ReCaptcha
 import code.model.{LoginCredentials, User}
 import net.liftmodules.extras.{Gravatar, SnippetHelper}
 import net.liftmodules.mongoauth.LoginRedirect
+import net.liftmodules.mongoauth.field.PasswordField
 import net.liftmodules.mongoauth.model.ExtSession
 import net.liftweb.common._
 import net.liftweb.http.js.JsCmd
@@ -173,9 +174,10 @@ object UserResetPassword extends Loggable {
     (for {
       user <- Site.passwordRecovery.currentValue
     } yield {
-      if(pwd == repeatPwd) {
-        user.password.set(pwd)
-        RedirectTo("/", () => S.notice("Un correo electronico ha sido enviado a su cuenta con instrucciones para acceder."))
+      if((pwd == repeatPwd) && !pwd.trim.isEmpty) {
+        user.password.setBox(PasswordField.hashpw(pwd))
+        User.update(user)
+        RedirectTo("/", () => S.notice("Su contraseña ha sido cambiado con exito."))
       } else {
         S.error("recovery_err", "Las contraseñas no coinciden")
         Noop
@@ -212,8 +214,9 @@ object UserRegister extends Loggable with ReCaptcha {
       } else {
         newUser.validate match {
           case Nil =>
-            if(pwd == repeatPwd) {
+            if((pwd == repeatPwd) && !pwd.trim.isEmpty) {
               newUser.verified(false)
+              newUser.password.setBox(PasswordField.hashpw(pwd))
               val user = newUser.save(true)
               User.sendEmailConfirmation(user)
               RedirectTo("/", () => S.notice("Un correo electronico ha sido enviado a su cuenta con instrucciones para acceder."))
@@ -262,10 +265,15 @@ object UserLogin extends Loggable {
           User.findByEmail(email) match {
             case Full(user) if (user.password.isMatch(password)) =>
               logger.debug("pwd matched")
-              User.logUserIn(user, true)
-              if (remember) User.createExtSession(user.id.get)
-              else ExtSession.deleteExtCookie()
-              RedirectTo(LoginRedirect.openOr(referer))
+              if(user.verified.get == true) {
+                User.logUserIn(user, true)
+                if (remember) User.createExtSession(user.id.get)
+                else ExtSession.deleteExtCookie()
+                RedirectTo("/")
+              } else {
+                S.error("login_err", "Aun falta validar esta cuenta. Porfavor revise su correo electronico para terminar el proceso.")
+                Noop
+              }
             case _ =>
               S.error("login_err", "El email o el password son incorrectos")
               Noop
@@ -305,22 +313,33 @@ object UserLogin extends Loggable {
     "#id_password" #> SHtml.password(password, password = _) &
     "name=remember" #> SHtml.checkbox(remember, remember = _) &
     "data-name=recoverPwd [onclick]" #> SHtml.ajaxInvoke(() => {
-      println("credenciales " + S.param("email"))
-      S.param("email") match {
-        case Full(email) =>
+      RedirectTo("/recovery/email")
+    }) &
+    "#id_submit" #> SHtml.hidden(doSubmit)
+  }
+}
+
+object EmailRecovery extends Loggable {
+  var email = ""
+  def render = {
+    "data-name=email" #> SHtml.ajaxText("", s => {
+      email = s
+    }) &
+    "data-name=save" #> SHtml.ajaxButton("Recuperar contraseña", () => {
+      email.trim.isEmpty match {
+        case false =>
           User.findByEmail(email) match {
             case Full(user) =>
               User.sendPasswordRecovery(user)
-              S.notice("login_not", "Se envio un email a su cuenta con instrucciones para acceder a su cuenta de mARTadero.")
+              S.notice("recovery_not", "Se envio un email a su cuenta con instrucciones para acceder a su cuenta de mARTadero.")
             case _ =>
-              S.error("recovery_err", "Usuario no encontrado.")
+              S.error("recovery_error", "No encontramos una cuenta con ese correo electronico. Verifique y vuelva a intentar")
           }
-        case _ =>
-          S.error("recovery_err", "Ingrese un correo electronico.")
+        case true =>
+          S.error("recovery_error", "Ingrese un correo electronico.")
       }
       Noop
-    }) &
-    "#id_submit" #> SHtml.hidden(doSubmit)
+    })
   }
 }
 

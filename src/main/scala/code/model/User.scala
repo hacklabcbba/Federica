@@ -364,8 +364,6 @@ object User extends User with ProtoAuthUserMeta[User] with RogueMetaRecord[User]
         |%s
       """.format(siteName, tokenUrl, user.name.get).stripMargin
 
-    println(msgTxt)
-
     sendMail(
       From(MongoAuth.systemFancyEmail),
       Subject("%s Confirmacion de creacion de cuenta".format(siteName)),
@@ -385,8 +383,6 @@ object User extends User with ProtoAuthUserMeta[User] with RogueMetaRecord[User]
         |Para recuperar tu contraseña debes hacer click en el siguiente enlace o copiar y pegar en tu navegador web.
         |%s
       """.format(tokenUrl).stripMargin
-
-    println(msgTxt)
 
     sendMail(
       From(MongoAuth.systemFancyEmail),

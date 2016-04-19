@@ -225,10 +225,6 @@ object Site extends Locs {
       )
   ))
 
-
-
-
-
   val loginToken = MenuLoc(buildLoginTokenMenu)
   val logout = MenuLoc(buildLogoutMenu)
   private val profileParamMenu = Menu.param[User]("User", "Perfil",
@@ -247,6 +243,8 @@ object Site extends Locs {
   val passwordRecovery = Menu.param[User]("Recuperar contraseña", "Recuperar contraseña",
     User.find, s => s.id.get.toString) / "recovery" / "password" / * >> TemplateBox(() => Templates("recovery" :: Nil)) >>
     Hidden
+  val emailRecovery = MenuLoc(Menu.i("Recovery") / "recovery"/ "email" >> TemplateBox(() => Templates("email_recovery" :: Nil)) >>
+    Hidden)
 
   //Backend menu
 
@@ -713,9 +711,6 @@ object Site extends Locs {
 
   // Programas
 
-
-
-
   private def menus = List(
     home.menu,
     dashboard.menu,
@@ -725,6 +720,8 @@ object Site extends Locs {
     loginToken.menu,
     logout.menu,
     profileParamMenu,
+    passwordRecovery,
+    emailRecovery.menu,
     account.menu,
     password.menu,
     editProfile.menu,
