@@ -1,7 +1,7 @@
 package code
 package model
 
-import code.config.{DefaultRoles, Permissions, Site}
+import code.config.{DefaultRoles, Permissions, SendEmail, Site}
 import code.lib.field.{BsCkTextareaField, BsEmailField, BsStringField}
 import code.lib.{BaseModel, RogueMetaRecord}
 import net.liftmodules.mongoauth._
@@ -349,7 +349,6 @@ object User extends User with ProtoAuthUserMeta[User] with RogueMetaRecord[User]
   }
 
   def sendEmailConfirmation(user: User): Unit = {
-    import net.liftweb.util.Mailer._
 
     val tokenUrl = Props.get("default.host", "http://localhost:8080") + "/confirmation/" + user.id
     val msgTxt =
@@ -364,12 +363,7 @@ object User extends User with ProtoAuthUserMeta[User] with RogueMetaRecord[User]
         |%s
       """.format(siteName, tokenUrl, user.name.get).stripMargin
 
-    sendMail(
-      From(MongoAuth.systemFancyEmail),
-      Subject("%s Confirmacion de creacion de cuenta".format(siteName)),
-      To(user.fancyEmail),
-      PlainMailBodyType(msgTxt)
-    )
+    SendEmail.send_!(Props.get("mail.smtp.user", ""), user.fancyEmail, "%s Confirmacion de creacion de cuenta".format(siteName), msgTxt)
   }
 
   def sendPasswordRecovery(user: User): Unit = {

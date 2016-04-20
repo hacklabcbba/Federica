@@ -56,11 +56,7 @@ trait ReCaptcha {
       b <- checkAnswer(remoteAddr, challenge, uresponse)
     ) yield b
 
-    res match {
-      case Failure(msg, _, _) => Full(msg)
-      case Full(msg) => Full(msg)
-      case Empty => Empty
-    }
+    res
   }
 
   /**

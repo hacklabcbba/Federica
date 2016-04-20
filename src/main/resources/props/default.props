@@ -1,6 +1,6 @@
 mail.smtp.host=smtp.gmail.com
-mail.smtp.user=
-mail.smtp.pass=
+mail.smtp.user=federica@martadero.org
+mail.smtp.pass=m@rtader0.+
 
 mongo.default.port=27017
 

@@ -6,7 +6,7 @@ import javax.mail.internet.MimeMessage
 
 import net.liftweb._
 import common._
-import net.liftweb.util.Mailer.{From, Subject, To, XHTMLMailBodyType}
+import net.liftweb.util.Mailer.{From, PlainMailBodyType, Subject, To, XHTMLMailBodyType}
 import util._
 
 /*
@@ -49,5 +49,13 @@ object SmtpMailer extends Loggable {
         case _ => logger.error("Username/password not supplied for Mailer.")
       }
     }
+  }
+}
+
+object SendEmail {
+  def send_!(from: String, recipient: String, subject: String, body: String): Unit = {
+    val mailTypes = List(PlainMailBodyType(body), To(recipient))
+println("sendin other maner")
+    Mailer.msgSendImpl(From(from), Subject(subject), mailTypes)
   }
 }

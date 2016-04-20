@@ -307,9 +307,6 @@ object UserLogin extends Loggable with SnippetHelper {
     "#id_email [value]" #> User.loginCredentials.is.email &
     "#id_password" #> SHtml.password(password, password = _) &
     "name=remember" #> SHtml.checkbox(remember, remember = _) &
-    "data-name=recoverPwd [onclick]" #> SHtml.ajaxInvoke(() => {
-      RedirectTo("/recovery/email")
-    }) &
     "#id_submit" #> SHtml.hidden(doSubmit)
   }
 }
