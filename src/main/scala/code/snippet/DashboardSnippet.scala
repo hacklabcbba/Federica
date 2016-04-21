@@ -14,7 +14,7 @@ object DashboardSnippet extends SnippetHelper {
 
   def render: CssSel = {
     for {
-      user <- User.currentUser ?~ "For see this section do you have to login"
+      user <- User.currentUser ?~ "Para ver esta sección debe iniciar una sesión"
     } yield {
       "data-name=checkbox" #> SHtml.ajaxCheckbox(false, a => {
         S.appendJs(Run(
