@@ -25,7 +25,9 @@ object SmtpMailer extends Loggable {
           "mail.smtp.host" -> "smtp.gmail.com",
           "mail.smtp.port" -> "587",
           "mail.smtp.auth" -> "true",
-          "mail.smtp.starttls.enable" -> "true"
+          "mail.smtp.starttls.enable" -> "true",
+          "mail.smtp.ssl.enable"-> "true",
+          "mail.debug" -> "true"
         )
       case h => Map(
         "mail.smtp.host" -> h,
