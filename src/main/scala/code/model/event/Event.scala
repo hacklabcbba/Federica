@@ -39,6 +39,15 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
     def toDisableForm = SHtml.span(<b>{get}</b>, Noop)
   }
 
+  object user extends ObjectIdRefField(this, User) {
+    override def defaultValueBox = User.currentUser.map(_.id.get)
+    override def shouldDisplay_? = false
+    override def displayName = "Organizador"
+    override def toString = {
+      this.obj.dmap("Indefinido..")(_.name.get)
+    }
+  }
+
   object name extends StringField(this, 200) {
     override def displayName = "Nombre"
     override def toString = get
@@ -391,6 +400,10 @@ object Event extends Event with RogueMetaRecord[Event] {
     description, hours, costInfo, quote,
     image, isLogoEnabled, applicantType,
     activities, pressRoom, specificRequirements, residenciaNorte, residenciaSud, status, rooms)
+
+  def findByUser(user: User): List[Event] = {
+    Event.where(_.user eqs user.id.get).and(_.status eqs StatusType.Approved).fetch
+  }
 }
 
 object StatusType extends Enumeration {

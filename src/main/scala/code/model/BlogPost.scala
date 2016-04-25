@@ -269,4 +269,17 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
   def findCategories: List[String] = {
     BlogPost.distinct(_.categories.subfield(_.tag)).toList.asInstanceOf[List[String]]
   }
+
+  def findPostByUser(user: User): List[BlogPost] = {
+    BlogPost.where(_.author eqs user.id.get).and(_.isPublished eqs true).fetch()
+  }
+
+  def findLastPostByUser(user: User): List[BlogPost] = {
+    val result = BlogPost.where(_.author eqs user.id.get).and(_.isPublished eqs true).orderDesc(_.date).fetch()
+    if(result.size >= 3){
+      result.slice(0,3)
+    } else {
+      result
+    }
+  }
 }

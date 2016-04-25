@@ -2,7 +2,8 @@ package code
 package snippet
 
 import code.config.Site
-import code.model.{LoginCredentials, User}
+import code.model.event.Event
+import code.model.{BlogPost, LoginCredentials, User}
 import net.liftmodules.extras.{Gravatar, SnippetHelper}
 import net.liftmodules.mongoauth.LoginRedirect
 import net.liftmodules.mongoauth.model.ExtSession
@@ -87,6 +88,63 @@ sealed trait UserSnippet extends SnippetHelper with Loggable {
            "data-name=instagram-username" #> f
         case _ =>
           "data-name=instagram" #> NodeSeq.Empty
+      }) &
+      (user.flickr.valueBox match {
+        case Full(f) if f.trim.nonEmpty =>
+          "data-name=flickr-url [href]" #> s"https://www.flickr.com/$f" &
+            "data-name=flickr-username" #> f
+        case _ =>
+          "data-name=flickr" #> NodeSeq.Empty
+      }) &
+      (user.gnusocial.valueBox match {
+        case Full(f) if f.trim.nonEmpty =>
+          "data-name=gnusocial-url [href]" #> f &
+          "data-name=gnusocial-username" #> f.split("/").lastOption.getOrElse(f)
+        case _ =>
+          "data-name=gnusocial" #> NodeSeq.Empty
+      })
+    }
+  }
+
+  def eventsOfCurrentUser: CssSel = {
+    for {
+      user <- User.currentUser
+    } yield {
+      "data-name=listEvents" #> Event.findByUser(user).map(event => {
+        "data-name=title *" #> event.name.get &
+        "data-name=date *" #> event.activities.get.map(activity => activity.date.toString).mkString(", ") &
+        "data-name=description" #> event.description.asHtml &
+        {
+          event.image.valueBox match {
+            case Full(image) =>
+              val imageSrc = image.fileId.get
+              "data-name=image [src]" #> s"/image/$imageSrc"
+            case _ =>
+              "data-name=image *" #> NodeSeq.Empty
+          }
+        }
+      })
+    }
+  }
+
+  def lastPostOfCurrentUser: CssSel = {
+    for {
+      user <- User.currentUser
+    } yield {
+      "data-name=listPost" #> BlogPost.findLastPostByUser(user).map(post => {
+        "data-name=title *" #>  post.name &
+        "data-name=date *" #> post.date.toString &
+        "data-name=post [href]" #> Site.entradaBlog.toLoc.calcHref(post) &
+        "data-name=description" #> post.content.asHtmlCutted(250) &
+        {
+          post.photo.valueBox match {
+            case Full(image) =>
+              val imageSrc = image.fileId.get
+              "data-name=image [src]" #> s"/image/$imageSrc"
+            case _ =>
+              "data-name=image *" #> NodeSeq.Empty
+          }
+        }
       })
     }
   }
