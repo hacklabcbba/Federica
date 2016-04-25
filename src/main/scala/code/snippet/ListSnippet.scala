@@ -2,21 +2,25 @@ package code
 package snippet
 
 import code.lib.js.Bootstrap
-import code.lib.{SortableModel, BaseModel}
+import code.lib.{BaseModel, SortableModel}
+import code.model.User
 import net.liftmodules.extras.SnippetHelper
-import net.liftweb.common.{Box, Failure, Full}
+import net.liftweb.common.{Box, EmptyBox, Failure, Full}
 import net.liftweb.http.js.JE.JsVar
 import net.liftweb.http.js.JsCmd
 import net.liftweb.http.js.JsCmds._
-import net.liftweb.http.{RequestVar, S, SHtml, Templates}
+import net.liftweb.http._
 import net.liftweb.json.JsonAST.JValue
+import net.liftweb.mongodb.{Limit, Skip}
 import net.liftweb.mongodb.record.{MongoMetaRecord, MongoRecord}
 import net.liftweb.record.Field
 import net.liftweb.util.Helpers._
 
 import scala.xml.{NodeSeq, Text}
 
-trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
+trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper /*with SortedPaginatorSnippet[BaseRecord, String]
+  with PaginatorSnippet[BaseRecord] */ {
+
   val meta: MongoMetaRecord[BaseRecord]
   val addUrl: String
   def entityListUrl: String
@@ -32,6 +36,25 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
   val title: String
 
   def items: List[BaseRecord] = meta.findAll
+
+  def headers: List[(String, String)] = for {
+    field <- listFields
+  } yield {
+    (field.displayName, field.displayName)
+  }
+
+  def sortOrder = S.param("asc") match {
+    case e: EmptyBox => -1
+    case b: Box[String] => if (b.get.equalsIgnoreCase("true")) 1 else -1
+  }
+
+  //override def count = items.size
+
+  //override def itemsPerPage = 10
+
+  //override def page = meta.findAll(_, sortOrder, itemsPerPage, (curPage * itemsPerPage))
+
+
 
   def render = {
     "*" #>
@@ -143,6 +166,57 @@ trait SortableSnippet[BaseRecord <: MongoRecord[BaseRecord] with SortableModel[B
 
   def updateOrderValue(json: JValue): JsCmd
 }
+
+/*trait AjaxPaginatorSnippet[T] extends PaginatorSnippet[T] {
+  private lazy val pagMemo = SHtml.idMemoize(ignored => super.paginate _)
+
+  def rerender = pagMemo.setHtml()
+
+  override def paginate(ns: NodeSeq): NodeSeq = pagMemo(ns)
+
+  override def pageXml(newFirst: Long, ns: NodeSeq): NodeSeq =
+    if (first == newFirst || newFirst < 0 || newFirst >= count)
+      ns
+    else
+      SHtml.a(() => { _first = newFirst; rerender }, ns)
+}
+
+trait AjaxSortedPaginatorSnippet[T, C] extends SortedPaginator[T, C]
+  with AjaxPaginatorSnippet[T] {
+  def sortPrefix = "sort"
+
+  override def rerender = sortMemo.setHtml() & super.rerender
+  private lazy val sortMemo = SHtml.idMemoize(ignored => _sortColumns _)
+
+  def sortColumns(ns: NodeSeq) = sortMemo(ns)
+
+  private def _sortColumns(xhtml: NodeSeq): NodeSeq = {
+    val result = bind(sortPrefix, xhtml,
+      headers.zipWithIndex.map {
+        case ((binding, _), colIndex) =>
+          FuncBindParam(binding, (ns: NodeSeq) => SHtml.a(() => { sort
+            = sortedBy(colIndex); rerender }, ns))
+      }: _*)
+    result
+  }
+}
+
+trait AjaxSortedMongoPaginatorSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends AjaxSortedPaginatorSnippet[BaseRecord, String] {
+
+  lazy val memo = SHtml.idMemoize(ignored => renderIt _)
+
+  def renderIt(in: NodeSeq): NodeSeq
+
+  override def rerender = memo.setHtml() & super.rerender
+
+  def render(html: NodeSeq): NodeSeq = memo(html)
+
+  def list = {
+    ".list" #> page.render _ &
+    ".pagination" #> pag.paginate _ &
+    ".headers" #> pag.sortColumns _
+  }
+}*/
 
 object CrudSnippet extends SnippetHelper {
   private def serve(snip: BaseModel[_] => NodeSeq): NodeSeq =
