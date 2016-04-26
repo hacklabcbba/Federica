@@ -1,199 +1,39 @@
 <div data-lift="surround?with=base-wrap-backend;at=content">
-    <div class="row">
+    <div class="row" data-lift="DashboardSnippet">
         <section class="col-md-6">
             <header>
-                <h2>Last Events</h2>
+                <h2>Solicitudes</h2>
             </header>
-            <table class="table table-listitems">
-                <tr>
-                    <th class="">Event</th>
-                    <th class="text-center">Status</th>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="#" class="item-name">Curabitur condimentum est vitae dignissim feugiat.</a>
-                    </td>
-                    <td class="text-center">
-                        <span class="label label-success">Publish</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="#" class="item-name">Lorem ipsum dolor sit amet, consectetur adipiscing elit. </a>
-                    </td>
-                    <td class="text-center">
-                        <span class="label label-danger">Unpublish</span>
-                    </td>
-                </tr>
-            </table>
-            <footer class="row">
-                <div class="col-md-6">
-                    <a href="#" class="btn black">Add event</a>
-                </div>
-                <div class="col-md-6 text-right">
-                    <a href="#">View all events</a>
-                </div>
-            </footer>
+            <p>A través del Admin Digital puedes hacer una solicitud para realizar un evento, proponer un taller, o solicitar
+            un espacio en la residencia.</p>
+            <p><span style="color: #FF9A00">IMPORTANTE:</span> El realizar una solicitud no implica su directa aceptación.</p>
+            <p>1.- Se pondrán en contacto contigo desde la coordinación de área para evaluar la propuesta.</p>
+            <p>2.- Una vez aceptada la solicitud se te enviarán los aportes por uso de espacio, con los que fortalecemos
+            nuestra sostenibilidad.</p>
+            <p>3.- Con la aceptación de los aportes por uso y la firma de contrato empiezan las gestiones de publicación,
+            comunicación y realización.</p>
         </section>
         <section class="col-md-6">
-            <header>
-                <h2>Last users</h2>
-            </header>
-            <table class="table table-listitems table-listusers">
-                <tr>
-                    <th class="">User</th>
-                    <th class="text-center">Register date</th>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="#" class="item-name"><img src="images/avatar.jpeg" class="img-circle" alt=""/>Username</a>
-                    </td>
-                    <td class="text-center">
-                        12-12-2015
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="#" class="item-name"><img src="images/avatar.jpeg" class="img-circle" alt=""/>Username</a>
-                    </td>
-                    <td class="text-center">
-                        12-12-2015
-                    </td>
-                </tr>
-            </table>
-            <footer class="row">
-                <div class="col-md-12 text-right">
-                    <a href="#">View all users</a>
-                </div>
-            </footer>
+            <br><br>
+            <h3>
+                <input type="checkbox" class="checkbox-info" data-name="checkbox" id="confirm"/> He leido y entendido la informacion sobre las solicitudes. ¡Quiero hacer la mia!
+            </h3><br><br>
+            <center><button data-name="createEvent" id="createEvent" class="btn black" disabled="disabled">Hacer una solicitud</button></center>
         </section>
         <section class="col-md-12">
             <header>
-                <h2>Last comments</h2>
+                <h2>Tu Perfil</h2>
             </header>
-            <ul class=" list-unstyled comments">
-                <li class="row">
-                    <div class="col-md-1"><img src="images/avatar.jpeg" class="img-circle img-responsive" alt=""/></div>
-                    <div class="col-md-11">
-                        <div class="width-50"><a href="#">Username </a></div>
-                        <div class="width-50 text-right">12-12-2015</div>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus lobortis erat eros, scelerisque eleifend lacus vestibulum id. Sed posuere, libero sed ullamcorper tincidunt, arcu mi lacinia nulla, id tristique risus purus at odio. Curabitur vulputate molestie dignissim. </div>
-                </li>
-                <li class="row">
-                    <div class="col-md-1"><img src="images/avatar.jpeg" class="img-circle img-responsive" alt=""/></div>
-                    <div class="col-md-11">
-                        <div class="width-50"><a href="#">Username </a></div>
-                        <div class="width-50 text-right">12-12-2015</div>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus lobortis erat eros, scelerisque eleifend lacus vestibulum id. Sed posuere, libero sed ullamcorper tincidunt, arcu mi lacinia nulla, id tristique risus purus at odio. Curabitur vulputate molestie dignissim.
-                    </div>
-                </li>
-                <li class="row">
-                    <div class="col-md-1"><img src="images/avatar.jpeg" class="img-circle img-responsive" alt=""/></div>
-                    <div class="col-md-11">
-                        <div class="width-50"><a href="#">Username </a></div>
-                        <div class="width-50 text-right">12-12-2015</div>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus lobortis erat eros, scelerisque eleifend lacus vestibulum id. Sed posuere, libero sed ullamcorper tincidunt, arcu mi lacinia nulla, id tristique risus purus at odio. Curabitur vulputate molestie dignissim.
-                    </div>
-                </li>
-            </ul>
-            <footer class="row">
-                <div class="col-md-12 text-right">
-                    <a href="#">View all comments</a>
-                </div>
-            </footer>
+            <p>¡Completa tu perfil dentro del sistema!</p>
+            <p>De esta forma habrá más gente que pueda saber de tu trabajo, conocerte y entrar en contacto contigo.</p><br><br>
+            <a href="/settings/profile" class="btn black">Modificar tu perfil</a>
         </section>
-        <section class="col-md-4">
+    </div>
+    <div class="row">
+        <section class="col-md-6">
             <header>
-                <h2>Box</h2>
+                <h2>Calendario</h2>
             </header>
-            <table class="table table-listitems">
-                <tr>
-                    <th class="">User</th>
-                    <th class="text-center">Register date</th>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="#" class="item-name">Username</a>
-                    </td>
-                    <td class="text-center">
-                        12-12-2015
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="#" class="item-name">Username</a>
-                    </td>
-                    <td class="text-center">
-                        12-12-2015
-                    </td>
-                </tr>
-            </table>
-            <footer class="row">
-                <div class="col-md-12">
-                </div>
-            </footer>
-        </section>
-        <section class="col-md-4">
-            <header>
-                <h2>Box</h2>
-            </header>
-            <table class="table table-listitems">
-                <tr>
-                    <th class="">User</th>
-                    <th class="text-center">Register date</th>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="#" class="item-name">Username</a>
-                    </td>
-                    <td class="text-center">
-                        12-12-2015
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="#" class="item-name">Username</a>
-                    </td>
-                    <td class="text-center">
-                        12-12-2015
-                    </td>
-                </tr>
-            </table>
-            <footer class="row">
-                <div class="col-md-12">
-                </div>
-            </footer>
-        </section>
-        <section class="col-md-4">
-            <header>
-                <h2>Box</h2>
-            </header>
-            <table class="table table-listitems">
-                <tr>
-                    <th class="">User</th>
-                    <th class="text-center">Register date</th>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="#" class="item-name">Username</a>
-                    </td>
-                    <td class="text-center">
-                        12-12-2015
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="#" class="item-name">Username</a>
-                    </td>
-                    <td class="text-center">
-                        12-12-2015
-                    </td>
-                </tr>
-            </table>
-            <footer class="row">
-                <div class="col-md-12">
-                </div>
-            </footer>
         </section>
     </div>
 </div><!-- /.content -->
