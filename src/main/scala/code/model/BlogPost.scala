@@ -275,11 +275,6 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
   }
 
   def findLastPostByUser(user: User): List[BlogPost] = {
-    val result = BlogPost.where(_.author eqs user.id.get).and(_.isPublished eqs true).orderDesc(_.date).fetch()
-    if(result.size >= 3){
-      result.slice(0,3)
-    } else {
-      result
-    }
+    BlogPost.where(_.author eqs user.id.get).and(_.isPublished eqs true).orderDesc(_.date).fetch(3)
   }
 }
