@@ -23,7 +23,8 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
 
   override def count = meta.countPublishedByCategory(S.param("category"))
   
-  override def page = meta.findPublishedByCategoryPage(S.param("category"), itemsPerPage, curPage)
+  //override def page = meta.findPublishedByCategoryPage(S.param("category"), itemsPerPage, curPage)
+  override def page = meta.findPublishedByFilters(itemsPerPage, curPage)
 
   def entityListUrl: String = Site.backendBlog.menu.loc.calcDefaultHref
 
