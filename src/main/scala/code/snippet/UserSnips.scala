@@ -89,18 +89,18 @@ sealed trait UserSnippet extends SnippetHelper with Loggable {
         case _ =>
           "data-name=instagram" #> NodeSeq.Empty
       }) &
-      (user.flickr.valueBox match {
-        case Full(f) if f.trim.nonEmpty =>
-          "data-name=flickr-url [href]" #> s"https://www.flickr.com/$f" &
-            "data-name=flickr-username" #> f
-        case _ =>
+      (user.flickr.get.trim.nonEmpty match {
+        case true =>
+          "data-name=flickr-url [href]" #> s"https://www.flickr.com/${user.flickr.get}" &
+            "data-name=flickr-username" #> user.flickr.get
+        case false =>
           "data-name=flickr" #> NodeSeq.Empty
       }) &
-      (user.gnusocial.valueBox match {
-        case Full(f) if f.trim.nonEmpty =>
-          "data-name=gnusocial-url [href]" #> f &
-          "data-name=gnusocial-username" #> f.split("/").lastOption.getOrElse(f)
-        case _ =>
+      (user.gnusocial.get.trim.nonEmpty match {
+        case true =>
+          "data-name=gnusocial-url [href]" #> user.gnusocial.get &
+          "data-name=gnusocial-username" #> user.gnusocial.get.split("/").lastOption.getOrElse(user.gnusocial.get)
+        case false =>
           "data-name=gnusocial" #> NodeSeq.Empty
       })
     }
