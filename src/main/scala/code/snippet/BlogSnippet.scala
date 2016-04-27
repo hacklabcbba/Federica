@@ -3,12 +3,15 @@ package code.snippet
 import code.config
 import code.config.Site
 import code.lib.snippet.PaginatorSnippet
-import code.model.BlogPost
-import net.liftweb.common.{Full, Box}
-import net.liftweb.http.{ S, RequestVar, SHtml}
-import net.liftweb.util.{PassThru, CssSel, Helpers}
+import code.model.{BlogPost, Tag}
+import net.liftweb.common.{Box, Full}
+import net.liftweb.http.{S, SHtml}
+import net.liftweb.util.{CssSel, Helpers, PassThru}
 import Helpers._
+import code.lib.request.request._
+import net.liftweb.http.js.JsCmds.RedirectTo
 
+import scala.collection.immutable.Stream.Empty
 import scala.xml.NodeSeq
 
 object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost] {
@@ -53,12 +56,30 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
       previewCss(post) &
       "data-name=title *" #> post.name.get &
       (if (post.area.obj.isEmpty)
-        "data-name=area" #> NodeSeq.Empty else
-        "data-name=area-name *" #> post.area.obj.dmap("")(_.name.get)) &
+        "data-name=area" #> NodeSeq.Empty else {
+        "data-name=area-name *" #> post.area.obj.dmap("")(_.name.get) &
+        "data-name=area-name [onclick]" #> SHtml.ajaxInvoke(() => {
+          RedirectTo(Site.blog.url, () => areaBlogRequestVar.set(post.area.obj))
+        })
+      }) &
       (if (post.transversalArea.obj.isEmpty)
         "data-name=transversalarea" #> NodeSeq.Empty
-      else "data-name=transversalarea-name *" #> post.transversalArea.obj.dmap("")(_.name.get)) &
-      "data-name=author *" #> post.author.obj.dmap("")(_.name.get) &
+      else {
+        "data-name=transversalarea-name *" #> post.transversalArea.obj.dmap("")(_.name.get) &
+        "data-name=transversalarea-name [onclick]" #> SHtml.ajaxInvoke(() => {
+          RedirectTo(Site.blog.url, () => areaTransversalBlogRequestVar.set(post.transversalArea.obj))
+        })
+      }) &
+      (
+        if(post.author.obj.isEmpty)
+        "data-name=author" #> NodeSeq.Empty
+        else {
+          "data-name=author *" #> post.author.obj.dmap("")(_.name.get) &
+          "data-name=author [onclick]" #> SHtml.ajaxInvoke(() => {
+            RedirectTo(Site.blog.url, () => authorBlogRequestVar.set(post.author.obj))
+          })
+        }
+      ) &
       "data-name=date *" #> post.date.toString &
       "data-name=title [href]" #> Site.entradaBlog.calcHref(post) &
       "data-name=content *" #> post.content.asHtmlCutted(200)
@@ -69,7 +90,9 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
     } &
     "data-name=categories" #> meta.findCategories.map(cat => {
       "li [class+]" #> (if (category === cat) "active" else "") &
-      "a [href]" #> s"${Site.blog.fullUrl}?category=$cat" &
+      "a [onclick]" #> SHtml.ajaxInvoke(() => {
+        RedirectTo(Site.blog.url, () => categoryBlogRequestVar.set(Full(Tag.createRecord.tag(cat))))
+      }) &
       "a *" #> cat
     }) &
     paginate

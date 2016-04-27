@@ -11,7 +11,7 @@ import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField, ObjectIdRefListField}
 import LiftRogue._
-import code.lib.request.request.{authorBlogRequestVar, categoryBlogRequestVar}
+import code.lib.request.request._
 import net.liftweb.http.js.JsCmds.Noop
 import net.liftweb.record.field.BooleanField
 
@@ -270,9 +270,11 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
   def findPublishedByFilters(limit: Int, page: Int): List[BlogPost] = {
     println("category " + categoryBlogRequestVar.get)
     println("author " + authorBlogRequestVar.get)
+    println("author " + areaBlogRequestVar.get)
     BlogPost.where(_.isPublished eqs true)
       .andOpt(categoryBlogRequestVar.get.toOption)(_.categories contains _)
       .andOpt(authorBlogRequestVar.get.toOption)(_.author eqs _.id.get)
+      .andOpt(areaBlogRequestVar.get.toOption)(_.area eqs _.id.get)
       .paginate(limit)
       .setPage(page)
       .fetch()
