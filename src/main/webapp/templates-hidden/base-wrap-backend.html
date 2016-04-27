@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/css/datepicker/datepicker3.css"/>
     <link rel="stylesheet" href="/css/tagmanager.css"/>
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/dt/dt-1.10.11/datatables.min.css"/>
     <script src="/js/script.js"></script>
     <script src="/js/ckeditor/ckeditor.js"></script>
     <script src="/js/martadero.js"></script>
@@ -31,7 +32,18 @@
 </div>
 <div data-lift="embed?what=/templates-hidden/parts/footer2"></div>
 <script>
-
+$(document).ready(function() {
+    $('#dataTable').DataTable({
+    "bInfo": false,
+    "bLengthChange": false,
+    aoColumnDefs: [
+      {
+         bSortable: false,
+         aTargets: [0, -1]
+      }
+    ]
+    });
+} );
 </script>
 </body>
 </html>

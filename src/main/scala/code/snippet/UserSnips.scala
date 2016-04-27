@@ -89,18 +89,18 @@ sealed trait UserSnippet extends SnippetHelper with Loggable {
         case _ =>
           "data-name=instagram" #> NodeSeq.Empty
       }) &
-      (user.flickr.valueBox match {
-        case Full(f) if f.trim.nonEmpty =>
-          "data-name=flickr-url [href]" #> s"https://www.flickr.com/$f" &
-            "data-name=flickr-username" #> f
-        case _ =>
+      (user.flickr.get.trim.nonEmpty match {
+        case true =>
+          "data-name=flickr-url [href]" #> s"https://www.flickr.com/${user.flickr.get}" &
+            "data-name=flickr-username" #> user.flickr.get
+        case false =>
           "data-name=flickr" #> NodeSeq.Empty
       }) &
-      (user.gnusocial.valueBox match {
-        case Full(f) if f.trim.nonEmpty =>
-          "data-name=gnusocial-url [href]" #> f &
-          "data-name=gnusocial-username" #> f.split("/").lastOption.getOrElse(f)
-        case _ =>
+      (user.gnusocial.get.trim.nonEmpty match {
+        case true =>
+          "data-name=gnusocial-url [href]" #> user.gnusocial.get &
+          "data-name=gnusocial-username" #> user.gnusocial.get.split("/").lastOption.getOrElse(user.gnusocial.get)
+        case false =>
           "data-name=gnusocial" #> NodeSeq.Empty
       })
     }
@@ -108,11 +108,11 @@ sealed trait UserSnippet extends SnippetHelper with Loggable {
 
   def eventsOfCurrentUser: CssSel = {
     for {
-      user <- User.currentUser
+      user <- User.currentUser ?~ ""
     } yield {
-      "data-name=listEvents" #> Event.findByUser(user).map(event => {
+      "data-name=listEvents" #> Event.findLastEventsByUser(user).map(event => {
         "data-name=title *" #> event.name.get &
-        "data-name=date *" #> event.activities.get.map(activity => activity.date.toString).mkString(", ") &
+        "data-name=date *" #> event.activities.get.map(activity => activity.date.toString).distinct.mkString(", ") &
         "data-name=description" #> event.description.asHtml &
         {
           event.image.valueBox match {
@@ -129,7 +129,7 @@ sealed trait UserSnippet extends SnippetHelper with Loggable {
 
   def lastPostOfCurrentUser: CssSel = {
     for {
-      user <- User.currentUser
+      user <- User.currentUser ?~ ""
     } yield {
       "data-name=listPost" #> BlogPost.findLastPostByUser(user).map(post => {
         "data-name=title *" #>  post.name &
