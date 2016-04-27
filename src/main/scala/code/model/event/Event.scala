@@ -19,6 +19,7 @@ import net.liftweb.record.field._
 import net.liftweb.util.Helpers._
 import org.bson.types.ObjectId
 import net.liftweb.json.JsonDSL._
+import java.util.{Date, Locale}
 
 import scala.xml.{NodeSeq, Elem}
 
@@ -37,6 +38,15 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
       Noop
     }))
     def toDisableForm = SHtml.span(<b>{get}</b>, Noop)
+  }
+
+  object user extends ObjectIdRefField(this, User) {
+    override def defaultValueBox = User.currentUser.map(_.id.get)
+    override def shouldDisplay_? = false
+    override def displayName = "Organizador"
+    override def toString = {
+      this.obj.dmap("Indefinido..")(_.name.get)
+    }
   }
 
   object name extends StringField(this, 200) {
@@ -169,6 +179,10 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
       </div>
     }
     override def toForm = Full(elem)
+
+    /*def getMaxDateOfActivity = {
+      this.get.sortBy(d => d).map(_.date).lastOption
+    }*/
   }
 
   object description extends BsCkTextareaField(this, 1000) {
@@ -391,6 +405,11 @@ object Event extends Event with RogueMetaRecord[Event] {
     description, hours, costInfo, quote,
     image, isLogoEnabled, applicantType,
     activities, pressRoom, specificRequirements, residenciaNorte, residenciaSud, status, rooms)
+
+  def findLastEventsByUser(user: User): List[Event] = {
+
+    Event.where(_.user eqs user.id.get).and(_.status eqs StatusType.Approved).orderDesc(_.id).fetch()
+  }
 }
 
 object StatusType extends Enumeration {
