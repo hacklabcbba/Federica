@@ -19,6 +19,7 @@ import net.liftweb.record.field._
 import net.liftweb.util.Helpers._
 import org.bson.types.ObjectId
 import net.liftweb.json.JsonDSL._
+import java.util.{Date, Locale}
 
 import scala.xml.{NodeSeq, Elem}
 
@@ -178,6 +179,10 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
       </div>
     }
     override def toForm = Full(elem)
+
+    /*def getMaxDateOfActivity = {
+      this.get.sortBy(d => d).map(_.date).lastOption
+    }*/
   }
 
   object description extends BsCkTextareaField(this, 1000) {
@@ -401,8 +406,9 @@ object Event extends Event with RogueMetaRecord[Event] {
     image, isLogoEnabled, applicantType,
     activities, pressRoom, specificRequirements, residenciaNorte, residenciaSud, status, rooms)
 
-  def findByUser(user: User): List[Event] = {
-    Event.where(_.user eqs user.id.get).and(_.status eqs StatusType.Approved).fetch
+  def findLastEventsByUser(user: User): List[Event] = {
+
+    Event.where(_.user eqs user.id.get).and(_.status eqs StatusType.Approved).orderDesc(_.id).fetch()
   }
 }
 

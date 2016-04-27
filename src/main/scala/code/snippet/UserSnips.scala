@@ -108,11 +108,11 @@ sealed trait UserSnippet extends SnippetHelper with Loggable {
 
   def eventsOfCurrentUser: CssSel = {
     for {
-      user <- User.currentUser
+      user <- User.currentUser ?~ ""
     } yield {
-      "data-name=listEvents" #> Event.findByUser(user).map(event => {
+      "data-name=listEvents" #> Event.findLastEventsByUser(user).map(event => {
         "data-name=title *" #> event.name.get &
-        "data-name=date *" #> event.activities.get.map(activity => activity.date.toString).mkString(", ") &
+        "data-name=date *" #> event.activities.get.map(activity => activity.date.toString).distinct.mkString(", ") &
         "data-name=description" #> event.description.asHtml &
         {
           event.image.valueBox match {
@@ -129,7 +129,7 @@ sealed trait UserSnippet extends SnippetHelper with Loggable {
 
   def lastPostOfCurrentUser: CssSel = {
     for {
-      user <- User.currentUser
+      user <- User.currentUser ?~ ""
     } yield {
       "data-name=listPost" #> BlogPost.findLastPostByUser(user).map(post => {
         "data-name=title *" #>  post.name &
