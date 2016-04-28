@@ -84,27 +84,47 @@
                             <li data-name="gnusocial">
                             <a href="#" data-name="gnusocial-url" target="_blank">
                             <img alt="GNUSocial" src="/images/gnusocial.png" width="35" />
-                            <span data-name="flickr-username">Nickname</span>
+                            <span data-name="gnusocial-username">Nickname</span>
                             </a>
                             </li>
                             
                         </ul>
                     </section>
-                    <section class="overflow-hidden requests-space">
+                    <section class="overflow-hidden requests-space" data-lift="ProfileLocUser.eventsOfCurrentUser">
                         <h3>Eventos realizados en el martadero</h3>
-                        <article>
+                        <article data-name="listEvents">
                             <figure class="pull-left col-md-6 no-padding margin-right-xs">
-                                <img src="/images/sample1.jpg" alt="" class="img-responsive">
+                                <img data-name="image" src="/images/sample1.jpg" alt="" class="img-responsive">
                             </figure>
                             <header class="margin-bottom-xs">
-                                <h4>Round de ilustradores</h4>
-                                <span class="postblog-date">14 de octubre 2015</span>
+                                <h4 data-name="title">Round de ilustradores</h4>
+                                <span class="postblog-date" data-name="date">14 de octubre 2015</span>
                             </header>
                             <p>
-                                ¿Por qué organizar conversatorios sobre literatura y video juegos? Sobre literatura y crimen? literatura y filoposia o poesía y gore? En qué coinciden los autores que aceptan darle vueltas a asuntos, aparentemente, tan disímiles? La respuesta a la primera pregunta, bien podría ser una nueva interrogante: ¿por qué no? y frente a la segunda, una igual de sencilla: cada uno de los invitados está más allá de su propia obra y no poseen reparos en meterle mano a este tipo de asuntos que muchas veces lindan con lo extraliterario.
+                                <span data-name="description"></span>
                             </p>
                         </article>
-
+                        <div class="text-center">
+                            <a href="/events" data-name="more" class="btn text-uppercase">Ver Más</a>
+                        </div>
+                    </section>
+                    <section class="overflow-hidden requests-space" data-lift="ProfileLocUser.lastPostOfCurrentUser">
+                        <h3>En el blog</h3>
+                        <article data-name="listPost">
+                            <figure class="pull-left col-md-6 no-padding margin-right-xs">
+                                <img data-name="image" src="/images/sample1.jpg" alt="" class="img-responsive">
+                            </figure>
+                            <header class="margin-bottom-xs">
+                                <a href="" data-name="post"><h4 data-name="title">Round de ilustradores</h4></a>
+                                <span class="postblog-date" data-name="date">14 de octubre 2015</span>
+                            </header>
+                            <p>
+                                <span data-name="description"></span>
+                            </p>
+                        </article>
+                        <div class="text-center">
+                            <a href="/blog/index" data-name="more" class="btn text-uppercase">Ver Más</a>
+                        </div>
                     </section>
                 </div>
             </div>

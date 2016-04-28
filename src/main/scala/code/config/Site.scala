@@ -277,6 +277,8 @@ object Site extends Locs {
       backendEventAdd,
       backendEventEdit))
 
+  val frontendEvents = MenuLoc(Menu.i("Lista de Eventos") / "events" >> TemplateBox(() => Templates("events" :: Nil)))
+
   val backendCallAdd = Menu.param[Call](
     "Agregar convocatoria", "Agregar convocatoria",
     s => Full(Call.createRecord),
@@ -731,6 +733,7 @@ object Site extends Locs {
     backendAparienciaModule.menu,
     backendPages.menu,
     backendCalls.menu,
+    frontendEvents.menu,
     Menu.i("Calendario") / "backend" / "calendario" >> User.HasRoleOrPermission(SuperAdmin, Calendario) >> LeftMenuGroup,
     backendBlog.menu,
     Menu.i("Error") / "error" >> Hidden,

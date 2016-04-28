@@ -19,7 +19,7 @@ object PendingEventSnippet extends ListSnippet[Event] with SnippetHelper {
 
   val addUrl = Site.backendEventAdd.calcHref(Event.createRecord)
 
-  def entityListUrl: String = Site.backendEvents.menu.loc.calcDefaultHref
+  def entityListUrl: String = Site.backendPendingEvents.menu.loc.calcDefaultHref
 
   def itemEditUrl(inst: Event): String = Site.backendEventEdit.toLoc.calcHref(inst)
 
