@@ -31,7 +31,19 @@ object ValueSnippet extends SortableSnippet[Value] {
     } yield {
       "data-name=name *" #> value.name.get &
       "data-name=name [href]" #> Site.principio.calcHref(value) &
-      "data-name=description *" #> value.description.asHtml
+      "data-name=description *" #> value.description.asHtml &
+      "data-name=area *" #> value.areasDefinitions.get.map(definition => {
+        "data-name=area-title *" #> definition.area.obj.dmap("")(_.name.get) &
+        "data-name=area-description" #> definition.description.get
+      }) &
+      "data-name=program *" #> value.programsDefinitions.get.map(definition => {
+        "data-name=program-title *" #> definition.program.obj.dmap("")(_.name.get) &
+          "data-name=program-description" #> definition.description.get
+      }) &
+      "data-name=areaTransversal *" #> value.transvesalAreasDefinitions.get.map(definition => {
+        "data-name=areaT-title *" #> definition.transversalArea.obj.dmap("")(_.name.get) &
+          "data-name=areaT-description" #> definition.description.get
+      })
     }
   }
 

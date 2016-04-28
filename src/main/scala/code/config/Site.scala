@@ -721,6 +721,7 @@ object Site extends Locs {
     account.menu,
     password.menu,
     editProfile.menu,
+    principio,
     backendMessages.menu,
     backendUsers.menu,
     backendEvents.menu,
