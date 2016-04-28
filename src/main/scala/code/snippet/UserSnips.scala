@@ -13,6 +13,7 @@ import net.liftweb.http.js.JsCmds._
 import net.liftweb.http.{S, SHtml}
 import net.liftweb.util.Helpers._
 import net.liftweb.util._
+import code.lib.request.request._
 
 import scala.xml._
 
@@ -132,11 +133,10 @@ sealed trait UserSnippet extends SnippetHelper with Loggable {
       user <- User.currentUser ?~ ""
     } yield {
       "data-name=listPost" #> BlogPost.findLastPostByUser(user).map(post => {
-        "data-name=title *" #>  post.name &
-        "data-name=date *" #> post.date.toString &
-        "data-name=post [href]" #> Site.entradaBlog.toLoc.calcHref(post) &
-        "data-name=description" #> post.content.asHtmlCutted(250) &
-        {
+        "data-name=title *" #> post.name &
+          "data-name=date *" #> post.date.toString &
+          "data-name=post [href]" #> Site.entradaBlog.toLoc.calcHref(post) &
+          "data-name=description" #> post.content.asHtmlCutted(250) & {
           post.photo.valueBox match {
             case Full(image) =>
               val imageSrc = image.fileId.get
@@ -144,7 +144,10 @@ sealed trait UserSnippet extends SnippetHelper with Loggable {
             case _ =>
               "data-name=image *" #> NodeSeq.Empty
           }
-        }
+        } &
+        "data-name=more [onclick]" #> SHtml.ajaxInvoke(() => {
+          RedirectTo(Site.blog.url, () => authorBlogRequestVar.set(Full(user)))
+        })
       })
     }
   }

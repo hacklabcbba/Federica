@@ -2,15 +2,12 @@ package code
 package lib
 package request
 
-import java.lang.Process
-
-import code.model
 import code.model._
 import code.model.event._
-import net.liftweb.common.{Empty, Box}
+import net.liftweb.common.{Box, Empty}
 import net.liftweb.http.RequestVar
 import code.model.network.Network
-import code.model.resource.{Equipment, Room, ConcreteResource}
+import code.model.resource.{ConcreteResource, Equipment, Room}
 
 package object request {
   object productiveRequestVar extends RequestVar[Box[ProductiveUnit]](Empty)
@@ -40,4 +37,9 @@ package object request {
   object areaTransversalBlogRequestVar extends RequestVar[Box[TransversalArea]](Empty)
   object categoryBlogRequestVar extends RequestVar[Box[Tag]](Empty)
   object tagBlogRequestVar extends RequestVar[Box[Tag]](Empty)
+  object programBlogRequestVar extends RequestVar[Box[Program]](Empty)
+  object valuesBlogRequestVar extends RequestVar[Box[Values]](Empty)
+  object actionLineBlogRequestVar extends RequestVar[Box[ActionLine]](Empty)
+  object processBlogRequestVar extends RequestVar[Box[Process]](Empty)
+
 }

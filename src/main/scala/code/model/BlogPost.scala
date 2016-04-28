@@ -268,13 +268,15 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
   }
 
   def findPublishedByFilters(limit: Int, page: Int): List[BlogPost] = {
-    println("category " + categoryBlogRequestVar.get)
-    println("author " + authorBlogRequestVar.get)
-    println("author " + areaBlogRequestVar.get)
     BlogPost.where(_.isPublished eqs true)
       .andOpt(categoryBlogRequestVar.get.toOption)(_.categories contains _)
       .andOpt(authorBlogRequestVar.get.toOption)(_.author eqs _.id.get)
       .andOpt(areaBlogRequestVar.get.toOption)(_.area eqs _.id.get)
+      .andOpt(areaTransversalBlogRequestVar.get.toOption)(_.transversalArea eqs _.id.get)
+      .andOpt(tagBlogRequestVar.get.toOption)(_.tags contains _)
+      .andOpt(valuesBlogRequestVar.get.toOption)(_.values contains _.id.get)
+      .andOpt(actionLineBlogRequestVar.get.toOption)(_.actionLines contains _.id.get)
+      .andOpt(processBlogRequestVar.get.toOption)(_.process eqs _.id.get)
       .paginate(limit)
       .setPage(page)
       .fetch()
