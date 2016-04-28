@@ -405,7 +405,7 @@ object Event extends Event with RogueMetaRecord[Event] {
 
   def findLastEventsByUser(user: User): List[Event] = {
 
-    Event.where(_.user eqs user.id.get).and(_.status eqs StatusType.Approved).orderDesc(_.id).fetch()
+    Event.where(_.user eqs user.id.get).and(_.status eqs StatusType.Approved).orderDesc(_.id).fetch(3)
   }
 }
 
