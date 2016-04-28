@@ -62,10 +62,10 @@
 
 /*----/----/ $TAGS */
  a {
-  color: #FF9A00;
+  color: #D58530;
   &:hover {
-   color: #FF9A00;
-   text-decoration: none;
+   color: #D58530;
+   text-decoration: underline;
   }
  }
 
@@ -80,15 +80,16 @@
  h5 a,
  h5 a:hover,
  h6 a,
- h6 a:hover,{
+ h6 a:hover{
   color: #222;
+  text-decoration: none !important;
  }
 
  p a {
   &:hover {
    text-decoration: underline;
   }
-  text-decoration: underline;
+  text-decoration: none;
  }
 
  body {
@@ -110,7 +111,7 @@
 
 
 h2 a, h3 a, h4 a {
- color: #FF9A00;
+ color: #333;
 }
 
  p {
@@ -1105,11 +1106,16 @@ body > .wrapper > header {
   }
   .postblog-date {
    font-size: 13px;
+   margin-left: 15px !important;
   }
  }
  .blog-article {
   margin-bottom: 15px;
  }
+}
+
+.list-tags {
+ margin-left: 15px !important;
 }
 
 /*----/----/----/ $POST-BLOG */

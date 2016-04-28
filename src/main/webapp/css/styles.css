@@ -37,11 +37,11 @@
 }
 /*----/----/ $TAGS */
 a {
-  color: #FF9A00;
+  color: #D58530;
 }
 a:hover {
-  color: #FF9A00;
-  text-decoration: none;
+  color: #D58530;
+  text-decoration: underline;
 }
 h1 a,
 h1 a:hover,
@@ -56,9 +56,10 @@ h5 a:hover,
 h6 a,
 h6 a:hover {
   color: #222;
+  text-decoration: none !important;
 }
 p a {
-  text-decoration: underline;
+  text-decoration: none;
 }
 p a:hover {
   text-decoration: underline;
@@ -85,7 +86,7 @@ h6 {
 h2 a,
 h3 a,
 h4 a {
-  color: #FF9A00;
+  color: #333;
 }
 p {
   text-align: justify;
@@ -1009,9 +1010,13 @@ body .login-socialmedia .googleplus {
 }
 .blog-page .blog-articles .postblog-date {
   font-size: 13px;
+  margin-left: 15px !important;
 }
 .blog-page .blog-article {
   margin-bottom: 15px;
+}
+.list-tags {
+  margin-left: 15px !important;
 }
 /*----/----/----/ $POST-BLOG */
 .blogpost-page .postblog-date .separator {
