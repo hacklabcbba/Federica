@@ -180,9 +180,6 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
     }
     override def toForm = Full(elem)
 
-    /*def getMaxDateOfActivity = {
-      this.get.sortBy(d => d).map(_.date).lastOption
-    }*/
   }
 
   object description extends BsCkTextareaField(this, 1000) {
