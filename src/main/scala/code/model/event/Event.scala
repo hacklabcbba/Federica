@@ -180,9 +180,6 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
     }
     override def toForm = Full(elem)
 
-    /*def getMaxDateOfActivity = {
-      this.get.sortBy(d => d).map(_.date).lastOption
-    }*/
   }
 
   object description extends BsCkTextareaField(this, 1000) {
@@ -409,6 +406,10 @@ object Event extends Event with RogueMetaRecord[Event] {
   def findLastEventsByUser(user: User): List[Event] = {
 
     Event.where(_.user eqs user.id.get).and(_.status eqs StatusType.Approved).orderDesc(_.id).fetch()
+  }
+
+  def findLastThreeEventsByFilter(areas: List[Area]): List[Event] = {
+    Event.where(_.area in areas.map(_.id.get)).orderDesc(_.id).fetch(3)
   }
 }
 

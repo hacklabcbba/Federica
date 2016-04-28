@@ -5,6 +5,7 @@ import code.config.Site
 import code.model.Value
 import com.foursquare.rogue.LiftRogue
 import com.foursquare.rogue.LiftRogue._
+import net.liftweb.common.Full
 import net.liftweb.http.js.JsCmd
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.json.JsonAST.JValue
@@ -43,7 +44,9 @@ object ValueSnippet extends SortableSnippet[Value] {
       "data-name=areaTransversal *" #> value.transvesalAreasDefinitions.get.map(definition => {
         "data-name=areaT-title *" #> definition.transversalArea.obj.dmap("")(_.name.get) &
           "data-name=areaT-description" #> definition.description.get
-      })
+      }) &
+      EventSnippet.renderLastThreeEventByFilter(value.areasDefinitions.get.map(_.area.obj).flatten) &
+      BlogSnippet.renderLastThreePostByFilter(Full(value))
     }
   }
 

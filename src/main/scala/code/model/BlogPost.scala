@@ -266,6 +266,11 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
         .fetch()
   }
 
+  def findPublishedByFilters(values: Box[Value]): List[BlogPost] = {
+    val newValue = Values.whereOpt(values.toOption)(_.name eqs _.name.get).fetch().headOption
+    BlogPost.whereOpt(newValue)(_.values contains _.id.get).fetch(3)
+  }
+
   def findCategories: List[String] = {
     BlogPost.distinct(_.categories.subfield(_.tag)).toList.asInstanceOf[List[String]]
   }
