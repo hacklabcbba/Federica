@@ -63,6 +63,10 @@ object EventSnippet extends ListSnippet[Event] {
     })
   }
 
+  def renderLastThreeEventByFilter: CssSel = {
+    "data-name" #> ""
+  }
+
 }
 
 object NgEventService {
