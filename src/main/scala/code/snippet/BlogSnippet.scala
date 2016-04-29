@@ -50,8 +50,8 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
   }
 
   def renderFrontEnd: CssSel = {
-    val category = categoryBlogRequestVar.get
-    "data-name=category *" #> category.map(_.tag.get) &
+    val category = S.param("category")
+    "data-name=category *" #> category.map(_) &
     "data-name=post" #> page.map(post => {
       previewCss(post) &
       "data-name=title *" #> post.name.get &
@@ -64,23 +64,56 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
       "a [href]" #> Site.blog.fullUrl
     } &
     "data-name=categories" #> meta.findCategories.map(cat => {
-      "li [class+]" #> (if (category.dmap("")(_.tag.get) == cat) "active" else "") &
-      "a [onclick]" #> SHtml.ajaxInvoke(() => {
-        RedirectTo(Site.blog.url, () => categoryBlogRequestVar.set(Full(Tag.createRecord.tag(cat))))
-      }) &
+      "li [class+]" #> (if (category.dmap("")(a => a) == cat) "active" else "") &
+      "a [href]" #> s"${Site.blog.fullUrl}?category=$cat" &
       "a *" #> cat
     }) &
     paginate
   }
 
+  def getParameter: List[(String, List[String])] = {
+    val res = for {
+      s <- S.request
+      r <- s.params
+    } yield {
+      r
+    }
+
+    println(res)
+
+    /*S.param("category") match {
+      case Full(s) =>
+        ("category", s)
+      case _ => S.param("author") match {
+        case Full(s) =>
+          ("author", s)
+        case _ => S.param("area") match {
+          case Full(s) =>
+            ("area", s)
+          case _ => S.param("areaTransversal") match {
+            case Full(s) =>
+              ("areaTransversal", s)
+
+          }
+        }
+      }
+    }*/
+    res
+
+  }
+
   def renderTags(post: BlogPost): CssSel = {
-    (if (post.area.obj.isEmpty)
-      "data-name=area" #> NodeSeq.Empty else {
-      "data-name=area-name *" #> post.area.obj.dmap("")(_.name.get) &
-      "data-name=area-name [onclick]" #> SHtml.ajaxInvoke(() => {
-        RedirectTo(Site.blog.url, () => areaBlogRequestVar.set(post.area.obj))
-      })
-    }) &
+    {
+      post.area.obj match {
+        case Full(area) =>
+          "data-name=area" #> post.area.obj.map(area => {
+            "data-name=area-name *" #> area.name.get &
+              "data-name=area-name [href]" #> s"${Site.blog.fullUrl}?area=${area.name.get}"
+          })
+        case _ =>
+          "data-name=area" #> NodeSeq.Empty
+      }
+    } &
     (if (post.transversalArea.obj.isEmpty)
       "data-name=transversalarea" #> NodeSeq.Empty
     else {
