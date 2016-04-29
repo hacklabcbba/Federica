@@ -51,7 +51,7 @@ object ValueSnippet extends SortableSnippet[Value] {
           case true =>
             "data-name=area" #> value.areasDefinitions.getListOfNonEmptyDescription.map(definition => {
               "data-name=area-title *" #> definition.area.obj.dmap("")(_.name.get) &
-              "data-name=area-description" #> definition.description.get
+              "data-name=area-description *" #> definition.description.asHtml
             })
           case false =>
             "data-name=areaArt" #> NodeSeq.Empty
@@ -62,7 +62,7 @@ object ValueSnippet extends SortableSnippet[Value] {
           case true =>
             "data-name=program" #> value.programsDefinitions.getListOfNonEmptyDescription.map(definition => {
               "data-name=program-title *" #> definition.program.obj.dmap("")(_.name.get) &
-                "data-name=program-description" #> definition.description.get
+              "data-name=program-description *" #> definition.description.asHtml
             })
           case false =>
             "data-name=programH" #> NodeSeq.Empty
@@ -73,7 +73,7 @@ object ValueSnippet extends SortableSnippet[Value] {
           case true =>
             "data-name=areaTransversal" #> value.transvesalAreasDefinitions.getListOfNonEmptyDescription.map(definition => {
               "data-name=areaT-title *" #> definition.transversalArea.obj.dmap("")(_.name.get) &
-                "data-name=areaT-description" #> definition.description.get
+              "data-name=areaT-description *" #> definition.description.asHtml
             })
           case false =>
             "data-name=areaT" #> NodeSeq.Empty

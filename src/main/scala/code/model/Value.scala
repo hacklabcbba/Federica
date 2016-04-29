@@ -179,7 +179,7 @@ class Definition extends BsonRecord[Definition ] {
     override def optional_? = true
   }
 
-  object transversalArea extends ObjectIdRefField(this, Program) {
+  object transversalArea extends ObjectIdRefField(this, TransversalArea) {
     override def shouldDisplay_?  = false
     override def optional_? = true
   }
