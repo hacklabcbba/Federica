@@ -390,14 +390,28 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
     override def displayName = "Tipo de solicitante"
   }
 
+  object values extends ObjectIdRefListField(this, Value) {
+    override def displayName = "Principios"
+    def currentValue = this.objs
+    def availableOptions: List[(Value, String)] = Value.findAll.map(p => p -> p.name.get)
 
+    override def toForm: Box[Elem] = {
+      Full(SHtml.multiSelectObj(
+        availableOptions,
+        currentValue,
+        (list: List[Value]) => set(list.map(_.id.get)),
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione uno o varios principios..."
+      ))
+    }
+  }
 }
 
 object Event extends Event with RogueMetaRecord[Event] {
   override def collectionName = "event.events"
 
   override def fieldOrder = List(
-    name, eventKind, requirements, destinedTo,  area, country, eventNumber,
+    name, eventKind, requirements, destinedTo,  area, values, country, eventNumber,
     isOutstanding, organizer, handlers, collaborators, supports,
     description, hours, costInfo, quote,
     image, isLogoEnabled, applicantType,
@@ -408,8 +422,8 @@ object Event extends Event with RogueMetaRecord[Event] {
     Event.where(_.user eqs user.id.get).and(_.status eqs StatusType.Approved).orderDesc(_.id).fetch()
   }
 
-  def findLastThreeEventsByFilter(areas: List[Area]): List[Event] = {
-    Event.where(_.area in areas.map(_.id.get)).orderDesc(_.id).fetch(3)
+  def findLastThreeEventsByFilter(values: Box[Value]): List[Event] = {
+    Event.whereOpt(values.toOption)(_.values contains  _.id.get).orderDesc(_.id).fetch(3)
   }
 }
 
@@ -462,39 +476,3 @@ object EventKind extends Enumeration {
   val Visitaguiada = Value("Visita guiada")
 
 }
-
-class Values private() extends MongoRecord[Values] with ObjectIdPk[Values] {
-
-  override def meta = Values
-
-  object name extends StringField(this, 100) {
-    override def displayName = "Nombre"
-  }
-
-}
-
-object Values extends Values with RogueMetaRecord[Values] {
-  val Innovation = "Innovación"
-  val Research = "Investigación"
-  val Experimentation = "Experimentacion"
-  val ConceptualAndFormaligor = "Rigor conceptual y formal"
-  val Integration = "Integracion"
-  val ExchangeOfKnowledgeAndExperiences = "Intercambio de conocimientos y experiencias"
-  val Intercultural = "Interculturalidad"
-  private lazy val data = List(
-    "Innovación",
-    "Investigación",
-    "Experimentacion",
-    "Rigor conceptual y formal",
-    "Integracion",
-    "Intercambio de conocimientos y experiencias",
-    "Interculturalidad"
-  )
-
-  def seedData = {
-    if (Values.count() == 0) data.foreach(d => {
-      Values.createRecord.name(d).save(true)
-    })
-  }
-}
-

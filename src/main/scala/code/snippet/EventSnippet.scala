@@ -1,7 +1,7 @@
 package code.snippet
 
 import code.config.Site
-import code.model.Area
+import code.model.Value
 import code.model.event.Event
 import code.model.resource.Room
 import net.liftmodules.extras.SnippetHelper
@@ -10,6 +10,7 @@ import net.liftweb.common.{Failure, Full}
 import net.liftweb.json.JsonAST.{JArray, JValue}
 import net.liftweb.util.Helpers._
 import net.liftweb.util.{CssSel, Helpers}
+import net.liftweb.common.{Box, Full}
 
 import scala.xml.NodeSeq
 
@@ -65,24 +66,28 @@ object EventSnippet extends ListSnippet[Event] {
     })
   }
 
-  def renderLastThreeEventByFilter(areas: List[Area]): CssSel = {
-    "data-name=events" #> Event.findLastThreeEventsByFilter(areas).map(event => {
-      "data-name=title *" #> event.name.get &
-      "data-name=days *" #> event.activities.get.map(_.date.toString).mkString(",") &
-      {
-        event.image.valueBox match {
-          case Full(image) =>
-            val imageSrc = image.fileId.get
-            "data-name=image [src]" #> s"/image/$imageSrc"
-          case _ =>
-            "data-name=image *" #> NodeSeq.Empty
-        }
-      } &
-      "data-name=cost *" #> ("Costo: " + event.costInfo.get.toString) &
-      "data-name=description" #> event.description.asHtml
-    })
+  def renderLastThreeEventByFilter(values: Box[Value]): CssSel = {
+    Event.findLastThreeEventsByFilter(values).size > 0 match {
+      case true =>
+        "data-name=events" #> Event.findLastThreeEventsByFilter(values).map(event => {
+          "data-name=title *" #> event.name.get &
+          "data-name=days *" #> event.activities.get.map(_.date.toString).mkString(",") &
+          {
+            event.image.valueBox match {
+              case Full(image) =>
+                val imageSrc = image.fileId.get
+                "data-name=image [src]" #> s"/image/$imageSrc"
+              case _ =>
+                "data-name=image *" #> NodeSeq.Empty
+            }
+          } &
+          "data-name=cost *" #> ("Costo: " + event.costInfo.get.toString) &
+          "data-name=description" #> event.description.asHtml
+        })
+      case false =>
+        "data-name=eventsH" #> NodeSeq.Empty
+    }
   }
-
 }
 
 object NgEventService {

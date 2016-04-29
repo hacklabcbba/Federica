@@ -1,12 +1,13 @@
 package code.model
 
 import code.config.Site
-import code.lib.field.{BsCkUnsecureTextareaField, BsTextareaField, BsStringField}
-import code.lib.{WithUrl, BaseModel, SortableModel, RogueMetaRecord}
+import code.lib.field.{BsCkUnsecureTextareaField, BsStringField, BsTextareaField, FileField}
+import code.lib.{BaseModel, RogueMetaRecord, SortableModel, WithUrl}
+import code.model.event.Event.image._
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.{BsonMetaRecord, BsonRecord, MongoRecord}
-import net.liftweb.mongodb.record.field.{BsonRecordListField, ObjectIdRefField, ObjectIdPk}
+import net.liftweb.mongodb.record.field.{BsonRecordListField, ObjectIdPk, ObjectIdRefField}
 import net.liftweb.record.LifecycleCallbacks
 import net.liftweb.record.field.{StringField, TextareaField}
 
@@ -65,6 +66,10 @@ class Value private () extends MongoRecord[Value] with ObjectIdPk[Value] with Ba
     override def beforeSave: Unit = {
       this.set(this.get ++ newDefs)
     }
+
+    def getListOfNonEmptyDescription: List[Definition] = {
+      this.get.filter(d => d.description.get.trim != "")
+    }
   }
 
   object programsDefinitions extends BsonRecordListField(this, Definition) with LifecycleCallbacks {
@@ -94,6 +99,10 @@ class Value private () extends MongoRecord[Value] with ObjectIdPk[Value] with Ba
 
     override def beforeSave: Unit = {
       this.set(this.get ++ newDefs)
+    }
+
+    def getListOfNonEmptyDescription: List[Definition] = {
+      this.get.filter(d => d.description.get.trim != "")
     }
   }
 
@@ -125,6 +134,17 @@ class Value private () extends MongoRecord[Value] with ObjectIdPk[Value] with Ba
     override def beforeSave: Unit = {
       this.set(this.get ++ newDefs)
     }
+
+    def getListOfNonEmptyDescription: List[Definition] = {
+      this.get.filter(d => d.description.get.trim != "")
+    }
+  }
+
+  object image extends FileField(this) {
+    override def displayName = "Imágen"
+    override def toString = {
+      value.fileName.get
+    }
   }
 
   def urlString: String = Site.principio.calcHref(this)
@@ -137,7 +157,7 @@ object Value extends Value with RogueMetaRecord[Value] {
   override def collectionName = "main.values"
 
   override def fieldOrder = List(
-    name, description, url, order, areasDefinitions, programsDefinitions, transvesalAreasDefinitions
+    name, description, image, url, order, areasDefinitions, programsDefinitions, transvesalAreasDefinitions
   )
 
   def findByUrl(url: String): Box[Value] = {
