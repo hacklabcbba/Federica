@@ -4,7 +4,6 @@ package model
 import code.config.Site
 import code.lib.{BaseModel, RogueMetaRecord}
 import code.lib.field._
-import code.model.event.Values
 import com.foursquare.rogue.LiftRogue
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
@@ -120,16 +119,16 @@ class BlogPost private() extends MongoRecord[BlogPost] with ObjectIdPk[BlogPost]
     def availableOptions = User.findAll
   }
 
-  object values extends ObjectIdRefListField(this, Values) {
+  object values extends ObjectIdRefListField(this, Value) {
     override def displayName = "Principios"
     def currentValue = this.objs
-    def availableOptions: List[(Values, String)] = Values.findAll.map(p => p -> p.name.get).toList
+    def availableOptions: List[(Value, String)] = Value.findAll.map(p => p -> p.name.get)
 
     override def toForm: Box[Elem] = {
       Full(SHtml.multiSelectObj(
         availableOptions,
         currentValue,
-        (list: List[Values]) => set(list.map(_.id.get)),
+        (list: List[Value]) => set(list.map(_.id.get)),
         "class" -> "select2 form-control",
         "data-placeholder" -> "Seleccione uno o varios principios..."
       ))
@@ -264,6 +263,10 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
         .paginate(limit)
         .setPage(page)
         .fetch()
+  }
+
+  def findPublishedByFilters(values: Box[Value]): List[BlogPost] = {
+    BlogPost.whereOpt(values)(_.values contains _.id.get).fetch(3)
   }
 
   def findCategories: List[String] = {

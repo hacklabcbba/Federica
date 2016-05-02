@@ -2,16 +2,18 @@ package code.model
 
 import code.config.Site
 import code.lib.{BaseModel, RogueMetaRecord}
-import code.lib.field.{DatePickerField, BsCkTextareaField, TimePickerField, FileField}
+import code.lib.field.{BsCkTextareaField, DatePickerField, FileField, TimePickerField}
 import com.foursquare.rogue.LiftRogue
-import net.liftweb.common.Full
+import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb
 import net.liftweb.mongodb.record.MongoRecord
-import net.liftweb.mongodb.record.field.{ObjectIdRefField, ObjectIdPk}
+import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField, ObjectIdRefListField}
 import net.liftweb.record.field.{StringField, TextareaField}
 import com.foursquare.rogue._
 import org.joda.time.{DateTime, DateTimeZone}
+import scala.xml.Elem
+
 
 
 class Call private () extends MongoRecord[Call] with ObjectIdPk[Call] with BaseModel[Call] {
@@ -64,6 +66,22 @@ class Call private () extends MongoRecord[Call] with ObjectIdPk[Call] with BaseM
     def availableOptions = (None -> "Ninguna") :: Area.findAll.map(s => Some(s) -> s.toString)
   }
 
+  object values extends ObjectIdRefListField(this, Value) {
+    override def displayName = "Principios"
+    def currentValue = this.objs
+    def availableOptions: List[(Value, String)] = Value.findAll.map(p => p -> p.name.get)
+
+    override def toForm: Box[Elem] = {
+      Full(SHtml.multiSelectObj(
+        availableOptions,
+        currentValue,
+        (list: List[Value]) => set(list.map(_.id.get)),
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione uno o varios principios..."
+      ))
+    }
+  }
+
   object program extends ObjectIdRefField(this, Program) {
     override def displayName = "Programa"
     override def optional_? = true
@@ -91,5 +109,9 @@ object Call extends Call with RogueMetaRecord[Call] {
   def findAllCurrent: List[Call] = {
     val now = DateTime.now
     Call.where(_.deadline after now).fetch()
+  }
+
+  def findLastThreeCallByFilter(value: Box[Value]) = {
+    Call.whereOpt(value.toOption)(_.values contains  _.id.get).orderDesc(_.id).fetch(3)
   }
 }

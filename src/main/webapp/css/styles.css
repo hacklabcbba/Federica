@@ -324,10 +324,11 @@ textarea.form-control {
 }
 .widgets.events-here {
   font-size: 13px;
+  padding-top: 30px;
 }
 .widgets.events-here .title {
   font-size: 16px;
-  margin-top: 0px;
+  margin-top: 25px;
   margin-bottom: 3px;
 }
 .widgets.events-here .info {

@@ -3,12 +3,11 @@ package code.snippet
 import code.config
 import code.config.Site
 import code.lib.snippet.PaginatorSnippet
-import code.model.BlogPost
-import net.liftweb.common.{Full, Box}
-import net.liftweb.http.{ S, RequestVar, SHtml}
-import net.liftweb.util.{PassThru, CssSel, Helpers}
+import code.model.{BlogPost, Value}
+import net.liftweb.common.{Box, Full}
+import net.liftweb.http.{RequestVar, S, SHtml}
+import net.liftweb.util.{CssSel, Helpers, PassThru}
 import Helpers._
-
 import scala.xml.NodeSeq
 
 object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost] {
@@ -94,6 +93,31 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
       prevItemCss(prev) &
       nextItemCss(next) &
       relatedCss(related)
+    }
+  }
+
+
+  def renderLastThreePostByFilter(values: Box[Value]): CssSel = {
+    BlogPost.findPublishedByFilters(values).size > 0 match {
+      case true =>
+        "data-name=posts" #> BlogPost.findPublishedByFilters(values).map(post => {
+          "data-name=title *" #> post.name.get &
+          "data-name=area *" #> post.area.obj.dmap("")(_.name.get) &
+          {
+            post.photo.valueBox match {
+              case Full(image) =>
+                val imageSrc = image.fileId.get
+                "data-name=image [src]" #> s"/image/$imageSrc"
+              case _ =>
+                "data-name=image *" #> NodeSeq.Empty
+            }
+          } &
+          "data-name=author *" #> post.author.obj.dmap("")(_.name.get) &
+          "data-name=date *" #> post.date.toString &
+          "data-name=description" #> post.content.asHtmlCutted(250)
+        })
+      case false =>
+        "data-name=postsH" #> NodeSeq.Empty
     }
   }
 
