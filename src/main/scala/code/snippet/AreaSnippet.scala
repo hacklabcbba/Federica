@@ -9,6 +9,7 @@ import net.liftweb.util.{CssSel, Helpers}
 import Helpers._
 import net.liftweb.http.js.JsCmds._
 import LiftRogue._
+import net.liftweb.common.{Empty, Full}
 
 object AreaSnippet extends SortableSnippet[Area] {
 
@@ -41,7 +42,10 @@ object AreaSnippet extends SortableSnippet[Area] {
       "data-name=name [href]" #> Site.area.calcHref(area) &
       "data-name=description *" #> area.description.asHtml &
       "data-name=email *" #> area.email.get &
-      "data-name=responsible *" #> area.responsible.obj.dmap("")(_.name.get)
+      "data-name=responsible *" #> area.responsible.obj.dmap("")(_.name.get) &
+      "data-name=events" #> EventSnippet.relatedEvents(area.name.get, Empty, Empty, Full(area), Empty, Empty, Empty, Empty) &
+      "data-name=posts" #> BlogSnippet.relatedPosts(area.name.get, Empty, Empty, Full(area), Empty, Empty, Empty, Empty) &
+      "data-name=calls" #> CallSnippet.relatedCalls(area.name.get, Empty, Empty, Full(area), Empty, Empty, Empty, Empty)
     }
   }
 

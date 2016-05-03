@@ -8,6 +8,7 @@ import net.liftweb.json.JsonAST.JValue
 import LiftRogue._
 import net.liftweb.util.{CssSel, Helpers}
 import Helpers._
+import net.liftweb.common.{Empty, Full}
 import net.liftweb.http.js.JsCmds._
 
 object ProgramSnippet extends SortableSnippet[Program] {
@@ -32,7 +33,10 @@ object ProgramSnippet extends SortableSnippet[Program] {
       "data-name=name [href]" #> Site.programa.calcHref(programa) &
       "data-name=description *" #> programa.description.asHtml &
       "data-name=email *" #> programa.email.get &
-      "data-name=responsible *" #> programa.responsible.obj.dmap("")(_.name.get)
+      "data-name=responsible *" #> programa.responsible.obj.dmap("")(_.name.get) &
+      "data-name=events" #> EventSnippet.relatedEvents(programa.name.get, Empty, Full(programa), Empty, Empty, Empty, Empty, Empty) &
+      "data-name=posts" #> BlogSnippet.relatedPosts(programa.name.get, Empty, Full(programa), Empty, Empty, Empty, Empty, Empty) &
+      "data-name=calls" #> CallSnippet.relatedCalls(programa.name.get, Empty, Full(programa), Empty, Empty, Empty, Empty, Empty)
     }
   }
 

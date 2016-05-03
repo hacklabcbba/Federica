@@ -3,12 +3,13 @@ package code.snippet
 import code.config
 import code.config.Site
 import code.lib.snippet.PaginatorSnippet
-import code.model.{BlogPost, Value}
+import code.model._
 import net.liftweb.common.{Box, Full}
-import net.liftweb.http.{RequestVar, S, SHtml}
+import net.liftweb.http.{RequestVar, S, SHtml, Templates}
 import net.liftweb.util.{CssSel, Helpers, PassThru}
 import Helpers._
-import scala.xml.NodeSeq
+
+import scala.xml.{NodeSeq, Text}
 
 object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost] {
 
@@ -96,11 +97,25 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
     }
   }
 
+  def templateRelatedBlog =
+    Templates("templates-hidden" :: "frontend" :: "_relatedPosts" :: Nil) openOr Text(S ? "No edit template found")
 
-  def renderLastThreePostByFilter(values: Box[Value]): CssSel = {
-    BlogPost.findPublishedByFilters(values).size > 0 match {
+  def relatedPosts(title: String, values: Box[Value], program: Box[Program], area: Box[Area], actionLine: Box[ActionLine],
+                   transversalArea: Box[TransversalArea], transversalApproach: Box[TransversalApproach],
+                   process: Box[Process]): NodeSeq = {
+    renderLastThreePostByFilter(title, values, program, area, actionLine, transversalArea, transversalApproach,
+      process).apply(templateRelatedBlog)
+  }
+
+  def renderLastThreePostByFilter(title: String, values: Box[Value], program: Box[Program], area: Box[Area],
+                                  actionLine: Box[ActionLine], transversalArea: Box[TransversalArea],
+                                  transversalApproach: Box[TransversalApproach], process: Box[Process]): CssSel = {
+    val listPosts = BlogPost.findPublishedByFilters(values, program, area, actionLine, transversalArea, transversalApproach,
+      process)
+    listPosts.size > 0 match {
       case true =>
-        "data-name=posts" #> BlogPost.findPublishedByFilters(values).map(post => {
+        "data-name=title-module" #> title &
+        "data-name=posts" #> listPosts.map(post => {
           "data-name=title *" #> post.name.get &
           "data-name=area *" #> post.area.obj.dmap("")(_.name.get) &
           {
