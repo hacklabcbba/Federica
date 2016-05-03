@@ -51,7 +51,7 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
 
   def renderFrontEnd: CssSel = {
     val category = S.param("category")
-    "data-name=category *" #> category.map(_) &
+    "data-name=category *" #> category.dmap("")(_) &
     "data-name=post" #> page.map(post => {
       previewCss(post) &
       "data-name=title *" #> post.name.get &

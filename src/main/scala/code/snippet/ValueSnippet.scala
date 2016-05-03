@@ -3,7 +3,6 @@ package snippet
 
 import code.config.Site
 import code.model.Value
-import com.foursquare.rogue.LiftRogue
 import com.foursquare.rogue.LiftRogue._
 import net.liftweb.http.js.JsCmd
 import net.liftweb.http.js.JsCmds._
