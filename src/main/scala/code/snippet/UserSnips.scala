@@ -159,9 +159,9 @@ sealed trait UserSnippet extends SnippetHelper with Loggable {
             case _ =>
               "data-name=image *" #> NodeSeq.Empty
             }
-          } &
-          "data-name=more [href]" #> s"${Site.blog.fullUrl}?author=${User.currentUser.dmap("")(_.name.get)}"
-        })
+          }
+        }) &
+        "data-name=more [href]" #> s"${Site.blog.fullUrl}?autor=${User.currentUser.dmap("")(_.name.get)}"
       case false =>
         "data-name=listPost" #> NodeSeq.Empty
     }
