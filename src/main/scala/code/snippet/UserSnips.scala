@@ -160,9 +160,7 @@ sealed trait UserSnippet extends SnippetHelper with Loggable {
               "data-name=image *" #> NodeSeq.Empty
             }
           } &
-          "data-name=more [onclick]" #> SHtml.ajaxInvoke(() => {
-            RedirectTo(Site.blog.url, () => authorBlogRequestVar.set(User.currentUser))
-          })
+          "data-name=more [href]" #> s"${Site.blog.fullUrl}?author=${User.currentUser.dmap("")(_.name.get)}"
         })
       case false =>
         "data-name=listPost" #> NodeSeq.Empty

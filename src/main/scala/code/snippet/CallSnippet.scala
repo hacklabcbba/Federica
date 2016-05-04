@@ -1,9 +1,12 @@
 package code.snippet
 
 import code.config.Site
-import code.model.Call
+import code.model.{Call, Value}
+import net.liftweb.common.{Box, Full}
 import net.liftweb.util.Helpers._
 import net.liftweb.util.{CssSel, Helpers}
+
+import scala.xml.NodeSeq
 
 object CallSnippet extends ListSnippet[Call] {
 
@@ -37,6 +40,20 @@ object CallSnippet extends ListSnippet[Call] {
       "data-name=description *" #> call.description.asHtml &
       "data-name=deadline *" #> call.deadline.toString &
       "data-name=file [href]" #> call.file.url
+    }
+  }
+
+
+  def renderLastThreeCallByFilter(values: Box[Value]): CssSel = {
+    Call.findLastThreeCallByFilter(values).size > 0 match {
+      case true =>
+        "data-name=calls" #> Call.findLastThreeCallByFilter(values).map(call => {
+          "data-name=title *" #> call.name.get &
+            "data-name=days *" #> call.deadline.toString &
+            "data-name=description" #> call.description.asHtml
+        })
+      case false =>
+        "data-name=callsH" #> NodeSeq.Empty
     }
   }
 

@@ -32,14 +32,4 @@ package object request {
   object roomDeleteRequestVar extends RequestVar[List[Room]](Nil)
   object equipmentRequestVar extends RequestVar[Box[Equipment]](Empty)
   object equipmentDeleteRequestVar extends RequestVar[List[Equipment]](Nil)
-  object authorBlogRequestVar extends RequestVar[Box[User]](Empty)
-  object areaBlogRequestVar extends RequestVar[Box[Area]](Empty)
-  object areaTransversalBlogRequestVar extends RequestVar[Box[TransversalArea]](Empty)
-  object categoryBlogRequestVar extends RequestVar[Box[Tag]](Empty)
-  object tagBlogRequestVar extends RequestVar[Box[Tag]](Empty)
-  object programBlogRequestVar extends RequestVar[Box[Program]](Empty)
-  object valuesBlogRequestVar extends RequestVar[Box[Values]](Empty)
-  object actionLineBlogRequestVar extends RequestVar[Box[ActionLine]](Empty)
-  object processBlogRequestVar extends RequestVar[Box[Process]](Empty)
-
 }

@@ -4,7 +4,6 @@ package model
 import code.config.Site
 import code.lib.{BaseModel, RogueMetaRecord}
 import code.lib.field._
-import code.model.event.Values
 import com.foursquare.rogue.LiftRogue
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
@@ -122,16 +121,16 @@ class BlogPost private() extends MongoRecord[BlogPost] with ObjectIdPk[BlogPost]
     def availableOptions = User.findAll
   }
 
-  object values extends ObjectIdRefListField(this, Values) {
+  object values extends ObjectIdRefListField(this, Value) {
     override def displayName = "Principios"
     def currentValue = this.objs
-    def availableOptions: List[(Values, String)] = Values.findAll.map(p => p -> p.name.get).toList
+    def availableOptions: List[(Value, String)] = Value.findAll.map(p => p -> p.name.get)
 
     override def toForm: Box[Elem] = {
       Full(SHtml.multiSelectObj(
         availableOptions,
         currentValue,
-        (list: List[Values]) => set(list.map(_.id.get)),
+        (list: List[Value]) => set(list.map(_.id.get)),
         "class" -> "select2 form-control",
         "data-placeholder" -> "Seleccione uno o varios principios..."
       ))
@@ -273,6 +272,10 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
         .fetch()
   }
 
+  def findPublishedByValue(values: Box[Value]): List[BlogPost] = {
+    BlogPost.whereOpt(values)(_.values contains _.id.get).fetch(3)
+  }
+
   def findPublishedByFilters(parameters: List[(String, String)], limit: Int, page: Int): List[BlogPost] = {
 
     BlogPost.where(_.isPublished eqs true)
@@ -291,7 +294,7 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
 
   def getProcessValue(parameters: List[(String, String)]): Option[Process] = {
     parameters.headOption match {
-      case Some((p: String, v: String)) if(p == "actionLine") =>
+      case Some((p: String, v: String)) if(p == "proceso") =>
         Process.where(_.name eqs v).fetch().headOption
       case _ =>
         None
@@ -300,7 +303,7 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
 
   def getActionLineValue(parameters: List[(String, String)]): Option[ActionLine] = {
     parameters.headOption match {
-      case Some((p: String, v: String)) if(p == "actionLine") =>
+      case Some((p: String, v: String)) if(p == "lineaAccion") =>
         ActionLine.where(_.name eqs v).fetch().headOption
       case _ =>
         None
@@ -309,7 +312,7 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
 
   def getValue(parameters: List[(String, String)]): Option[Value] = {
     parameters.headOption match {
-      case Some((p: String, v: String)) if(p == "value") =>
+      case Some((p: String, v: String)) if(p == "principio") =>
         Value.where(_.name eqs v).fetch().headOption
       case _ =>
         None
@@ -336,7 +339,7 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
 
   def getCategoryValue(parameters: List[(String, String)]): Option[Tag] = {
     parameters.headOption match {
-      case Some((p: String, v: String)) if(p == "category") =>
+      case Some((p: String, v: String)) if(p == "categoria") =>
         BlogPost.where(_.categories.subfield(_.tag) eqs v).select(_.categories).fetch().flatten.headOption
       case _ =>
         None
@@ -345,7 +348,7 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
 
   def getTagValue(parameters: List[(String, String)]): Option[Tag] = {
     parameters.headOption match {
-      case Some((p: String, v: String)) if(p == "tag") =>
+      case Some((p: String, v: String)) if(p == "etiqueta") =>
         BlogPost.where(_.tags.subfield(_.tag) eqs v).select(_.tags).fetch().flatten.headOption
       case _ =>
         None
@@ -354,7 +357,7 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
 
   def getAuthorValue(parameters: List[(String, String)]): Option[User] = {
     parameters.headOption match {
-      case Some((p: String, v: String)) if(p == "author") =>
+      case Some((p: String, v: String)) if(p == "autor") =>
         User.where(_.name eqs v).fetch().headOption
       case _ =>
         None
