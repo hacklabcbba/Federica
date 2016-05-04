@@ -51,7 +51,8 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
 
   def renderFrontEnd: CssSel = {
     val category = S.param("category")
-    "data-name=category *" #> category.dmap("")(_) &
+    getParameter
+    "data-name=category *" #> category.dmap("")(a => a) &
     "data-name=post" #> page.map(post => {
       previewCss(post) &
       "data-name=title *" #> post.name.get &
@@ -71,34 +72,11 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
     paginate
   }
 
-  def getParameter: List[(String, List[String])] = {
-    val res = for {
-      s <- S.request
-      r <- s.params
-    } yield {
-      r
-    }
-
-    println(res)
-
-    /*S.param("category") match {
-      case Full(s) =>
-        ("category", s)
-      case _ => S.param("author") match {
-        case Full(s) =>
-          ("author", s)
-        case _ => S.param("area") match {
-          case Full(s) =>
-            ("area", s)
-          case _ => S.param("areaTransversal") match {
-            case Full(s) =>
-              ("areaTransversal", s)
-
-          }
-        }
-      }
-    }*/
-    res
+  def getParameter: List[(String, String)] = {
+    val parameters : Map[String,List[String]] = S.request.toList.flatMap(_.params).toMap
+    println("reqies os " + parameters)
+    val key = parameters.keys.headOption
+    val value = parameters.values.headOption
 
   }
 
