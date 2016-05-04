@@ -73,14 +73,15 @@ object EventSnippet extends ListSnippet[Event] {
   def relatedEvents(title: String, values: Box[Value], program: Box[Program], area: Box[Area],
                     actionLine: Box[ActionLine], transversalArea: Box[TransversalArea],
                     transversalApproach: Box[TransversalApproach], process: Box[Process]): NodeSeq = {
-    renderLastThreeEventByFilter(title, values, program, area, actionLine, transversalArea, transversalApproach, process).apply(templateRelatedEvents)
+    renderLastThreeEventByFilter(title, values, program, area, actionLine, transversalArea, transversalApproach,
+      process).apply(templateRelatedEvents)
   }
 
   def renderLastThreeEventByFilter(title: String, values: Box[Value], program: Box[Program], area: Box[Area],
                                    actionLine: Box[ActionLine], transversalArea: Box[TransversalArea],
                                    transversalApproach: Box[TransversalApproach], process: Box[Process]): CssSel = {
-    val listEvents = Event.findLastThreeEventsByFilter(values, program, area, actionLine, transversalArea, transversalApproach,
-      process)
+    val listEvents = Event.findLastThreeEventsByFilter(values, program, area, actionLine, transversalArea,
+      transversalApproach, process)
     listEvents.size > 0 match {
       case true =>
         "data-name=title-module" #> title &

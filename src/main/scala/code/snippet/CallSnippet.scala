@@ -57,8 +57,8 @@ object CallSnippet extends ListSnippet[Call] {
   def renderLastThreeCallByFilter(title: String, values: Box[Value], program: Box[Program], area: Box[Area],
                                   actionLine: Box[ActionLine],  transversalArea: Box[TransversalArea],
                                   transversalApproach: Box[TransversalApproach], process: Box[Process]): CssSel = {
-    val listCalls = Call.findLastThreeCallByFilter(values, program, area, actionLine, transversalArea, transversalApproach,
-      process)
+    val listCalls = Call.findLastThreeCallByFilter(values, program, area, actionLine, transversalArea,
+      transversalApproach, process)
     listCalls.size > 0 match {
       case true =>
         "data-name=title-module" #> title &

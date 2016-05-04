@@ -52,8 +52,10 @@ class LineaAccion(linea: ActionLine) extends SnippetHelper {
     "data-name=name *" #> linea.name.get &
     "data-name=name [href]" #> Site.lineaDeAccion.calcHref(linea) &
     "data-name=description *" #> linea.description.asHtml &
-    "data-name=events" #> EventSnippet.relatedEvents(linea.name.get, Empty, Empty, Empty, Full(linea), Empty, Empty, Empty) &
-    "data-name=posts" #> BlogSnippet.relatedPosts(linea.name.get, Empty, Empty, Empty, Full(linea), Empty, Empty, Empty) &
+    "data-name=events" #> EventSnippet.relatedEvents(linea.name.get, Empty, Empty, Empty, Full(linea), Empty, Empty,
+      Empty) &
+    "data-name=posts" #> BlogSnippet.relatedPosts(linea.name.get, Empty, Empty, Empty, Full(linea), Empty, Empty,
+      Empty) &
     "data-name=calls" #> CallSnippet.relatedCalls(linea.name.get, Empty, Empty, Empty, Full(linea), Empty, Empty, Empty)
   }
 }

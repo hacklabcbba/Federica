@@ -100,9 +100,9 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
   def templateRelatedBlog =
     Templates("templates-hidden" :: "frontend" :: "_relatedPosts" :: Nil) openOr Text(S ? "No edit template found")
 
-  def relatedPosts(title: String, values: Box[Value], program: Box[Program], area: Box[Area], actionLine: Box[ActionLine],
-                   transversalArea: Box[TransversalArea], transversalApproach: Box[TransversalApproach],
-                   process: Box[Process]): NodeSeq = {
+  def relatedPosts(title: String, values: Box[Value], program: Box[Program], area: Box[Area],
+                   actionLine: Box[ActionLine], transversalArea: Box[TransversalArea],
+                   transversalApproach: Box[TransversalApproach], process: Box[Process]): NodeSeq = {
     renderLastThreePostByFilter(title, values, program, area, actionLine, transversalArea, transversalApproach,
       process).apply(templateRelatedBlog)
   }
@@ -110,8 +110,8 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
   def renderLastThreePostByFilter(title: String, values: Box[Value], program: Box[Program], area: Box[Area],
                                   actionLine: Box[ActionLine], transversalArea: Box[TransversalArea],
                                   transversalApproach: Box[TransversalApproach], process: Box[Process]): CssSel = {
-    val listPosts = BlogPost.findPublishedByFilters(values, program, area, actionLine, transversalArea, transversalApproach,
-      process)
+    val listPosts = BlogPost.findPublishedByFilters(values, program, area, actionLine, transversalArea,
+      transversalApproach, process)
     listPosts.size > 0 match {
       case true =>
         "data-name=title-module" #> title &

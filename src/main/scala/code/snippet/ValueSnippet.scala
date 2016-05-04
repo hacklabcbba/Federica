@@ -79,9 +79,12 @@ object ValueSnippet extends SortableSnippet[Value] {
             "data-name=areaT" #> NodeSeq.Empty
         }
       } &
-      "data-name=events" #> EventSnippet.relatedEvents(value.name.get, Full(value), Empty, Empty, Empty, Empty, Empty, Empty) &
-      "data-name=posts" #> BlogSnippet.relatedPosts(value.name.get, Full(value), Empty, Empty, Empty, Empty, Empty, Empty) &
-      "data-name=calls" #> CallSnippet.relatedCalls(value.name.get, Full(value), Empty, Empty, Empty, Empty, Empty, Empty)
+      "data-name=events" #> EventSnippet.relatedEvents(value.name.get, Full(value), Empty, Empty, Empty, Empty, Empty,
+        Empty) &
+      "data-name=posts" #> BlogSnippet.relatedPosts(value.name.get, Full(value), Empty, Empty, Empty, Empty, Empty,
+        Empty) &
+      "data-name=calls" #> CallSnippet.relatedCalls(value.name.get, Full(value), Empty, Empty, Empty, Empty, Empty,
+        Empty)
     }
   }
 
