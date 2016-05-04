@@ -13,6 +13,7 @@ import net.liftweb.http.js.JsCmds._
 import net.liftweb.http.{S, SHtml}
 import net.liftweb.util.Helpers._
 import net.liftweb.util._
+import code.lib.request.request._
 
 import scala.xml._
 
@@ -107,45 +108,62 @@ sealed trait UserSnippet extends SnippetHelper with Loggable {
   }
 
   def eventsOfCurrentUser: CssSel = {
-    for {
-      user <- User.currentUser ?~ ""
-    } yield {
-      "data-name=listEvents" #> Event.findLastEventsByUser(user).map(event => {
-        "data-name=title *" #> event.name.get &
-        "data-name=date *" #> event.activities.get.map(activity => activity.date.toString).distinct.mkString(", ") &
-        "data-name=description" #> event.description.asHtml &
-        {
-          event.image.valueBox match {
-            case Full(image) =>
-              val imageSrc = image.fileId.get
-              "data-name=image [src]" #> s"/image/$imageSrc"
-            case _ =>
-              "data-name=image *" #> NodeSeq.Empty
+    val listEvents = {
+      if(Event.findLastEventsByUser(User.currentUser).size > 0)
+        Event.findLastEventsByUser(User.currentUser)
+      else
+        Event.findAllLastEvents
+    }
+
+    listEvents.size > 0 match {
+      case true =>
+        "data-name=listEvents" #> listEvents.map(event => {
+          "data-name=title *" #> event.name.get &
+          "data-name=date *" #> event.activities.get.map(activity => activity.date.toString).distinct.mkString(", ") &
+          "data-name=description" #> event.description.asHtml &
+          {
+            event.image.valueBox match {
+              case Full(image) =>
+                val imageSrc = image.fileId.get
+                "data-name=image [src]" #> s"/image/$imageSrc"
+              case _ =>
+                "data-name=image *" #> NodeSeq.Empty
+            }
           }
-        }
-      })
+        })
+      case false =>
+        "data-name=listEvents" #> NodeSeq.Empty
     }
   }
 
   def lastPostOfCurrentUser: CssSel = {
-    for {
-      user <- User.currentUser ?~ ""
-    } yield {
-      "data-name=listPost" #> BlogPost.findLastPostByUser(user).map(post => {
-        "data-name=title *" #>  post.name &
-        "data-name=date *" #> post.date.toString &
-        "data-name=post [href]" #> Site.entradaBlog.toLoc.calcHref(post) &
-        "data-name=description" #> post.content.asHtmlCutted(250) &
-        {
-          post.photo.valueBox match {
+    val listPost = {
+      if(BlogPost.findLastPostByUser(User.currentUser).size > 0)
+        BlogPost.findLastPostByUser(User.currentUser)
+      else
+        BlogPost.findAllLastPost
+    }
+
+    listPost.size > 0 match {
+      case true =>
+        "data-name=listPost" #> listPost.map(post => {
+          "data-name=title *" #> post.name &
+          "data-name=date *" #> post.date.toString &
+          "data-name=post [href]" #> Site.entradaBlog.toLoc.calcHref(post) &
+          "data-name=description" #> post.content.asHtmlCutted(250) &
+          {
+            post.photo.valueBox match {
             case Full(image) =>
               val imageSrc = image.fileId.get
               "data-name=image [src]" #> s"/image/$imageSrc"
             case _ =>
               "data-name=image *" #> NodeSeq.Empty
+            }
           }
-        }
-      })
+        }) &
+        "data-name=more [href]" #> s"${Site.blog.fullUrl}?autor=${User.currentUser.dmap("")(_.name.get)}"
+      case false =>
+        "data-name=listPost" #> NodeSeq.Empty
     }
   }
 

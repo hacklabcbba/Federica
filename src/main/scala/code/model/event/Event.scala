@@ -496,9 +496,12 @@ object Event extends Event with RogueMetaRecord[Event] {
     image, isLogoEnabled, applicantType,
     activities, pressRoom, specificRequirements, residenciaNorte, residenciaSud, status, rooms)
 
-  def findLastEventsByUser(user: User): List[Event] = {
+  def findLastEventsByUser(user: Box[User]): List[Event] = {
+    Event.whereOpt(user.toOption)(_.user eqs _.id.get).and(_.status eqs StatusType.Approved).orderDesc(_.id).fetch(3)
+  }
 
-    Event.where(_.user eqs user.id.get).and(_.status eqs StatusType.Approved).orderDesc(_.id).fetch()
+  def findAllLastEvents: List[Event] = {
+    Event.orderDesc(_.id).fetch(3)
   }
 
   def findLastThreeEventsByFilter(values: Box[Value], program: Box[Program], area: Box[Area],
