@@ -21,7 +21,9 @@ import org.bson.types.ObjectId
 import net.liftweb.json.JsonDSL._
 import java.util.{Date, Locale}
 
-import scala.xml.{NodeSeq, Elem}
+import code.model.BlogPost.process._
+
+import scala.xml.{Elem, NodeSeq}
 
 class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with BaseModel[Event] {
 
@@ -58,6 +60,21 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
     }, "class" -> "form-control", "data-placeholder" -> "Ingrese nombre.."))
   }
 
+  object program extends ObjectIdRefField(this, Program) {
+    override def displayName = "Programa"
+    override def optional_? = true
+    override def toString = obj.dmap("")(_.name.get)
+    val list = (None -> "Ninguno") :: Program.findAll.map(s => Some(s) -> s.toString)
+    override def toForm = {
+      Full(SHtml.selectObj[Option[Program]](list, Full(this.obj),
+        (p: Option[Program]) => {
+          setBox(p.map(_.id.get))
+        },
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione prorgrama.."))
+    }
+  }
+
   object schedule extends ObjectIdRefField(this, Schedule) {
     override def toString = {
       this.obj.dmap("")(_.toString)
@@ -84,6 +101,50 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
     }
 
     def availableOptions = (None -> "Ninguna") :: Area.findAll.map(s => Some(s) -> s.toString)
+  }
+
+  object transversalArea extends ObjectIdRefField(this, TransversalArea) {
+    override def optional_? = true
+    override def displayName = "Área transversal"
+    override def toString = this.obj.dmap("")(_.name.get)
+    val list = (None -> "Ninguna") :: TransversalArea.findAll.map(s => Some(s) -> s.toString)
+    override def toForm = {
+      Full(SHtml.selectObj[Option[TransversalArea]](list, Full(this.obj),
+        (p: Option[TransversalArea]) => {
+          setBox(p.map(_.id.get))
+        },
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione area transversal.."))
+    }
+  }
+
+  object transversalApproach extends ObjectIdRefField(this, TransversalApproach) {
+    override def optional_? = true
+    override def displayName = "Enfoque transversal"
+    override def toString = this.obj.dmap("")(_.name.get)
+    val list = (None -> "Ninguna") :: TransversalApproach.findAll.map(s => Some(s) -> s.toString)
+    override def toForm = {
+      Full(SHtml.selectObj[Option[TransversalApproach]](list, Full(this.obj),
+        (p: Option[TransversalApproach]) => {
+          setBox(p.map(_.id.get))
+        },
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione un enfoque.."))
+    }
+  }
+
+  object process extends ObjectIdRefField(this, Process) {
+    override def optional_? = true
+    override def displayName = "Proceso"
+    val list = (None -> "Ninguno") :: Process.findAll.map(s => Some(s) -> s.toString)
+    override def toForm = {
+      Full(SHtml.selectObj[Option[Process]](list, Full(this.obj),
+        (p: Option[Process]) => {
+          setBox(p.map(_.id.get))
+        },
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione proceso.."))
+    }
   }
 
   object country extends ObjectIdRefField(this, Country) {
@@ -394,6 +455,7 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
     override def displayName = "Principios"
     def currentValue = this.objs
     def availableOptions: List[(Value, String)] = Value.findAll.map(p => p -> p.name.get)
+    override def optional_? = true
 
     override def toForm: Box[Elem] = {
       Full(SHtml.multiSelectObj(
@@ -405,14 +467,31 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
       ))
     }
   }
+
+  object actionLines extends ObjectIdRefListField(this, ActionLine) {
+    override def displayName = "Lineas de acción"
+    def currentValue = this.objs
+    def availableOptions: List[(ActionLine, String)] = ActionLine.findAll.map(p => p -> p.name.get).toList
+    override def optional_? = true
+
+    override def toForm: Box[Elem] = {
+      Full(SHtml.multiSelectObj(
+        availableOptions,
+        currentValue,
+        (list: List[ActionLine]) => set(list.map(_.id.get)),
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione una o varias lineas de accion.."
+      ))
+    }
+  }
 }
 
 object Event extends Event with RogueMetaRecord[Event] {
   override def collectionName = "event.events"
 
   override def fieldOrder = List(
-    name, eventKind, requirements, destinedTo,  area, values, country, eventNumber,
-    isOutstanding, organizer, handlers, collaborators, supports,
+    name, eventKind, requirements, destinedTo, area, transversalArea,  program, actionLines, process, values, country,
+    eventNumber, isOutstanding, organizer, handlers, collaborators, supports, transversalApproach,
     description, hours, costInfo, quote,
     image, isLogoEnabled, applicantType,
     activities, pressRoom, specificRequirements, residenciaNorte, residenciaSud, status, rooms)
@@ -425,8 +504,17 @@ object Event extends Event with RogueMetaRecord[Event] {
     Event.orderDesc(_.id).fetch(3)
   }
 
-  def findLastThreeEventsByFilter(values: Box[Value]): List[Event] = {
-    Event.whereOpt(values.toOption)(_.values contains  _.id.get).orderDesc(_.id).fetch(3)
+  def findLastThreeEventsByFilter(values: Box[Value], program: Box[Program], area: Box[Area],
+                                  actionLine: Box[ActionLine], transversalArea: Box[TransversalArea],
+                                  transversalApproach: Box[TransversalApproach], process: Box[Process]): List[Event] = {
+    Event.or(_.whereOpt(values.toOption)(_.values contains  _.id.get),
+      _.whereOpt(program.toOption)(_.program eqs _.id.get),
+      _.whereOpt(area.toOption)(_.area eqs _.id.get),
+      _.whereOpt(actionLine.toOption)(_.actionLines contains _.id.get),
+      _.whereOpt(transversalArea.toOption)(_.transversalArea eqs _.id.get),
+      _.whereOpt(transversalApproach.toOption)(_.transversalApproach eqs _.id.get),
+      _.whereOpt(process.toOption)(_.process eqs _.id.get))
+      .orderDesc(_.id).fetch(3)
   }
 }
 

@@ -77,6 +77,21 @@ class BlogPost private() extends MongoRecord[BlogPost] with ObjectIdPk[BlogPost]
     }
   }
 
+  object transversalApproach extends ObjectIdRefField(this, TransversalApproach) {
+    override def optional_? = true
+    override def displayName = "Enfoque transversal"
+    override def toString = this.obj.dmap("")(_.name.get)
+    val list = (None -> "Ninguna") :: TransversalApproach.findAll.map(s => Some(s) -> s.toString)
+    override def toForm = {
+      Full(SHtml.selectObj[Option[TransversalApproach]](list, Full(this.obj),
+        (p: Option[TransversalApproach]) => {
+          setBox(p.map(_.id.get))
+        },
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione un enfoque.."))
+    }
+  }
+
   object date extends DatePickerField(this) {
     override def displayName = "Fecha"
   }
@@ -183,7 +198,7 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
 
   override def fieldOrder = List(
     name, categories, tags, photo,
-    area, program, transversalArea,
+    area, program, transversalArea, transversalApproach,
     values, actionLines, process,
     date, content, isPublished)
 
@@ -253,6 +268,14 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
 
   def countPublishedByFilters(parameters: List[(String, String)]): Long = {
     BlogPost.where(_.isPublished eqs true)
+      .andOpt(getCategoryValue(parameters))(_.categories contains _)
+      .andOpt(getAuthorValue(parameters))(_.author eqs _.id.get)
+      .andOpt(getAreaValue(parameters))(_.area eqs _.id.get)
+      .andOpt(getTransversalAreaValue(parameters))(_.transversalArea eqs _.id.get)
+      .andOpt(getTagValue(parameters))(_.tags contains _)
+      .andOpt(getValue(parameters))(_.values contains _.id.get)
+      .andOpt(getActionLineValue(parameters))(_.actionLines contains _.id.get)
+      .andOpt(getProcessValue(parameters))(_.process eqs _.id.get)
       .count()
   }
 
@@ -272,11 +295,20 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
         .fetch()
   }
 
-  def findPublishedByValue(values: Box[Value]): List[BlogPost] = {
-    BlogPost.whereOpt(values)(_.values contains _.id.get).fetch(3)
+  def findPublishedByFilters(values: Box[Value], program: Box[Program], area: Box[Area], actionLine: Box[ActionLine],
+                             transversalArea: Box[TransversalArea], transversalApproach: Box[TransversalApproach],
+                             process: Box[Process]): List[BlogPost] = {
+    BlogPost.or(_.whereOpt(values.toOption)(_.values contains  _.id.get),
+      _.whereOpt(program.toOption)(_.program eqs _.id.get),
+      _.whereOpt(area.toOption)(_.area eqs _.id.get),
+      _.whereOpt(actionLine.toOption)(_.actionLines contains _.id.get),
+      _.whereOpt(transversalArea.toOption)(_.transversalArea eqs _.id.get),
+      _.whereOpt(transversalApproach.toOption)(_.transversalApproach eqs _.id.get),
+      _.whereOpt(process.toOption)(_.process eqs _.id.get))
+      .orderDesc(_.id).fetch(3)
   }
 
-  def findPublishedByFilters(parameters: List[(String, String)], limit: Int, page: Int): List[BlogPost] = {
+  def findPostPublishedByFilters(parameters: List[(String, String)], limit: Int, page: Int): List[BlogPost] = {
 
     BlogPost.where(_.isPublished eqs true)
       .andOpt(getCategoryValue(parameters))(_.categories contains _)

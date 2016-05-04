@@ -5,7 +5,7 @@ import code.config.Site
 import code.model.{Definition, Value}
 import com.foursquare.rogue.LiftRogue
 import com.foursquare.rogue.LiftRogue._
-import net.liftweb.common.Full
+import net.liftweb.common.{Empty, Full}
 import net.liftweb.http.js.JsCmd
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.json.JsonAST.JValue
@@ -79,9 +79,12 @@ object ValueSnippet extends SortableSnippet[Value] {
             "data-name=areaT" #> NodeSeq.Empty
         }
       } &
-      EventSnippet.renderLastThreeEventByFilter(Full(value)) &
-      BlogSnippet.renderLastThreePostByFilter(Full(value)) &
-      CallSnippet.renderLastThreeCallByFilter(Full(value))
+      "data-name=events" #> EventSnippet.relatedEvents(value.name.get, Full(value), Empty, Empty, Empty, Empty, Empty,
+        Empty) &
+      "data-name=posts" #> BlogSnippet.relatedPosts(value.name.get, Full(value), Empty, Empty, Empty, Empty, Empty,
+        Empty) &
+      "data-name=calls" #> CallSnippet.relatedCalls(value.name.get, Full(value), Empty, Empty, Empty, Empty, Empty,
+        Empty)
     }
   }
 

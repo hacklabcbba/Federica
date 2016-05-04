@@ -1,12 +1,13 @@
 package code.snippet
 
 import code.config.Site
-import code.model.{Call, Value}
+import code.model._
 import net.liftweb.common.{Box, Full}
+import net.liftweb.http.{S, Templates}
 import net.liftweb.util.Helpers._
 import net.liftweb.util.{CssSel, Helpers}
 
-import scala.xml.NodeSeq
+import scala.xml.{NodeSeq, Text}
 
 object CallSnippet extends ListSnippet[Call] {
 
@@ -43,18 +44,40 @@ object CallSnippet extends ListSnippet[Call] {
     }
   }
 
+  def templateRelatedCall =
+    Templates("templates-hidden" :: "frontend" :: "_relatedCalls" :: Nil) openOr Text(S ? "No edit template found")
 
-  def renderLastThreeCallByFilter(values: Box[Value]): CssSel = {
-    Call.findLastThreeCallByFilter(values).size > 0 match {
+  def relatedCalls(title: String, values: Box[Value], program: Box[Program], area: Box[Area],
+                   actionLine: Box[ActionLine], transversalArea: Box[TransversalArea],
+                   transversalApproach: Box[TransversalApproach], process: Box[Process]): NodeSeq = {
+    renderLastThreeCallByFilter(title, values, program, area, actionLine, transversalArea, transversalApproach,
+      process).apply(templateRelatedCall)
+  }
+
+  def renderLastThreeCallByFilter(title: String, values: Box[Value], program: Box[Program], area: Box[Area],
+                                  actionLine: Box[ActionLine],  transversalArea: Box[TransversalArea],
+                                  transversalApproach: Box[TransversalApproach], process: Box[Process]): CssSel = {
+    val listCalls = Call.findLastThreeCallByFilter(values, program, area, actionLine, transversalArea,
+      transversalApproach, process)
+    !listCalls.isEmpty match {
       case true =>
-        "data-name=calls" #> Call.findLastThreeCallByFilter(values).map(call => {
+        "data-name=title-module" #> title &
+        "data-name=calls" #> listCalls.map(call => {
           "data-name=title *" #> call.name.get &
-            "data-name=days *" #> call.deadline.toString &
-            "data-name=description" #> call.description.asHtml
+          "data-name=days *" #> call.deadline.toString &
+          {
+            call.file.valueBox match {
+              case Full(image) =>
+                val imageSrc = image.fileId.get
+                "data-name=image [src]" #> s"/image/$imageSrc"
+              case _ =>
+                "data-name=image *" #> NodeSeq.Empty
+            }
+          } &
+          "data-name=description" #> call.description.asHtmlCutted(250)
         })
       case false =>
         "data-name=callsH" #> NodeSeq.Empty
     }
   }
-
 }
