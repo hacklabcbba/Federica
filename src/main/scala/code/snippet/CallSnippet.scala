@@ -59,7 +59,7 @@ object CallSnippet extends ListSnippet[Call] {
                                   transversalApproach: Box[TransversalApproach], process: Box[Process]): CssSel = {
     val listCalls = Call.findLastThreeCallByFilter(values, program, area, actionLine, transversalArea,
       transversalApproach, process)
-    listCalls.size > 0 match {
+    !listCalls.isEmpty match {
       case true =>
         "data-name=title-module" #> title &
         "data-name=calls" #> listCalls.map(call => {

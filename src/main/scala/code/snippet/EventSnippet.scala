@@ -82,7 +82,7 @@ object EventSnippet extends ListSnippet[Event] {
                                    transversalApproach: Box[TransversalApproach], process: Box[Process]): CssSel = {
     val listEvents = Event.findLastThreeEventsByFilter(values, program, area, actionLine, transversalArea,
       transversalApproach, process)
-    listEvents.size > 0 match {
+    !listEvents.isEmpty match {
       case true =>
         "data-name=title-module" #> title &
         "data-name=events" #> listEvents.map(event => {

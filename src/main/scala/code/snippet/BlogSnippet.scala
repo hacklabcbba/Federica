@@ -112,7 +112,7 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
                                   transversalApproach: Box[TransversalApproach], process: Box[Process]): CssSel = {
     val listPosts = BlogPost.findPublishedByFilters(values, program, area, actionLine, transversalArea,
       transversalApproach, process)
-    listPosts.size > 0 match {
+    !listPosts.isEmpty match {
       case true =>
         "data-name=title-module" #> title &
         "data-name=posts" #> listPosts.map(post => {
