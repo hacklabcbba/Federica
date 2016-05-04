@@ -15,6 +15,7 @@ import code.lib.request.request._
 import net.liftweb.http.js.JsCmds.Noop
 import net.liftweb.record.field.BooleanField
 
+import scala.reflect.macros.whitebox
 import scala.xml.Elem
 
 class BlogPost private() extends MongoRecord[BlogPost] with ObjectIdPk[BlogPost] with BaseModel[BlogPost] {
@@ -251,6 +252,11 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
         .count
   }
 
+  def countPublishedByFilters(parameters: List[(String, String)]): Long = {
+    BlogPost.where(_.isPublished eqs true)
+      .count()
+  }
+
   def findPublishedByCategoryPage(category: Box[String], limit: Int, page: Int): List[BlogPost] = category match {
     case Full(cat) =>
       BlogPost
@@ -267,19 +273,92 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
         .fetch()
   }
 
-  def findPublishedByFilters(limit: Int, page: Int): List[BlogPost] = {
+  def findPublishedByFilters(parameters: List[(String, String)], limit: Int, page: Int): List[BlogPost] = {
+
     BlogPost.where(_.isPublished eqs true)
-      .andOpt(categoryBlogRequestVar.get.toOption)(_.categories contains _)
-      .andOpt(authorBlogRequestVar.get.toOption)(_.author eqs _.id.get)
-      .andOpt(areaBlogRequestVar.get.toOption)(_.area eqs _.id.get)
-      .andOpt(areaTransversalBlogRequestVar.get.toOption)(_.transversalArea eqs _.id.get)
-      .andOpt(tagBlogRequestVar.get.toOption)(_.tags contains _)
-      .andOpt(valuesBlogRequestVar.get.toOption)(_.values contains _.id.get)
-      .andOpt(actionLineBlogRequestVar.get.toOption)(_.actionLines contains _.id.get)
-      .andOpt(processBlogRequestVar.get.toOption)(_.process eqs _.id.get)
+      .andOpt(getCategoryValue(parameters))(_.categories contains _)
+      .andOpt(getAuthorValue(parameters))(_.author eqs _.id.get)
+      .andOpt(getAreaValue(parameters))(_.area eqs _.id.get)
+      .andOpt(getTransversalAreaValue(parameters))(_.transversalArea eqs _.id.get)
+      .andOpt(getTagValue(parameters))(_.tags contains _)
+      .andOpt(getValue(parameters))(_.values contains _.id.get)
+      .andOpt(getActionLineValue(parameters))(_.actionLines contains _.id.get)
+      .andOpt(getProcessValue(parameters))(_.process eqs _.id.get)
       .paginate(limit)
       .setPage(page)
       .fetch()
+  }
+
+  def getProcessValue(parameters: List[(String, String)]): Option[Process] = {
+    parameters.headOption match {
+      case Some((p: String, v: String)) if(p == "actionLine") =>
+        Process.where(_.name eqs v).fetch().headOption
+      case _ =>
+        None
+    }
+  }
+
+  def getActionLineValue(parameters: List[(String, String)]): Option[ActionLine] = {
+    parameters.headOption match {
+      case Some((p: String, v: String)) if(p == "actionLine") =>
+        ActionLine.where(_.name eqs v).fetch().headOption
+      case _ =>
+        None
+    }
+  }
+
+  def getValue(parameters: List[(String, String)]): Option[Value] = {
+    parameters.headOption match {
+      case Some((p: String, v: String)) if(p == "value") =>
+        Value.where(_.name eqs v).fetch().headOption
+      case _ =>
+        None
+    }
+  }
+
+  def getTransversalAreaValue(parameters: List[(String, String)]): Option[TransversalArea] = {
+    parameters.headOption match {
+      case Some((p: String, v: String)) if(p == "areaT") =>
+        TransversalArea.where(_.name eqs v).fetch().headOption
+      case _ =>
+        None
+    }
+  }
+
+  def getAreaValue(parameters: List[(String, String)]): Option[Area] = {
+    parameters.headOption match {
+      case Some((p: String, v: String)) if(p == "area") =>
+        Area.where(_.name eqs v).fetch().headOption
+      case _ =>
+        None
+    }
+  }
+
+  def getCategoryValue(parameters: List[(String, String)]): Option[Tag] = {
+    parameters.headOption match {
+      case Some((p: String, v: String)) if(p == "category") =>
+        BlogPost.where(_.categories.subfield(_.tag) eqs v).select(_.categories).fetch().flatten.headOption
+      case _ =>
+        None
+    }
+  }
+
+  def getTagValue(parameters: List[(String, String)]): Option[Tag] = {
+    parameters.headOption match {
+      case Some((p: String, v: String)) if(p == "tag") =>
+        BlogPost.where(_.tags.subfield(_.tag) eqs v).select(_.tags).fetch().flatten.headOption
+      case _ =>
+        None
+    }
+  }
+
+  def getAuthorValue(parameters: List[(String, String)]): Option[User] = {
+    parameters.headOption match {
+      case Some((p: String, v: String)) if(p == "author") =>
+        User.where(_.name eqs v).fetch().headOption
+      case _ =>
+        None
+    }
   }
 
   def findCategories: List[String] = {

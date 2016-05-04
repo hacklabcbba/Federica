@@ -3,7 +3,7 @@ package code.snippet
 import code.config
 import code.config.Site
 import code.lib.snippet.PaginatorSnippet
-import code.model.{ActionLine, BlogPost, Tag}
+import code.model._
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.{S, SHtml}
 import net.liftweb.util.{CssSel, Helpers, PassThru}
@@ -25,9 +25,9 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
 
   override def itemsPerPage = 10
 
-  override def count = meta.countPublishedByCategory(S.param("category"))
+  override def count = meta.countPublishedByFilters(getParameter)
   
-  override def page = meta.findPublishedByFilters(itemsPerPage, curPage)
+  override def page = meta.findPublishedByFilters(getParameter, itemsPerPage, curPage)
 
   def entityListUrl: String = Site.backendBlog.menu.loc.calcDefaultHref
 
@@ -50,9 +50,9 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
   }
 
   def renderFrontEnd: CssSel = {
-    val category = S.param("category")
-    getParameter
-    "data-name=category *" #> category.dmap("")(a => a) &
+    val parameter = getParameter.headOption.fold("")(_._1)
+    val value = getParameter.headOption.fold("")(_._2)
+    "data-name=category *" #> value &
     "data-name=post" #> page.map(post => {
       previewCss(post) &
       "data-name=title *" #> post.name.get &
@@ -61,11 +61,11 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
       "data-name=content *" #> post.content.asHtmlCutted(200)
     }) &
     "data-name=all-categories" #> {
-      "li [class+]" #> (if (category.isEmpty) "active" else "") &
+      "li [class+]" #> (if (((parameter == "category") && (value.isEmpty)) || (parameter != "category")) "active" else "") &
       "a [href]" #> Site.blog.fullUrl
     } &
     "data-name=categories" #> meta.findCategories.map(cat => {
-      "li [class+]" #> (if (category.dmap("")(a => a) == cat) "active" else "") &
+      "li [class+]" #> (if ((parameter == "category") && (value == cat)) "active" else "") &
       "a [href]" #> s"${Site.blog.fullUrl}?category=$cat" &
       "a *" #> cat
     }) &
@@ -74,84 +74,87 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
 
   def getParameter: List[(String, String)] = {
     val parameters : Map[String,List[String]] = S.request.toList.flatMap(_.params).toMap
-    println("reqies os " + parameters)
     val key = parameters.keys.headOption
-    val value = parameters.values.headOption
-
+    val value = parameters.values.headOption.map(_.headOption).flatten
+    (key, value) match {
+      case (Some(k), Some(v)) =>
+        List((k, v))
+      case _ =>
+        Nil
+    }
   }
 
   def renderTags(post: BlogPost): CssSel = {
-    {
-      post.area.obj match {
-        case Full(area) =>
-          "data-name=area" #> post.area.obj.map(area => {
-            "data-name=area-name *" #> area.name.get &
-              "data-name=area-name [href]" #> s"${Site.blog.fullUrl}?area=${area.name.get}"
-          })
-        case _ =>
-          "data-name=area" #> NodeSeq.Empty
+    (post.area.obj match {
+      case Full(area) =>
+        "data-name=area-name *" #> area.name.get &
+        "data-name=area-name [href]" #> s"${Site.blog.fullUrl}?area=${area.name.get}"
+      case _ =>
+        "data-name=area" #> NodeSeq.Empty
       }
-    } &
-    (if (post.transversalArea.obj.isEmpty)
-      "data-name=transversalarea" #> NodeSeq.Empty
-    else {
-      "data-name=transversalarea-name *" #> post.transversalArea.obj.dmap("")(_.name.get) &
-      "data-name=transversalarea-name [onclick]" #> SHtml.ajaxInvoke(() => {
-        RedirectTo(Site.blog.url, () => areaTransversalBlogRequestVar.set(post.transversalArea.obj))
-      })
-    }) &
-    (if (post.process.obj.isEmpty)
-      "data-name=process" #> NodeSeq.Empty
-    else {
-      "data-name=process-name *" #> post.process.obj.dmap("")(_.name.get) &
-      "data-name=process-name [onclick]" #> SHtml.ajaxInvoke(() => {
-        RedirectTo(Site.blog.url, () => processBlogRequestVar.set(post.process.obj))
-      })
-    }) &
-    (
-      if(post.author.obj.isEmpty)
+    ) &
+    (post.transversalArea.obj match {
+      case Full(area) =>
+        "data-name=transversalarea-name *" #> area.name.get &
+        "data-name=transversalarea-name [href]" #> s"${Site.blog.fullUrl}?areaT=${area.name.get}"
+      case _ =>
+        "data-name=transversalarea" #> NodeSeq.Empty
+      }
+    ) &
+    (post.process.obj match {
+      case Full(process) =>
+        "data-name=process-name *" #> process.name.get &
+        "data-name=process-name [href]" #> s"${Site.blog.fullUrl}?process=${process.name.get}"
+      case _ =>
+        "data-name=transversalarea" #> NodeSeq.Empty
+      }
+    ) &
+    (post.author.obj match {
+      case Full(author) =>
+        "data-name=author-name *" #> author.name.get &
+        "data-name=author-name [href]" #> s"${Site.blog.fullUrl}?author=${author.name.get}"
+      case _ =>
         "data-name=author" #> NodeSeq.Empty
-      else {
-        "data-name=author-name *" #> post.author.obj.dmap("")(_.name.get) &
-        "data-name=author-name [onclick]" #> SHtml.ajaxInvoke(() => {
-          RedirectTo(Site.blog.url, () => authorBlogRequestVar.set(post.author.obj))
-        })
       }
-     ) &
-    (
-      if(post.categories.get.isEmpty)
-        "data-name=categories-tag" #> NodeSeq.Empty
-      else {
-        "data-name=categories-tag" #> post.categories.get.map(cat => {
+    ) &
+    (post.categories.get match {
+      case (tags: List[Tag]) =>
+        "data-name=categories-tag" #> tags.map(cat => {
           "data-name=category-tag *" #> cat.tag.get &
-          "data-name=category-tag [onclick]" #> SHtml.ajaxInvoke(() => {
-            RedirectTo(Site.blog.url, () => categoryBlogRequestVar.set(Full(Tag.createRecord.tag(cat.tag.get))))
-          })
+          "data-name=category-tag [href]" #> s"${Site.blog.fullUrl}?category=${cat.tag.get}"
         })
+      case Nil =>
+        "data-name=categories-tag" #> NodeSeq.Empty
       }
     ) &
-    (
-        if(post.tags.get.isEmpty)
-          "data-name=tags" #> NodeSeq.Empty
-        else {
-          "data-name=tags" #> post.tags.get.map(cat => {
-            "data-name=tag *" #> cat.tag.get &
-              "data-name=tag [onclick]" #> SHtml.ajaxInvoke(() => {
-                RedirectTo(Site.blog.url, () => tagBlogRequestVar.set(Full(Tag.createRecord.tag(cat.tag.get))))
-              })
-          })
-        }
+    (post.tags.get match {
+      case (tags: List[Tag]) =>
+        "data-name=tags" #> tags.map(cat => {
+          "data-name=tag *" #> cat.tag.get &
+          "data-name=tag [href]" #> s"${Site.blog.fullUrl}?tag=${cat.tag.get}"
+        })
+      case Nil =>
+        "data-name=tags" #> NodeSeq.Empty
+      }
     ) &
-    (
-      if(post.program.obj.isEmpty)
+    (post.program.obj match {
+      case Full(program) =>
+        "data-name=program *" #> program.name.get &
+          "data-name=program [href]" #> s"${Site.blog.fullUrl}?program=${program.name.get}"
+      case _ =>
         "data-name=programs" #> NodeSeq.Empty
-      else {
-        "data-name=program *" #> post.program.toString &
-          "data-name=program [onclick]" #> SHtml.ajaxInvoke(() => {
-            RedirectTo(Site.blog.url, () => programBlogRequestVar.set(post.program.obj))
-          })
       }
     ) &
+      (post.values.get match {
+        case (values: List[Value]) =>
+          "data-name=tags" #> values.map(va => {
+            "data-name=tag *" #> va.nam.get &
+              "data-name=tag [href]" #> s"${Site.blog.fullUrl}?tag=${cat.tag.get}"
+          })
+        case Nil =>
+          "data-name=tags" #> NodeSeq.Empty
+      }
+        ) &
     (
       if(post.values.get.isEmpty)
         "data-name=values" #> NodeSeq.Empty
