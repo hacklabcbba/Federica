@@ -8,6 +8,7 @@ import net.liftweb.common.{Box, Full}
 import net.liftweb.http.{S, SHtml, Templates}
 import net.liftweb.util.{CssSel, Helpers, PassThru}
 import Helpers._
+import code.lib.Helper
 import code.lib.request.request._
 import net.liftweb.http.js.JsCmds.RedirectTo
 import org.bson.types.ObjectId
@@ -24,9 +25,9 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
 
   override def itemsPerPage = 10
 
-  override def count = meta.countPublishedByFilters(getParameter)
+  override def count = meta.countPublishedByFilters
   
-  override def page = meta.findPostPublishedByFilters(getParameter, itemsPerPage, curPage)
+  override def page = meta.findPostPublishedByFilters(itemsPerPage, curPage)
 
   def entityListUrl: String = Site.backendBlog.menu.loc.calcDefaultHref
 
@@ -49,8 +50,8 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
   }
 
   def renderFrontEnd: CssSel = {
-    val parameter = getParameter.headOption.fold("")(_._1)
-    val value = getParameter.headOption.fold("")(_._2)
+    val parameter = Helper.getParameter.headOption.fold("")(_._1)
+    val value = Helper.getParameter.headOption.fold("")(_._2)
     "data-name=category *" #> value &
     "data-name=post" #> page.map(post => {
       previewCss(post) &
@@ -69,18 +70,6 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
       "a *" #> cat
     }) &
     paginate
-  }
-
-  def getParameter: List[(String, String)] = {
-    val parameters : Map[String,List[String]] = S.request.toList.flatMap(_.params).toMap
-    val key = parameters.keys.headOption
-    val value = parameters.values.headOption.map(_.headOption).flatten
-    (key, value) match {
-      case (Some(k), Some(v)) =>
-        List((k, v))
-      case _ =>
-        Nil
-    }
   }
 
   def renderTags(post: BlogPost): CssSel = {
@@ -178,8 +167,8 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
       val next = BlogPost.findNext(post)
       val prev = BlogPost.findNext(post)
       val related = BlogPost.findRelated(post, 3)
-      val parameter = getParameter.headOption.fold("")(_._1)
-      val value = getParameter.headOption.fold("")(_._2)
+      val parameter = Helper.getParameter.headOption.fold("")(_._1)
+      val value = Helper.getParameter.headOption.fold("")(_._2)
       imageCss(post) &
       "data-name=title *" #> post.name.get &
       "data-name=title [href]" #> Site.entradaBlog.calcHref(post) &

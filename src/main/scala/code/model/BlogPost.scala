@@ -2,7 +2,7 @@ package code
 package model
 
 import code.config.Site
-import code.lib.{BaseModel, RogueMetaRecord}
+import code.lib.{BaseModel, Helper, RogueMetaRecord}
 import code.lib.field._
 import com.foursquare.rogue.LiftRogue
 import net.liftweb.common.{Box, Full}
@@ -266,16 +266,16 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
         .count
   }
 
-  def countPublishedByFilters(parameters: List[(String, String)]): Long = {
+  def countPublishedByFilters: Long = {
     BlogPost.where(_.isPublished eqs true)
-      .andOpt(getCategoryValue(parameters))(_.categories contains _)
-      .andOpt(getAuthorValue(parameters))(_.author eqs _.id.get)
-      .andOpt(getAreaValue(parameters))(_.area eqs _.id.get)
-      .andOpt(getTransversalAreaValue(parameters))(_.transversalArea eqs _.id.get)
-      .andOpt(getTagValue(parameters))(_.tags contains _)
-      .andOpt(getValue(parameters))(_.values contains _.id.get)
-      .andOpt(getActionLineValue(parameters))(_.actionLines contains _.id.get)
-      .andOpt(getProcessValue(parameters))(_.process eqs _.id.get)
+      .andOpt(getCategoryValue)(_.categories contains _)
+      .andOpt(getAuthorValue)(_.author eqs _.id.get)
+      .andOpt(getAreaValue)(_.area eqs _.id.get)
+      .andOpt(getTransversalAreaValue)(_.transversalArea eqs _.id.get)
+      .andOpt(getTagValue)(_.tags contains _)
+      .andOpt(getValue)(_.values contains _.id.get)
+      .andOpt(getActionLineValue)(_.actionLines contains _.id.get)
+      .andOpt(getProcessValue)(_.process eqs _.id.get)
       .count()
   }
 
@@ -308,24 +308,24 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
       .orderDesc(_.id).fetch(3)
   }
 
-  def findPostPublishedByFilters(parameters: List[(String, String)], limit: Int, page: Int): List[BlogPost] = {
+  def findPostPublishedByFilters(limit: Int, page: Int): List[BlogPost] = {
 
     BlogPost.where(_.isPublished eqs true)
-      .andOpt(getCategoryValue(parameters))(_.categories contains _)
-      .andOpt(getAuthorValue(parameters))(_.author eqs _.id.get)
-      .andOpt(getAreaValue(parameters))(_.area eqs _.id.get)
-      .andOpt(getTransversalAreaValue(parameters))(_.transversalArea eqs _.id.get)
-      .andOpt(getTagValue(parameters))(_.tags contains _)
-      .andOpt(getValue(parameters))(_.values contains _.id.get)
-      .andOpt(getActionLineValue(parameters))(_.actionLines contains _.id.get)
-      .andOpt(getProcessValue(parameters))(_.process eqs _.id.get)
+      .andOpt(getCategoryValue)(_.categories contains _)
+      .andOpt(getAuthorValue)(_.author eqs _.id.get)
+      .andOpt(getAreaValue)(_.area eqs _.id.get)
+      .andOpt(getTransversalAreaValue)(_.transversalArea eqs _.id.get)
+      .andOpt(getTagValue)(_.tags contains _)
+      .andOpt(getValue)(_.values contains _.id.get)
+      .andOpt(getActionLineValue)(_.actionLines contains _.id.get)
+      .andOpt(getProcessValue)(_.process eqs _.id.get)
       .paginate(limit)
       .setPage(page)
       .fetch()
   }
 
-  def getProcessValue(parameters: List[(String, String)]): Option[Process] = {
-    parameters.headOption match {
+  def getProcessValue: Option[Process] = {
+    Helper.getParameter.headOption match {
       case Some((p: String, v: String)) if(p == "proceso") =>
         Process.where(_.name eqs v).fetch().headOption
       case _ =>
@@ -333,8 +333,8 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
     }
   }
 
-  def getActionLineValue(parameters: List[(String, String)]): Option[ActionLine] = {
-    parameters.headOption match {
+  def getActionLineValue: Option[ActionLine] = {
+    Helper.getParameter.headOption match {
       case Some((p: String, v: String)) if(p == "lineaAccion") =>
         ActionLine.where(_.name eqs v).fetch().headOption
       case _ =>
@@ -342,8 +342,8 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
     }
   }
 
-  def getValue(parameters: List[(String, String)]): Option[Value] = {
-    parameters.headOption match {
+  def getValue: Option[Value] = {
+    Helper.getParameter.headOption match {
       case Some((p: String, v: String)) if(p == "principio") =>
         Value.where(_.name eqs v).fetch().headOption
       case _ =>
@@ -351,8 +351,8 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
     }
   }
 
-  def getTransversalAreaValue(parameters: List[(String, String)]): Option[TransversalArea] = {
-    parameters.headOption match {
+  def getTransversalAreaValue: Option[TransversalArea] = {
+    Helper.getParameter.headOption match {
       case Some((p: String, v: String)) if(p == "areaT") =>
         TransversalArea.where(_.name eqs v).fetch().headOption
       case _ =>
@@ -360,8 +360,8 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
     }
   }
 
-  def getAreaValue(parameters: List[(String, String)]): Option[Area] = {
-    parameters.headOption match {
+  def getAreaValue: Option[Area] = {
+    Helper.getParameter.headOption match {
       case Some((p: String, v: String)) if(p == "area") =>
         Area.where(_.name eqs v).fetch().headOption
       case _ =>
@@ -369,8 +369,8 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
     }
   }
 
-  def getCategoryValue(parameters: List[(String, String)]): Option[Tag] = {
-    parameters.headOption match {
+  def getCategoryValue: Option[Tag] = {
+    Helper.getParameter.headOption match {
       case Some((p: String, v: String)) if(p == "categoria") =>
         BlogPost.where(_.categories.subfield(_.tag) eqs v).select(_.categories).fetch().flatten.headOption
       case _ =>
@@ -378,8 +378,8 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
     }
   }
 
-  def getTagValue(parameters: List[(String, String)]): Option[Tag] = {
-    parameters.headOption match {
+  def getTagValue: Option[Tag] = {
+    Helper.getParameter.headOption match {
       case Some((p: String, v: String)) if(p == "etiqueta") =>
         BlogPost.where(_.tags.subfield(_.tag) eqs v).select(_.tags).fetch().flatten.headOption
       case _ =>
@@ -387,8 +387,8 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
     }
   }
 
-  def getAuthorValue(parameters: List[(String, String)]): Option[User] = {
-    parameters.headOption match {
+  def getAuthorValue: Option[User] = {
+    Helper.getParameter.headOption match {
       case Some((p: String, v: String)) if(p == "autor") =>
         User.where(_.name eqs v).fetch().headOption
       case _ =>
