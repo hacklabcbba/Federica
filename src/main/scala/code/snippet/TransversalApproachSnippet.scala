@@ -51,7 +51,8 @@ class EnfoqueTransversal(ta: TransversalApproach) extends SnippetHelper {
     "data-name=name *" #> ta.name.get &
     "data-name=name [href]" #> Site.enfoqueTransversal.calcHref(ta) &
     "data-name=description *" #> ta.description.asHtml &
-    "data-name=events" #> EventSnippet.relatedEvents(ta.name.get, Empty, Empty, Empty, Empty, Empty, Full(ta), Empty) &
+    "data-name=events" #> EventSnippet.relatedEvents(ta.name.get, Empty, Empty, Empty, Empty, Empty, Full(ta), Empty,
+      Empty) &
     "data-name=posts" #> BlogSnippet.relatedPosts(ta.name.get, Empty, Empty, Empty, Empty, Empty, Full(ta), Empty) &
     "data-name=calls" #> CallSnippet.relatedCalls(ta.name.get, Empty, Empty, Empty, Empty, Empty, Full(ta), Empty)
   }
