@@ -44,7 +44,7 @@ object TransversalAreaSnippet extends SortableSnippet[TransversalArea] {
       "data-name=email *" #> area.email.get &
       "data-name=responsible *" #> area.responsible.obj.dmap("")(_.name.get) &
       "data-name=events" #> EventSnippet.relatedEvents(area.name.get, Empty, Empty, Empty, Empty, Full(area), Empty,
-        Empty) &
+        Empty, Empty) &
       "data-name=posts" #> BlogSnippet.relatedPosts(area.name.get, Empty, Empty, Empty, Empty, Full(area), Empty,
         Empty) &
       "data-name=calls" #> CallSnippet.relatedCalls(area.name.get, Empty, Empty, Empty, Empty, Full(area), Empty, Empty)

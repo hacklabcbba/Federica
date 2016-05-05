@@ -44,9 +44,12 @@ class ProcesoSnippet(proceso: Process) extends SnippetHelper {
     "data-name=name *" #> proceso.name.get &
     "data-name=name [href]" #> Site.proceso.calcHref(proceso) &
     "data-name=description *" #> proceso.description.asHtml &
-    "data-name=events" #> EventSnippet.relatedEvents(proceso.name.get, Empty, Empty, Empty, Empty, Empty, Empty, Full(proceso)) &
-    "data-name=posts" #> BlogSnippet.relatedPosts(proceso.name.get, Empty, Empty, Empty, Empty, Empty, Empty, Full(proceso)) &
-    "data-name=calls" #> CallSnippet.relatedCalls(proceso.name.get, Empty, Empty, Empty, Empty, Empty, Empty, Full(proceso))
+    "data-name=events" #> EventSnippet.relatedEvents(proceso.name.get, Empty, Empty, Empty, Empty, Empty, Empty,
+      Full(proceso), Empty) &
+    "data-name=posts" #> BlogSnippet.relatedPosts(proceso.name.get, Empty, Empty, Empty, Empty, Empty, Empty,
+      Full(proceso)) &
+    "data-name=calls" #> CallSnippet.relatedCalls(proceso.name.get, Empty, Empty, Empty, Empty, Empty, Empty,
+      Full(proceso))
   }
 
 }

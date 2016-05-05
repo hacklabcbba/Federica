@@ -506,14 +506,16 @@ object Event extends Event with RogueMetaRecord[Event] {
 
   def findLastThreeEventsByFilter(values: Box[Value], program: Box[Program], area: Box[Area],
                                   actionLine: Box[ActionLine], transversalArea: Box[TransversalArea],
-                                  transversalApproach: Box[TransversalApproach], process: Box[Process]): List[Event] = {
+                                  transversalApproach: Box[TransversalApproach], process: Box[Process],
+                                  room: Box[Room]): List[Event] = {
     Event.or(_.whereOpt(values.toOption)(_.values contains  _.id.get),
       _.whereOpt(program.toOption)(_.program eqs _.id.get),
       _.whereOpt(area.toOption)(_.area eqs _.id.get),
       _.whereOpt(actionLine.toOption)(_.actionLines contains _.id.get),
       _.whereOpt(transversalArea.toOption)(_.transversalArea eqs _.id.get),
       _.whereOpt(transversalApproach.toOption)(_.transversalApproach eqs _.id.get),
-      _.whereOpt(process.toOption)(_.process eqs _.id.get))
+      _.whereOpt(process.toOption)(_.process eqs _.id.get),
+      _.whereOpt(room.toOption)(_.rooms contains _.id.get))
       .orderDesc(_.id).fetch(3)
   }
 }
