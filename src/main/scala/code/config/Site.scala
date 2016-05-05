@@ -86,7 +86,7 @@ object Site extends Locs {
     ))
 
   val espacio = Menu.param[Room]("Ver espacio", "Ver espacio", Room.find, s => s.id.get.toString) / "espacio" / * >>
-  TemplateBox(() => Templates("espacio" :: Nil)) >> Hidden
+    TemplateBox(() => Templates("espacio" :: Nil)) >> Hidden
 
   /* Media */
   // Media
