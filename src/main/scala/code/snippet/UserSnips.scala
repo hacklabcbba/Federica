@@ -2,16 +2,19 @@ package code
 package snippet
 
 import code.config.Site
+import code.lib.ReCaptcha
 import code.model.event.Event
 import code.model.{BlogPost, LoginCredentials, User}
 import net.liftmodules.extras.{Gravatar, SnippetHelper}
 import net.liftmodules.mongoauth.LoginRedirect
+import net.liftmodules.mongoauth.field.PasswordField
 import net.liftmodules.mongoauth.model.ExtSession
 import net.liftweb.common._
 import net.liftweb.http.js.JsCmd
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.http.{S, SHtml}
 import net.liftweb.util.Helpers._
+import net.liftweb.util.Mailer.{From, Subject, To}
 import net.liftweb.util._
 import code.lib.request.request._
 
@@ -223,9 +226,101 @@ object ProfileLocUser extends UserSnippet {
   }
 }
 
-object UserLogin extends Loggable {
+object UserConfirmation extends SnippetHelper {
+  def render: CssSel = for {
+    user <- Site.emailConfirmation.currentValue ?~ "Ocurrio un error. Porfavor intente nuevamente."
+  } yield {
+    val userValidated = user.verified(true)
+    User.update(userValidated)
+    val message = "Felicidades su cuenta ha sido creada con exito. Ahora usted puede ingresar al sistema."
 
-  def render = {
+    "data-name=message" #> message
+  }
+}
+
+object UserResetPassword extends SnippetHelper {
+
+  def doSubmit(pwd: String, repeatPwd: String): JsCmd = {
+
+    (for {
+      user <- Site.passwordRecovery.currentValue
+    } yield {
+      if((pwd == repeatPwd) && !pwd.trim.isEmpty) {
+        user.password(pwd, true).update
+        RedirectTo("/", () => S.notice("Su contraseña ha sido cambiado con exito."))
+      } else {
+        S.error("recovery_err", "Las contraseñas no coinciden")
+        Noop
+      }
+    }) openOr Noop
+  }
+
+  def render: CssSel = {
+    var repeatPwd = ""
+    var pwd = ""
+    "data-name=password" #> SHtml.ajaxText("", s => {
+      pwd = s
+      Noop
+    }, "type" -> "password") &
+      "data-name=repeatPwd" #> SHtml.ajaxText("", s => {
+        repeatPwd = s
+        Noop
+      }, "type" -> "password") &
+    "data-name=submit" #> SHtml.ajaxOnSubmit(() => doSubmit(pwd, repeatPwd))
+  }
+}
+
+object UserRegister extends ReCaptcha with SnippetHelper {
+  def render: CssSel = {
+    //form vars
+    var newUser = User.createRecord
+    var repeatPwd = ""
+    var pwd = ""
+
+    def doSubmit(): JsCmd = {
+      newUser.username(newUser.email.get)
+      if(validateCaptcha.isDefined){
+        // invalid captcha error message
+        S.error("captchaError", "Invalid captcha")
+        reloadCaptcha
+      } else {
+        newUser.validate match {
+          case Nil =>
+            if((pwd == repeatPwd) && !pwd.trim.isEmpty) {
+              newUser.verified(false)
+              newUser.password(pwd, true).save(true)
+              User.sendEmailConfirmation(newUser)
+              RedirectTo("/", () => S.notice("Un correo electronico ha sido enviado a su cuenta con instrucciones para acceder."))
+            } else {
+              S.error("register_err", "Las contraseñas no coinciden")
+              Noop
+            }
+          case error: List[FieldError] =>
+            S.error(error)
+            Noop
+        }
+      }
+    }
+
+    "data-name=name" #> newUser.name.toForm &
+    "data-name=lastName" #> newUser.lastName.toForm &
+    "data-name=email" #> newUser.email.toForm &
+    "data-name=password" #> SHtml.ajaxText("", s => {
+      pwd = s
+      Noop
+    }, "type" -> "password") &
+    "data-name=repeatPwd" #> SHtml.ajaxText("", s => {
+      repeatPwd = s
+      Noop
+    }, "type" -> "password") &
+    "data-name=captcha" #> captchaXhtml &
+    "data-name=submit" #> SHtml.ajaxSubmit("Enviar", doSubmit)
+  }
+}
+
+object UserLogin extends Loggable with SnippetHelper {
+
+  def render: CssSel = {
     // form vars
     var password = ""
     var remember = User.loginCredentials.is.isRememberMe
@@ -241,10 +336,15 @@ object UserLogin extends Loggable {
           User.findByEmail(email) match {
             case Full(user) if (user.password.isMatch(password)) =>
               logger.debug("pwd matched")
-              User.logUserIn(user, true)
-              if (remember) User.createExtSession(user.id.get)
-              else ExtSession.deleteExtCookie()
-              RedirectTo(LoginRedirect.openOr(referer))
+              if(user.verified.get == true) {
+                User.logUserIn(user, true)
+                if (remember) User.createExtSession(user.id.get)
+                else ExtSession.deleteExtCookie()
+                RedirectTo("/")
+              } else {
+                S.error("login_err", "Aun falta validar esta cuenta. Porfavor revise su correo electronico para terminar el proceso.")
+                Noop
+              }
             case _ =>
               S.error("login_err", "El email o el password son incorrectos")
               Noop
@@ -281,9 +381,33 @@ object UserLogin extends Loggable {
     }
 
     "#id_email [value]" #> User.loginCredentials.is.email &
-      "#id_password" #> SHtml.password(password, password = _) &
-      "name=remember" #> SHtml.checkbox(remember, remember = _) &
-      "#id_submit" #> SHtml.hidden(doSubmit)
+    "#id_password" #> SHtml.password(password, password = _) &
+    "name=remember" #> SHtml.checkbox(remember, remember = _) &
+    "#id_submit" #> SHtml.hidden(doSubmit)
+  }
+}
+
+object EmailRecovery extends SnippetHelper {
+  var email = ""
+  def render: CssSel = {
+    "data-name=email" #> SHtml.ajaxText("", s => {
+      email = s
+    }) &
+    "data-name=save" #> SHtml.ajaxButton("Recuperar contraseña", () => {
+      email.trim.isEmpty match {
+        case false =>
+          User.findByEmail(email) match {
+            case Full(user) =>
+              User.sendPasswordRecovery(user)
+              S.notice("recovery_not", "Se envio un email a su cuenta con instrucciones para acceder a su cuenta de mARTadero.")
+            case _ =>
+              S.error("recovery_error", "No encontramos una cuenta con ese correo electronico. Verifique y vuelva a intentar")
+          }
+        case true =>
+          S.error("recovery_error", "Ingrese un correo electronico.")
+      }
+      Noop
+    })
   }
 }
 
