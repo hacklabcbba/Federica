@@ -4,7 +4,6 @@ import java.util.Locale
 import javax.mail.internet.MimeMessage
 
 import code.config._
-import code.model.event.Values
 import code.model.{SystemUser, User}
 import net.liftmodules.FoBo
 import net.liftmodules.extras.{Gravatar, LiftExtras}
@@ -114,7 +113,6 @@ class Boot extends Loggable {
     // Mailer
     Mailer.devModeSend.default.set((m: MimeMessage) => logger.info("Dev mode message:\n" + prettyPrintMime(m)))
     Mailer.testModeSend.default.set((m: MimeMessage) => logger.info("Test mode message:\n" + prettyPrintMime(m)))
-    Values.seedData
   }
 
   private def prettyPrintMime(m: MimeMessage): String = {

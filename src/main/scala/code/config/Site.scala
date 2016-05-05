@@ -85,6 +85,9 @@ object Site extends Locs {
       )
     ))
 
+  val espacio = Menu.param[Room]("Ver espacio", "Ver espacio", Room.find, s => s.id.get.toString) / "espacio" / * >>
+    TemplateBox(() => Templates("espacio" :: Nil)) >> Hidden
+
   /* Media */
   // Media
   val media = MenuLoc(Menu.i("Media") / "media")
@@ -280,6 +283,8 @@ object Site extends Locs {
       backendApprovedEvents.menu,
       backendEventAdd,
       backendEventEdit))
+
+  val frontendEvents = MenuLoc(Menu.i("Lista de Eventos") / "events" >> TemplateBox(() => Templates("events" :: Nil)))
 
   val backendCallAdd = Menu.param[Call](
     "Agregar convocatoria", "Agregar convocatoria",
@@ -725,6 +730,7 @@ object Site extends Locs {
     account.menu,
     password.menu,
     editProfile.menu,
+    principio,
     backendMessages.menu,
     backendUsers.menu,
     backendEvents.menu,
@@ -734,6 +740,7 @@ object Site extends Locs {
     backendAparienciaModule.menu,
     backendPages.menu,
     backendCalls.menu,
+    frontendEvents.menu,
     Menu.i("Calendario") / "backend" / "calendario" >> User.HasRoleOrPermission(SuperAdmin, Calendario) >> LeftMenuGroup,
     backendBlog.menu,
     Menu.i("Error") / "error" >> Hidden,
@@ -744,6 +751,7 @@ object Site extends Locs {
     agenda.menu,
     participa.menu,
     espacios.menu,
+    espacio,
     media.menu,
     blog.menu,
     convocatorias.menu,

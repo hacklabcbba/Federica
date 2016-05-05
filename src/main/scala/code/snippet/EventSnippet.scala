@@ -1,15 +1,19 @@
 package code.snippet
 
 import code.config.Site
-import code.model.Area
+import code.model._
 import code.model.event.Event
 import code.model.resource.Room
 import net.liftmodules.extras.SnippetHelper
 import net.liftmodules.ng.Angular._
 import net.liftweb.common.{Failure, Full}
-import net.liftweb.json.JsonAST.{JValue, JArray}
+import net.liftweb.json.JsonAST.{JArray, JValue}
 import net.liftweb.util.Helpers._
 import net.liftweb.util.{CssSel, Helpers}
+import net.liftweb.common.{Box, Full}
+import net.liftweb.http.{S, Templates}
+
+import scala.xml.{NodeSeq, Text}
 
 object PendingEventSnippet extends ListSnippet[Event] with SnippetHelper {
 
@@ -19,7 +23,7 @@ object PendingEventSnippet extends ListSnippet[Event] with SnippetHelper {
 
   val addUrl = Site.backendEventAdd.calcHref(Event.createRecord)
 
-  def entityListUrl: String = Site.backendEvents.menu.loc.calcDefaultHref
+  def entityListUrl: String = Site.backendPendingEvents.menu.loc.calcDefaultHref
 
   def itemEditUrl(inst: Event): String = Site.backendEventEdit.toLoc.calcHref(inst)
 
@@ -63,6 +67,44 @@ object EventSnippet extends ListSnippet[Event] {
     })
   }
 
+  def templateRelatedEvents =
+    Templates("templates-hidden" :: "frontend" :: "_relatedEvents" :: Nil) openOr Text(S ? "No edit template found")
+
+  def relatedEvents(title: String, values: Box[Value], program: Box[Program], area: Box[Area],
+                    actionLine: Box[ActionLine], transversalArea: Box[TransversalArea],
+                    transversalApproach: Box[TransversalApproach], process: Box[Process], room: Box[Room]): NodeSeq = {
+    renderLastThreeEventByFilter(title, values, program, area, actionLine, transversalArea, transversalApproach,
+      process, room).apply(templateRelatedEvents)
+  }
+
+  def renderLastThreeEventByFilter(title: String, values: Box[Value], program: Box[Program], area: Box[Area],
+                                   actionLine: Box[ActionLine], transversalArea: Box[TransversalArea],
+                                   transversalApproach: Box[TransversalApproach], process: Box[Process],
+                                   room: Box[Room]): CssSel = {
+    val listEvents = Event.findLastThreeEventsByFilter(values, program, area, actionLine, transversalArea,
+      transversalApproach, process, room)
+    !listEvents.isEmpty match {
+      case true =>
+        "data-name=title-module" #> title &
+        "data-name=events" #> listEvents.map(event => {
+          "data-name=title *" #> event.name.get &
+          "data-name=days *" #> event.activities.get.map(_.date.toString).mkString(",") &
+          {
+            event.image.valueBox match {
+              case Full(image) =>
+                val imageSrc = image.fileId.get
+                "data-name=image [src]" #> s"/image/$imageSrc"
+              case _ =>
+                "data-name=image *" #> NodeSeq.Empty
+            }
+          } &
+          "data-name=cost *" #> ("Costo: " + event.costInfo.get.toString) &
+          "data-name=description" #> event.description.asHtml
+        })
+      case false =>
+        "data-name=eventsH" #> NodeSeq.Empty
+    }
+  }
 }
 
 object NgEventService {

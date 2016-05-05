@@ -2,15 +2,12 @@ package code
 package lib
 package request
 
-import java.lang.Process
-
-import code.model
 import code.model._
 import code.model.event._
-import net.liftweb.common.{Empty, Box}
+import net.liftweb.common.{Box, Empty}
 import net.liftweb.http.RequestVar
 import code.model.network.Network
-import code.model.resource.{Equipment, Room, ConcreteResource}
+import code.model.resource.{ConcreteResource, Equipment, Room}
 
 package object request {
   object productiveRequestVar extends RequestVar[Box[ProductiveUnit]](Empty)

@@ -9,6 +9,7 @@ import net.liftweb.json.JsonAST.JValue
 import LiftRogue._
 import net.liftweb.util.{CssSel, Helpers}
 import Helpers._
+import net.liftweb.common.{Empty, Full}
 import net.liftweb.http.js.JsCmds._
 
 object ProcessSnippet extends SortableSnippet[Process] {
@@ -42,7 +43,13 @@ class ProcesoSnippet(proceso: Process) extends SnippetHelper {
   def renderViewFrontEnd: CssSel = {
     "data-name=name *" #> proceso.name.get &
     "data-name=name [href]" #> Site.proceso.calcHref(proceso) &
-    "data-name=description *" #> proceso.description.asHtml
+    "data-name=description *" #> proceso.description.asHtml &
+    "data-name=events" #> EventSnippet.relatedEvents(proceso.name.get, Empty, Empty, Empty, Empty, Empty, Empty,
+      Full(proceso), Empty) &
+    "data-name=posts" #> BlogSnippet.relatedPosts(proceso.name.get, Empty, Empty, Empty, Empty, Empty, Empty,
+      Full(proceso)) &
+    "data-name=calls" #> CallSnippet.relatedCalls(proceso.name.get, Empty, Empty, Empty, Empty, Empty, Empty,
+      Full(proceso))
   }
 
 }

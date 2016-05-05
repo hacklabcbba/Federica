@@ -5,6 +5,7 @@ import code.model.TransversalApproach
 import com.foursquare.rogue.LiftRogue
 import com.foursquare.rogue.LiftRogue._
 import net.liftmodules.extras.SnippetHelper
+import net.liftweb.common.{Empty, Full}
 import net.liftweb.http.js.JsCmd
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.json.JsonAST.JValue
@@ -49,6 +50,10 @@ class EnfoqueTransversal(ta: TransversalApproach) extends SnippetHelper {
   def renderViewFrontEnd: CssSel = {
     "data-name=name *" #> ta.name.get &
     "data-name=name [href]" #> Site.enfoqueTransversal.calcHref(ta) &
-    "data-name=description *" #> ta.description.asHtml
+    "data-name=description *" #> ta.description.asHtml &
+    "data-name=events" #> EventSnippet.relatedEvents(ta.name.get, Empty, Empty, Empty, Empty, Empty, Full(ta), Empty,
+      Empty) &
+    "data-name=posts" #> BlogSnippet.relatedPosts(ta.name.get, Empty, Empty, Empty, Empty, Empty, Full(ta), Empty) &
+    "data-name=calls" #> CallSnippet.relatedCalls(ta.name.get, Empty, Empty, Empty, Empty, Empty, Full(ta), Empty)
   }
 }
