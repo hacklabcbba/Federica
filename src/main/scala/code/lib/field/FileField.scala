@@ -56,6 +56,8 @@ class FileField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
     )
   }
 
+  def downloadUrl = downloadPath +"/"+  this.get.fileId.get+ "/"+ this.get.fileName.get
+
   def toEditForm = {
 
     val file = this.get

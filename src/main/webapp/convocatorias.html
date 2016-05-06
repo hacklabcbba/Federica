@@ -1,5 +1,19 @@
 <div data-lift="surround?with=base-wrap;at=content">
     <main class="row convocations-page" data-lift="CallSnippet.renderFrontEnd">
+        <section class="col-md-12 col-sm-12 col-xs-12 events-container">
+            <div class="dropdown menu-categories">
+                <a href="#" class="btn-filter dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    Seleccionar <i class="fa fa-list"></i>
+                </a>
+                <ul class="dropdown-menu submenu-black" data-lift="MenuSnippet.dropDownArea">
+                    <li data-name="areas">
+                        <a href="#" data-name="area">Artes visuales</a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+        </section>
+
         <div class="col-md-12">
             <header class="page-header clearfix">
                 <h2 class="no-margin-top title-page">
@@ -34,7 +48,4 @@
             </div>
         </div>
     </main>
-    <script>
-
-    </script>
 </div>

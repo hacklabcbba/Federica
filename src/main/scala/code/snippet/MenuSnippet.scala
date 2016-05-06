@@ -49,6 +49,13 @@ object MenuSnippet extends SnippetHelper {
     Noop
   }
 
+  def dropDownArea: CssSel = {
+    "data-name=areas" #> Area.findAll.map(area => {
+      "data-name=area *" #> area.name.get &
+      "data-name=area [href]" #> s"${Site.convocatorias.fullUrl}?area=${area.name.get}"
+    })
+  }
+
   def render: CssSel = {
     val pages = Page.findAll
     val areas = Area.findAll
@@ -320,6 +327,8 @@ object MenuSnippet extends SnippetHelper {
       })
     })
   }
+
+
 
   private def generateChildMenuItems(menuItem: MenuItem): NodeSeq = {
     val template =

@@ -1,7 +1,7 @@
 package code.model
 
 import code.config.Site
-import code.lib.{BaseModel, RogueMetaRecord}
+import code.lib.{BaseModel, Helper, RogueMetaRecord}
 import code.lib.field.{BsCkTextareaField, DatePickerField, FileField, TimePickerField}
 import com.foursquare.rogue.LiftRogue
 import net.liftweb.common.{Box, Full}
@@ -12,6 +12,7 @@ import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField, ObjectIdR
 import net.liftweb.record.field.{StringField, TextareaField}
 import com.foursquare.rogue._
 import org.joda.time.{DateTime, DateTimeZone}
+
 import scala.xml.Elem
 
 
@@ -169,7 +170,18 @@ object Call extends Call with RogueMetaRecord[Call] {
 
   def findAllCurrent: List[Call] = {
     val now = DateTime.now
-    Call.where(_.deadline after now).fetch()
+    Call.where(_.deadline after now)
+      .andOpt(getAreaValue)(_.area eqs _.id.get)
+      .fetch()
+  }
+
+  def getAreaValue: Option[Area] = {
+    Helper.getParameter.headOption match {
+      case Some((p: String, v: String)) if(p == "area") =>
+        Area.where(_.name eqs v).fetch().headOption
+      case _ =>
+        None
+    }
   }
 
   def findLastThreeCallByFilter(values: Box[Value], program: Box[Program], area: Box[Area], actionLine: Box[ActionLine],

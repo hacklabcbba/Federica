@@ -53,6 +53,7 @@ object RoomSnippet extends SortableSnippet[Room] with SnippetHelper {
       "data-name=location" #> room.location.viewFile &
       "data-name=description *" #> room.description.asHtml &
       "data-name=capacity *" #> room.capacity.get &
+      "data-name=download [href]" #> room.plane.downloadUrl &
       "data-name=isBookable *" #> {if(room.isBookable.get) "Si" else "No"} &
       "data-name=events" #> EventSnippet.relatedEvents(room.name.get, Empty, Empty, Empty, Empty, Empty, Empty, Empty,
         Full(room))
