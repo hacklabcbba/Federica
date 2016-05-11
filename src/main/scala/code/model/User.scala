@@ -411,8 +411,8 @@ object User extends User with ProtoAuthUserMeta[User] with RogueMetaRecord[User]
   object loginCredentials extends SessionVar[LoginCredentials](LoginCredentials(""))
   object regUser extends SessionVar[User](createRecord.email(loginCredentials.is.email))
 
-  def HasRoleOrPermission(role: Role, permission: Permission) =
-    If(() => User.hasRole(role.id.get) || User.hasPermission(permission),
+  def HasRoleOrPermission(role: Role, permission: List[Permission]) =
+    If(() => User.hasRole(role.id.get) || !permission.filter(p => User.hasPermission(p)).isEmpty,
       DisplayError("liftmodule-monogoauth.locs.hasRole", "liftmodule-monogoauth.locs.hasPermission"))
 
   protected def DisplayError(message: String*) = () => {
