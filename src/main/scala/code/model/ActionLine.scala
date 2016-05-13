@@ -1,8 +1,8 @@
 package code.model
 
 import code.config.Site
-import code.lib.field.{BsCkUnsecureTextareaField, BsStringField, BsCkTextareaField}
-import code.lib.{WithUrl, BaseModel, SortableModel, RogueMetaRecord}
+import code.lib.field.{BsCkTextareaField, BsCkUnsecureTextareaField, BsStringField, FileField}
+import code.lib.{BaseModel, RogueMetaRecord, SortableModel, WithUrl}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
@@ -26,6 +26,14 @@ class ActionLine private () extends MongoRecord[ActionLine] with ObjectIdPk[Acti
       "class" -> "form-control", "data-placeholder" -> "Ingrese nombre.."))
   }
 
+  object photo1 extends FileField(this) {
+    override def optional_? = true
+    override def displayName = "Foto"
+    override def toString = {
+      value.fileName.get
+    }
+  }
+
   object description extends BsCkUnsecureTextareaField(this, 1000) {
     override def displayName = "Descripción"
   }
@@ -39,7 +47,7 @@ object ActionLine extends ActionLine with RogueMetaRecord[ActionLine] {
 
   override def collectionName = "main.action_lines"
 
-  override def fieldOrder = List(name, description)
+  override def fieldOrder = List(name, description, photo1)
 
   def findByUrl(url: String): Box[ActionLine] = {
     ActionLine.where(_.url eqs url).fetch(1).headOption

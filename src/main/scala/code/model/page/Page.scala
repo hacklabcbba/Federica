@@ -36,6 +36,14 @@ class Page private () extends MongoRecord[Page] with ObjectIdPk[Page] with BaseM
     override def shouldDisplay_? = false
   }
 
+  object photo1 extends FileField(this) {
+    override def optional_? = true
+    override def displayName = "Foto"
+    override def toString = {
+      value.fileName.get
+    }
+  }
+
   override def template: NodeSeq = S.runTemplate(List("backend" , "record", "page-form")).openOr(<div>Template not found</div>)
 
   override def formCssSel: CssSel = {
@@ -91,7 +99,7 @@ class Page private () extends MongoRecord[Page] with ObjectIdPk[Page] with BaseM
 
 object Page extends Page with RogueMetaRecord[Page] {
   override def collectionName = "page.pages"
-  override def fieldOrder = List(name, body)
+  override def fieldOrder = List(name, body, photo1)
 
   def findByUrl(url: String): Box[Page] = {
     Page.where(_.url eqs url).fetch().headOption

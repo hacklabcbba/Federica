@@ -88,6 +88,29 @@ object ValueSnippet extends SortableSnippet[Value] {
     }
   }
 
+  override def facebookHeaders(in: NodeSeq) = {
+    try {
+      Site.principio.currentValue match {
+        case Full(principio) =>
+          <meta property="og:title" content={principio.name.get} /> ++
+          <meta property="og:description" content={principio.description.asHtmlCutted(250).text} /> ++
+          (if(principio.image.get.fileId.get.isEmpty)
+            NodeSeq.Empty
+          else
+            <meta property="og:image" content={principio.image.fullUrl} />
+          ) ++
+          <meta property="og:type" content="article" />
+        case _ =>
+          NodeSeq.Empty
+      }
+    } catch {
+      case np: NullPointerException =>
+        NodeSeq.Empty
+      case _ =>
+        NodeSeq.Empty
+    }
+  }
+
   def updateOrderValue(json: JValue): JsCmd = {
     implicit val formats = net.liftweb.json.DefaultFormats
     for {

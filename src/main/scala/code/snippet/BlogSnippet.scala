@@ -189,6 +189,29 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
     }
   }
 
+  def facebookHeaders(in: NodeSeq) = {
+    try {
+      Site.entradaBlog.currentValue match {
+        case Full(post) =>
+            <meta property="og:title" content={post.name.get} /> ++
+              <meta property="og:description" content={post.content.asHtmlCutted(250).text} /> ++
+            (if(post.photo.get.fileId.get.isEmpty)
+              NodeSeq.Empty
+            else
+                <meta property="og:image" content={post.photo.fullUrl} />
+              ) ++
+              <meta property="og:type" content="article" />
+        case _ =>
+          NodeSeq.Empty
+      }
+    } catch {
+      case np: NullPointerException =>
+        NodeSeq.Empty
+      case _ =>
+        NodeSeq.Empty
+    }
+  }
+
   def templateRelatedBlog =
     Templates("templates-hidden" :: "frontend" :: "_relatedPosts" :: Nil) openOr Text(S ? "No edit template found")
 

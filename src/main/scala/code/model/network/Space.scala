@@ -3,8 +3,8 @@ package model
 package network
 
 import code.config.Site
-import code.lib.field.{BsCkUnsecureTextareaField, BsCkTextareaField, BsEmailField, BsStringField}
-import code.lib.{SortableModel, BaseModel, RogueMetaRecord}
+import code.lib.field._
+import code.lib.{BaseModel, RogueMetaRecord, SortableModel}
 import net.liftweb.common.Full
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
@@ -24,6 +24,14 @@ class Space private () extends MongoRecord[Space] with ObjectIdPk[Space] with Ba
 
   object description extends BsCkUnsecureTextareaField(this, 500) {
     override def displayName = "Descripción"
+  }
+
+  object photo1 extends FileField(this) {
+    override def optional_? = true
+    override def displayName = "Foto"
+    override def toString = {
+      value.fileName.get
+    }
   }
 
   object city extends ObjectIdRefField(this, City) {
@@ -73,5 +81,5 @@ class Space private () extends MongoRecord[Space] with ObjectIdPk[Space] with Ba
 
 object Space extends Space with RogueMetaRecord[Space] {
   override def collectionName = "main.spaces"
-  override def fieldOrder = List(name, description, city, country, email, web)
+  override def fieldOrder = List(name, description, city, country, email, web, photo1)
 }

@@ -12,6 +12,8 @@ import net.liftweb.json.JsonAST.JValue
 import net.liftweb.util.Helpers._
 import net.liftweb.util.{CssSel, Helpers}
 
+import scala.xml.NodeSeq
+
 object TransversalApproachSnippet extends SortableSnippet[TransversalApproach] {
 
   val meta = TransversalApproach
@@ -32,6 +34,29 @@ object TransversalApproachSnippet extends SortableSnippet[TransversalApproach] {
       //"data-name=name [href]" #> Site.servicio.calcHref(area) &
       "data-name=description *" #> area.description.asHtml
     })
+  }
+
+  override def facebookHeaders(in: NodeSeq) = {
+    try {
+      Site.enfoqueTransversal.currentValue match {
+        case Full(enfoque) =>
+          <meta property="og:title" content={enfoque.name.get} /> ++
+          <meta property="og:description" content={enfoque.description.asHtmlCutted(250).text} /> ++
+          (if(enfoque.photo1.get.fileId.get.isEmpty)
+            NodeSeq.Empty
+          else
+            <meta property="og:image" content={enfoque.photo1.fullUrl} />
+          ) ++
+          <meta property="og:type" content="article" />
+        case _ =>
+          NodeSeq.Empty
+      }
+    } catch {
+      case np: NullPointerException =>
+        NodeSeq.Empty
+      case _ =>
+        NodeSeq.Empty
+    }
   }
 
   def updateOrderValue(json: JValue): JsCmd = {

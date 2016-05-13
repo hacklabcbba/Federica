@@ -11,6 +11,8 @@ import Helpers._
 import net.liftweb.common.{Empty, Full}
 import net.liftweb.http.js.JsCmds._
 
+import scala.xml.NodeSeq
+
 object ProgramSnippet extends SortableSnippet[Program] {
 
   val meta = Program
@@ -40,6 +42,29 @@ object ProgramSnippet extends SortableSnippet[Program] {
         Empty, Empty) &
       "data-name=calls" #> CallSnippet.relatedCalls(programa.name.get, Empty, Full(programa), Empty, Empty, Empty,
         Empty, Empty)
+    }
+  }
+
+  override def facebookHeaders(in: NodeSeq) = {
+    try {
+      Site.programa.currentValue match {
+        case Full(program) =>
+          <meta property="og:title" content={program.name.get} /> ++
+          <meta property="og:description" content={program.description.asHtmlCutted(250).text} /> ++
+          (if(program.photo1.get.fileId.get.isEmpty)
+            NodeSeq.Empty
+          else
+            <meta property="og:image" content={program.photo1.fullUrl} />
+          ) ++
+          <meta property="og:type" content="article" />
+        case _ =>
+          NodeSeq.Empty
+      }
+    } catch {
+      case np: NullPointerException =>
+        NodeSeq.Empty
+      case _ =>
+        NodeSeq.Empty
     }
   }
 

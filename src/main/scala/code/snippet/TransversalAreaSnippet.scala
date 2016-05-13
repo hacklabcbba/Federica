@@ -11,6 +11,8 @@ import net.liftweb.json.JsonAST.JValue
 import net.liftweb.util.Helpers._
 import net.liftweb.util.{CssSel, Helpers}
 
+import scala.xml.NodeSeq
+
 object TransversalAreaSnippet extends SortableSnippet[TransversalArea] {
 
   val meta = TransversalArea
@@ -31,6 +33,29 @@ object TransversalAreaSnippet extends SortableSnippet[TransversalArea] {
       //"data-name=name [href]" #> Site.servicio.calcHref(area) &
       "data-name=description *" #> area.description.asHtml
     })
+  }
+
+  override def facebookHeaders(in: NodeSeq) = {
+    try {
+      Site.areaTransversal.currentValue match {
+        case Full(areaT) =>
+          <meta property="og:title" content={areaT.name.get} /> ++
+          <meta property="og:description" content={areaT.description.asHtmlCutted(250).text} /> ++
+          (if(areaT.photo1.get.fileId.get.isEmpty)
+            NodeSeq.Empty
+          else
+            <meta property="og:image" content={areaT.photo1.fullUrl} />
+          ) ++
+          <meta property="og:type" content="article" />
+        case _ =>
+          NodeSeq.Empty
+      }
+    } catch {
+      case np: NullPointerException =>
+        NodeSeq.Empty
+      case _ =>
+        NodeSeq.Empty
+    }
   }
 
   def renderViewFrontEnd: CssSel = {

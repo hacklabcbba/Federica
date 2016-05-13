@@ -11,6 +11,8 @@ import net.liftweb.http.js.JsCmds._
 import LiftRogue._
 import net.liftweb.common.{Empty, Full}
 
+import scala.xml.NodeSeq
+
 object AreaSnippet extends SortableSnippet[Area] {
 
   val meta = Area
@@ -48,6 +50,29 @@ object AreaSnippet extends SortableSnippet[Area] {
       "data-name=posts" #> BlogSnippet.relatedPosts(area.name.get, Empty, Empty, Full(area), Empty, Empty, Empty,
         Empty) &
       "data-name=calls" #> CallSnippet.relatedCalls(area.name.get, Empty, Empty, Full(area), Empty, Empty, Empty, Empty)
+    }
+  }
+
+  override def facebookHeaders(in: NodeSeq) = {
+    try {
+      Site.area.currentValue match {
+        case Full(area) =>
+            <meta property="og:title" content={area.name.get} /> ++
+              <meta property="og:description" content={area.description.asHtmlCutted(250).text} /> ++
+            (if(area.photo1.get.fileId.get.isEmpty)
+              NodeSeq.Empty
+            else
+                <meta property="og:image" content={area.photo1.fullUrl} />
+              ) ++
+              <meta property="og:type" content="article" />
+        case _ =>
+          NodeSeq.Empty
+      }
+    } catch {
+      case np: NullPointerException =>
+        NodeSeq.Empty
+      case _ =>
+        NodeSeq.Empty
     }
   }
 

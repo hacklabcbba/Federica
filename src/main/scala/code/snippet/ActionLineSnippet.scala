@@ -13,6 +13,8 @@ import net.liftweb.json.JsonAST.JValue
 import net.liftweb.util.Helpers._
 import net.liftweb.util.{CssSel, Helpers}
 
+import scala.xml.NodeSeq
+
 object ActionLineSnippet extends SortableSnippet[ActionLine] {
 
   val meta = ActionLine
@@ -33,6 +35,29 @@ object ActionLineSnippet extends SortableSnippet[ActionLine] {
       //"data-name=name [href]" #> Site.servicio.calcHref(area) &
       "data-name=description *" #> area.description.asHtml
     })
+  }
+
+  override def facebookHeaders(in: NodeSeq) = {
+    try {
+      Site.lineaDeAccion.currentValue match {
+        case Full(linea) =>
+          <meta property="og:title" content={linea.name.get} /> ++
+          <meta property="og:description" content={linea.description.asHtmlCutted(250).text} /> ++
+          (if(linea.photo1.get.fileId.get.isEmpty)
+            NodeSeq.Empty
+          else
+            <meta property="og:image" content={linea.photo1.fullUrl} />
+          ) ++
+          <meta property="og:type" content="article" />
+        case _ =>
+          NodeSeq.Empty
+      }
+    } catch {
+      case np: NullPointerException =>
+        NodeSeq.Empty
+      case _ =>
+        NodeSeq.Empty
+    }
   }
 
   def updateOrderValue(json: JValue): JsCmd = {

@@ -15,6 +15,8 @@ import net.liftweb.common.{Empty, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.http.js.JsCmds._
 
+import scala.xml.NodeSeq
+
 object RoomSnippet extends SortableSnippet[Room] with SnippetHelper {
 
   val meta = Room
@@ -57,6 +59,29 @@ object RoomSnippet extends SortableSnippet[Room] with SnippetHelper {
       "data-name=isBookable *" #> {if(room.isBookable.get) "Si" else "No"} &
       "data-name=events" #> EventSnippet.relatedEvents(room.name.get, Empty, Empty, Empty, Empty, Empty, Empty, Empty,
         Full(room))
+    }
+  }
+
+  override def facebookHeaders(in: NodeSeq) = {
+    try {
+      Site.espacio.currentValue match {
+        case Full(space) =>
+          <meta property="og:title" content={space.name.get} /> ++
+          <meta property="og:description" content={space.description.asHtmlCutted(250).text} /> ++
+          (if(space.photo1.get.fileId.get.isEmpty)
+            NodeSeq.Empty
+          else
+            <meta property="og:image" content={space.photo1.fullUrl} />
+          ) ++
+          <meta property="og:type" content="article" />
+        case _ =>
+          NodeSeq.Empty
+      }
+    } catch {
+      case np: NullPointerException =>
+        NodeSeq.Empty
+      case _ =>
+        NodeSeq.Empty
     }
   }
 

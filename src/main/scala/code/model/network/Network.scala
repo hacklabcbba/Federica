@@ -3,8 +3,8 @@ package model
 package network
 
 import code.config.Site
-import code.lib.field.{BsCkUnsecureTextareaField, BsCkTextareaField, BsStringField}
-import code.lib.{WithUrl, SortableModel, BaseModel, RogueMetaRecord}
+import code.lib.field.{BsCkTextareaField, BsCkUnsecureTextareaField, BsStringField, FileField}
+import code.lib.{BaseModel, RogueMetaRecord, SortableModel, WithUrl}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
@@ -25,6 +25,14 @@ class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] w
 
   object description extends BsCkUnsecureTextareaField(this, 500){
     override def displayName = "Descripción"
+  }
+
+  object photo1 extends FileField(this) {
+    override def optional_? = true
+    override def displayName = "Foto"
+    override def toString = {
+      value.fileName.get
+    }
   }
 
   object spaces extends ObjectIdRefListField(this, Space) {

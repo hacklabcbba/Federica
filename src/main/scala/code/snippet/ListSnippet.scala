@@ -141,6 +141,12 @@ trait SortableSnippet[BaseRecord <: MongoRecord[BaseRecord] with SortableModel[B
       }.apply(template)
   }
 
+  def facebookHeaders(in: NodeSeq) = {
+      <meta property="og:title" content="Example content" /> ++
+      <meta property="og:description" content="Example description" /> ++
+      <meta property="og:type" content="article" />
+  }
+
   def updateOrderValue(json: JValue): JsCmd
 }
 

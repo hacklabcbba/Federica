@@ -25,6 +25,14 @@ class Program private () extends MongoRecord[Program] with ObjectIdPk[Program] w
     override def toString = get
   }
 
+  object photo1 extends FileField(this) {
+    override def optional_? = true
+    override def displayName = "Foto"
+    override def toString = {
+      value.fileName.get
+    }
+  }
+
   object responsible extends ObjectIdRefField(this, User) {
     override def displayName = "Responsable"
     override def toString = {
@@ -68,7 +76,7 @@ class Program private () extends MongoRecord[Program] with ObjectIdPk[Program] w
 
 object Program extends Program with RogueMetaRecord[Program] {
   override def collectionName = "main.programs"
-  override def fieldOrder = List(name, responsible, email, phone, code, description)
+  override def fieldOrder = List(name, responsible, email, photo1, phone, code, description)
 
   def findAllPublished: List[Program] = {
     Program.findAll

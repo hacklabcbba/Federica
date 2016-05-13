@@ -33,6 +33,29 @@ object CallSnippet extends ListSnippet[Call] {
     })
   }
 
+  def facebookHeaders(in: NodeSeq) = {
+    try {
+      Site.convocatoria.currentValue match {
+        case Full(call) =>
+          <meta property="og:title" content={call.name.get} /> ++
+          <meta property="og:description" content={call.description.asHtmlCutted(250).text} /> ++
+          (if(call.photo1.get.fileId.get.isEmpty)
+            NodeSeq.Empty
+          else
+            <meta property="og:image" content={call.photo1.fullUrl} />
+          ) ++
+          <meta property="og:type" content="article" />
+        case _ =>
+          NodeSeq.Empty
+      }
+    } catch {
+      case np: NullPointerException =>
+        NodeSeq.Empty
+      case _ =>
+        NodeSeq.Empty
+    }
+  }
+
   def renderViewFrontEnd: CssSel = {
     for {
       call <- Site.convocatoria.currentValue

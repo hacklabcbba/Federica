@@ -45,6 +45,14 @@ class Call private () extends MongoRecord[Call] with ObjectIdPk[Call] with BaseM
     }
   }
 
+  object photo1 extends FileField(this) {
+    override def optional_? = true
+    override def displayName = "Foto"
+    override def toString = {
+      value.fileName.get
+    }
+  }
+
   object deadline extends DatePickerField(this) {
     override def displayName = "Plazo"
   }
