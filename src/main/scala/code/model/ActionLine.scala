@@ -26,9 +26,9 @@ class ActionLine private () extends MongoRecord[ActionLine] with ObjectIdPk[Acti
       "class" -> "form-control", "data-placeholder" -> "Ingrese nombre.."))
   }
 
-  object photo1 extends FileField(this) {
+  object facebookPhoto extends FileField(this) {
     override def optional_? = true
-    override def displayName = "Foto"
+    override def displayName = "Imagen para compartir en facebook"
     override def toString = {
       value.fileName.get
     }
@@ -47,7 +47,7 @@ object ActionLine extends ActionLine with RogueMetaRecord[ActionLine] {
 
   override def collectionName = "main.action_lines"
 
-  override def fieldOrder = List(name, description, photo1)
+  override def fieldOrder = List(name, description, facebookPhoto)
 
   def findByUrl(url: String): Box[ActionLine] = {
     ActionLine.where(_.url eqs url).fetch(1).headOption

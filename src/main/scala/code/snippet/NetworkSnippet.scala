@@ -34,10 +34,10 @@ object NetworkSnippet extends SortableSnippet[Network] {
         case Full(red) =>
           <meta property="og:title" content={red.name.get} /> ++
           <meta property="og:description" content={red.description.asHtmlCutted(250).text} /> ++
-          (if(red.photo1.get.fileId.get.isEmpty)
+          (if(red.facebookPhoto.get.fileId.get.isEmpty)
             NodeSeq.Empty
           else
-            <meta property="og:image" content={red.photo1.fullUrl} />
+            <meta property="og:image" content={red.facebookPhoto.fullUrl} />
           ) ++
           <meta property="og:type" content="article" />
         case _ =>

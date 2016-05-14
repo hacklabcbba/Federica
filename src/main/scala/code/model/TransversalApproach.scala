@@ -30,9 +30,9 @@ class TransversalApproach private () extends MongoRecord[TransversalApproach] wi
     override def displayName = "Descripción"
   }
 
-  object photo1 extends FileField(this) {
+  object facebookPhoto extends FileField(this) {
     override def optional_? = true
-    override def displayName = "Foto"
+    override def displayName = "Imagen para compartir en facebook"
     override def toString = {
       value.fileName.get
     }
@@ -47,7 +47,7 @@ object TransversalApproach extends TransversalApproach with RogueMetaRecord[Tran
 
   override def collectionName = "main.transversal_approaches"
 
-  override def fieldOrder = List(name, description, photo1)
+  override def fieldOrder = List(name, description, facebookPhoto)
 
   def findByUrl(url: String): Box[TransversalApproach] = {
     TransversalApproach.where(_.url eqs url).fetch(1).headOption

@@ -39,10 +39,10 @@ object CallSnippet extends ListSnippet[Call] {
         case Full(call) =>
           <meta property="og:title" content={call.name.get} /> ++
           <meta property="og:description" content={call.description.asHtmlCutted(250).text} /> ++
-          (if(call.photo1.get.fileId.get.isEmpty)
+          (if(call.facebookPhoto.get.fileId.get.isEmpty)
             NodeSeq.Empty
           else
-            <meta property="og:image" content={call.photo1.fullUrl} />
+            <meta property="og:image" content={call.facebookPhoto.fullUrl} />
           ) ++
           <meta property="og:type" content="article" />
         case _ =>

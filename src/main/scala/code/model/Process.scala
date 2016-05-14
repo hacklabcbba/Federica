@@ -22,9 +22,9 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] w
     override def displayName = "Nombre"
   }
 
-  object photo1 extends FileField(this) {
+  object facebookPhoto extends FileField(this) {
     override def optional_? = true
-    override def displayName = "Foto"
+    override def displayName = "Imagen para compartir en facebook"
     override def toString = {
       value.fileName.get
     }
@@ -105,7 +105,7 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] w
 
 object Process extends Process with RogueMetaRecord[Process] {
   override def collectionName = "main.process"
-  override def fieldOrder = List(name, administrator, area, program, transversalArea, order, description)
+  override def fieldOrder = List(name, administrator, area, program, transversalArea, order, description, facebookPhoto)
 
   def findByArea(area: Area): List[Process] = {
     Process

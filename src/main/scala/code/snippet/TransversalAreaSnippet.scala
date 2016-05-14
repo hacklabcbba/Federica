@@ -41,10 +41,10 @@ object TransversalAreaSnippet extends SortableSnippet[TransversalArea] {
         case Full(areaT) =>
           <meta property="og:title" content={areaT.name.get} /> ++
           <meta property="og:description" content={areaT.description.asHtmlCutted(250).text} /> ++
-          (if(areaT.photo1.get.fileId.get.isEmpty)
+          (if(areaT.facebookPhoto.get.fileId.get.isEmpty)
             NodeSeq.Empty
           else
-            <meta property="og:image" content={areaT.photo1.fullUrl} />
+            <meta property="og:image" content={areaT.facebookPhoto.fullUrl} />
           ) ++
           <meta property="og:type" content="article" />
         case _ =>

@@ -94,10 +94,10 @@ object ValueSnippet extends SortableSnippet[Value] {
         case Full(principio) =>
           <meta property="og:title" content={principio.name.get} /> ++
           <meta property="og:description" content={principio.description.asHtmlCutted(250).text} /> ++
-          (if(principio.image.get.fileId.get.isEmpty)
+          (if(principio.facebookPhoto.get.fileId.get.isEmpty)
             NodeSeq.Empty
           else
-            <meta property="og:image" content={principio.image.fullUrl} />
+            <meta property="og:image" content={principio.facebookPhoto.fullUrl} />
           ) ++
           <meta property="og:type" content="article" />
         case _ =>

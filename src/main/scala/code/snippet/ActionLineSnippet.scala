@@ -43,10 +43,10 @@ object ActionLineSnippet extends SortableSnippet[ActionLine] {
         case Full(linea) =>
           <meta property="og:title" content={linea.name.get} /> ++
           <meta property="og:description" content={linea.description.asHtmlCutted(250).text} /> ++
-          (if(linea.photo1.get.fileId.get.isEmpty)
+          (if(linea.facebookPhoto.get.fileId.get.isEmpty)
             NodeSeq.Empty
           else
-            <meta property="og:image" content={linea.photo1.fullUrl} />
+            <meta property="og:image" content={linea.facebookPhoto.fullUrl} />
           ) ++
           <meta property="og:type" content="article" />
         case _ =>

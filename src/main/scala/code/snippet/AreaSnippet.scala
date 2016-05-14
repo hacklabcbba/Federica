@@ -57,14 +57,14 @@ object AreaSnippet extends SortableSnippet[Area] {
     try {
       Site.area.currentValue match {
         case Full(area) =>
-            <meta property="og:title" content={area.name.get} /> ++
-              <meta property="og:description" content={area.description.asHtmlCutted(250).text} /> ++
-            (if(area.photo1.get.fileId.get.isEmpty)
-              NodeSeq.Empty
-            else
-                <meta property="og:image" content={area.photo1.fullUrl} />
-              ) ++
-              <meta property="og:type" content="article" />
+          <meta property="og:title" content={area.name.get} /> ++
+          <meta property="og:description" content={area.description.asHtmlCutted(250).text} /> ++
+          (if(area.facebookPhoto.get.fileId.get.isEmpty)
+            NodeSeq.Empty
+          else
+            <meta property="og:image" content={area.facebookPhoto.fullUrl} />
+          ) ++
+          <meta property="og:type" content="article" />
         case _ =>
           NodeSeq.Empty
       }

@@ -25,9 +25,9 @@ class Program private () extends MongoRecord[Program] with ObjectIdPk[Program] w
     override def toString = get
   }
 
-  object photo1 extends FileField(this) {
+  object facebookPhoto extends FileField(this) {
     override def optional_? = true
-    override def displayName = "Foto"
+    override def displayName = "Imagen para compartir en facebook"
     override def toString = {
       value.fileName.get
     }
@@ -76,7 +76,7 @@ class Program private () extends MongoRecord[Program] with ObjectIdPk[Program] w
 
 object Program extends Program with RogueMetaRecord[Program] {
   override def collectionName = "main.programs"
-  override def fieldOrder = List(name, responsible, email, photo1, phone, code, description)
+  override def fieldOrder = List(name, responsible, email, facebookPhoto, phone, code, description)
 
   def findAllPublished: List[Program] = {
     Program.findAll

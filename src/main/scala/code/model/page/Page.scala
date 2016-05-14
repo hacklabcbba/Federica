@@ -36,9 +36,9 @@ class Page private () extends MongoRecord[Page] with ObjectIdPk[Page] with BaseM
     override def shouldDisplay_? = false
   }
 
-  object photo1 extends FileField(this) {
+  object facebookPhoto extends FileField(this) {
     override def optional_? = true
-    override def displayName = "Foto"
+    override def displayName = "Imagen para compartir en facebook"
     override def toString = {
       value.fileName.get
     }
@@ -99,7 +99,7 @@ class Page private () extends MongoRecord[Page] with ObjectIdPk[Page] with BaseM
 
 object Page extends Page with RogueMetaRecord[Page] {
   override def collectionName = "page.pages"
-  override def fieldOrder = List(name, body, photo1)
+  override def fieldOrder = List(name, body, facebookPhoto)
 
   def findByUrl(url: String): Box[Page] = {
     Page.where(_.url eqs url).fetch().headOption

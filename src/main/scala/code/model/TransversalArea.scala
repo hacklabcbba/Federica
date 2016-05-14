@@ -40,6 +40,14 @@ class TransversalArea private () extends MongoRecord[TransversalArea] with Objec
     }
   }
 
+  object facebookPhoto extends FileField(this) {
+    override def optional_? = true
+    override def displayName = "Imagen para compartir en facebook"
+    override def toString = {
+      value.fileName.get
+    }
+  }
+
   object description extends BsCkUnsecureTextareaField(this, 1000) {
     override def displayName = "Descripción"
   }
@@ -96,7 +104,8 @@ class TransversalArea private () extends MongoRecord[TransversalArea] with Objec
 
 object TransversalArea extends TransversalArea with RogueMetaRecord[TransversalArea] {
   override def collectionName = "main.transversal_areas"
-  override def fieldOrder = List(name, responsible, email, phone, code, photo1, photo2, description, officeHoursBegins, officeHoursEnds)
+  override def fieldOrder = List(name, responsible, email, phone, code, photo1, photo2, facebookPhoto, description,
+    officeHoursBegins, officeHoursEnds)
 
   def findAllPublished: List[TransversalArea] = {
     TransversalArea.where(_.isPublished eqs true).fetch()

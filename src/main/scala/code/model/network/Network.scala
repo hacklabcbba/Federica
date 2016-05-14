@@ -27,14 +27,13 @@ class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] w
     override def displayName = "Descripción"
   }
 
-  object photo1 extends FileField(this) {
+  object facebookPhoto extends FileField(this) {
     override def optional_? = true
-    override def displayName = "Foto"
+    override def displayName = "Imagen para compartir en facebook"
     override def toString = {
       value.fileName.get
     }
   }
-
   object spaces extends ObjectIdRefListField(this, Space) {
     override def displayName = "Espacios conectados"
     val spaces = Space.findAll
@@ -59,7 +58,7 @@ class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] w
 object Network extends Network with RogueMetaRecord[Network] {
   override def collectionName = "main.networks"
   override def fieldOrder =
-    List(name, description, spaces)
+    List(name, description, spaces, facebookPhoto)
 
   override def find(s: String) = {
     println("KEY:"+s)

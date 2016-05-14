@@ -47,10 +47,10 @@ object PageSnippet extends ListSnippet[Page] {
         case Full(page) =>
           <meta property="og:title" content={page.name.get} /> ++
           <meta property="og:description" content={page.body.asHtmlCutted(250).text} /> ++
-          (if(page.photo1.get.fileId.get.isEmpty)
+          (if(page.facebookPhoto.get.fileId.get.isEmpty)
             NodeSeq.Empty
           else
-            <meta property="og:image" content={page.photo1.fullUrl} />
+            <meta property="og:image" content={page.facebookPhoto.fullUrl} />
           ) ++
           <meta property="og:type" content="article" />
         case _ =>

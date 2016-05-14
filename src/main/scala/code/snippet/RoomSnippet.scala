@@ -68,10 +68,10 @@ object RoomSnippet extends SortableSnippet[Room] with SnippetHelper {
         case Full(space) =>
           <meta property="og:title" content={space.name.get} /> ++
           <meta property="og:description" content={space.description.asHtmlCutted(250).text} /> ++
-          (if(space.photo1.get.fileId.get.isEmpty)
+          (if(space.facebookPhoto.get.fileId.get.isEmpty)
             NodeSeq.Empty
           else
-            <meta property="og:image" content={space.photo1.fullUrl} />
+            <meta property="og:image" content={space.facebookPhoto.fullUrl} />
           ) ++
           <meta property="og:type" content="article" />
         case _ =>

@@ -195,10 +195,10 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
         case Full(post) =>
             <meta property="og:title" content={post.name.get} /> ++
               <meta property="og:description" content={post.content.asHtmlCutted(250).text} /> ++
-            (if(post.photo.get.fileId.get.isEmpty)
+            (if(post.facebookPhoto.get.fileId.get.isEmpty)
               NodeSeq.Empty
             else
-                <meta property="og:image" content={post.photo.fullUrl} />
+                <meta property="og:image" content={post.facebookPhoto.fullUrl} />
               ) ++
               <meta property="og:type" content="article" />
         case _ =>

@@ -34,10 +34,10 @@ object ProcessSnippet extends SortableSnippet[Process] {
         case Full(process) =>
           <meta property="og:title" content={process.name.get} /> ++
           <meta property="og:description" content={process.description.asHtmlCutted(250).text} /> ++
-          (if(process.photo1.get.fileId.get.isEmpty)
+          (if(process.facebookPhoto.get.fileId.get.isEmpty)
             NodeSeq.Empty
           else
-            <meta property="og:image" content={process.photo1.fullUrl} />
+            <meta property="og:image" content={process.facebookPhoto.fullUrl} />
           ) ++
           <meta property="og:type" content="article" />
         case _ =>

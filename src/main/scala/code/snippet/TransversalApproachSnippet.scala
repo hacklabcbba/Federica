@@ -42,10 +42,10 @@ object TransversalApproachSnippet extends SortableSnippet[TransversalApproach] {
         case Full(enfoque) =>
           <meta property="og:title" content={enfoque.name.get} /> ++
           <meta property="og:description" content={enfoque.description.asHtmlCutted(250).text} /> ++
-          (if(enfoque.photo1.get.fileId.get.isEmpty)
+          (if(enfoque.facebookPhoto.get.fileId.get.isEmpty)
             NodeSeq.Empty
           else
-            <meta property="og:image" content={enfoque.photo1.fullUrl} />
+            <meta property="og:image" content={enfoque.facebookPhoto.fullUrl} />
           ) ++
           <meta property="og:type" content="article" />
         case _ =>

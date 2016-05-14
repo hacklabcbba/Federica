@@ -51,10 +51,10 @@ object ProgramSnippet extends SortableSnippet[Program] {
         case Full(program) =>
           <meta property="og:title" content={program.name.get} /> ++
           <meta property="og:description" content={program.description.asHtmlCutted(250).text} /> ++
-          (if(program.photo1.get.fileId.get.isEmpty)
+          (if(program.facebookPhoto.get.fileId.get.isEmpty)
             NodeSeq.Empty
           else
-            <meta property="og:image" content={program.photo1.fullUrl} />
+            <meta property="og:image" content={program.facebookPhoto.fullUrl} />
           ) ++
           <meta property="og:type" content="article" />
         case _ =>

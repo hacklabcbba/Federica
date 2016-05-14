@@ -26,14 +26,6 @@ class Space private () extends MongoRecord[Space] with ObjectIdPk[Space] with Ba
     override def displayName = "Descripción"
   }
 
-  object photo1 extends FileField(this) {
-    override def optional_? = true
-    override def displayName = "Foto"
-    override def toString = {
-      value.fileName.get
-    }
-  }
-
   object city extends ObjectIdRefField(this, City) {
     override def displayName = "Ciudad"
     override def toString = {
@@ -81,5 +73,5 @@ class Space private () extends MongoRecord[Space] with ObjectIdPk[Space] with Ba
 
 object Space extends Space with RogueMetaRecord[Space] {
   override def collectionName = "main.spaces"
-  override def fieldOrder = List(name, description, city, country, email, web, photo1)
+  override def fieldOrder = List(name, description, city, country, email, web)
 }
