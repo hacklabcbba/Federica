@@ -142,11 +142,11 @@ object Site extends Locs {
   val proceso =  Menu.param[Process](
     "Ver Proceso", "Ver Proceso",
     Process.findByUrl,
-    s => s.url.get) / "proceso" / * >>
+    s => s.url.get.toString) / "proceso" / * >>
     TemplateBox(() => Templates("proceso" :: Nil)) >>
     Hidden
 
-  val procesos = MenuLoc(Menu.i("Procesos ") / "procesos" submenus(proceso) >> Hidden)
+  val procesos = MenuLoc(Menu.i("Procesos ") / "procesos" submenus(proceso))
 
   val lineaDeAccion =  Menu.param[ActionLine](
     "Ver Linea de Acción", "Ver Linea de Acción",
@@ -155,7 +155,7 @@ object Site extends Locs {
     TemplateBox(() => Templates("linea-de-accion" :: Nil)) >>
     Hidden
 
-  val lineasDeAccion = MenuLoc(Menu.i("Lineas de acción ") / "lineas-de-accion" submenus(lineaDeAccion) >> Hidden)
+  val lineasDeAccion = MenuLoc(Menu.i("Lineas de acción ") / "lineas-de-accion" submenus(lineaDeAccion))
 
   val enfoqueTransversal =  Menu.param[TransversalApproach](
     "Ver Enfoque Transversal", "Ver Enfoque Transversal",
@@ -164,7 +164,7 @@ object Site extends Locs {
     TemplateBox(() => Templates("enfoque-transversal" :: Nil)) >>
     Hidden
 
-  val enfoquesTransversales = MenuLoc(Menu.i("Enfoques transversales ") / "enfoques-transversales" submenus(enfoqueTransversal) >> Hidden)
+  val enfoquesTransversales = MenuLoc(Menu.i("Enfoques transversales ") / "enfoques-transversales" submenus(enfoqueTransversal))
 
   val programa =  Menu.param[Program](
     "Ver Programa", "Ver Programa",
@@ -182,7 +182,7 @@ object Site extends Locs {
     TemplateBox(() => Templates("red" :: Nil)) >>
     Hidden
 
-  val redes = MenuLoc(Menu.i("Redes ") / "redes" submenus(red) >> Hidden)
+  val redes = MenuLoc(Menu.i("Redes ") / "redes" submenus(red))
 
   /* Convocatorias */
   // Convocatorias

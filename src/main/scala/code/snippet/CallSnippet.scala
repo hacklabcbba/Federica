@@ -34,24 +34,17 @@ object CallSnippet extends ListSnippet[Call] {
   }
 
   def facebookHeaders(in: NodeSeq) = {
-    try {
-      Site.convocatoria.currentValue match {
-        case Full(call) =>
-          <meta property="og:title" content={call.name.get} /> ++
-          <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
-          <meta property="og:description" content={call.description.asHtmlCutted(250).text} /> ++
-          (if(call.facebookPhoto.get.fileId.get.isEmpty)
-            NodeSeq.Empty
-          else
-            <meta property="og:image" content={call.facebookPhoto.fullUrl} />
-          ) ++
-          <meta property="og:type" content="article" />
-        case _ =>
+    Site.convocatoria.currentValue match {
+      case Full(call) =>
+        <meta property="og:title" content={call.name.get} /> ++
+        <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
+        <meta property="og:description" content={call.description.asHtmlCutted(250).text} /> ++
+        (if(call.facebookPhoto.get.fileId.get.isEmpty)
           NodeSeq.Empty
-      }
-    } catch {
-      case np: NullPointerException =>
-        NodeSeq.Empty
+        else
+          <meta property="og:image" content={call.facebookPhoto.fullUrl} />
+        ) ++
+        <meta property="og:type" content="article" />
       case _ =>
         NodeSeq.Empty
     }

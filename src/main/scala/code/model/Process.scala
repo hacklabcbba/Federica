@@ -120,7 +120,9 @@ object Process extends Process with RogueMetaRecord[Process] {
   }
 
   def findByUrl(url: String): Box[Process] = {
-    Process.where(_.url eqs url).fetch(1).headOption
+    val algo = Process.where(_.url eqs url).fetch(1).headOption
+    println("proceso " + algo)
+    algo
   }
 }
 

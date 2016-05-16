@@ -6,11 +6,12 @@ import code.model.{Definition, Value}
 import com.foursquare.rogue.LiftRogue
 import com.foursquare.rogue.LiftRogue._
 import net.liftweb.common.{Empty, Full}
+import net.liftweb.http.S
 import net.liftweb.http.js.JsCmd
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.json.JsonAST.JValue
 import net.liftweb.util.Helpers._
-import net.liftweb.util.{CssSel, Helpers}
+import net.liftweb.util.{CssSel, Helpers, Props}
 
 import scala.xml.NodeSeq
 
@@ -89,23 +90,17 @@ object ValueSnippet extends SortableSnippet[Value] {
   }
 
   override def facebookHeaders(in: NodeSeq) = {
-    try {
-      Site.principio.currentValue match {
-        case Full(principio) =>
-          <meta property="og:title" content={principio.name.get} /> ++
-          <meta property="og:description" content={principio.description.asHtmlCutted(250).text} /> ++
-          (if(principio.facebookPhoto.get.fileId.get.isEmpty)
-            NodeSeq.Empty
-          else
-            <meta property="og:image" content={principio.facebookPhoto.fullUrl} />
-          ) ++
-          <meta property="og:type" content="article" />
-        case _ =>
+    Site.principio.currentValue match {
+      case Full(principio) =>
+        <meta property="og:title" content={principio.name.get} /> ++
+            <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
+        <meta property="og:description" content={principio.description.asHtmlCutted(250).text} /> ++
+        (if(principio.facebookPhoto.get.fileId.get.isEmpty)
           NodeSeq.Empty
-      }
-    } catch {
-      case np: NullPointerException =>
-        NodeSeq.Empty
+        else
+          <meta property="og:image" content={principio.facebookPhoto.fullUrl} />
+        ) ++
+        <meta property="og:type" content="article" />
       case _ =>
         NodeSeq.Empty
     }

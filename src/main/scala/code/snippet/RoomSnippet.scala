@@ -62,24 +62,17 @@ object RoomSnippet extends SortableSnippet[Room] with SnippetHelper {
   }
 
   override def facebookHeaders(in: NodeSeq) = {
-    try {
-      Site.espacio.currentValue match {
-        case Full(space) =>
-          <meta property="og:title" content={space.name.get} /> ++
-              <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
-          <meta property="og:description" content={space.description.asHtmlCutted(250).text} /> ++
-          (if(space.facebookPhoto.get.fileId.get.isEmpty)
-            NodeSeq.Empty
-          else
-            <meta property="og:image" content={space.facebookPhoto.fullUrl} />
-          ) ++
-          <meta property="og:type" content="article" />
-        case _ =>
+    Site.espacio.currentValue match {
+      case Full(space) =>
+        <meta property="og:title" content={space.name.get} /> ++
+        <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
+        <meta property="og:description" content={space.description.asHtmlCutted(250).text} /> ++
+        (if(space.facebookPhoto.get.fileId.get.isEmpty)
           NodeSeq.Empty
-      }
-    } catch {
-      case np: NullPointerException =>
-        NodeSeq.Empty
+        else
+          <meta property="og:image" content={space.facebookPhoto.fullUrl} />
+        ) ++
+        <meta property="og:type" content="article" />
       case _ =>
         NodeSeq.Empty
     }

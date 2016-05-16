@@ -190,24 +190,17 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
   }
 
   def facebookHeaders(in: NodeSeq) = {
-    try {
-      Site.entradaBlog.currentValue match {
-        case Full(post) =>
-            <meta property="og:title" content={post.name.get} /> ++
-            <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
-            <meta property="og:description" content={post.content.asHtmlCutted(250).text} /> ++
-            (if(post.facebookPhoto.get.fileId.get.isEmpty)
-              NodeSeq.Empty
-            else
-              <meta property="og:image" content={post.facebookPhoto.fullUrl} />
-            ) ++
-            <meta property="og:type" content="article" />
-        case _ =>
+    Site.entradaBlog.currentValue match {
+      case Full(post) =>
+        <meta property="og:title" content={post.name.get} /> ++
+        <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
+        <meta property="og:description" content={post.content.asHtmlCutted(250).text} /> ++
+        (if(post.facebookPhoto.get.fileId.get.isEmpty)
           NodeSeq.Empty
-      }
-    } catch {
-      case np: NullPointerException =>
-        NodeSeq.Empty
+        else
+          <meta property="og:image" content={post.facebookPhoto.fullUrl} />
+        ) ++
+        <meta property="og:type" content="article" />
       case _ =>
         NodeSeq.Empty
     }

@@ -55,24 +55,17 @@ object AreaSnippet extends SortableSnippet[Area] {
   }
 
   override def facebookHeaders(in: NodeSeq) = {
-    try {
-      Site.area.currentValue match {
-        case Full(area) =>
-          <meta property="og:title" content={area.name.get} /> ++
-              <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
-          <meta property="og:description" content={area.description.asHtmlCutted(250).text} /> ++
-          (if(area.facebookPhoto.get.fileId.get.isEmpty)
-            NodeSeq.Empty
-          else
-            <meta property="og:image" content={area.facebookPhoto.fullUrl} />
-          ) ++
-          <meta property="og:type" content="article" />
-        case _ =>
+    Site.area.currentValue match {
+      case Full(area) =>
+        <meta property="og:title" content={area.name.get} /> ++
+        <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
+        <meta property="og:description" content={area.description.asHtmlCutted(250).text} /> ++
+        (if(area.facebookPhoto.get.fileId.get.isEmpty)
           NodeSeq.Empty
-      }
-    } catch {
-      case np: NullPointerException =>
-        NodeSeq.Empty
+        else
+          <meta property="og:image" content={area.facebookPhoto.fullUrl} />
+        ) ++
+        <meta property="og:type" content="article" />
       case _ =>
         NodeSeq.Empty
     }

@@ -42,24 +42,17 @@ object PageSnippet extends ListSnippet[Page] {
   }
 
   def facebookHeaders(in: NodeSeq) = {
-    try {
-      Site.pagina.currentValue match {
-        case Full(page) =>
-          <meta property="og:title" content={page.name.get} /> ++
-          <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
-          <meta property="og:description" content={page.body.asHtmlCutted(250).text} /> ++
-          (if(page.facebookPhoto.get.fileId.get.isEmpty)
-            NodeSeq.Empty
-          else
-            <meta property="og:image" content={page.facebookPhoto.fullUrl} />
-          ) ++
-          <meta property="og:type" content="article" />
-        case _ =>
+    Site.pagina.currentValue match {
+      case Full(page) =>
+        <meta property="og:title" content={page.name.get} /> ++
+        <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
+        <meta property="og:description" content={page.body.asHtmlCutted(250).text} /> ++
+        (if(page.facebookPhoto.get.fileId.get.isEmpty)
           NodeSeq.Empty
-      }
-    } catch {
-      case np: NullPointerException =>
-        NodeSeq.Empty
+        else
+          <meta property="og:image" content={page.facebookPhoto.fullUrl} />
+        ) ++
+        <meta property="og:type" content="article" />
       case _ =>
         NodeSeq.Empty
     }
