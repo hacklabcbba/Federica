@@ -93,7 +93,7 @@ object ValueSnippet extends SortableSnippet[Value] {
     Site.principio.currentValue match {
       case Full(principio) =>
         <meta property="og:title" content={principio.name.get} /> ++
-            <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
+        <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
         <meta property="og:description" content={principio.description.asHtmlCutted(250).text} /> ++
         (if(principio.facebookPhoto.get.fileId.get.isEmpty)
           NodeSeq.Empty

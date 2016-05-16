@@ -32,15 +32,15 @@ object ProcessSnippet extends SortableSnippet[Process] {
   override def facebookHeaders(in: NodeSeq) = {
     Site.proceso.currentValue match {
       case Full(process) =>
-          <meta property="og:title" content={process.name.get} /> ++
-          <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
-          <meta property="og:description" content={process.description.asHtmlCutted(250).text} /> ++
-          (if(process.facebookPhoto.get.fileId.get.isEmpty)
-            NodeSeq.Empty
-          else
-            <meta property="og:image" content={process.facebookPhoto.fullUrl} />
-          ) ++
-          <meta property="og:type" content="article" />
+        <meta property="og:title" content={process.name.get} /> ++
+        <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
+        <meta property="og:description" content={process.description.asHtmlCutted(250).text} /> ++
+        (if(process.facebookPhoto.get.fileId.get.isEmpty)
+          NodeSeq.Empty
+        else
+          <meta property="og:image" content={process.facebookPhoto.fullUrl} />
+        ) ++
+        <meta property="og:type" content="article" />
       case _ =>
         NodeSeq.Empty
     }
