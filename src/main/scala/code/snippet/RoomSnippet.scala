@@ -3,16 +3,15 @@ package snippet
 
 import code.config.Site
 import code.model.resource.Room
-import net.liftweb.util.{CssSel, Helpers}
+import net.liftweb.util.{CssSel, Helpers, Props}
 import com.foursquare.rogue.LiftRogue
 import net.liftweb.http.js.JsCmd
 import net.liftweb.json.JsonAST.JValue
 import LiftRogue._
-import net.liftweb.util.Helpers
 import Helpers._
 import net.liftmodules.extras.SnippetHelper
 import net.liftweb.common.{Empty, Full}
-import net.liftweb.http.SHtml
+import net.liftweb.http.{S, SHtml}
 import net.liftweb.http.js.JsCmds._
 
 import scala.xml.NodeSeq
@@ -67,6 +66,7 @@ object RoomSnippet extends SortableSnippet[Room] with SnippetHelper {
       Site.espacio.currentValue match {
         case Full(space) =>
           <meta property="og:title" content={space.name.get} /> ++
+              <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
           <meta property="og:description" content={space.description.asHtmlCutted(250).text} /> ++
           (if(space.facebookPhoto.get.fileId.get.isEmpty)
             NodeSeq.Empty

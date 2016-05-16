@@ -58,8 +58,8 @@ class FileField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
   }
 
   def downloadUrl = downloadPath +"/"+  this.get.fileId.get+ "/"+ this.get.fileName.get
-  def fullUrl = Props.get("default.host", "http://localhost:8080") + downloadPath +"/" + this.get.fileId.get + "/" +
-    this.get.fileName.get
+
+  def fullUrl = Props.get("default.host", "http://localhost:8080") + {s"/file/preview/${this.get.fileId.get}"}
 
   def toEditForm = {
 

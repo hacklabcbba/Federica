@@ -5,11 +5,12 @@ import code.model.{Area, TransversalArea}
 import com.foursquare.rogue.LiftRogue
 import com.foursquare.rogue.LiftRogue._
 import net.liftweb.common.{Empty, Full}
+import net.liftweb.http.S
 import net.liftweb.http.js.JsCmd
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.json.JsonAST.JValue
 import net.liftweb.util.Helpers._
-import net.liftweb.util.{CssSel, Helpers}
+import net.liftweb.util.{CssSel, Helpers, Props}
 
 import scala.xml.NodeSeq
 
@@ -40,6 +41,7 @@ object TransversalAreaSnippet extends SortableSnippet[TransversalArea] {
       Site.areaTransversal.currentValue match {
         case Full(areaT) =>
           <meta property="og:title" content={areaT.name.get} /> ++
+              <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
           <meta property="og:description" content={areaT.description.asHtmlCutted(250).text} /> ++
           (if(areaT.facebookPhoto.get.fileId.get.isEmpty)
             NodeSeq.Empty

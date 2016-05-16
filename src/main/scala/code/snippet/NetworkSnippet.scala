@@ -8,8 +8,9 @@ import net.liftweb.common.{Box, Full}
 import net.liftweb.http.js.JsCmd
 import net.liftweb.json.JsonAST.JValue
 import LiftRogue._
-import net.liftweb.util.{CssSel, Helpers}
+import net.liftweb.util.{CssSel, Helpers, Props}
 import Helpers._
+import net.liftweb.http.S
 import net.liftweb.http.js.JsCmds._
 
 import scala.xml.NodeSeq
@@ -33,6 +34,7 @@ object NetworkSnippet extends SortableSnippet[Network] {
       Site.red.currentValue match {
         case Full(red) =>
           <meta property="og:title" content={red.name.get} /> ++
+              <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
           <meta property="og:description" content={red.description.asHtmlCutted(250).text} /> ++
           (if(red.facebookPhoto.get.fileId.get.isEmpty)
             NodeSeq.Empty
