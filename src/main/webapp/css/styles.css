@@ -420,6 +420,8 @@ body > header .navbar-black .search .search-box,
 body > .wrapper > header .navbar-black .search .search-box {
   height: 30px;
   margin-top: 10px;
+  border-color: white;
+  color: white;
 }
 body > header .navbar-black .search i,
 body > .wrapper > header .navbar-black .search i {
@@ -1599,5 +1601,19 @@ body > footer .footer-buttons a .title-link {
 }
 body > footer .social-suscribe {
   padding-top: 50px;
+}
+.fa-search:before {
+  color: white;
+}
+header .navbar-default:first-child .navbar-nav > .open > a,
+header .navbar-default:first-child .navbar-nav > .open > a:hover,
+header  .navbar-default:first-child .navbar-nav > .open > a:focus,
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+  background: #083b82;
 }
 /*# sourceMappingURL=style.css.map */

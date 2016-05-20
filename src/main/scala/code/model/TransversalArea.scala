@@ -2,18 +2,19 @@ package code.model
 
 import code.config.Site
 import code.lib.field._
-import code.lib.{WithUrl, SortableModel, BaseModel, RogueMetaRecord}
+import code.lib.{ContentSearchType, _}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.{BsonMetaRecord, BsonRecord, MongoRecord}
 import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField}
 import net.liftweb.record.field._
 import net.liftweb.util.FieldError
+import scala.xml.{Elem, Text}
+import net.liftweb.json.JsonDSL._
 
-import scala.xml.{Text, Elem}
 
-
-class TransversalArea private () extends MongoRecord[TransversalArea] with ObjectIdPk[TransversalArea] with BaseModel[TransversalArea] with SortableModel[TransversalArea] with WithUrl[TransversalArea] {
+class TransversalArea private () extends MongoRecord[TransversalArea] with ObjectIdPk[TransversalArea]
+  with BaseModel[TransversalArea] with SortableModel[TransversalArea] with WithUrl[TransversalArea] {
 
   override def meta = TransversalArea
 
@@ -104,5 +105,15 @@ object TransversalArea extends TransversalArea with RogueMetaRecord[TransversalA
 
   def findByUrl(url: String): Box[TransversalArea] = {
     TransversalArea.where(_.url eqs url).fetch(1).headOption
+  }
+
+  def updateElasticSearch(transversalArea: TransversalArea) = {
+    ElasticSearch.mongoindexSave(
+      ElasticSearch.elasticSearchPath ++ List(s"transversal_area_${transversalArea.id.get}"),
+      ("url" -> Site.areaTransversal.calcHref(transversalArea)) ~
+      ("name" -> transversalArea.name.get) ~
+      ("content" -> transversalArea.description.asHtml.text) ~
+      ("type" -> ContentSearchType.TransversalArea.id)
+    )
   }
 }

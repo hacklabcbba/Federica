@@ -5,8 +5,7 @@ package event
 import code.config.{DefaultRoles, Site}
 import code.lib.field._
 import code.lib.js.Bootstrap
-import code.lib.{BaseModel, RogueMetaRecord}
-import code.model.event.Activity
+import code.lib.{BaseModel, ContentSearchType, ElasticSearch, RogueMetaRecord}
 import code.model.resource.Room
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.{IdMemoizeTransform, S, SHtml}
@@ -18,12 +17,8 @@ import net.liftweb.mongodb.record.field._
 import net.liftweb.record.field._
 import net.liftweb.util.Helpers._
 import org.bson.types.ObjectId
-import net.liftweb.json.JsonDSL._
-import java.util.{Date, Locale}
-
-import code.model.BlogPost.process._
-
 import scala.xml.{Elem, NodeSeq}
+import net.liftweb.json.JsonDSL._
 
 class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with BaseModel[Event] {
 
@@ -517,6 +512,16 @@ object Event extends Event with RogueMetaRecord[Event] {
       _.whereOpt(process.toOption)(_.process eqs _.id.get),
       _.whereOpt(room.toOption)(_.rooms contains _.id.get))
       .orderDesc(_.id).fetch(3)
+  }
+
+  def updateElasticSearch(event: Event) = {
+    ElasticSearch.mongoindexSave(
+      ElasticSearch.elasticSearchPath ++ List(s"event_${event.id.get}"),
+      ("url" -> Site.frontendEvents.fullUrl) ~
+      ("name" -> event.name.get) ~
+      ("content" -> event.description.asHtml.text) ~
+      ("type" -> ContentSearchType.Event.id)
+    )
   }
 }
 

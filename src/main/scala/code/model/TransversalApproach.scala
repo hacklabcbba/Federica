@@ -1,13 +1,14 @@
 package code.model
 
 import code.config.Site
-import code.lib.field.{BsCkUnsecureTextareaField, BsStringField, BsCkTextareaField}
-import code.lib.{WithUrl, BaseModel, SortableModel, RogueMetaRecord}
+import code.lib.field.{BsCkTextareaField, BsCkUnsecureTextareaField, BsStringField}
+import code.lib.{ContentSearchType, _}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.ObjectIdPk
 import net.liftweb.record.field.{StringField, TextareaField}
+import net.liftweb.json.JsonDSL._
 
 class TransversalApproach private () extends MongoRecord[TransversalApproach] with ObjectIdPk[TransversalApproach] with BaseModel[TransversalApproach] with SortableModel[TransversalApproach] with WithUrl[TransversalApproach] {
 
@@ -43,5 +44,15 @@ object TransversalApproach extends TransversalApproach with RogueMetaRecord[Tran
 
   def findByUrl(url: String): Box[TransversalApproach] = {
     TransversalApproach.where(_.url eqs url).fetch(1).headOption
+  }
+
+  def updateElasticSearch(transversalApproach: TransversalApproach) = {
+    ElasticSearch.mongoindexSave(
+      ElasticSearch.elasticSearchPath ++ List(s"transversal_approach_${transversalApproach.id.get}"),
+      ("url" -> Site.enfoqueTransversal.calcHref(transversalApproach)) ~
+      ("name" -> transversalApproach.name.get) ~
+      ("content" -> transversalApproach.description.asHtml.text) ~
+      ("type" -> ContentSearchType.TransversalApproach.id)
+    )
   }
 }

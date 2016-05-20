@@ -1,17 +1,32 @@
 package code.lib
 
-import com.sun.deploy.net.{HttpRequest, HttpResponse}
-import net.liftweb.common.{Box, Full, Loggable, Logger}
+import code.model._
+import code.model.event.Event
+import code.model.network.Network
+import net.liftweb.common.{Loggable, Full, Box, Logger}
+import com.twitter.finagle.ServiceFactory
+import org.jboss.netty.handler.codec.http._
+import com.twitter.finagle.builder.ClientBuilder
+import com.twitter.finagle.http.Http
+import com.twitter.conversions.time._
 import net.liftweb.util.Props
+import util.JsonEnumeration
+import org.jboss.netty.buffer.ChannelBuffers
 import net.liftweb.json._
+import org.jboss.netty.util.CharsetUtil._
+import org.jboss.netty.handler.codec.http.HttpHeaders.Names._
+import org.jboss.netty.util.CharsetUtil
+import net.liftweb.http.NamedCometListener
+import xml.Text
+import com.twitter.util.Future
 
-object ElasticSearch extends Loggable {
+object ElasticSearch extends Logger {
 
-
+  lazy val elasticSearchPath = List("martadero", "content")
   val host= Props.get("elasticsearch.host")
   val port= Props.get("elasticsearch.port")
   val hostAndPort =   "%s:%s".format(host.openOr("localhost"), port.openOr("9200"))
-  logger.debug("host port is %s" format hostAndPort)
+  info("host port is %s" format hostAndPort)
 
   /**
     * You init a clientFactory only once and use it several times across your application
@@ -28,8 +43,17 @@ object ElasticSearch extends Loggable {
     * The path to the elastic search table (index) and the json to send
     */
   def mongoindexSave(path: List[String], json: JValue) ={
-    logger.debug("json is %s" format json)
+    info("json is ****** %s" format json)
     val req = requestBuilderPut(path, json)
+    sendToElastic(req)
+  }
+
+  /**
+    * The path to the elastic search table (index) and the json to delete
+    */
+  def mongoindexDelete(path: List[String], id: String) ={
+    info(s"Deleteting $id in $path")
+    val req = requestBuilderDelete(path ++ List(id.toString))
     sendToElastic(req)
   }
 
@@ -43,19 +67,19 @@ object ElasticSearch extends Loggable {
     val payload = ChannelBuffers.copiedBuffer( compact(render(json))  , UTF_8)
     val _path = path.mkString("/","/","")
     val request = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.PUT, _path)
-    request.setHeader("User-Agent", "Finagle 4.0.2 - Liftweb")
+    request.setHeader("User-Agent", "Finagle 6.5.2 - Liftweb")
     request.setHeader("Host", host.openOr("localhost")) // the ~(host) can be replace for host.openOr("default value here")
     request.setHeader(CONTENT_TYPE, "application/json")
     request.setHeader(CONNECTION, "keep-alive")
     request.setHeader(CONTENT_LENGTH, String.valueOf(payload.readableBytes()));
     request.setContent(payload)
-    logger.debug("\nSending request:\n%s".format(request))
-    logger.debug("\nSending body:\n%s".format(request.getContent.toString(CharsetUtil.UTF_8)))
+    info("\nSending request:\n%s".format(request))
+    info("\nSending body:\n%s".format(request.getContent.toString(CharsetUtil.UTF_8)))
     request
   }
 
-  def mongoindexSearch(json: JValue): Future[HttpResponse] ={
-    val req = requestBuilderGet(List("example", "post", "_search"), json)
+  def mongoindexSearch(path: List[String], json: JValue): Future[HttpResponse] ={
+    val req = requestBuilderGet(path ++ List("_search"), json)
     sendToElastic(req)
   }
 
@@ -74,8 +98,8 @@ object ElasticSearch extends Loggable {
     request.setHeader(CONTENT_TYPE, "application/x-www-form-urlencoded")
     request.setHeader(CONTENT_LENGTH, String.valueOf(payload.readableBytes()));
     request.setContent(payload)
-    logger.debug("Sending request:\n%s".format(request))
-    logger.debug("Sending body:\n%s".format(request.getContent.toString(CharsetUtil.UTF_8)))
+    info("Sending request:\n%s".format(request))
+    info("Sending body:\n%s".format(request.getContent.toString(CharsetUtil.UTF_8)))
     request
   }
 
@@ -89,8 +113,8 @@ object ElasticSearch extends Loggable {
     val request = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.DELETE, _path)
     request.setHeader("User-Agent", "Finagle 4.0.2 - Liftweb")
     request.setHeader("Host", host.openOr("localhost"))
-    logger.debug("Sending request:\n%s".format(request))
-    logger.debug("Sending body:\n%s".format(request.getContent.toString(CharsetUtil.UTF_8)))
+    info("Sending request:\n%s".format(request))
+    info("Sending body:\n%s".format(request.getContent.toString(CharsetUtil.UTF_8)))
     request
   }
 
@@ -101,20 +125,17 @@ object ElasticSearch extends Loggable {
     */
   def sendToElastic(request: DefaultHttpRequest): Future[HttpResponse] ={
     val client = clientFactory.apply()()
-    logger.debug("Request to send is %s" format request)
+    info("Request to send is %s" format request)
     val httpResponse = client(request)
 
     httpResponse.onSuccess{
       response =>
-        logger.debug("Received response: " + response)
-        client.release()
+        info("Received response: " + response)
+        client.close()
         Future.Done
     }.onFailure{err =>
-      logger.error(err)
-      //NamedCometListener.getDispatchersFor(Full("global")).foreach{
-      //  actor => actor.map(_ ! errorMessage("error", Text("The search engine is offline, please restart ElasticSearch.")) )
-      //}
-      client.release()
+      error(err)
+      client.close()
       Future.Done
     }
   }
@@ -129,5 +150,71 @@ object ElasticSearch extends Loggable {
     sendToElastic(req)
   }
 
+  def updateAllIndeces() = {
 
+    /*Event.findAll.foreach(e => {
+      Event.updateElasticSearch(e)
+    })
+
+    Network.findAll.foreach(n => {
+      Network.updateElasticSearch(n)
+    })
+
+    Page.findAll.foreach(p => {
+      Page.updateElasticSearch(p)
+    })
+
+    ActionLine.findAll.foreach(a => {
+      ActionLine.updateElasticSearch(a)
+    })
+
+    Area.findAll.foreach(a => {
+      Area.updateElasticSearch(a)
+    })*/
+
+    BlogPost.findAll.foreach(b => {
+      BlogPost.updateElasticSearch(b)
+    })
+
+    /*Call.findAll.foreach(c => {
+      Call.updateElasticSearch(c)
+    })
+
+    Process.findAll.foreach(p => {
+      Process.updateElasticSearch(p)
+    })
+
+    Service.findAll.foreach(s => {
+      Service.updateElasticSearch(s)
+    })
+
+    TransversalApproach.findAll.foreach(t => {
+      TransversalApproach.updateElasticSearch(t)
+    })
+
+    TransversalArea.findAll.foreach(t => {
+      TransversalArea.updateElasticSearch(t)
+    })
+
+    Value.findAll.foreach(v => {
+      Value.updateElasticSearch(v)
+    })*/
+  }
+}
+
+object ContentSearchType extends JsonEnumeration {
+  type ContentSearchType = Value
+  val Event = Value("Event")
+  val Network = Value("Network")
+  val Page = Value("Page")
+  val ActionLine = Value("ActionLine")
+  val Area = Value("Area")
+  val Post = Value("Post")
+  val Call = Value("Call")
+  val Process = Value("Process")
+  val Program = Value("Program")
+  val Service = Value("Service")
+  val TransversalApproach = Value("TransversalApproach")
+  val TransversalArea = Value("TransversalArea")
+  val ValueM = Value("Value")
 }

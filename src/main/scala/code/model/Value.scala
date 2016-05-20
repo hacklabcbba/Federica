@@ -2,7 +2,7 @@ package code.model
 
 import code.config.Site
 import code.lib.field.{BsCkUnsecureTextareaField, BsStringField, BsTextareaField, FileField}
-import code.lib.{BaseModel, RogueMetaRecord, SortableModel, WithUrl}
+import code.lib.{ContentSearchType, _}
 import code.model.event.Event.image._
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
@@ -10,7 +10,7 @@ import net.liftweb.mongodb.record.{BsonMetaRecord, BsonRecord, MongoRecord}
 import net.liftweb.mongodb.record.field.{BsonRecordListField, ObjectIdPk, ObjectIdRefField}
 import net.liftweb.record.LifecycleCallbacks
 import net.liftweb.record.field.{StringField, TextareaField}
-
+import net.liftweb.json.JsonDSL._
 import scala.xml.NodeSeq
 
 
@@ -162,6 +162,16 @@ object Value extends Value with RogueMetaRecord[Value] {
 
   def findByUrl(url: String): Box[Value] = {
     Value.where(_.url eqs url).fetch(1).headOption
+  }
+
+  def updateElasticSearch(value: Value) = {
+    ElasticSearch.mongoindexSave(
+      ElasticSearch.elasticSearchPath ++ List(s"value_${value.id.get}"),
+      ("url" -> Site.principio.calcHref(value)) ~
+      ("name" -> value.name.get) ~
+      ("content" -> value.description.asHtml.text) ~
+      ("type" -> ContentSearchType.Process.id)
+    )
   }
 }
 

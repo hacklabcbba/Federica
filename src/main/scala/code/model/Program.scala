@@ -1,14 +1,14 @@
 package code.model
 
 import code.config.Site
-import code.lib.{WithUrl, SortableModel, BaseModel, RogueMetaRecord}
+import code.lib.{ContentSearchType, _}
 import code.lib.field._
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
-import net.liftweb.mongodb.record.field.{ObjectIdRefField, ObjectIdPk}
+import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField}
 import net.liftweb.record.field.{StringField, TextareaField}
-
+import net.liftweb.json.JsonDSL._
 import scala.xml.Elem
 
 
@@ -76,5 +76,15 @@ object Program extends Program with RogueMetaRecord[Program] {
 
   def findByUrl(url: String): Box[Program] = {
     Program.where(_.url eqs url).fetch(1).headOption
+  }
+
+  def updateElasticSearch(program: Program) = {
+    ElasticSearch.mongoindexSave(
+      ElasticSearch.elasticSearchPath ++ List(s"program_${program.id.get}"),
+      ("url" -> Site.programa.calcHref(program)) ~
+      ("name" -> program.name.get) ~
+      ("content" -> program.description.asHtml.text) ~
+      ("type" -> ContentSearchType.Process.id)
+    )
   }
 }

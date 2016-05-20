@@ -3,7 +3,7 @@ package model
 
 import code.config.Site
 import code.lib.field._
-import code.lib.{SortableModel, BaseModel, RogueMetaRecord}
+import code.lib._
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.js.JsCmds.Run
 import net.liftweb.http.js.{HtmlFixer, JsCmd}
@@ -14,6 +14,7 @@ import net.liftweb.record.field.EnumField
 import net.liftweb.util.Helpers._
 
 import scala.xml.{Elem, Text}
+import net.liftweb.json.JsonDSL._
 
 class Service private () extends MongoRecord[Service] with ObjectIdPk[Service] with BaseModel[Service] with SortableModel[Service] {
 
@@ -160,6 +161,16 @@ object Service extends Service with RogueMetaRecord[Service] {
 
   def findAllUPAs: List[Service] = {
     Service.where(_.serviceType eqs ServiceType.UPA).fetch()
+  }
+
+  def updateElasticSearch(service: Service) = {
+    ElasticSearch.mongoindexSave(
+      ElasticSearch.elasticSearchPath ++ List(s"service_${service.id.get}"),
+      ("url" -> Site.servicio.calcHref(service)) ~
+      ("name" -> service.name.get) ~
+      ("content" -> service.description.asHtml.text) ~
+      ("type" -> ContentSearchType.Service.id)
+    )
   }
 }
 

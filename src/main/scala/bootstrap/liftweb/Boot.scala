@@ -4,6 +4,7 @@ import java.util.Locale
 import javax.mail.internet.MimeMessage
 
 import code.config._
+import code.lib.ElasticSearch
 import code.model.{SystemUser, User}
 import net.liftmodules.FoBo
 import net.liftmodules.extras.{Gravatar, LiftExtras}
@@ -23,6 +24,8 @@ class Boot extends Loggable {
 
     // init mongodb
     MongoConfig.init()
+    FoBo.InitParam.ToolKit=FoBo.AngularJS141
+    FoBo.InitParam.ToolKit=FoBo.AJSNGGrid207
     FoBo.init()
 
     // init auth-mongo
@@ -43,6 +46,9 @@ class Boot extends Loggable {
 
     // config an email sender
     SmtpMailer.init
+
+    //Elasticsearch
+    ElasticSearch.updateAllIndeces
 
     // where to search snippet
     LiftRules.addToPackages("code")

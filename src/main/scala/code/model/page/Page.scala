@@ -4,13 +4,14 @@ package model
 import code.config.Site
 import code.lib.field._
 import code.lib.js.Bootstrap
-import code.lib.{WithUrl, BaseModel, RogueMetaRecord}
+import code.lib._
 import net.liftweb.common.Box
 import net.liftweb.http.js.JsCmds.RedirectTo
-import net.liftweb.http.{IdMemoizeTransform, SHtml, S}
+import net.liftweb.http.{IdMemoizeTransform, S, SHtml}
 import net.liftweb.mongodb.record.MongoRecord
-import net.liftweb.mongodb.record.field.{ObjectIdRefListField, ObjectIdPk}
-import net.liftweb.util.{Helpers, CssSel}
+import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefListField}
+import net.liftweb.util.{CssSel, Helpers}
+import net.liftweb.json.JsonDSL._
 
 import scala.xml.NodeSeq
 import Helpers._
@@ -82,6 +83,16 @@ class Page private () extends MongoRecord[Page] with ObjectIdPk[Page] with BaseM
         </div>
       </div>
     </div>
+  }
+
+  def updateElasticSearch(page: Page) = {
+    ElasticSearch.mongoindexSave(
+      ElasticSearch.elasticSearchPath ++ List(s"page_${page.id.get}"),
+      ("url" -> Site.pagina.calcHref(page)) ~
+      ("name" -> page.name.get) ~
+      ("content" -> page.body.asHtml.text) ~
+      ("type" -> ContentSearchType.Page.id)
+    )
   }
 
   def urlString: String = Site.pagina.calcHref(this)

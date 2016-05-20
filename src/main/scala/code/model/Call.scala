@@ -1,7 +1,7 @@
 package code.model
 
 import code.config.Site
-import code.lib.{BaseModel, Helper, RogueMetaRecord}
+import code.lib._
 import code.lib.field.{BsCkTextareaField, DatePickerField, FileField, TimePickerField}
 import com.foursquare.rogue.LiftRogue
 import net.liftweb.common.{Box, Full}
@@ -195,5 +195,15 @@ object Call extends Call with RogueMetaRecord[Call] {
       _.whereOpt(transversalApproach.toOption)(_.transversalApproach eqs _.id.get),
       _.whereOpt(process.toOption)(_.process eqs _.id.get))
       .orderDesc(_.id).fetch(3)
+  }
+
+  def updateElasticSearch(call: Call) = {
+    ElasticSearch.mongoindexSave(
+      ElasticSearch.elasticSearchPath ++ List(s"call_${call.id.get}"),
+      ("url" -> Site.convocatoria.calcHref(call)) ~
+      ("name" -> call.name.get) ~
+      ("content" -> call.description.asHtml.text) ~
+      ("type" -> ContentSearchType.Call.id)
+    )
   }
 }

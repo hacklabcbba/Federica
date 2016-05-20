@@ -704,6 +704,8 @@ object Site extends Locs {
     backendWidgets.menu,
     backendMenus.menu))
 
+  val searchPage = MenuLoc(Menu.i("Buscar") / "searchpage")
+
   // Salas
 
   // Lineas de accion
@@ -763,7 +765,8 @@ object Site extends Locs {
     areasTransversales.menu,
     lineasDeAccion.menu,
     enfoquesTransversales.menu,
-    contacto.menu)
+    contacto.menu,
+    searchPage.menu)
 
   /*
    * Return a SiteMap needed for Lift
