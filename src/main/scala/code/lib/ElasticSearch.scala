@@ -152,7 +152,7 @@ object ElasticSearch extends Logger {
 
   def updateAllIndeces() = {
 
-    /*Event.findAll.foreach(e => {
+    Event.findAll.foreach(e => {
       Event.updateElasticSearch(e)
     })
 
@@ -170,13 +170,13 @@ object ElasticSearch extends Logger {
 
     Area.findAll.foreach(a => {
       Area.updateElasticSearch(a)
-    })*/
+    })
 
     BlogPost.findAll.foreach(b => {
       BlogPost.updateElasticSearch(b)
     })
 
-    /*Call.findAll.foreach(c => {
+    Call.findAll.foreach(c => {
       Call.updateElasticSearch(c)
     })
 
@@ -198,23 +198,6 @@ object ElasticSearch extends Logger {
 
     Value.findAll.foreach(v => {
       Value.updateElasticSearch(v)
-    })*/
+    })
   }
-}
-
-object ContentSearchType extends JsonEnumeration {
-  type ContentSearchType = Value
-  val Event = Value("Event")
-  val Network = Value("Network")
-  val Page = Value("Page")
-  val ActionLine = Value("ActionLine")
-  val Area = Value("Area")
-  val Post = Value("Post")
-  val Call = Value("Call")
-  val Process = Value("Process")
-  val Program = Value("Program")
-  val Service = Value("Service")
-  val TransversalApproach = Value("TransversalApproach")
-  val TransversalArea = Value("TransversalArea")
-  val ValueM = Value("Value")
 }

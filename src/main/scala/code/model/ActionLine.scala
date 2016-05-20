@@ -2,7 +2,7 @@ package code.model
 
 import code.config.Site
 import code.lib.field.{BsCkTextareaField, BsCkUnsecureTextareaField, BsStringField}
-import code.lib.{ContentSearchType, _}
+import code.lib._
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
@@ -51,8 +51,7 @@ object ActionLine extends ActionLine with RogueMetaRecord[ActionLine] {
       ElasticSearch.elasticSearchPath ++ List(s"action_line_${actionLine.id.get}"),
       ("url" -> Site.lineaDeAccion.calcHref(actionLine)) ~
       ("name" -> actionLine.name.get) ~
-      ("content" -> actionLine.description.asHtml.text) ~
-      ("type" -> ContentSearchType.ActionLine.id)
+      ("content" -> actionLine.description.asHtml.text)
     )
   }
 }

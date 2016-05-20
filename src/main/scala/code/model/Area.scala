@@ -122,8 +122,7 @@ object Area extends Area with RogueMetaRecord[Area] {
       ElasticSearch.elasticSearchPath ++ List(s"area_${area.id.get}"),
       ("url" -> Site.area.calcHref(area)) ~
       ("name" -> area.name.get) ~
-      ("content" -> area.description.asHtml.text) ~
-      ("type" -> ContentSearchType.Area.id)
+      ("content" -> area.description.asHtml.text)
     )
   }
 }

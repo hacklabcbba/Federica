@@ -4,7 +4,7 @@ package network
 
 import code.config.Site
 import code.lib.field.{BsCkTextareaField, BsCkUnsecureTextareaField, BsStringField}
-import code.lib.{ContentSearchType, _}
+import code.lib._
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
@@ -70,8 +70,7 @@ object Network extends Network with RogueMetaRecord[Network] {
       ElasticSearch.elasticSearchPath ++ List(s"network_${network.id.get}"),
       ("url" -> Site.red.calcHref(network)) ~
       ("name" -> network.name.get) ~
-      ("content" -> network.description.asHtml.text) ~
-      ("type" -> ContentSearchType.Network.id)
+      ("content" -> network.description.asHtml.text)
     )
   }
 }

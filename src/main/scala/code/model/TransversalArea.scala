@@ -2,7 +2,7 @@ package code.model
 
 import code.config.Site
 import code.lib.field._
-import code.lib.{ContentSearchType, _}
+import code.lib._
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.{BsonMetaRecord, BsonRecord, MongoRecord}
@@ -112,8 +112,7 @@ object TransversalArea extends TransversalArea with RogueMetaRecord[TransversalA
       ElasticSearch.elasticSearchPath ++ List(s"transversal_area_${transversalArea.id.get}"),
       ("url" -> Site.areaTransversal.calcHref(transversalArea)) ~
       ("name" -> transversalArea.name.get) ~
-      ("content" -> transversalArea.description.asHtml.text) ~
-      ("type" -> ContentSearchType.TransversalArea.id)
+      ("content" -> transversalArea.description.asHtml.text)
     )
   }
 }

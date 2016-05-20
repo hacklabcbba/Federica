@@ -90,8 +90,7 @@ class Page private () extends MongoRecord[Page] with ObjectIdPk[Page] with BaseM
       ElasticSearch.elasticSearchPath ++ List(s"page_${page.id.get}"),
       ("url" -> Site.pagina.calcHref(page)) ~
       ("name" -> page.name.get) ~
-      ("content" -> page.body.asHtml.text) ~
-      ("type" -> ContentSearchType.Page.id)
+      ("content" -> page.body.asHtml.text)
     )
   }
 

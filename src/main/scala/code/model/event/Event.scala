@@ -5,7 +5,7 @@ package event
 import code.config.{DefaultRoles, Site}
 import code.lib.field._
 import code.lib.js.Bootstrap
-import code.lib.{BaseModel, ContentSearchType, ElasticSearch, RogueMetaRecord}
+import code.lib.{BaseModel, ElasticSearch, RogueMetaRecord}
 import code.model.resource.Room
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.{IdMemoizeTransform, S, SHtml}
@@ -519,8 +519,7 @@ object Event extends Event with RogueMetaRecord[Event] {
       ElasticSearch.elasticSearchPath ++ List(s"event_${event.id.get}"),
       ("url" -> Site.frontendEvents.fullUrl) ~
       ("name" -> event.name.get) ~
-      ("content" -> event.description.asHtml.text) ~
-      ("type" -> ContentSearchType.Event.id)
+      ("content" -> event.description.asHtml.text)
     )
   }
 }

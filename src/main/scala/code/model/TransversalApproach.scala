@@ -2,7 +2,7 @@ package code.model
 
 import code.config.Site
 import code.lib.field.{BsCkTextareaField, BsCkUnsecureTextareaField, BsStringField}
-import code.lib.{ContentSearchType, _}
+import code.lib._
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
@@ -51,8 +51,7 @@ object TransversalApproach extends TransversalApproach with RogueMetaRecord[Tran
       ElasticSearch.elasticSearchPath ++ List(s"transversal_approach_${transversalApproach.id.get}"),
       ("url" -> Site.enfoqueTransversal.calcHref(transversalApproach)) ~
       ("name" -> transversalApproach.name.get) ~
-      ("content" -> transversalApproach.description.asHtml.text) ~
-      ("type" -> ContentSearchType.TransversalApproach.id)
+      ("content" -> transversalApproach.description.asHtml.text)
     )
   }
 }

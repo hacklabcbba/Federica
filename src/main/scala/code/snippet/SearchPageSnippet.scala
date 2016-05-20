@@ -6,16 +6,16 @@ import net.liftmodules.extras.NgJE._
 import net.liftmodules.extras.NgJsCmds._
 import net.liftmodules.extras.{JsExtras, SnippetHelper}
 import net.liftweb.common._
-import net.liftweb.http.S
+import net.liftweb.http.{S, SHtml}
 import net.liftweb.http.js.JE.{AnonFunc, JsObj}
 import net.liftweb.http.js.JsCmd
-import net.liftweb.http.js.JsCmds.JsReturn
+import net.liftweb.http.js.JsCmds.{JsReturn, Run}
 import net.liftweb.json._
 import net.liftweb.json.JsonDSL._
 import net.liftweb.json.{NoTypeHints, Serialization}
 import net.liftweb.util.Props
-import scala.xml.NodeSeq
 
+import scala.xml.NodeSeq
 import net.liftweb.util.Helpers._
 import java.nio.charset.Charset
 

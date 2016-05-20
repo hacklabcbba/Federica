@@ -2,7 +2,7 @@ package code.model
 
 import code.config.Site
 import code.lib.field.{BsCkTextareaField, BsCkUnsecureTextareaField, BsStringField}
-import code.lib.{ContentSearchType, _}
+import code.lib._
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
@@ -121,8 +121,7 @@ object Process extends Process with RogueMetaRecord[Process] {
       ElasticSearch.elasticSearchPath ++ List(s"process_${process.id.get}"),
       ("url" -> Site.proceso.calcHref(process)) ~
       ("name" -> process.name.get) ~
-      ("content" -> process.description.asHtml.text) ~
-      ("type" -> ContentSearchType.Process.id)
+      ("content" -> process.description.asHtml.text)
     )
   }
 }

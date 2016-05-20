@@ -1616,4 +1616,5 @@ header  .navbar-default:first-child .navbar-nav > .open > a:focus,
 .pagination > .active > span:focus {
   background: #083b82;
 }
+.highlight { font-weight: bold }
 /*# sourceMappingURL=style.css.map */

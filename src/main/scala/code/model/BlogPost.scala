@@ -414,8 +414,7 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
       ElasticSearch.elasticSearchPath ++ List(s"post_${blogPost.id.get}"),
       ("url" -> Site.entradaBlog.calcHref(blogPost)) ~
       ("name" -> blogPost.name.get) ~
-      ("content" -> blogPost.content.asHtml.text) ~
-      ("type" -> ContentSearchType.Post.id)
+      ("content" -> blogPost.content.asHtml.text)
     )
   }
 }

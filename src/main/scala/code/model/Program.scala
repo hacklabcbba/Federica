@@ -1,7 +1,7 @@
 package code.model
 
 import code.config.Site
-import code.lib.{ContentSearchType, _}
+import code.lib._
 import code.lib.field._
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
@@ -83,8 +83,7 @@ object Program extends Program with RogueMetaRecord[Program] {
       ElasticSearch.elasticSearchPath ++ List(s"program_${program.id.get}"),
       ("url" -> Site.programa.calcHref(program)) ~
       ("name" -> program.name.get) ~
-      ("content" -> program.description.asHtml.text) ~
-      ("type" -> ContentSearchType.Process.id)
+      ("content" -> program.description.asHtml.text)
     )
   }
 }

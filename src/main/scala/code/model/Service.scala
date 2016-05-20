@@ -168,8 +168,7 @@ object Service extends Service with RogueMetaRecord[Service] {
       ElasticSearch.elasticSearchPath ++ List(s"service_${service.id.get}"),
       ("url" -> Site.servicio.calcHref(service)) ~
       ("name" -> service.name.get) ~
-      ("content" -> service.description.asHtml.text) ~
-      ("type" -> ContentSearchType.Service.id)
+      ("content" -> service.description.asHtml.text)
     )
   }
 }

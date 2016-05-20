@@ -202,8 +202,7 @@ object Call extends Call with RogueMetaRecord[Call] {
       ElasticSearch.elasticSearchPath ++ List(s"call_${call.id.get}"),
       ("url" -> Site.convocatoria.calcHref(call)) ~
       ("name" -> call.name.get) ~
-      ("content" -> call.description.asHtml.text) ~
-      ("type" -> ContentSearchType.Call.id)
+      ("content" -> call.description.asHtml.text)
     )
   }
 }

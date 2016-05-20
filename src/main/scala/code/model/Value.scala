@@ -2,7 +2,7 @@ package code.model
 
 import code.config.Site
 import code.lib.field.{BsCkUnsecureTextareaField, BsStringField, BsTextareaField, FileField}
-import code.lib.{ContentSearchType, _}
+import code.lib._
 import code.model.event.Event.image._
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
@@ -169,8 +169,7 @@ object Value extends Value with RogueMetaRecord[Value] {
       ElasticSearch.elasticSearchPath ++ List(s"value_${value.id.get}"),
       ("url" -> Site.principio.calcHref(value)) ~
       ("name" -> value.name.get) ~
-      ("content" -> value.description.asHtml.text) ~
-      ("type" -> ContentSearchType.Process.id)
+      ("content" -> value.description.asHtml.text)
     )
   }
 }

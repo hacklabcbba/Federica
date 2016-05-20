@@ -51,6 +51,11 @@
                 $scope.count = data.count;
                 $scope.items = data.items;
             });
+            var texts = $scope.searchText.split(" ");
+            for(var i = 0; i < texts.length; i += 1) {
+                javascript:void($('p').highlight(texts[i]));
+            }
+
         });
 
         // init
