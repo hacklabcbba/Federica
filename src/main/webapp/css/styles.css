@@ -1605,16 +1605,4 @@ body > footer .social-suscribe {
 .fa-search:before {
   color: white;
 }
-header .navbar-default:first-child .navbar-nav > .open > a,
-header .navbar-default:first-child .navbar-nav > .open > a:hover,
-header  .navbar-default:first-child .navbar-nav > .open > a:focus,
-.pagination > .active > a,
-.pagination > .active > span,
-.pagination > .active > a:hover,
-.pagination > .active > span:hover,
-.pagination > .active > a:focus,
-.pagination > .active > span:focus {
-  background: #083b82;
-}
-.highlight { font-weight: bold }
 /*# sourceMappingURL=style.css.map */

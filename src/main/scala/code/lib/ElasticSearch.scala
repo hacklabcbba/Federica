@@ -73,8 +73,8 @@ object ElasticSearch extends Logger {
     request.setHeader(CONNECTION, "keep-alive")
     request.setHeader(CONTENT_LENGTH, String.valueOf(payload.readableBytes()));
     request.setContent(payload)
-    //info("\nSending request:\n%s".format(request))
-    //info("\nSending body:\n%s".format(request.getContent.toString(CharsetUtil.UTF_8)))
+    info("\nSending request:\n%s".format(request))
+    info("\nSending body:\n%s".format(request.getContent.toString(CharsetUtil.UTF_8)))
     request
   }
 
@@ -98,8 +98,8 @@ object ElasticSearch extends Logger {
     request.setHeader(CONTENT_TYPE, "application/x-www-form-urlencoded")
     request.setHeader(CONTENT_LENGTH, String.valueOf(payload.readableBytes()));
     request.setContent(payload)
-    //info("Sending request:\n%s".format(request))
-    //info("Sending body:\n%s".format(request.getContent.toString(CharsetUtil.UTF_8)))
+    info("Sending request:\n%s".format(request))
+    info("Sending body:\n%s".format(request.getContent.toString(CharsetUtil.UTF_8)))
     request
   }
 
@@ -113,8 +113,8 @@ object ElasticSearch extends Logger {
     val request = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.DELETE, _path)
     request.setHeader("User-Agent", "Finagle 4.0.2 - Liftweb")
     request.setHeader("Host", host.openOr("localhost"))
-    //info("Sending request:\n%s".format(request))
-    //info("Sending body:\n%s".format(request.getContent.toString(CharsetUtil.UTF_8)))
+    info("Sending request:\n%s".format(request))
+    info("Sending body:\n%s".format(request.getContent.toString(CharsetUtil.UTF_8)))
     request
   }
 
