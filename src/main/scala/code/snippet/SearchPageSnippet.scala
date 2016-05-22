@@ -1,6 +1,6 @@
 package code.snippet
 
-import code.lib.ElasticSearch
+import code.lib.{ElasticSearch, Helper}
 import com.twitter.util.{Await, Duration, Future}
 import net.liftmodules.extras.NgJE._
 import net.liftmodules.extras.NgJsCmds._

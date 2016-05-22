@@ -5,7 +5,7 @@ package event
 import code.config.{DefaultRoles, Site}
 import code.lib.field._
 import code.lib.js.Bootstrap
-import code.lib.{BaseModel, ElasticSearch, RogueMetaRecord}
+import code.lib.{BaseModel, ElasticSearch, Helper, RogueMetaRecord}
 import code.model.resource.Room
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.{IdMemoizeTransform, S, SHtml}
@@ -17,6 +17,7 @@ import net.liftweb.mongodb.record.field._
 import net.liftweb.record.field._
 import net.liftweb.util.Helpers._
 import org.bson.types.ObjectId
+
 import scala.xml.{Elem, NodeSeq}
 import net.liftweb.json.JsonDSL._
 
