@@ -1,5 +1,10 @@
 mail.smtp.host=smtp.gmail.com
-mail.smtp.user=
-mail.smtp.pass=
+mail.smtp.user=federica@martadero.org
+mail.smtp.pass=m@rtader0.+
 
 mongo.default.port=27017
+
+recaptcha.publicKey=6LeVyh0TAAAAAGKwPpsDkV5lBl9dqtK_cMJjYHrI
+recaptcha.privateKey=6LeVyh0TAAAAANOFZHfUp-MNzJNK309ZyIIujGR_
+
+default.host=http://localhost:8080

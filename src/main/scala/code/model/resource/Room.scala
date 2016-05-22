@@ -65,7 +65,6 @@ class Room private() extends Resource[Room] {
     }
   }
 
-
   object isResidence extends BooleanField(this, false) {
     override def displayName = "Residencia"
   }

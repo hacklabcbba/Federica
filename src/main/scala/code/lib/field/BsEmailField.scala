@@ -30,6 +30,7 @@ trait BsEmailTypedField extends EmailTypedField with SnippetHelper {
                   name={funcName}
                   value={valueBox openOr ""}
                   tabindex={tabIndex.toString}
+                  placeholder="Introduce tu email"
                   class="form-control" /> % autofocus(isAutoFocus)}
         </div>
     }

@@ -13,6 +13,7 @@
         <h3>Iniciar sesión</h3>
         <div class="padding-xs">
             <span data-alertid="login_err" form-alert=""></span>
+            <span data-alertid="login_not" form-alert=""></span>
             <form data-lift="form.ajax">
                 <div class="input-container">
                     <input type="email" class="form-control" placeholder="Correo electrónico" id="id_email" name="email" />
@@ -35,7 +36,7 @@
                 <a href="/register" class="btn login-button form-control">Crear cuenta</a>
             </div>
             <div>
-                <a href="/recover/password"><span class="text-danger">¿Has olvidado tu contraseña?</span></a>
+                <a href="/recovery/email"><span class="text-danger">¿Has olvidado tu contraseña?</span></a>
             </div>
         </div>
     </div>

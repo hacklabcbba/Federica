@@ -62,10 +62,10 @@
 
 /*----/----/ $TAGS */
  a {
-  color: #FF9A00;
+  color: #D58530;
   &:hover {
-   color: #FF9A00;
-   text-decoration: none;
+   color: #D58530;
+   text-decoration: underline;
   }
  }
 
@@ -80,15 +80,16 @@
  h5 a,
  h5 a:hover,
  h6 a,
- h6 a:hover,{
+ h6 a:hover{
   color: #222;
+  text-decoration: none !important;
  }
 
  p a {
   &:hover {
    text-decoration: underline;
   }
-  text-decoration: underline;
+  text-decoration: none;
  }
 
  body {
@@ -103,8 +104,14 @@
   text-transform: uppercase;
  }
 
+ .checkbox-info {
+   width: 1em;
+   height: 1em;
+ }
+
+
 h2 a, h3 a, h4 a {
- color: #FF9A00;
+ color: #333;
 }
 
  p {
@@ -375,10 +382,12 @@ h2 a, h3 a, h4 a {
  }
  &.events-here {
   font-size: 13px;
+  padding-top: 30px;
   .title {
    font-size:16px;
-   margin-top: 0px;
+   margin-top: 25px;
    margin-bottom: 3px;
+
   }
   .info {
    font-size: 12px;
@@ -932,6 +941,150 @@ body > .wrapper > header {
     }
    }
   }
+ }/*----/----/ $PAGE */
+ .page {
+  main {
+   .events-container {
+    .menu-categories {
+     position: relative;
+     .btn-filter {
+      background: #000 none repeat scroll 0% 0%;
+      position: absolute;
+      padding: 15px 10.5px;
+      right: -130px;
+      top: 0px;
+      color: #FFF;
+      text-transform: uppercase;
+      font-family: "HelveticaBd";
+      line-height: 0;
+      z-index: 2;
+      font-size: 12px;
+     }
+     .dropdown-menu {
+      top: 42px;
+      left: auto;
+      right: -130px;
+      width: 125px;
+      min-width: 0;
+      li {
+       padding: 5px 10px;
+       a {
+        padding: 0;
+        color: #fff;
+        text-transform: uppercase;
+        font-size: 11px;
+        &:hover,
+        &:focus {
+         background: none;
+        }
+       }
+      }
+     }
+    }
+
+    h3 {
+     font-size: 24px;
+    }
+    .events {
+     *[class*="col"]{
+      overflow: hidden;
+      position: relative;
+      img {
+       position: absolute;
+       top: 0;
+       left: 0;
+       z-index: -1;
+      }
+     }
+     .event {
+      transition: all 0.2s ease 0.2s;
+      background: rgba(23,23,23,0.6);
+      height: 275px;
+      &:hover {
+       background: none;
+      }
+      &:nth-child(2n) {
+       border-right: none;
+      }
+      &.feature {
+       height: 550px;
+       .tag-feature {
+        position: absolute;
+        right: 15px;
+        top:45px;
+        border: 3px solid #fff;
+        font-family: "HelveticaBd";
+        > div.tag-feature-title {
+         background: #fff;
+         color:#000;
+         text-transform: uppercase;
+         font-size: 13px;
+        }
+        > div.tag-feature-body {
+         font-size: 80px;
+         text-align: center;
+         color: #fff;
+         line-height: 0.9;
+         padding-bottom: 15px;
+        }
+       }
+      }
+     }
+     *[class*="col"] {
+      .category {
+       background: #fff;
+       display: inline-block;
+       font-family: "HelveticaBd";
+       font-size: 14px;
+       line-height: 0;
+       padding: 15px 10px;
+       text-transform: uppercase;
+       &.letrasyliteratura {
+        background: #c4cfb5;
+       }
+       &.interaccionsocial {
+        background: #ff7200;
+       }
+       &.audiovisual{
+        background:#836981;
+       }
+       &.musica{
+        background:#efdeb4;
+       }
+       &.artesvisuales {
+        background: #e89cdb;
+       }
+       &.artesescenicas {
+        background: #95B2D2;
+       }
+       &.arquitectura {
+        background:#f3bc3a;
+       }
+      }
+      .events-summary {
+       bottom: 0;
+       position: absolute;
+       padding-bottom: 10px;
+       width: 95%;
+       a, p {
+        color: #fff;
+       }
+       .btn {
+        font-family: "HelveticaBd";
+        font-size: 15px;
+        text-transform: lowercase;
+       }
+      }
+     }
+    }
+    .more-events {
+     margin: 20px 0px;
+     font-family: "HelveticaBd";
+     font-size: 15px;
+     text-transform: uppercase;
+    }
+   }
+  }
  }
 
 /*----/----/ $EVENTS */
@@ -1099,11 +1252,16 @@ body > .wrapper > header {
   }
   .postblog-date {
    font-size: 13px;
+   margin-left: 15px !important;
   }
  }
  .blog-article {
   margin-bottom: 15px;
  }
+}
+
+.list-tags {
+ margin-left: 15px !important;
 }
 
 /*----/----/----/ $POST-BLOG */

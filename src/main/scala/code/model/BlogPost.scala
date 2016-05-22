@@ -2,18 +2,19 @@ package code
 package model
 
 import code.config.Site
-import code.lib.{BaseModel, RogueMetaRecord}
+import code.lib.{BaseModel, Helper, RogueMetaRecord}
 import code.lib.field._
-import code.model.event.Values
 import com.foursquare.rogue.LiftRogue
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
-import net.liftweb.mongodb.record.field.{ObjectIdRefListField, ObjectIdPk, ObjectIdRefField}
+import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField, ObjectIdRefListField}
 import LiftRogue._
+import code.lib.request.request._
 import net.liftweb.http.js.JsCmds.Noop
 import net.liftweb.record.field.BooleanField
 
+import scala.reflect.macros.whitebox
 import scala.xml.Elem
 
 class BlogPost private() extends MongoRecord[BlogPost] with ObjectIdPk[BlogPost] with BaseModel[BlogPost] {
@@ -76,6 +77,21 @@ class BlogPost private() extends MongoRecord[BlogPost] with ObjectIdPk[BlogPost]
     }
   }
 
+  object transversalApproach extends ObjectIdRefField(this, TransversalApproach) {
+    override def optional_? = true
+    override def displayName = "Enfoque transversal"
+    override def toString = this.obj.dmap("")(_.name.get)
+    val list = (None -> "Ninguna") :: TransversalApproach.findAll.map(s => Some(s) -> s.toString)
+    override def toForm = {
+      Full(SHtml.selectObj[Option[TransversalApproach]](list, Full(this.obj),
+        (p: Option[TransversalApproach]) => {
+          setBox(p.map(_.id.get))
+        },
+        "class" -> "select2 form-control",
+        "data-placeholder" -> "Seleccione un enfoque.."))
+    }
+  }
+
   object date extends DatePickerField(this) {
     override def displayName = "Fecha"
   }
@@ -120,16 +136,16 @@ class BlogPost private() extends MongoRecord[BlogPost] with ObjectIdPk[BlogPost]
     def availableOptions = User.findAll
   }
 
-  object values extends ObjectIdRefListField(this, Values) {
+  object values extends ObjectIdRefListField(this, Value) {
     override def displayName = "Principios"
     def currentValue = this.objs
-    def availableOptions: List[(Values, String)] = Values.findAll.map(p => p -> p.name.get).toList
+    def availableOptions: List[(Value, String)] = Value.findAll.map(p => p -> p.name.get)
 
     override def toForm: Box[Elem] = {
       Full(SHtml.multiSelectObj(
         availableOptions,
         currentValue,
-        (list: List[Values]) => set(list.map(_.id.get)),
+        (list: List[Value]) => set(list.map(_.id.get)),
         "class" -> "select2 form-control",
         "data-placeholder" -> "Seleccione uno o varios principios..."
       ))
@@ -182,7 +198,7 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
 
   override def fieldOrder = List(
     name, categories, tags, photo,
-    area, program, transversalArea,
+    area, program, transversalArea, transversalApproach,
     values, actionLines, process,
     date, content, isPublished)
 
@@ -250,6 +266,19 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
         .count
   }
 
+  def countPublishedByFilters: Long = {
+    BlogPost.where(_.isPublished eqs true)
+      .andOpt(getCategoryValue)(_.categories contains _)
+      .andOpt(getAuthorValue)(_.author eqs _.id.get)
+      .andOpt(getAreaValue)(_.area eqs _.id.get)
+      .andOpt(getTransversalAreaValue)(_.transversalArea eqs _.id.get)
+      .andOpt(getTagValue)(_.tags contains _)
+      .andOpt(getValue)(_.values contains _.id.get)
+      .andOpt(getActionLineValue)(_.actionLines contains _.id.get)
+      .andOpt(getProcessValue)(_.process eqs _.id.get)
+      .count()
+  }
+
   def findPublishedByCategoryPage(category: Box[String], limit: Int, page: Int): List[BlogPost] = category match {
     case Full(cat) =>
       BlogPost
@@ -266,7 +295,116 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
         .fetch()
   }
 
+  def findPublishedByFilters(values: Box[Value], program: Box[Program], area: Box[Area], actionLine: Box[ActionLine],
+                             transversalArea: Box[TransversalArea], transversalApproach: Box[TransversalApproach],
+                             process: Box[Process]): List[BlogPost] = {
+    BlogPost.or(_.whereOpt(values.toOption)(_.values contains  _.id.get),
+      _.whereOpt(program.toOption)(_.program eqs _.id.get),
+      _.whereOpt(area.toOption)(_.area eqs _.id.get),
+      _.whereOpt(actionLine.toOption)(_.actionLines contains _.id.get),
+      _.whereOpt(transversalArea.toOption)(_.transversalArea eqs _.id.get),
+      _.whereOpt(transversalApproach.toOption)(_.transversalApproach eqs _.id.get),
+      _.whereOpt(process.toOption)(_.process eqs _.id.get))
+      .orderDesc(_.id).fetch(3)
+  }
+
+  def findPostPublishedByFilters(limit: Int, page: Int): List[BlogPost] = {
+
+    BlogPost.where(_.isPublished eqs true)
+      .andOpt(getCategoryValue)(_.categories contains _)
+      .andOpt(getAuthorValue)(_.author eqs _.id.get)
+      .andOpt(getAreaValue)(_.area eqs _.id.get)
+      .andOpt(getTransversalAreaValue)(_.transversalArea eqs _.id.get)
+      .andOpt(getTagValue)(_.tags contains _)
+      .andOpt(getValue)(_.values contains _.id.get)
+      .andOpt(getActionLineValue)(_.actionLines contains _.id.get)
+      .andOpt(getProcessValue)(_.process eqs _.id.get)
+      .paginate(limit)
+      .setPage(page)
+      .fetch()
+  }
+
+  def getProcessValue: Option[Process] = {
+    Helper.getParameter.headOption match {
+      case Some((p: String, v: String)) if(p == "proceso") =>
+        Process.where(_.name eqs v).fetch().headOption
+      case _ =>
+        None
+    }
+  }
+
+  def getActionLineValue: Option[ActionLine] = {
+    Helper.getParameter.headOption match {
+      case Some((p: String, v: String)) if(p == "lineaAccion") =>
+        ActionLine.where(_.name eqs v).fetch().headOption
+      case _ =>
+        None
+    }
+  }
+
+  def getValue: Option[Value] = {
+    Helper.getParameter.headOption match {
+      case Some((p: String, v: String)) if(p == "principio") =>
+        Value.where(_.name eqs v).fetch().headOption
+      case _ =>
+        None
+    }
+  }
+
+  def getTransversalAreaValue: Option[TransversalArea] = {
+    Helper.getParameter.headOption match {
+      case Some((p: String, v: String)) if(p == "areaT") =>
+        TransversalArea.where(_.name eqs v).fetch().headOption
+      case _ =>
+        None
+    }
+  }
+
+  def getAreaValue: Option[Area] = {
+    Helper.getParameter.headOption match {
+      case Some((p: String, v: String)) if(p == "area") =>
+        Area.where(_.name eqs v).fetch().headOption
+      case _ =>
+        None
+    }
+  }
+
+  def getCategoryValue: Option[Tag] = {
+    Helper.getParameter.headOption match {
+      case Some((p: String, v: String)) if(p == "categoria") =>
+        BlogPost.where(_.categories.subfield(_.tag) eqs v).select(_.categories).fetch().flatten.headOption
+      case _ =>
+        None
+    }
+  }
+
+  def getTagValue: Option[Tag] = {
+    Helper.getParameter.headOption match {
+      case Some((p: String, v: String)) if(p == "etiqueta") =>
+        BlogPost.where(_.tags.subfield(_.tag) eqs v).select(_.tags).fetch().flatten.headOption
+      case _ =>
+        None
+    }
+  }
+
+  def getAuthorValue: Option[User] = {
+    Helper.getParameter.headOption match {
+      case Some((p: String, v: String)) if(p == "autor") =>
+        User.where(_.name eqs v).fetch().headOption
+      case _ =>
+        None
+    }
+  }
+
   def findCategories: List[String] = {
     BlogPost.distinct(_.categories.subfield(_.tag)).toList.asInstanceOf[List[String]]
+  }
+
+  def findLastPostByUser(user: Box[User]): List[BlogPost] = {
+    BlogPost.whereOpt(user.toOption)(_.author eqs _.id.get).and(_.isPublished eqs true).orderDesc(_.date).fetch(3)
+  }
+
+  def findAllLastPost: List[BlogPost] = {
+    BlogPost.orderDesc(_.date).fetch(3)
   }
 }

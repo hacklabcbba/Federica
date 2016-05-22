@@ -1,9 +1,10 @@
 package code.snippet
 
 import code.config.Site
-import code.model.{TransversalArea, Area}
+import code.model.{Area, TransversalArea}
 import com.foursquare.rogue.LiftRogue
 import com.foursquare.rogue.LiftRogue._
+import net.liftweb.common.{Empty, Full}
 import net.liftweb.http.js.JsCmd
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.json.JsonAST.JValue
@@ -41,7 +42,12 @@ object TransversalAreaSnippet extends SortableSnippet[TransversalArea] {
       "data-name=name [href]" #> Site.areaTransversal.calcHref(area) &
       "data-name=description *" #> area.description.asHtml &
       "data-name=email *" #> area.email.get &
-      "data-name=responsible *" #> area.responsible.obj.dmap("")(_.name.get)
+      "data-name=responsible *" #> area.responsible.obj.dmap("")(_.name.get) &
+      "data-name=events" #> EventSnippet.relatedEvents(area.name.get, Empty, Empty, Empty, Empty, Full(area), Empty,
+        Empty, Empty) &
+      "data-name=posts" #> BlogSnippet.relatedPosts(area.name.get, Empty, Empty, Empty, Empty, Full(area), Empty,
+        Empty) &
+      "data-name=calls" #> CallSnippet.relatedCalls(area.name.get, Empty, Empty, Empty, Empty, Full(area), Empty, Empty)
     }
   }
 

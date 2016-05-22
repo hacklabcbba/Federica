@@ -37,11 +37,11 @@
 }
 /*----/----/ $TAGS */
 a {
-  color: #FF9A00;
+  color: #D58530;
 }
 a:hover {
-  color: #FF9A00;
-  text-decoration: none;
+  color: #D58530;
+  text-decoration: underline;
 }
 h1 a,
 h1 a:hover,
@@ -56,9 +56,10 @@ h5 a:hover,
 h6 a,
 h6 a:hover {
   color: #222;
+  text-decoration: none !important;
 }
 p a {
-  text-decoration: underline;
+  text-decoration: none;
 }
 p a:hover {
   text-decoration: underline;
@@ -78,10 +79,14 @@ h6 {
   font-weight: bold;
   text-transform: uppercase;
 }
+.checkbox-info {
+  width: 1em;
+  height: 1em;
+}
 h2 a,
 h3 a,
 h4 a {
-  color: #FF9A00;
+  color: #333;
 }
 p {
   text-align: justify;
@@ -320,10 +325,11 @@ textarea.form-control {
 }
 .widgets.events-here {
   font-size: 13px;
+  padding-top: 30px;
 }
 .widgets.events-here .title {
   font-size: 16px;
-  margin-top: 0px;
+  margin-top: 25px;
   margin-bottom: 3px;
 }
 .widgets.events-here .info {
@@ -867,6 +873,141 @@ body .login-socialmedia .googleplus {
   font-size: 15px;
   text-transform: uppercase;
 }
+/*----/----/ $PAGE */
+.page main .events-container .menu-categories {
+  position: relative;
+}
+.page main .events-container .menu-categories .btn-filter {
+  background: #000 none repeat scroll 0% 0%;
+  position: absolute;
+  padding: 15px 10.5px;
+  right: -130px;
+  top: 0px;
+  color: #FFF;
+  text-transform: uppercase;
+  font-family: "HelveticaBd";
+  line-height: 0;
+  z-index: 2;
+  font-size: 12px;
+}
+.page main .events-container .menu-categories .dropdown-menu {
+  top: 42px;
+  left: auto;
+  right: -130px;
+  width: 125px;
+  min-width: 0;
+}
+.page main .events-container .menu-categories .dropdown-menu li {
+  padding: 5px 10px;
+}
+.page main .events-container .menu-categories .dropdown-menu li a {
+  padding: 0;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+.page main .events-container .menu-categories .dropdown-menu li a:hover,
+.page main .events-container .menu-categories .dropdown-menu li a:focus {
+  background: none;
+}
+.page main .events-container h3 {
+  font-size: 24px;
+}
+.page main .events-container .events *[class*="col"] {
+  overflow: hidden;
+  position: relative;
+}
+.page main .events-container .events *[class*="col"] img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+.page main .events-container .events .event {
+  transition: all 0.2s ease 0.2s;
+  background: rgba(23, 23, 23, 0.6);
+  height: 275px;
+}
+.page main .events-container .events .event:hover {
+  background: none;
+}
+.page main .events-container .events .event:nth-child(2n) {
+  border-right: none;
+}
+.page main .events-container .events .event.feature {
+  height: 550px;
+}
+.page main .events-container .events .event.feature .tag-feature {
+  position: absolute;
+  right: 15px;
+  top: 45px;
+  border: 3px solid #fff;
+  font-family: "HelveticaBd";
+}
+.page main .events-container .events .event.feature .tag-feature > div.tag-feature-title {
+  background: #fff;
+  color: #000;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+.page main .events-container .events .event.feature .tag-feature > div.tag-feature-body {
+  font-size: 80px;
+  text-align: center;
+  color: #fff;
+  line-height: 0.9;
+  padding-bottom: 15px;
+}
+.page main .events-container .events *[class*="col"] .category {
+  background: #fff;
+  display: inline-block;
+  font-family: "HelveticaBd";
+  font-size: 14px;
+  line-height: 0;
+  padding: 15px 10px;
+  text-transform: uppercase;
+}
+.page main .events-container .events *[class*="col"] .category.letrasyliteratura {
+  background: #c4cfb5;
+}
+.page main .events-container .events *[class*="col"] .category.interaccionsocial {
+  background: #ff7200;
+}
+.page main .events-container .events *[class*="col"] .category.audiovisual {
+  background: #836981;
+}
+.page main .events-container .events *[class*="col"] .category.musica {
+  background: #efdeb4;
+}
+.page main .events-container .events *[class*="col"] .category.artesvisuales {
+  background: #e89cdb;
+}
+.page main .events-container .events *[class*="col"] .category.artesescenicas {
+  background: #95B2D2;
+}
+.page main .events-container .events *[class*="col"] .category.arquitectura {
+  background: #f3bc3a;
+}
+.page main .events-container .events *[class*="col"] .events-summary {
+  bottom: 0;
+  position: absolute;
+  padding-bottom: 10px;
+  width: 95%;
+}
+.page main .events-container .events *[class*="col"] .events-summary a,
+.page main .events-container .events *[class*="col"] .events-summary p {
+  color: #fff;
+}
+.page main .events-container .events *[class*="col"] .events-summary .btn {
+  font-family: "HelveticaBd";
+  font-size: 15px;
+  text-transform: lowercase;
+}
+.page main .events-container .more-events {
+  margin: 20px 0px;
+  font-family: "HelveticaBd";
+  font-size: 15px;
+  text-transform: uppercase;
+}
 /*----/----/ $EVENTS */
 .events-page .events-day a {
   text-transform: uppercase;
@@ -1005,9 +1146,13 @@ body .login-socialmedia .googleplus {
 }
 .blog-page .blog-articles .postblog-date {
   font-size: 13px;
+  margin-left: 15px !important;
 }
 .blog-page .blog-article {
   margin-bottom: 15px;
+}
+.list-tags {
+  margin-left: 15px !important;
 }
 /*----/----/----/ $POST-BLOG */
 .blogpost-page .postblog-date .separator {

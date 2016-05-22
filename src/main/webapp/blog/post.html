@@ -5,22 +5,56 @@
                 <h2 class="no-margin-top" data-name="title" data-name="title">
                     Conversaciones Anomalas: "Literatura y vulgaridad"
                 </h2>
-                <ul class="list-unstyled list-inline postblog-date">
-                    <li>
-                        <i class="fa fa-tag"></i> <span data-name="area">Interaccion social</span> <span class="separator">|</span>
-                    </li>
-                    <li>
-                        <i class="fa fa-tags"></i> <span data-name="area">Interaccion social</span> <span class="separator">|</span>
-                    </li>
-                    <li>
-                        <span>Autor:</span>
-                        <span data-name="author">Interaccion social</span> <span class="separator">|</span>
-                    </li>
-                    <li>
-                        <span>Publicacion:</span>
-                        <span data-name="date">14 de octubre 2015</span>
-                    </li>
-                </ul>
+                <div class="row">
+                    <ul class="list-unstyled list-inline postblog-date list-tags">
+                        <i class="fa fa-tags"></i>
+                        <span data-name="tags-title">Etiquetas:</span>
+                        <li data-name="tags">
+                            <a href="" data-name="tag">Etiquetas</a><span class="separator">,</span>
+                        </li>
+                        <li data-name="programs">
+                            <span>Programa:</span>
+                            <a href="" data-name="program">Programas</a><span class="separator">,</span>
+                        </li>
+                        <span data-name="values-title">Principio:</span>
+                        <li data-name="values">
+                            <a href="" data-name="value">Interaccion social</a><span class="separator">,</span>
+                        </li>
+                        <span data-name="actionLine-title">Línea de Acción:</span>
+                        <li data-name="actionLines">
+                            <a href="" data-name="actionLine">Interaccion social</a><span class="separator">,</span>
+                        </li>
+                        <li data-name="process">
+                            <span>Proceso:</span>
+                            <a href="" data-name="process-name">Interaccion social</a><span class="separator">,</span>
+                        </li>
+                        <li data-name="transversalarea">
+                            <span>Área transversal:</span>
+                            <a href="" data-name="transversalarea-name">Interaccion social</a><span class="separator">,</span>
+                        </li>
+                        <li data-name="area">
+                            <span>Area:</span>
+                            <a href="" data-name="area-name">Interaccion social</a><span class="separator"></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="row">
+                    <ul class="list-unstyled list-inline postblog-date list-tags">
+                        <i class="fa fa-tag"></i>
+                        <span data-name="tag-category-title">Categoría:</span>
+                        <li data-name="categories-tag">
+                            <a href="" data-name="category-tag">Interaccion social</a><span class="separator">,</span>
+                        </li>
+                        <li data-name="author">
+                            <span>Autor:</span>
+                            <a href="" data-name="author-name">Interaccion social</a> <span class="separator">,</span>
+                        </li>
+                        <span>Fecha:</span>
+                        <li>
+                            <span data-name="date">03 de noviembre</span>
+                        </li>
+                    </ul>
+                </div>
                 <!-- Go to www.addthis.com/dashboard to customize your tools -->
                 <div class="addthis_sharing_toolbox"></div>
                 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=martadero" async="async"></script>
@@ -132,17 +166,11 @@ s.setAttribute('data-timestamp', +new Date());
                     <section>
                         <h3>Categorias</h3>
                         <ul class="list-unstyled blog-categories">
-                            <li class="active item">
-                                <a href="#">Categoria</a>
+                            <li class="item" data-name="all-categories">
+                                <a href="#">Todas</a>
                             </li>
-                            <li class="item">
-                                <a href="#">Item list</a>
-                            </li>
-                            <li class="item">
-                                <a href="#">Item list</a>
-                            </li>
-                            <li class="item">
-                                <a href="#">Item list</a>
+                            <li class="item" data-name="categories">
+                                <a href="#" data-name="category-redirect">Item</a>
                             </li>
                         </ul>
                     </section>

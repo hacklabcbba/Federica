@@ -1,52 +1,65 @@
 <div data-lift="surround?with=base-wrap;at=content">
-    <main class="row">
-        <div class="col-md-12">
-            <header>
-                <h2 class="no-margin-top title-page">
-                    <i class="glyphicon glyphicon-menu-right border-circle"></i> Registro de usuario
-                </h2>
-            </header>
-            <div class="row">
-                <div class="col-md-5">
-                    <h3>Tu cuenta en Martadero</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi congue dignissim facilisis. Nulla ornare at lorem et facilisis. Vestibulum sed maximus quam. Maecenas vehicula, odio vel suscipit viverra, orci lacus rutrum eros, </p>
-                </div>
-                <div class="col-md-7">
-                    <h3>Crea tu cuenta en Martadero</h3>
-                    <form action="" class="register-form">
-                        <div class="form-horizontal">
-                            <h4>Datos personales</h4>
-                            <div class="form-group margin-bottom-xs">
-                                <label class="col-md-12 control-label ">Nombre</label>
-                                <div class="col-md-12"><input class="form-control input-lg" placeholder="Introduce tu nombre"  type="text"></div>
+    <div data-lift="UserRegister">
+        <main class="row">
+            <div class="col-md-12">
+                <header>
+                    <h2 class="no-margin-top title-page">
+                        <i class="glyphicon glyphicon-menu-right border-circle"></i> Registro de usuario
+                    </h2>
+                </header>
+                <div class="row">
+                    <div class="col-md-5">
+                        <h3>Tu cuenta en Martadero</h3>
+                        <p>Al abrir una cuenta en mARTadero podrás hacer solicitudes para tus eventos en mARTadero al igual
+                            que solicitar espacio en Residencias o proponer un Taller.
+                        </p>
+                        <b>No olvides verificar tu cuenta a través del email.</b></br></br>
+                        <p>Una vez dentro te recomendamos que te tomes unos minutos para actualizar tu perfil, eso hará que
+                            al mismo tiempo tengas un perfil social que podrá encontrarse por buscadores.
+                        </p>
+                    </div>
+                    <div class="col-md-7">
+                        <h3>Crea tu cuenta en Martadero</h3>
+                        <form action="" class="register-form" data-lift="form.ajax">
+                            <span data-alertid="register_err" form-alert=""></span>
+                            <div class="form-horizontal">
+                                <h4>Datos personales</h4>
+                                <div class="form-group margin-bottom-xs">
+                                    <label class="col-md-12 control-label ">Nombre</label>
+                                    <div class="col-md-12"><input class="form-control input-lg" data-name="name" placeholder="Introduce tu nombre"  type="text"></div>
+                                </div>
+                                <div class="form-group margin-bottom-xs">
+                                    <label class="col-md-12 control-label ">Apellidos</label>
+                                    <div class="col-md-12"><input class="form-control input-lg" data-name="lastName" placeholder="Introduce tus apellidos"  type="text"></div>
+                                </div>
+                                <h4>Correo y contraseña</h4>
+                                <p>Introduce tu correo electrónico, será usado como usuario para tu cuenta y dirección de contacto</p>
+                                <div class="form-group margin-bottom-xs">
+                                    <label class="col-md-12 control-label ">Correo electrónico</label>
+                                    <div data-name="email" placeholder="Introduce tu email"  type="email" />
+                                </div>
+                                <div class="form-group margin-bottom-xs">
+                                    <label class="col-md-12 control-label ">Contraseña</label>
+                                    <div class="col-md-12"><input class="form-control input-lg" data-name="password" placeholder="" type="password"></div>
+                                </div>
+                                <div class="form-group margin-bottom-xs">
+                                    <label class="col-md-12 control-label ">Confirmar contraseña</label>
+                                    <div class="col-md-12"><input class="form-control input-lg" data-name="repeatPwd" placeholder="" type="password"></div>
+                                </div>
                             </div>
-                            <div class="form-group margin-bottom-xs">
-                                <label class="col-md-12 control-label ">Apellidos</label>
-                                <div class="col-md-12"><input class="form-control input-lg" placeholder="Introduce tus apellidos"  type="text"></div>
+                            <h4>Comprueba que no eres un robot</h4>
+                            <span class="lift:Msg?id=captchaError&errorClass=error">error</span> <span id="captcha"></span>
+                            <div data-name="captcha"></div>
+                            <span id="ajax-loader" style="display: none;">
+                                <img src="/images/ajax-loader.gif" width="25" height="25" />
+							</span>
+                            <div class="col-md-12 text-center">
+                                <input data-name="submit" value="Enviar" class="btn text-uppercase width-30-md"/>
                             </div>
-                            <h4>Correo y contraseña</h4>
-                            <p>Introduce tu correo electrónico, será usado como usuario para tu cuenta y dirección de contacto</p>
-                            <div class="form-group margin-bottom-xs">
-                                <label class="col-md-12 control-label ">Correo electrónico</label>
-                                <div class="col-md-12"><input class="form-control input-lg" placeholder="Introduce tu email"  type="email"></div>
-                            </div>
-                            <div class="form-group margin-bottom-xs">
-                                <label class="col-md-12 control-label ">Contraseña</label>
-                                <div class="col-md-12"><input class="form-control input-lg" placeholder=""  type="password"></div>
-                            </div>
-                            <div class="form-group margin-bottom-xs">
-                                <label class="col-md-12 control-label ">Confirmar contraseña</label>
-                                <div class="col-md-12"><input class="form-control input-lg" placeholder=""  type="password"></div>
-                            </div>
-                        </div>
-                        <h4>Comprueba que no eres un robot</h4>
-                        <p>Introduce tu correo electrónico, será usado como usuario para tu cuenta y dirección de contacto</p>
-                        <div class="col-md-12 text-center">
-                            <input type="submit" value="Enviar" class="btn text-uppercase width-30-md"/>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
 </div>
