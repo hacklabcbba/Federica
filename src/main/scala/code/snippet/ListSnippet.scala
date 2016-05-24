@@ -57,19 +57,51 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper /
 
 
   def render = {
+    val fun = (params: DataTableParams) => {
+      val rows: List[List[(String, String)]] = for {
+        item <- items
+      } yield {
+        var indice = -1
+        val result: List[(String, String)] = for {
+          field <- listFields
+        } yield {
+          indice = indice + 1
+          (indice.toString, item.fieldByName(field.name).dmap("")(_.toString))
+        }
+        val id = "rowid_" + item.fieldByName(listFields.headOption.fold("")(_.name)).dmap("")(_.toString)
+        //result = result :: ("DT_RowId", id) :: Nil
+        result
+      }
+
+      //println("row " + rows)
+
+      val count = items.size
+
+      new DataTableObjectSource(count, count, rows)
+    }
+
+    val cols = listFields.map(field => field.displayName)
+
     "*" #>
     {
       "data-name=title *" #> title &
-      "data-name=column-name *" #> listFields.map(field => field.displayName) &
+      //"data-name=column-name *" #> listFields.map(field => field.displayName) &
       "data-name=add-item [href]" #> addUrl &
-      "data-name=remove-items [onclick]" #> SHtml.ajaxInvoke(deleteItemsJsCmd _) &
-      "data-name=items" #> items.map(item => {
-        "data-name=items [id]" #> item.id.toString &
+      //"data-name=remove-items [onclick]" #> SHtml.ajaxInvoke(deleteItemsJsCmd _) &
+      /*"data-name=items" #> items.map(item => {
+        //"data-name=items [id]" #> item.id.toString &
         "type=checkbox" #> SHtml.ajaxCheckbox(false, s => selectItem(s, item)) &
-        "data-name=column-data *" #> listFields.map(field => item.fieldByName(field.name).dmap("")(_.toString)) &
+        //"data-name=column-data *" #> listFields.map(field => item.fieldByName(field.name).dmap("")(_.toString)) &
         "data-name=edit-item [href]" #> itemEditUrl(item) &
         "data-name=remove-item [onclick]" #> SHtml.ajaxInvoke(() => deleteItemModalJsCmd(item))
-      })
+      }) */
+      "#datas" #> DataTable(
+        cols,
+        fun,
+        "dataTable",
+        List(("bFilter", "true"), ("iDisplayLength", "10")),
+        ("class", "table table-listitems")
+      )
     }.apply(template)
   }
 
