@@ -47,6 +47,14 @@ class BlogPost private() extends MongoRecord[BlogPost] with ObjectIdPk[BlogPost]
     def availableOptions = (None -> "Ninguna") :: Area.findAll.map(s => Some(s) -> s.toString)
   }
 
+  object facebookPhoto extends FileField(this) {
+    override def optional_? = true
+    override def displayName = "Imagen para compartir en facebook"
+    override def toString = {
+      value.fileName.get
+    }
+  }
+
   object transversalArea extends ObjectIdRefField(this, TransversalArea) {
     override def optional_? = true
     override def displayName = "Área transversal"
@@ -197,7 +205,7 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
   override def collectionName = "main.blog_posts"
 
   override def fieldOrder = List(
-    name, categories, tags, photo,
+    name, categories, tags, photo, facebookPhoto,
     area, program, transversalArea, transversalApproach,
     values, actionLines, process,
     date, content, isPublished)

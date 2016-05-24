@@ -2,9 +2,9 @@ package code.snippet
 
 import code.config.Site
 import code.model.Page
-import net.liftweb.common.Box
+import net.liftweb.common.{Box, Full}
 import net.liftweb.http.{S, SHtml}
-import net.liftweb.util.CssSel
+import net.liftweb.util.{CssSel, Props}
 import net.liftweb.util.Helpers._
 
 import scala.xml.NodeSeq
@@ -39,6 +39,23 @@ object PageSnippet extends ListSnippet[Page] {
         }) &
         "data-name=pagination" #> NodeSeq.Empty
       }.apply(template)
+  }
+
+  def facebookHeaders(in: NodeSeq) = {
+    Site.pagina.currentValue match {
+      case Full(page) =>
+        <meta property="og:title" content={page.name.get} /> ++
+        <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
+        <meta property="og:description" content={page.body.asHtmlCutted(250).text} /> ++
+        (if(page.facebookPhoto.get.fileId.get.isEmpty)
+          NodeSeq.Empty
+        else
+          <meta property="og:image" content={page.facebookPhoto.fullUrl} />
+        ) ++
+        <meta property="og:type" content="article" />
+      case _ =>
+        NodeSeq.Empty
+    }
   }
 
   private def serve(snip: Page => NodeSeq): NodeSeq =

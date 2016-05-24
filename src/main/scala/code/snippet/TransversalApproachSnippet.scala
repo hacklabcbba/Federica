@@ -6,11 +6,14 @@ import com.foursquare.rogue.LiftRogue
 import com.foursquare.rogue.LiftRogue._
 import net.liftmodules.extras.SnippetHelper
 import net.liftweb.common.{Empty, Full}
+import net.liftweb.http.S
 import net.liftweb.http.js.JsCmd
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.json.JsonAST.JValue
 import net.liftweb.util.Helpers._
-import net.liftweb.util.{CssSel, Helpers}
+import net.liftweb.util.{CssSel, Helpers, Props}
+
+import scala.xml.NodeSeq
 
 object TransversalApproachSnippet extends SortableSnippet[TransversalApproach] {
 
@@ -32,6 +35,30 @@ object TransversalApproachSnippet extends SortableSnippet[TransversalApproach] {
       //"data-name=name [href]" #> Site.servicio.calcHref(area) &
       "data-name=description *" #> area.description.asHtml
     })
+  }
+
+  override def facebookHeaders(in: NodeSeq) = {
+    try {
+      Site.enfoqueTransversal.currentValue match {
+        case Full(enfoque) =>
+          <meta property="og:title" content={enfoque.name.get} /> ++
+              <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
+          <meta property="og:description" content={enfoque.description.asHtmlCutted(250).text} /> ++
+          (if(enfoque.facebookPhoto.get.fileId.get.isEmpty)
+            NodeSeq.Empty
+          else
+            <meta property="og:image" content={enfoque.facebookPhoto.fullUrl} />
+          ) ++
+          <meta property="og:type" content="article" />
+        case _ =>
+          NodeSeq.Empty
+      }
+    } catch {
+      case np: NullPointerException =>
+        NodeSeq.Empty
+      case _ =>
+        NodeSeq.Empty
+    }
   }
 
   def updateOrderValue(json: JValue): JsCmd = {

@@ -5,11 +5,14 @@ import code.model.Area
 import com.foursquare.rogue.LiftRogue
 import net.liftweb.http.js.JsCmd
 import net.liftweb.json.JsonAST.JValue
-import net.liftweb.util.{CssSel, Helpers}
+import net.liftweb.util.{CssSel, Helpers, Props}
 import Helpers._
 import net.liftweb.http.js.JsCmds._
 import LiftRogue._
 import net.liftweb.common.{Empty, Full}
+import net.liftweb.http.S
+
+import scala.xml.NodeSeq
 
 object AreaSnippet extends SortableSnippet[Area] {
 
@@ -48,6 +51,23 @@ object AreaSnippet extends SortableSnippet[Area] {
       "data-name=posts" #> BlogSnippet.relatedPosts(area.name.get, Empty, Empty, Full(area), Empty, Empty, Empty,
         Empty) &
       "data-name=calls" #> CallSnippet.relatedCalls(area.name.get, Empty, Empty, Full(area), Empty, Empty, Empty, Empty)
+    }
+  }
+
+  override def facebookHeaders(in: NodeSeq) = {
+    Site.area.currentValue match {
+      case Full(area) =>
+        <meta property="og:title" content={area.name.get} /> ++
+        <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
+        <meta property="og:description" content={area.description.asHtmlCutted(250).text} /> ++
+        (if(area.facebookPhoto.get.fileId.get.isEmpty)
+          NodeSeq.Empty
+        else
+          <meta property="og:image" content={area.facebookPhoto.fullUrl} />
+        ) ++
+        <meta property="og:type" content="article" />
+      case _ =>
+        NodeSeq.Empty
     }
   }
 

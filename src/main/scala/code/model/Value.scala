@@ -14,7 +14,8 @@ import net.liftweb.record.field.{StringField, TextareaField}
 import scala.xml.NodeSeq
 
 
-class Value private () extends MongoRecord[Value] with ObjectIdPk[Value] with BaseModel[Value] with SortableModel[Value] with WithUrl[Value]{
+class Value private () extends MongoRecord[Value] with ObjectIdPk[Value] with BaseModel[Value] with SortableModel[Value]
+  with WithUrl[Value]{
 
   override def meta = Value
 
@@ -147,6 +148,14 @@ class Value private () extends MongoRecord[Value] with ObjectIdPk[Value] with Ba
     }
   }
 
+  object facebookPhoto extends FileField(this) {
+    override def optional_? = true
+    override def displayName = "Imagen para compartir en facebook"
+    override def toString = {
+      value.fileName.get
+    }
+  }
+
   def urlString: String = Site.principio.calcHref(this)
 
   override def toString = name.get
@@ -157,7 +166,7 @@ object Value extends Value with RogueMetaRecord[Value] {
   override def collectionName = "main.values"
 
   override def fieldOrder = List(
-    name, description, image, url, order, areasDefinitions, programsDefinitions, transvesalAreasDefinitions
+    name, description, image, facebookPhoto, url, order, areasDefinitions, programsDefinitions, transvesalAreasDefinitions
   )
 
   def findByUrl(url: String): Box[Value] = {

@@ -45,6 +45,14 @@ class Call private () extends MongoRecord[Call] with ObjectIdPk[Call] with BaseM
     }
   }
 
+  object facebookPhoto extends FileField(this) {
+    override def optional_? = true
+    override def displayName = "Imagen para compartir en facebook"
+    override def toString = {
+      value.fileName.get
+    }
+  }
+
   object deadline extends DatePickerField(this) {
     override def displayName = "Plazo"
   }

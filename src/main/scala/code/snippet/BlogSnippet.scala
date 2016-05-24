@@ -6,7 +6,7 @@ import code.lib.snippet.PaginatorSnippet
 import code.model._
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.{S, SHtml, Templates}
-import net.liftweb.util.{CssSel, Helpers, PassThru}
+import net.liftweb.util.{CssSel, Helpers, PassThru, Props}
 import Helpers._
 import code.lib.Helper
 import code.lib.request.request._
@@ -186,6 +186,23 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
       prevItemCss(prev) &
       nextItemCss(next) &
       relatedCss(related)
+    }
+  }
+
+  def facebookHeaders(in: NodeSeq) = {
+    Site.entradaBlog.currentValue match {
+      case Full(post) =>
+        <meta property="og:title" content={post.name.get} /> ++
+        <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
+        <meta property="og:description" content={post.content.asHtmlCutted(250).text} /> ++
+        (if(post.facebookPhoto.get.fileId.get.isEmpty)
+          NodeSeq.Empty
+        else
+          <meta property="og:image" content={post.facebookPhoto.fullUrl} />
+        ) ++
+        <meta property="og:type" content="article" />
+      case _ =>
+        NodeSeq.Empty
     }
   }
 
