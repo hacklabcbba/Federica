@@ -1,4 +1,4 @@
-package code
+﻿package code
 package config
 
 import code.model.Widget
@@ -142,7 +142,7 @@ object Site extends Locs {
   val proceso =  Menu.param[Process](
     "Ver Proceso", "Ver Proceso",
     Process.findByUrl,
-    s => s.url.get.toString) / "proceso" / * >>
+    s => s.url.get) / "proceso" / * >>
     TemplateBox(() => Templates("proceso" :: Nil)) >>
     Hidden
 
