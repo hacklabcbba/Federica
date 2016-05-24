@@ -415,6 +415,10 @@ object User extends User with ProtoAuthUserMeta[User] with RogueMetaRecord[User]
     If(() => User.hasRole(role.id.get) || User.hasPermission(permission),
       DisplayError("liftmodule-monogoauth.locs.hasRole", "liftmodule-monogoauth.locs.hasPermission"))
 
+  def HasRolesOrPermissions(roles: List[Role], permission: List[Permission]) =
+    If(() => !roles.filter(r => User.hasRole(r.id.get)).isEmpty || !permission.filter(p => User.hasPermission(p)).isEmpty,
+      DisplayError("liftmodule-monogoauth.locs.hasRole", "liftmodule-monogoauth.locs.hasPermission"))
+
   protected def DisplayError(message: String*) = () => {
     val msg = message.map(S ? _).mkString(",")
     RedirectWithState(indexUrl, RedirectState(() => S.error(msg)))
