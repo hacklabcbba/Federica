@@ -58,6 +58,14 @@ class Room private() extends Resource[Room] {
     }
   }
 
+  object facebookPhoto extends FileField(this) {
+    override def optional_? = true
+    override def displayName = "Imagen para compartir en facebook"
+    override def toString = {
+      value.fileName.get
+    }
+  }
+
   object location extends FileField(this) {
     override def displayName = "Ubicación"
     override def toString = {
@@ -503,7 +511,7 @@ object Room extends Room with RogueMetaRecord[Room] {
   override def collectionName = "resource.resources"
 
   override def fieldOrder = List(
-    code, name, photo1, photo2, isBookable,
+    code, name, photo1, photo2, isBookable, facebookPhoto,
     isBookableShift, capacity, order, plane,
     location, description, areasCost, programsCost)
 

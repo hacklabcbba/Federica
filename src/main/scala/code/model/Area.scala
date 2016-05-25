@@ -34,6 +34,14 @@ class Area private () extends MongoRecord[Area] with ObjectIdPk[Area] with BaseM
     }
   }
 
+  object facebookPhoto extends FileField(this) {
+    override def optional_? = true
+    override def displayName = "Imagen para compartir en facebook"
+    override def toString = {
+      value.fileName.get
+    }
+  }
+
   object photo2 extends FileField(this) {
     override def displayName = "Foto"
     override def toString = {
@@ -105,7 +113,7 @@ object Area extends Area with RogueMetaRecord[Area] {
   override def collectionName = "main.areas"
   override def fieldOrder = List(
     name, responsible, email, phone,
-    photo1, photo2, officeHoursBegins,
+    photo1, photo2, facebookPhoto, officeHoursBegins,
     officeHoursEnds, url, isPublished,
     order, description, group)
 

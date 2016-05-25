@@ -13,6 +13,7 @@ import net.liftweb.mongodb.record.BsonRecord
 import net.liftweb.mongodb.record.field.BsonRecordField
 import net.liftweb.record.LifecycleCallbacks
 import net.liftweb.util.Helpers._
+import net.liftweb.util.Props
 import org.bson.types.ObjectId
 import org.joda.time.DateTime
 
@@ -57,6 +58,8 @@ class FileField[OwnerType <: BsonRecord[OwnerType]](rec: OwnerType)
   }
 
   def downloadUrl = downloadPath +"/"+  this.get.fileId.get+ "/"+ this.get.fileName.get
+
+  def fullUrl = Props.get("default.host", "http://localhost:8080") + {s"/file/preview/${this.get.fileId.get}"}
 
   def toEditForm = {
 

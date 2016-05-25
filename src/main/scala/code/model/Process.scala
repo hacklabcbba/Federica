@@ -1,8 +1,9 @@
 package code.model
 
 import code.config.Site
-import code.lib.field.{BsCkTextareaField, BsCkUnsecureTextareaField, BsStringField}
 import code.lib._
+import code.lib.field.{BsCkTextareaField, BsCkUnsecureTextareaField, BsStringField, FileField}
+import code.lib.{BaseModel, RogueMetaRecord, SortableModel, WithUrl}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
@@ -21,6 +22,14 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] w
 
   object name extends BsStringField(this, 500) {
     override def displayName = "Nombre"
+  }
+
+  object facebookPhoto extends FileField(this) {
+    override def optional_? = true
+    override def displayName = "Imagen para compartir en facebook"
+    override def toString = {
+      value.fileName.get
+    }
   }
 
   object description extends BsCkUnsecureTextareaField(this, 1000) {
@@ -98,7 +107,7 @@ class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] w
 
 object Process extends Process with RogueMetaRecord[Process] {
   override def collectionName = "main.process"
-  override def fieldOrder = List(name, administrator, area, program, transversalArea, order, description)
+  override def fieldOrder = List(name, administrator, area, program, transversalArea, order, description, facebookPhoto)
 
   def findByArea(area: Area): List[Process] = {
     Process

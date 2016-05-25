@@ -6,10 +6,13 @@ import com.foursquare.rogue.LiftRogue
 import net.liftweb.http.js.JsCmd
 import net.liftweb.json.JsonAST.JValue
 import LiftRogue._
-import net.liftweb.util.{CssSel, Helpers}
+import net.liftweb.util.{CssSel, Helpers, Props}
 import Helpers._
 import net.liftweb.common.{Empty, Full}
+import net.liftweb.http.S
 import net.liftweb.http.js.JsCmds._
+
+import scala.xml.NodeSeq
 
 object ProgramSnippet extends SortableSnippet[Program] {
 
@@ -40,6 +43,23 @@ object ProgramSnippet extends SortableSnippet[Program] {
         Empty, Empty) &
       "data-name=calls" #> CallSnippet.relatedCalls(programa.name.get, Empty, Full(programa), Empty, Empty, Empty,
         Empty, Empty)
+    }
+  }
+
+  override def facebookHeaders(in: NodeSeq) = {
+    Site.programa.currentValue match {
+      case Full(program) =>
+        <meta property="og:title" content={program.name.get} /> ++
+        <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
+        <meta property="og:description" content={program.description.asHtmlCutted(250).text} /> ++
+        (if(program.facebookPhoto.get.fileId.get.isEmpty)
+          NodeSeq.Empty
+        else
+          <meta property="og:image" content={program.facebookPhoto.fullUrl} />
+        ) ++
+        <meta property="og:type" content="article" />
+      case _ =>
+        NodeSeq.Empty
     }
   }
 
