@@ -1,4 +1,4 @@
-﻿package code
+package code
 package config
 
 import code.model.Widget
@@ -54,7 +54,7 @@ object Site extends Locs {
   /* Menu Izquierdo */
   /* Agenda */
   // Agenda
-  val agenda = MenuLoc(Menu.i("Agenda") / "agenda" submenus(
+  val agenda = MenuLoc(Menu.i("Agenda") / "agenda" >> TemplateBox(() => Templates("events" :: Nil)) submenus(
     // Agenda
     Menu.i("Calendario de Actividades") / "calendario",
     // Google Calendar
@@ -149,13 +149,13 @@ object Site extends Locs {
   val procesos = MenuLoc(Menu.i("Procesos ") / "procesos" submenus(proceso))
 
   val lineaDeAccion =  Menu.param[ActionLine](
-    "Ver Linea de Acción", "Ver Linea de Acción",
+    "Ver Linea de Acci?n", "Ver Linea de Acci?n",
     ActionLine.findByUrl,
     s => s.url.get.toString) / "linea-de-accion" / * >>
     TemplateBox(() => Templates("linea-de-accion" :: Nil)) >>
     Hidden
 
-  val lineasDeAccion = MenuLoc(Menu.i("Lineas de acción ") / "lineas-de-accion" submenus(lineaDeAccion))
+  val lineasDeAccion = MenuLoc(Menu.i("Lineas de acci?n ") / "lineas-de-accion" submenus(lineaDeAccion))
 
   val enfoqueTransversal =  Menu.param[TransversalApproach](
     "Ver Enfoque Transversal", "Ver Enfoque Transversal",
@@ -243,7 +243,7 @@ object Site extends Locs {
   val emailConfirmation = Menu.param[User]("Confirmacion de Correo electronico", "Confirmacion de correo electronico",
     User.find, s => s.id.get.toString) / "confirmation" / * >> TemplateBox(() => Templates("confirmacion" :: Nil)) >>
     Hidden
-  val passwordRecovery = Menu.param[User]("Recuperar contraseña", "Recuperar contraseña",
+  val passwordRecovery = Menu.param[User]("Recuperar contrase?a", "Recuperar contrase?a",
     User.find, s => s.id.get.toString) / "recovery" / "password" / * >> TemplateBox(() => Templates("recovery" :: Nil)) >>
     Hidden
   val emailRecovery = MenuLoc(Menu.i("Recovery") / "recovery"/ "email" >> TemplateBox(() => Templates("email_recovery" :: Nil)) >>
@@ -284,7 +284,10 @@ object Site extends Locs {
       backendEventAdd,
       backendEventEdit))
 
-  val frontendEvents = MenuLoc(Menu.i("Lista de Eventos") / "events" >> TemplateBox(() => Templates("events" :: Nil)))
+  val frontendEvent = Menu.param[Event]("Evento", "Evento", Event.find, s => s.id.get.toString) / "event" / * >>
+    TemplateBox(() => Templates("event" :: Nil))
+
+  // val frontendEvents = MenuLoc(Menu.i("Lista de Eventos") / "events" >> TemplateBox(() => Templates("events" :: Nil)))
 
   val backendCallAdd = Menu.param[Call](
     "Agregar convocatoria", "Agregar convocatoria",
@@ -334,7 +337,7 @@ object Site extends Locs {
     User.HasRolesOrPermissions(List(SuperAdmin), List(Menus, Apariencia)))
 
   val backendPageAdd = Menu.param[Page](
-    "Agregar página", "Agregar página",
+    "Agregar p?gina", "Agregar p?gina",
     s => Full(Page.createRecord),
     s => "new") / "backend" / "pages" / "add" / * >>
     User.HasRoleOrPermission(SuperAdmin, Paginas) >>
@@ -342,7 +345,7 @@ object Site extends Locs {
     Hidden
 
   val backendPageEdit = Menu.param[Page](
-    "Editar página", "Editar página",
+    "Editar p?gina", "Editar p?gina",
     Page.find,
     s => s.id.get.toString) / "backend" / "pages" / "edit" / * >>
     User.HasRolesOrPermissions(List(SuperAdmin), List(Widgets, Apariencia)) >>
@@ -397,7 +400,7 @@ object Site extends Locs {
     backendEquipmentAdd, backendEquipmentEdit))
 
   val backendAreaAdd = Menu.param[Area](
-    "Agregar área", "Agregar área",
+    "Agregar ?rea", "Agregar ?rea",
     s => Full(Area.createRecord),
     s => "new") / "backend" / "areas" / "add" / * >>
     User.HasRolesOrPermissions(List(SuperAdmin), List(Areas, Organizacion)) >>
@@ -405,20 +408,20 @@ object Site extends Locs {
     Hidden
 
   val backendAreaEdit = Menu.param[Area](
-    "Editar área", "Editar área",
+    "Editar ?rea", "Editar ?rea",
     Area.find,
     s => s.id.get.toString) / "backend" / "areas" / "edit" / * >>
     User.HasRolesOrPermissions(List(SuperAdmin), List(Areas, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
-  val backendAreas = MenuLoc(Menu.i("Áreas") / "backend" / "areas" >>
+  val backendAreas = MenuLoc(Menu.i("?reas") / "backend" / "areas" >>
     User.HasRolesOrPermissions(List(SuperAdmin), List(Areas, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "areas" :: "index" :: Nil)) submenus(
     backendAreaAdd, backendAreaEdit))
 
   val backendTransversableAreaAdd = Menu.param[TransversalArea](
-    "Agregar área transversal", "Agregar área transaversal",
+    "Agregar ?rea transversal", "Agregar ?rea transaversal",
     s => Full(TransversalArea.createRecord),
     s => "new") / "backend" / "transversableareas" / "add" / * >>
     User.HasRolesOrPermissions(List(SuperAdmin), List(AreasTransversales, Organizacion)) >>
@@ -426,14 +429,14 @@ object Site extends Locs {
     Hidden
 
   val backendTransversableAreaEdit = Menu.param[TransversalArea](
-    "Editar área transversal", "Editar área transversal",
+    "Editar ?rea transversal", "Editar ?rea transversal",
     TransversalArea.find,
     s => s.id.get.toString) / "backend" / "transversableareas" / "edit" / * >>
     User.HasRolesOrPermissions(List(SuperAdmin), List(AreasTransversales, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
-  val backendTransversableAreas = MenuLoc(Menu.i("Áreas transversales") / "backend" / "transversableareas" >>
+  val backendTransversableAreas = MenuLoc(Menu.i("?reas transversales") / "backend" / "transversableareas" >>
     User.HasRolesOrPermissions(List(SuperAdmin), List(AreasTransversales, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "transversableareas" :: "index" :: Nil)) submenus(
     backendTransversableAreaAdd, backendTransversableAreaEdit))
@@ -481,7 +484,7 @@ object Site extends Locs {
     backendProcessAdd, backendProcessEdit))
 
   val backendActionLineAdd = Menu.param[ActionLine](
-    "Agregar linea de acción", "Agregar linea de acción",
+    "Agregar linea de acci?n", "Agregar linea de acci?n",
     s => Full(ActionLine.createRecord),
     s => "new") / "backend" / "actionlines" / "add" / * >>
     User.HasRolesOrPermissions(List(SuperAdmin), List(LineasDeAccion, Organizacion)) >>
@@ -489,14 +492,14 @@ object Site extends Locs {
     Hidden
 
   val backendActionLineEdit = Menu.param[ActionLine](
-    "Editar linea de acción", "Editar linea de acción",
+    "Editar linea de acci?n", "Editar linea de acci?n",
     ActionLine.find,
     s => s.id.get.toString) / "backend" / "actionlines" / "edit" / * >>
     User.HasRolesOrPermissions(List(SuperAdmin), List(LineasDeAccion, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
-  val backendActionLines = MenuLoc(Menu.i("Lineas de acción") / "backend" / "actionlines" >>
+  val backendActionLines = MenuLoc(Menu.i("Lineas de acci?n") / "backend" / "actionlines" >>
     User.HasRolesOrPermissions(List(SuperAdmin), List(LineasDeAccion, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "actionlines" :: "index" :: Nil)) submenus(
     backendActionLineAdd, backendActionLineEdit))
@@ -673,7 +676,7 @@ object Site extends Locs {
     TemplateBox(() => Templates("backend" :: "blog" :: "index" :: Nil)) submenus(
     backendBlogAdd, backendBlogEdit))
 
-  val backendOrganizacionModule = MenuLoc(Menu.i("Organización") / "backend" / "organizacion" >>
+  val backendOrganizacionModule = MenuLoc(Menu.i("Organizaci?n") / "backend" / "organizacion" >>
     User.HasRolesOrPermissions(List(SuperAdmin), List(Organizacion, Areas, Programas, AreasTransversales, Procesos,
       LineasDeAccion, Principios, Servicios, EnfoquesTransversales)) >> LeftMenuGroup >>
     PlaceHolder submenus(
@@ -743,7 +746,6 @@ object Site extends Locs {
     backendAparienciaModule.menu,
     backendPages.menu,
     backendCalls.menu,
-    frontendEvents.menu,
     Menu.i("Calendario") / "backend" / "calendario" >> User.HasRoleOrPermission(SuperAdmin, Calendario) >> LeftMenuGroup,
     backendBlog.menu,
     Menu.i("Error") / "error" >> Hidden,
@@ -752,6 +754,7 @@ object Site extends Locs {
     who.menu,
     areas.menu,
     agenda.menu,
+    frontendEvent,
     participa.menu,
     espacios.menu,
     espacio,

@@ -5,7 +5,7 @@ package event
 import code.config.{DefaultRoles, Site}
 import code.lib.field._
 import code.lib.js.Bootstrap
-import code.lib.{BaseModel, RogueMetaRecord}
+import code.lib.{BaseModel, Helper, RogueMetaRecord}
 import code.model.event.Activity
 import code.model.resource.Room
 import net.liftweb.common.{Box, Full}
@@ -23,6 +23,7 @@ import java.util.{Date, Locale}
 
 import code.model.BlogPost.process._
 
+import scala.collection.immutable.Stream.Empty
 import scala.xml.{Elem, NodeSeq}
 
 class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with BaseModel[Event] {
@@ -433,6 +434,14 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
     }
   }
 
+  object facebookPhoto extends FileField(this) {
+    override def optional_? = true
+    override def displayName = "Imagen para compartir en facebook"
+    override def toString = {
+      value.fileName.get
+    }
+  }
+
   object residenciaNorte extends BsIntField(this, 0) {
     override def displayName = "Residencias NORTE - Nº de personas. (Máximo 14)"
     override def toForm = super.toForm.map(s => <div id="residenciaNorte_div">{s}</div>)
@@ -493,7 +502,7 @@ object Event extends Event with RogueMetaRecord[Event] {
     name, eventKind, requirements, destinedTo, area, transversalArea,  program, actionLines, process, values, country,
     eventNumber, isOutstanding, organizer, handlers, collaborators, supports, transversalApproach,
     description, hours, costInfo, quote,
-    image, isLogoEnabled, applicantType,
+    image, facebookPhoto, isLogoEnabled, applicantType,
     activities, pressRoom, specificRequirements, residenciaNorte, residenciaSud, status, rooms)
 
   def findLastEventsByUser(user: Box[User]): List[Event] = {
@@ -517,6 +526,39 @@ object Event extends Event with RogueMetaRecord[Event] {
       _.whereOpt(process.toOption)(_.process eqs _.id.get),
       _.whereOpt(room.toOption)(_.rooms contains _.id.get))
       .orderDesc(_.id).fetch(3)
+  }
+
+  def findLastFourEventsByFilter: List[Event] = {
+    Event.where(_.status eqs StatusType.Approved)
+      .andOpt(getAreaValue)(_.area eqs _.id.get)
+      .andOpt(getTransversalAreaValue)(_.transversalArea eqs _.id.get)
+      .orderDesc(_.id).fetch(4)
+  }
+
+  def getAreaValue: Option[Area] = {
+    Helper.getParameter.headOption match {
+      case Some((p: String, v: String)) if(p == "area") =>
+        Area.where(_.name eqs v).fetch().headOption
+      case _ =>
+        None
+    }
+  }
+
+  def getTransversalAreaValue: Option[TransversalArea] = {
+    Helper.getParameter.headOption match {
+      case Some((p: String, v: String)) if(p == "areaT") =>
+        TransversalArea.where(_.name eqs v).fetch().headOption
+      case _ =>
+        None
+    }
+  }
+
+  def findAreas: List[Area] = {
+    Event.distinct(_.area).map(Area.find(_)).flatten
+  }
+
+  def findAreasTransversal: List[TransversalArea] = {
+    Event.distinct(_.transversalArea).map(TransversalArea.find(_)).flatten
   }
 }
 
