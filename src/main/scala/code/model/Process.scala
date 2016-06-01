@@ -1,6 +1,7 @@
 package code.model
 
 import code.config.Site
+import code.lib._
 import code.lib.field.{BsCkTextareaField, BsCkUnsecureTextareaField, BsStringField, FileField}
 import code.lib.{BaseModel, RogueMetaRecord, SortableModel, WithUrl}
 import net.liftweb.common.{Box, Full}
@@ -9,6 +10,7 @@ import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField}
 import net.liftweb.record.field.EnumNameField
 import net.liftweb.http.js.JsCmds.Noop
+import net.liftweb.json.JsonDSL._
 
 class Process private () extends MongoRecord[Process] with ObjectIdPk[Process] with BaseModel[Process] with SortableModel[Process] with WithUrl[Process] {
 
@@ -121,6 +123,15 @@ object Process extends Process with RogueMetaRecord[Process] {
 
   def findByUrl(url: String): Box[Process] = {
     Process.where(_.url eqs url).fetch(1).headOption
+  }
+
+  def updateElasticSearch(process: Process) = {
+    ElasticSearch.mongoindexSave(
+      ElasticSearch.elasticSearchPath ++ List(s"process_${process.id.get}"),
+      ("url" -> Site.proceso.calcHref(process)) ~
+      ("name" -> process.name.get) ~
+      ("content" -> process.description.asHtml.text)
+    )
   }
 }
 

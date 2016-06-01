@@ -1,6 +1,7 @@
 package code.model
 
 import code.config.Site
+import code.lib._
 import code.lib.field.{BsCkTextareaField, BsCkUnsecureTextareaField, BsStringField, FileField}
 import code.lib.{BaseModel, RogueMetaRecord, SortableModel, WithUrl}
 import net.liftweb.common.{Box, Full}
@@ -8,6 +9,7 @@ import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.ObjectIdPk
 import net.liftweb.record.field.{StringField, TextareaField}
+import net.liftweb.json.JsonDSL._
 
 class ActionLine private () extends MongoRecord[ActionLine] with ObjectIdPk[ActionLine] with BaseModel[ActionLine] with SortableModel[ActionLine] with WithUrl[ActionLine] {
 
@@ -51,5 +53,14 @@ object ActionLine extends ActionLine with RogueMetaRecord[ActionLine] {
 
   def findByUrl(url: String): Box[ActionLine] = {
     ActionLine.where(_.url eqs url).fetch(1).headOption
+  }
+
+  def updateElasticSearch(actionLine: ActionLine) = {
+    ElasticSearch.mongoindexSave(
+      ElasticSearch.elasticSearchPath ++ List(s"action_line_${actionLine.id.get}"),
+      ("url" -> Site.lineaDeAccion.calcHref(actionLine)) ~
+      ("name" -> actionLine.name.get) ~
+      ("content" -> actionLine.description.asHtml.text)
+    )
   }
 }
