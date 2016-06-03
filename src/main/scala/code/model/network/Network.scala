@@ -3,6 +3,7 @@ package model
 package network
 
 import code.config.Site
+import code.lib._
 import code.lib.field.{BsCkTextareaField, BsCkUnsecureTextareaField, BsStringField, FileField}
 import code.lib.{BaseModel, RogueMetaRecord, SortableModel, WithUrl}
 import net.liftweb.common.{Box, Full}
@@ -10,6 +11,7 @@ import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField, ObjectIdRefListField}
 import net.liftweb.record.field.EnumNameField
+import net.liftweb.json.JsonDSL._
 
 class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] with BaseModel[Network] with SortableModel[Network] with WithUrl[Network] {
 
@@ -69,6 +71,15 @@ object Network extends Network with RogueMetaRecord[Network] {
 
   def findByUrl(url: String): Box[Network] = {
     Network.where(_.url eqs url).fetch(1).headOption
+  }
+
+  def updateElasticSearch(network: Network) = {
+    ElasticSearch.mongoindexSave(
+      ElasticSearch.elasticSearchPath ++ List(s"network_${network.id.get}"),
+      ("url" -> Site.red.calcHref(network)) ~
+      ("name" -> network.name.get) ~
+      ("content" -> network.description.asHtml.text)
+    )
   }
 }
 

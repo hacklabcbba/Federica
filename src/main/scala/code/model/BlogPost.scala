@@ -2,7 +2,7 @@ package code
 package model
 
 import code.config.Site
-import code.lib.{BaseModel, Helper, RogueMetaRecord}
+import code.lib._
 import code.lib.field._
 import com.foursquare.rogue.LiftRogue
 import net.liftweb.common.{Box, Full}
@@ -16,6 +16,7 @@ import net.liftweb.record.field.BooleanField
 
 import scala.reflect.macros.whitebox
 import scala.xml.Elem
+import net.liftweb.json.JsonDSL._
 
 class BlogPost private() extends MongoRecord[BlogPost] with ObjectIdPk[BlogPost] with BaseModel[BlogPost] {
 
@@ -414,5 +415,14 @@ object BlogPost extends BlogPost with RogueMetaRecord[BlogPost] {
 
   def findAllLastPost: List[BlogPost] = {
     BlogPost.orderDesc(_.date).fetch(3)
+  }
+
+  def updateElasticSearch(blogPost: BlogPost) = {
+    ElasticSearch.mongoindexSave(
+      ElasticSearch.elasticSearchPath ++ List(s"post_${blogPost.id.get}"),
+      ("url" -> Site.entradaBlog.calcHref(blogPost)) ~
+      ("name" -> blogPost.name.get) ~
+      ("content" -> blogPost.content.asHtml.text)
+    )
   }
 }

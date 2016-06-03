@@ -147,6 +147,31 @@ object EventSnippet extends ListSnippet[Event] {
       "li [class+]" #> (if ((parameter == "areaT") && (value == area.name.get)) "active" else "") &
       "a [href]" #> s"${Site.agenda.fullUrl}?areaT=${area.name.get}" &
       "a *" #> area.name.get
+    }) &
+    "data-name=program" #> meta.findPrograms.map(program => {
+      "li [class+]" #> (if ((parameter == "programa") && (value == program.name.get)) "active" else "") &
+      "a [href]" #> s"${Site.agenda.fullUrl}?programa=${program.name.get}" &
+      "a *" #> program.name.get
+    }) &
+    "data-name=actionLine" #> meta.findActionLines.map(action => {
+      "li [class+]" #> (if ((parameter == "lineaAccion") && (value == action.name.get)) "active" else "") &
+      "a [href]" #> s"${Site.agenda.fullUrl}?lineaAccion=${action.name.get}" &
+      "a *" #> action.name.get
+    }) &
+    "data-name=process" #> meta.findProcess.map(process => {
+      "li [class+]" #> (if ((parameter == "proceso") && (value == process.name.get)) "active" else "") &
+      "a [href]" #> s"${Site.agenda.fullUrl}?proceso=${process.name.get}" &
+      "a *" #> process.name.get
+    }) &
+    "data-name=value" #> meta.findValues.map(mValue => {
+      "li [class+]" #> (if ((parameter == "principio") && (value == mValue.name.get)) "active" else "") &
+      "a [href]" #> s"${Site.agenda.fullUrl}?principio=${mValue.name.get}" &
+      "a *" #> mValue.name.get
+    }) &
+    "data-name=transversalAproach" #> meta.findApproach.map(approach => {
+      "li [class+]" #> (if ((parameter == "enfoque") && (value == approach.name.get)) "active" else "") &
+      "a [href]" #> s"${Site.agenda.fullUrl}?enfoque=${approach.name.get}" &
+      "a *" #> approach.name.get
     })
   }
 
@@ -171,6 +196,7 @@ object EventSnippet extends ListSnippet[Event] {
         "data-name=title-module" #> title &
         "data-name=events" #> listEvents.map(event => {
           "data-name=title *" #> event.name.get &
+          "data-name=title [href]" #> Site.frontendEvent.calcHref(event) &
           "data-name=days *" #> event.activities.get.map(_.date.toString).mkString(",") &
           {
             event.image.valueBox match {

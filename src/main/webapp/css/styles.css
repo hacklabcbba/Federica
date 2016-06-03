@@ -420,6 +420,8 @@ body > header .navbar-black .search .search-box,
 body > .wrapper > header .navbar-black .search .search-box {
   height: 30px;
   margin-top: 10px;
+  border-color: white;
+  color: white;
 }
 body > header .navbar-black .search i,
 body > .wrapper > header .navbar-black .search i {
@@ -1623,5 +1625,8 @@ body > footer .footer-buttons a .title-link {
 }
 body > footer .social-suscribe {
   padding-top: 50px;
+}
+.fa-search:before {
+  color: white;
 }
 /*# sourceMappingURL=style.css.map */

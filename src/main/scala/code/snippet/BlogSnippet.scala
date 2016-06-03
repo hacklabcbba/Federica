@@ -94,7 +94,7 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
         "data-name=process-name *" #> process.name.get &
         "data-name=process-name [href]" #> s"${Site.blog.fullUrl}?proceso=${process.name.get}"
       case _ =>
-        "data-name=transversalarea" #> NodeSeq.Empty
+        "data-name=process" #> NodeSeq.Empty
       }
     ) &
     (post.author.obj match {
@@ -226,6 +226,7 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
         "data-name=title-module" #> title &
         "data-name=posts" #> listPosts.map(post => {
           "data-name=title *" #> post.name.get &
+          "data-name=title [href]" #> Site.entradaBlog.calcHref(post) &
           "data-name=area *" #> post.area.obj.dmap("")(_.name.get) &
           {
             post.photo.valueBox match {
