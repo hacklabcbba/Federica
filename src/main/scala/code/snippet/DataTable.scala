@@ -151,7 +151,8 @@ class DataTable {
 
     val f = (ignore: String) => {
       val columns = S.param("iColumns").dmap(0)(_.toInt)
-      val a = (1 to columns).map(i => S.param("bSearchable_" + i).dmap(false)(_.toBoolean)).toList
+      val a = (1 to columns).map(i => S.param("bSearchable_" + i).dmap(true)(_.toBoolean)).toList
+
 
       val params = new DataTableParams(
         S.param("iDisplayStart").dmap(0)(_.toInt),
@@ -159,14 +160,15 @@ class DataTable {
         columns,
         S.param("sSearch").dmap("")(_.toString),
         S.param("bRegex").dmap(false)(_.toBoolean),
-        (1 to columns).map(i => S.param("bSearchable_" + i).dmap(false)(_.toBoolean)).toList,
+        (1 to columns).map(i => true).toList,
         (1 to columns).map(i => S.param("sSearch_" + i).dmap("")(_.toString)).toList,
         (1 to columns).map(i => S.param("bRegex_" + i).dmap(false)(_.toBoolean)).toList,
-        (1 to columns).map(i => S.param("bSortable_" + i).dmap(false)(_.toBoolean)).toList,
+        (1 to columns).map(i => true).toList,
         S.param("iSortingCols").dmap(0)(_.toInt),
         (1 to columns).map(i => S.param("iSortCol_" + i).dmap(0)(_.toInt)).toList,
         (1 to columns).map(i => S.param("sSortDir_" + i).dmap("")(_.toString)).toList,
         (1 to columns).map(i => S.param("mDataProp_" + i).dmap("")(_.toString)).toList)
+
 
       val source = fun(params)
 
@@ -187,6 +189,7 @@ class DataTable {
         ("bServerSide", "true") ::
         ("sAjaxSource", where.encJs) ::
         Nil ::: jsonOptions
+
       val json = jqOptions.map(t => t._1 + ":" + t._2).mkString("{", ",", "}")
       val datatableOptions = JsRaw(json)
 

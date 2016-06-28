@@ -11,7 +11,7 @@ import net.liftweb.json.JsonAST.JValue
 import net.liftweb.util.Helpers._
 import net.liftweb.util.{CssSel, Helpers}
 
-object TransversalAreaSnippet extends SortableSnippet[TransversalArea] {
+object TransversalAreaSnippet extends ListSnippet[TransversalArea] {
 
   val meta = TransversalArea
 

@@ -14,7 +14,7 @@ import net.liftweb.util.{CssSel, Helpers}
 
 import scala.xml.NodeSeq
 
-object ValueSnippet extends SortableSnippet[Value] {
+object ValueSnippet extends ListSnippet[Value] {
 
   val meta = Value
 

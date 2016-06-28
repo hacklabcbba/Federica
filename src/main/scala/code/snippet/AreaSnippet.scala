@@ -11,7 +11,7 @@ import net.liftweb.http.js.JsCmds._
 import LiftRogue._
 import net.liftweb.common.{Empty, Full}
 
-object AreaSnippet extends SortableSnippet[Area] {
+object AreaSnippet extends ListSnippet[Area] {
 
   val meta = Area
 

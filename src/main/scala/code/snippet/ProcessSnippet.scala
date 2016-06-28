@@ -12,7 +12,7 @@ import Helpers._
 import net.liftweb.common.{Empty, Full}
 import net.liftweb.http.js.JsCmds._
 
-object ProcessSnippet extends SortableSnippet[Process] {
+object ProcessSnippet extends ListSnippet[Process] {
 
   val meta = Process
 

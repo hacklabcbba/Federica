@@ -12,7 +12,7 @@ import net.liftweb.json.JsonAST.JValue
 import net.liftweb.util.Helpers._
 import net.liftweb.util.{CssSel, Helpers}
 
-object TransversalApproachSnippet extends SortableSnippet[TransversalApproach] {
+object TransversalApproachSnippet extends ListSnippet[TransversalApproach] {
 
   val meta = TransversalApproach
 

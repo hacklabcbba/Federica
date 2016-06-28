@@ -15,7 +15,7 @@ import net.liftweb.common.{Empty, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.http.js.JsCmds._
 
-object RoomSnippet extends SortableSnippet[Room] with SnippetHelper {
+object RoomSnippet extends ListSnippet[Room] with SnippetHelper {
 
   val meta = Room
 
