@@ -2,18 +2,19 @@ package code.model
 
 import code.config.Site
 import code.lib.field._
-import code.lib.{WithUrl, SortableModel, BaseModel, RogueMetaRecord}
+import code.lib._
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.{BsonMetaRecord, BsonRecord, MongoRecord}
 import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField}
 import net.liftweb.record.field._
 import net.liftweb.util.FieldError
+import scala.xml.{Elem, Text}
+import net.liftweb.json.JsonDSL._
 
-import scala.xml.{Text, Elem}
 
-
-class TransversalArea private () extends MongoRecord[TransversalArea] with ObjectIdPk[TransversalArea] with BaseModel[TransversalArea] with SortableModel[TransversalArea] with WithUrl[TransversalArea] {
+class TransversalArea private () extends MongoRecord[TransversalArea] with ObjectIdPk[TransversalArea]
+  with BaseModel[TransversalArea] with SortableModel[TransversalArea] with WithUrl[TransversalArea] {
 
   override def meta = TransversalArea
 
@@ -35,6 +36,14 @@ class TransversalArea private () extends MongoRecord[TransversalArea] with Objec
 
   object photo2 extends FileField(this) {
     override def displayName = "Foto"
+    override def toString = {
+      value.fileName.get
+    }
+  }
+
+  object facebookPhoto extends FileField(this) {
+    override def optional_? = true
+    override def displayName = "Imagen para compartir en facebook"
     override def toString = {
       value.fileName.get
     }
@@ -96,7 +105,8 @@ class TransversalArea private () extends MongoRecord[TransversalArea] with Objec
 
 object TransversalArea extends TransversalArea with RogueMetaRecord[TransversalArea] {
   override def collectionName = "main.transversal_areas"
-  override def fieldOrder = List(name, responsible, email, phone, code, photo1, photo2, description, officeHoursBegins, officeHoursEnds)
+  override def fieldOrder = List(name, responsible, email, phone, code, photo1, photo2, facebookPhoto, description,
+    officeHoursBegins, officeHoursEnds)
 
   def findAllPublished: List[TransversalArea] = {
     TransversalArea.where(_.isPublished eqs true).fetch()
@@ -104,5 +114,14 @@ object TransversalArea extends TransversalArea with RogueMetaRecord[TransversalA
 
   def findByUrl(url: String): Box[TransversalArea] = {
     TransversalArea.where(_.url eqs url).fetch(1).headOption
+  }
+
+  def updateElasticSearch(transversalArea: TransversalArea) = {
+    ElasticSearch.mongoindexSave(
+      ElasticSearch.elasticSearchPath ++ List(s"transversal_area_${transversalArea.id.get}"),
+      ("url" -> Site.areaTransversal.calcHref(transversalArea)) ~
+      ("name" -> transversalArea.name.get) ~
+      ("content" -> transversalArea.description.asHtml.text)
+    )
   }
 }

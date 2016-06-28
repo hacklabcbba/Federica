@@ -47,6 +47,9 @@ object Dependencies {
   val angularJs = "org.webjars"             %   "angularjs" % Ver.angular_version
   val liftNg = "net.liftmodules"   %% ("ng_"+Ver.lift_edition) % "0.9.0"
 
+  //Twitter
+  val finagleHttp = "com.twitter" % "finagle-http_2.11" % "6.24.0"
+
   //reCaptcha
   val reCaptcha = "net.tanesha.recaptcha4j" % "recaptcha4j" % "0.0.7"
 

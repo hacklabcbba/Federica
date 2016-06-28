@@ -1,14 +1,14 @@
 package code.model
 
 import code.config.Site
-import code.lib.{WithUrl, SortableModel, BaseModel, RogueMetaRecord}
+import code.lib._
 import code.lib.field._
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
-import net.liftweb.mongodb.record.field.{ObjectIdRefField, ObjectIdPk}
+import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField}
 import net.liftweb.record.field.{StringField, TextareaField}
-
+import net.liftweb.json.JsonDSL._
 import scala.xml.Elem
 
 
@@ -23,6 +23,14 @@ class Program private () extends MongoRecord[Program] with ObjectIdPk[Program] w
   object name extends BsStringField(this, 500) {
     override def displayName = "Nombre"
     override def toString = get
+  }
+
+  object facebookPhoto extends FileField(this) {
+    override def optional_? = true
+    override def displayName = "Imagen para compartir en facebook"
+    override def toString = {
+      value.fileName.get
+    }
   }
 
   object responsible extends ObjectIdRefField(this, User) {
@@ -68,7 +76,7 @@ class Program private () extends MongoRecord[Program] with ObjectIdPk[Program] w
 
 object Program extends Program with RogueMetaRecord[Program] {
   override def collectionName = "main.programs"
-  override def fieldOrder = List(name, responsible, email, phone, code, description)
+  override def fieldOrder = List(name, responsible, email, facebookPhoto, phone, code, description)
 
   def findAllPublished: List[Program] = {
     Program.findAll
@@ -76,5 +84,14 @@ object Program extends Program with RogueMetaRecord[Program] {
 
   def findByUrl(url: String): Box[Program] = {
     Program.where(_.url eqs url).fetch(1).headOption
+  }
+
+  def updateElasticSearch(program: Program) = {
+    ElasticSearch.mongoindexSave(
+      ElasticSearch.elasticSearchPath ++ List(s"program_${program.id.get}"),
+      ("url" -> Site.programa.calcHref(program)) ~
+      ("name" -> program.name.get) ~
+      ("content" -> program.description.asHtml.text)
+    )
   }
 }

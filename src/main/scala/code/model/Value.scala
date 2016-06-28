@@ -2,7 +2,7 @@ package code.model
 
 import code.config.Site
 import code.lib.field.{BsCkUnsecureTextareaField, BsStringField, BsTextareaField, FileField}
-import code.lib.{BaseModel, RogueMetaRecord, SortableModel, WithUrl}
+import code.lib._
 import code.model.event.Event.image._
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
@@ -10,11 +10,12 @@ import net.liftweb.mongodb.record.{BsonMetaRecord, BsonRecord, MongoRecord}
 import net.liftweb.mongodb.record.field.{BsonRecordListField, ObjectIdPk, ObjectIdRefField}
 import net.liftweb.record.LifecycleCallbacks
 import net.liftweb.record.field.{StringField, TextareaField}
-
+import net.liftweb.json.JsonDSL._
 import scala.xml.NodeSeq
 
 
-class Value private () extends MongoRecord[Value] with ObjectIdPk[Value] with BaseModel[Value] with SortableModel[Value] with WithUrl[Value]{
+class Value private () extends MongoRecord[Value] with ObjectIdPk[Value] with BaseModel[Value] with SortableModel[Value]
+  with WithUrl[Value]{
 
   override def meta = Value
 
@@ -147,6 +148,14 @@ class Value private () extends MongoRecord[Value] with ObjectIdPk[Value] with Ba
     }
   }
 
+  object facebookPhoto extends FileField(this) {
+    override def optional_? = true
+    override def displayName = "Imagen para compartir en facebook"
+    override def toString = {
+      value.fileName.get
+    }
+  }
+
   def urlString: String = Site.principio.calcHref(this)
 
   override def toString = name.get
@@ -157,11 +166,20 @@ object Value extends Value with RogueMetaRecord[Value] {
   override def collectionName = "main.values"
 
   override def fieldOrder = List(
-    name, description, image, url, order, areasDefinitions, programsDefinitions, transvesalAreasDefinitions
+    name, description, image, facebookPhoto, url, order, areasDefinitions, programsDefinitions, transvesalAreasDefinitions
   )
 
   def findByUrl(url: String): Box[Value] = {
     Value.where(_.url eqs url).fetch(1).headOption
+  }
+
+  def updateElasticSearch(value: Value) = {
+    ElasticSearch.mongoindexSave(
+      ElasticSearch.elasticSearchPath ++ List(s"value_${value.id.get}"),
+      ("url" -> Site.principio.calcHref(value)) ~
+      ("name" -> value.name.get) ~
+      ("content" -> value.description.asHtml.text)
+    )
   }
 }
 

@@ -1,13 +1,15 @@
 package code.model
 
 import code.config.Site
-import code.lib.field.{BsCkUnsecureTextareaField, BsStringField, BsCkTextareaField}
-import code.lib.{WithUrl, BaseModel, SortableModel, RogueMetaRecord}
+import code.lib._
+import code.lib.field.{BsCkTextareaField, BsCkUnsecureTextareaField, BsStringField, FileField}
+import code.lib.{BaseModel, RogueMetaRecord, SortableModel, WithUrl}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.ObjectIdPk
 import net.liftweb.record.field.{StringField, TextareaField}
+import net.liftweb.json.JsonDSL._
 
 class ActionLine private () extends MongoRecord[ActionLine] with ObjectIdPk[ActionLine] with BaseModel[ActionLine] with SortableModel[ActionLine] with WithUrl[ActionLine] {
 
@@ -26,6 +28,14 @@ class ActionLine private () extends MongoRecord[ActionLine] with ObjectIdPk[Acti
       "class" -> "form-control", "data-placeholder" -> "Ingrese nombre.."))
   }
 
+  object facebookPhoto extends FileField(this) {
+    override def optional_? = true
+    override def displayName = "Imagen para compartir en facebook"
+    override def toString = {
+      value.fileName.get
+    }
+  }
+
   object description extends BsCkUnsecureTextareaField(this, 1000) {
     override def displayName = "Descripción"
   }
@@ -39,9 +49,18 @@ object ActionLine extends ActionLine with RogueMetaRecord[ActionLine] {
 
   override def collectionName = "main.action_lines"
 
-  override def fieldOrder = List(name, description)
+  override def fieldOrder = List(name, description, facebookPhoto)
 
   def findByUrl(url: String): Box[ActionLine] = {
     ActionLine.where(_.url eqs url).fetch(1).headOption
+  }
+
+  def updateElasticSearch(actionLine: ActionLine) = {
+    ElasticSearch.mongoindexSave(
+      ElasticSearch.elasticSearchPath ++ List(s"action_line_${actionLine.id.get}"),
+      ("url" -> Site.lineaDeAccion.calcHref(actionLine)) ~
+      ("name" -> actionLine.name.get) ~
+      ("content" -> actionLine.description.asHtml.text)
+    )
   }
 }

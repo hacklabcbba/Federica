@@ -146,16 +146,16 @@ object Site extends Locs {
     TemplateBox(() => Templates("proceso" :: Nil)) >>
     Hidden
 
-  val procesos = MenuLoc(Menu.i("Procesos ") / "procesos" submenus(proceso) >> Hidden)
+  val procesos = MenuLoc(Menu.i("Procesos ") / "procesos" submenus(proceso))
 
   val lineaDeAccion =  Menu.param[ActionLine](
-    "Ver Linea de Acción", "Ver Linea de Acción",
+    "Ver Linea de Acci?n", "Ver Linea de Acci?n",
     ActionLine.findByUrl,
     s => s.url.get.toString) / "linea-de-accion" / * >>
     TemplateBox(() => Templates("linea-de-accion" :: Nil)) >>
     Hidden
 
-  val lineasDeAccion = MenuLoc(Menu.i("Lineas de acción ") / "lineas-de-accion" submenus(lineaDeAccion) >> Hidden)
+  val lineasDeAccion = MenuLoc(Menu.i("Lineas de acci?n ") / "lineas-de-accion" submenus(lineaDeAccion))
 
   val enfoqueTransversal =  Menu.param[TransversalApproach](
     "Ver Enfoque Transversal", "Ver Enfoque Transversal",
@@ -164,7 +164,7 @@ object Site extends Locs {
     TemplateBox(() => Templates("enfoque-transversal" :: Nil)) >>
     Hidden
 
-  val enfoquesTransversales = MenuLoc(Menu.i("Enfoques transversales ") / "enfoques-transversales" submenus(enfoqueTransversal) >> Hidden)
+  val enfoquesTransversales = MenuLoc(Menu.i("Enfoques transversales ") / "enfoques-transversales" submenus(enfoqueTransversal))
 
   val programa =  Menu.param[Program](
     "Ver Programa", "Ver Programa",
@@ -182,7 +182,7 @@ object Site extends Locs {
     TemplateBox(() => Templates("red" :: Nil)) >>
     Hidden
 
-  val redes = MenuLoc(Menu.i("Redes ") / "redes" submenus(red) >> Hidden)
+  val redes = MenuLoc(Menu.i("Redes ") / "redes" submenus(red))
 
   /* Convocatorias */
   // Convocatorias
@@ -243,7 +243,7 @@ object Site extends Locs {
   val emailConfirmation = Menu.param[User]("Confirmacion de Correo electronico", "Confirmacion de correo electronico",
     User.find, s => s.id.get.toString) / "confirmation" / * >> TemplateBox(() => Templates("confirmacion" :: Nil)) >>
     Hidden
-  val passwordRecovery = Menu.param[User]("Recuperar contraseña", "Recuperar contraseña",
+  val passwordRecovery = Menu.param[User]("Recuperar contrase?a", "Recuperar contrase?a",
     User.find, s => s.id.get.toString) / "recovery" / "password" / * >> TemplateBox(() => Templates("recovery" :: Nil)) >>
     Hidden
   val emailRecovery = MenuLoc(Menu.i("Recovery") / "recovery"/ "email" >> TemplateBox(() => Templates("email_recovery" :: Nil)) >>
@@ -256,7 +256,7 @@ object Site extends Locs {
     User.HasRoleOrPermission(SuperAdmin, Mensajes) >> LeftMenuGroup)
 
   val backendPendingEvents = MenuLoc(Menu.i("Solicitudes") / "backend" / "events" / "pendingevents" >>
-    User.HasRoleOrPermission(SuperAdmin, Solicitudes))
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Solicitudes, Eventos)))
 
   val backendApprovedEvents = MenuLoc(Menu.i("Eventos aprobados") / "backend" / "events" / "index" >>
     User.HasRoleOrPermission(SuperAdmin, Eventos))
@@ -311,7 +311,7 @@ object Site extends Locs {
     "Agregar widget", "Agregar widget",
     s => Full(Widget.createRecord),
     s => "new") / "backend" / "widgets" / "add" / * >>
-    User.HasRoleOrPermission(SuperAdmin, Widgets) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Widgets, Apariencia)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
@@ -319,22 +319,22 @@ object Site extends Locs {
     "Editar widget", "Editar widget",
     Widget.find,
     s => s.id.get.toString) / "backend" / "widgets" / "edit" / * >>
-    User.HasRoleOrPermission(SuperAdmin, Widgets) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Widgets, Apariencia)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
   val backendWidgets = MenuLoc(Menu.i("Widgets") / "backend" / "widgets" >>
     TemplateBox(() => Templates("backend" :: "widgets" :: "index" :: Nil)) >>
-    User.HasRoleOrPermission(SuperAdmin, Widgets) submenus(
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Widgets, Apariencia)) submenus(
     backendWidgetAdd, backendWidgetEdit))
 
 
   val backendMenus = MenuLoc(Menu.i("Menus") / "backend" / "menus" >>
     TemplateBox(() => Templates("backend" :: "menus" :: Nil)) >>
-    User.HasRoleOrPermission(SuperAdmin, Menus))
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Menus, Apariencia)))
 
   val backendPageAdd = Menu.param[Page](
-    "Agregar página", "Agregar página",
+    "Agregar p?gina", "Agregar p?gina",
     s => Full(Page.createRecord),
     s => "new") / "backend" / "pages" / "add" / * >>
     User.HasRoleOrPermission(SuperAdmin, Paginas) >>
@@ -342,23 +342,23 @@ object Site extends Locs {
     Hidden
 
   val backendPageEdit = Menu.param[Page](
-    "Editar página", "Editar página",
+    "Editar p?gina", "Editar p?gina",
     Page.find,
     s => s.id.get.toString) / "backend" / "pages" / "edit" / * >>
-    User.HasRoleOrPermission(SuperAdmin, Widgets) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Widgets, Apariencia)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "pages-form-page" :: Nil)) >>
     Hidden
 
   val backendPages = MenuLoc(Menu.i("Paginas") / "backend" / "pages" >>
     TemplateBox(() => Templates("backend" :: "pages" :: "index" :: Nil)) >>
-    User.HasRoleOrPermission(SuperAdmin, Widgets) >> LeftMenuGroup submenus(
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Widgets, Apariencia)) >> LeftMenuGroup submenus(
     backendPageAdd, backendPageEdit))
 
   val backendRoomAdd = Menu.param[Room](
     "Agregar sala", "Agregar sala",
     s => Full(Room.createRecord),
     s => "new") / "backend" / "rooms" / "add" / * >>
-    User.HasRoleOrPermission(SuperAdmin, Salas) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Salas, Ambientes)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
@@ -366,11 +366,12 @@ object Site extends Locs {
     "Editar sala", "Editar sala",
     Room.find,
     s => s.id.get.toString) / "backend" / "rooms" / "edit" / * >>
-    User.HasRoleOrPermission(SuperAdmin, Salas) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Salas, Ambientes)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
-  val backendRooms = MenuLoc(Menu.i("Salas") / "backend" / "rooms" >> User.HasRoleOrPermission(SuperAdmin, Salas) >>
+  val backendRooms = MenuLoc(Menu.i("Salas") / "backend" / "rooms" >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Salas, Ambientes)) >>
     TemplateBox(() => Templates("backend" :: "rooms" :: "index" :: Nil)) submenus(
       backendRoomAdd, backendRoomEdit))
 
@@ -378,7 +379,7 @@ object Site extends Locs {
     "Agregar equipo", "Agregar equipo",
     s => Full(Equipment.createRecord),
     s => "new") / "backend" / "equipments" / "add" / * >>
-    User.HasRoleOrPermission(SuperAdmin, Accesorios) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Accesorios, Ambientes)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
@@ -386,52 +387,54 @@ object Site extends Locs {
     "Editar equipo", "Editar equipo",
     Equipment.find,
     s => s.id.get.toString) / "backend" / "equipments" / "edit" / * >>
-    User.HasRoleOrPermission(SuperAdmin, Accesorios) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Accesorios, Ambientes)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
   val backendEquipments = MenuLoc(Menu.i("Equipos") / "backend" / "equipments" >>
-    User.HasRoleOrPermission(SuperAdmin, Accesorios) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Accesorios, Ambientes)) >>
     TemplateBox(() => Templates("backend" :: "equipments" :: "index" :: Nil)) submenus(
     backendEquipmentAdd, backendEquipmentEdit))
 
   val backendAreaAdd = Menu.param[Area](
-    "Agregar área", "Agregar área",
+    "Agregar ?rea", "Agregar ?rea",
     s => Full(Area.createRecord),
     s => "new") / "backend" / "areas" / "add" / * >>
-    User.HasRoleOrPermission(SuperAdmin, Areas) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Areas, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
   val backendAreaEdit = Menu.param[Area](
-    "Editar área", "Editar área",
+    "Editar ?rea", "Editar ?rea",
     Area.find,
     s => s.id.get.toString) / "backend" / "areas" / "edit" / * >>
-    User.HasRoleOrPermission(SuperAdmin, Areas) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Areas, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
-  val backendAreas = MenuLoc(Menu.i("Áreas") / "backend" / "areas" >> User.HasRoleOrPermission(SuperAdmin, Areas) >>
+  val backendAreas = MenuLoc(Menu.i("?reas") / "backend" / "areas" >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Areas, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "areas" :: "index" :: Nil)) submenus(
     backendAreaAdd, backendAreaEdit))
 
   val backendTransversableAreaAdd = Menu.param[TransversalArea](
-    "Agregar área transversal", "Agregar área transaversal",
+    "Agregar ?rea transversal", "Agregar ?rea transaversal",
     s => Full(TransversalArea.createRecord),
     s => "new") / "backend" / "transversableareas" / "add" / * >>
-    User.HasRoleOrPermission(SuperAdmin, AreasTransversales) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(AreasTransversales, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
   val backendTransversableAreaEdit = Menu.param[TransversalArea](
-    "Editar área transversal", "Editar área transversal",
+    "Editar ?rea transversal", "Editar ?rea transversal",
     TransversalArea.find,
     s => s.id.get.toString) / "backend" / "transversableareas" / "edit" / * >>
-    User.HasRoleOrPermission(SuperAdmin, AreasTransversales) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(AreasTransversales, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
-  val backendTransversableAreas = MenuLoc(Menu.i("Áreas transversales") / "backend" / "transversableareas" >> User.HasRoleOrPermission(SuperAdmin, AreasTransversales) >>
+  val backendTransversableAreas = MenuLoc(Menu.i("?reas transversales") / "backend" / "transversableareas" >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(AreasTransversales, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "transversableareas" :: "index" :: Nil)) submenus(
     backendTransversableAreaAdd, backendTransversableAreaEdit))
 
@@ -439,7 +442,7 @@ object Site extends Locs {
     "Agregar programa", "Agregar programa",
     s => Full(Program.createRecord),
     s => "new") / "backend" / "program" / "add" / * >>
-    User.HasRoleOrPermission(SuperAdmin, Programas) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Programas, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
@@ -447,12 +450,12 @@ object Site extends Locs {
     "Editar programa", "Editar programa",
     Program.find,
     s => s.id.get.toString) / "backend" / "programs" / "edit" / * >>
-    User.HasRoleOrPermission(SuperAdmin, Programas) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Programas, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
   val backendPrograms = MenuLoc(Menu.i("Programas") / "backend" / "programs" >>
-    User.HasRoleOrPermission(SuperAdmin, Programas) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Programas, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "programs" :: "index" :: Nil)) submenus(
     backendProgramAdd, backendProgramEdit))
 
@@ -460,7 +463,7 @@ object Site extends Locs {
     "Agregar proceso", "Agregar proceso",
     s => Full(Process.createRecord),
     s => "new") / "backend" / "process" / "add" / * >>
-    User.HasRoleOrPermission(SuperAdmin, Procesos) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Procesos, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
@@ -468,33 +471,33 @@ object Site extends Locs {
     "Editar proceso", "Editar proceso",
     Process.find,
     s => s.id.get.toString) / "backend" / "process" / "edit" / * >>
-    User.HasRoleOrPermission(SuperAdmin, Procesos) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Procesos, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
   val backendProcess = MenuLoc(Menu.i("Procesos") / "backend" / "process" >>
-    User.HasRoleOrPermission(SuperAdmin, Procesos) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Procesos, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "process" :: "index" :: Nil)) submenus(
     backendProcessAdd, backendProcessEdit))
 
   val backendActionLineAdd = Menu.param[ActionLine](
-    "Agregar linea de acción", "Agregar linea de acción",
+    "Agregar linea de acci?n", "Agregar linea de acci?n",
     s => Full(ActionLine.createRecord),
     s => "new") / "backend" / "actionlines" / "add" / * >>
-    User.HasRoleOrPermission(SuperAdmin, LineasDeAccion) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(LineasDeAccion, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
   val backendActionLineEdit = Menu.param[ActionLine](
-    "Editar linea de acción", "Editar linea de acción",
+    "Editar linea de acci?n", "Editar linea de acci?n",
     ActionLine.find,
     s => s.id.get.toString) / "backend" / "actionlines" / "edit" / * >>
-    User.HasRoleOrPermission(SuperAdmin, LineasDeAccion) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(LineasDeAccion, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
-  val backendActionLines = MenuLoc(Menu.i("Lineas de acción") / "backend" / "actionlines" >>
-    User.HasRoleOrPermission(SuperAdmin, LineasDeAccion) >>
+  val backendActionLines = MenuLoc(Menu.i("Lineas de acci?n") / "backend" / "actionlines" >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(LineasDeAccion, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "actionlines" :: "index" :: Nil)) submenus(
     backendActionLineAdd, backendActionLineEdit))
 
@@ -502,7 +505,7 @@ object Site extends Locs {
     "Agregar enfoque transversal", "Agregar enfoque transversal",
     s => Full(TransversalApproach.createRecord),
     s => "new") / "backend" / "transversalapproaches" / "add" / * >>
-    User.HasRoleOrPermission(SuperAdmin, EnfoquesTransversales) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(EnfoquesTransversales, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
@@ -510,12 +513,12 @@ object Site extends Locs {
     "Editar enfoque transversal", "Editar enfoque transversal",
     TransversalApproach.find,
     s => s.id.get.toString) / "backend" / "transversalapproaches" / "edit" / * >>
-    User.HasRoleOrPermission(SuperAdmin, EnfoquesTransversales) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(EnfoquesTransversales, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
   val backendTransversalApproaches = MenuLoc(Menu.i("Enfoques Transversales") / "backend" / "transversalapproaches" >>
-    User.HasRoleOrPermission(SuperAdmin, EnfoquesTransversales) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(EnfoquesTransversales, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "transversalapproaches" :: "index" :: Nil)) submenus(
     backendTransversalApproachAdd, backendTransversalApproachEdit))
 
@@ -523,7 +526,7 @@ object Site extends Locs {
     "Agregar principio", "Agregar principio",
     s => Full(Value.createRecord),
     s => "new") / "backend" / "values" / "add" / * >>
-    User.HasRoleOrPermission(SuperAdmin, Principios) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Principios, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
@@ -531,12 +534,12 @@ object Site extends Locs {
     "Editar principio", "Editar principio",
     Value.find,
     s => s.id.get.toString) / "backend" / "values" / "edit" / * >>
-    User.HasRoleOrPermission(SuperAdmin, Principios) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Principios, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
   val backendValues = MenuLoc(Menu.i("Principios ") / "backend" / "values" >>
-    User.HasRoleOrPermission(SuperAdmin, LineasDeAccion) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(LineasDeAccion, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "values" :: "index" :: Nil)) submenus(
     backendValueAdd, backendValueEdit))
 
@@ -544,7 +547,7 @@ object Site extends Locs {
     "Agregar espacio", "Agregar espacio",
     s => Full(Space.createRecord),
     s => "new") / "backend" / "spaces" / "add" / * >>
-    User.HasRoleOrPermission(SuperAdmin, Espacios) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Espacios, Redes)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
@@ -552,12 +555,12 @@ object Site extends Locs {
     "Editar espacio", "Editar espacio",
     Space.find,
     s => s.id.get.toString) / "backend" / "spaces" / "edit" / * >>
-    User.HasRoleOrPermission(SuperAdmin, Espacios) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Espacios, Redes)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
   val backendSpaces = MenuLoc(Menu.i("Espacios") / "backend" / "spaces" >>
-    User.HasRoleOrPermission(SuperAdmin, Espacios) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Espacios, Redes)) >>
     TemplateBox(() => Templates("backend" :: "spaces" :: "index" :: Nil)) submenus(
     backendSpaceAdd, backendSpaceEdit))
 
@@ -628,7 +631,7 @@ object Site extends Locs {
     "Agregar servicio", "Agregar servicio",
     s => Full(Service.createRecord),
     s => "new") / "backend" / "services" / "add" / * >>
-    User.HasRoleOrPermission(SuperAdmin, Servicios) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Servicios, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
@@ -636,12 +639,12 @@ object Site extends Locs {
     "Editar servicio", "Editar servicio",
     Service.find,
     s => s.id.get.toString) / "backend" / "services" / "edit" / * >>
-    User.HasRoleOrPermission(SuperAdmin, Servicios) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Servicios, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
   val backendServices = MenuLoc(Menu.i("Servicios") / "backend" / "services" >>
-    User.HasRoleOrPermission(SuperAdmin, Servicios) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Servicios, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "services" :: "index" :: Nil)) submenus(
     backendServiceAdd, backendServiceEdit))
 
@@ -670,9 +673,9 @@ object Site extends Locs {
     TemplateBox(() => Templates("backend" :: "blog" :: "index" :: Nil)) submenus(
     backendBlogAdd, backendBlogEdit))
 
-  val backendOrganizacionModule = MenuLoc(Menu.i("Organización") / "backend" / "organizacion" >>
-    User.HasRoleOrPermission(SuperAdmin, Organizacion) >>
-    LeftMenuGroup >>
+  val backendOrganizacionModule = MenuLoc(Menu.i("Organizaci?n") / "backend" / "organizacion" >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Organizacion, Areas, Programas, AreasTransversales, Procesos,
+      LineasDeAccion, Principios, Servicios, EnfoquesTransversales)) >> LeftMenuGroup >>
     PlaceHolder submenus(
       backendAreas.menu,
       backendPrograms.menu,
@@ -684,25 +687,27 @@ object Site extends Locs {
       backendServices.menu))
 
   val backendAmbientesModule = MenuLoc(Menu.i("Ambientes") / "backend" / "ambientes" >>
-    User.HasRoleOrPermission(SuperAdmin, Ambientes) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Ambientes, Salas, Accesorios)) >>
     LeftMenuGroup >>
     PlaceHolder submenus(
       backendRooms.menu,
       backendEquipments.menu))
 
   val backendRedesModule = MenuLoc(Menu.i("Redes  ") / "backend" / "redes" >>
-    User.HasRoleOrPermission(SuperAdmin, Redes) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Redes, Espacios)) >>
     LeftMenuGroup >>
     PlaceHolder submenus(
       backendNetworks.menu,
       backendSpaces.menu))
 
   val backendAparienciaModule = MenuLoc(Menu.i("Apariencia") / "backend" / "ui" >>
-    User.HasRoleOrPermission(SuperAdmin, Apariencia) >>
+    User.HasRolesOrPermissions(List(SuperAdmin), List(Apariencia, Widgets, Menus)) >>
     LeftMenuGroup >>
     PlaceHolder submenus(
     backendWidgets.menu,
     backendMenus.menu))
+
+  val searchPage = MenuLoc(Menu.i("Buscar") / "searchpage")
 
   // Salas
 
@@ -763,7 +768,8 @@ object Site extends Locs {
     areasTransversales.menu,
     lineasDeAccion.menu,
     enfoquesTransversales.menu,
-    contacto.menu)
+    contacto.menu,
+    searchPage.menu)
 
   /*
    * Return a SiteMap needed for Lift

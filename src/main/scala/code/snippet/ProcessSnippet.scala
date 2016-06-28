@@ -7,10 +7,12 @@ import net.liftmodules.extras.SnippetHelper
 import net.liftweb.http.js.JsCmd
 import net.liftweb.json.JsonAST.JValue
 import LiftRogue._
-import net.liftweb.util.{CssSel, Helpers}
+import net.liftweb.util.{CssSel, Helpers, Props}
 import Helpers._
-import net.liftweb.common.{Empty, Full}
+import net.liftweb.common.{Empty, Full, Loggable}
+import net.liftweb.http.S
 import net.liftweb.http.js.JsCmds._
+import scala.xml.NodeSeq
 
 object ProcessSnippet extends ListSnippet[Process] {
 
@@ -25,6 +27,23 @@ object ProcessSnippet extends ListSnippet[Process] {
   def itemEditUrl(inst: Process): String = Site.backendProcessEdit.toLoc.calcHref(inst)
 
   override def listFields = List(meta.name, meta.administrator, meta.url)
+
+  override def facebookHeaders(in: NodeSeq) = {
+    Site.proceso.currentValue match {
+      case Full(process) =>
+        <meta property="og:title" content={process.name.get} /> ++
+        <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
+        <meta property="og:description" content={process.description.asHtmlCutted(250).text} /> ++
+        (if(process.facebookPhoto.get.fileId.get.isEmpty)
+          NodeSeq.Empty
+        else
+          <meta property="og:image" content={process.facebookPhoto.fullUrl} />
+        ) ++
+        <meta property="og:type" content="article" />
+      case _ =>
+        NodeSeq.Empty
+    }
+  }
 
   def updateOrderValue(json: JValue): JsCmd = {
     implicit val formats = net.liftweb.json.DefaultFormats
@@ -51,5 +70,4 @@ class ProcesoSnippet(proceso: Process) extends SnippetHelper {
     "data-name=calls" #> CallSnippet.relatedCalls(proceso.name.get, Empty, Empty, Empty, Empty, Empty, Empty,
       Full(proceso))
   }
-
 }

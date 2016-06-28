@@ -3,13 +3,15 @@ package model
 package network
 
 import code.config.Site
-import code.lib.field.{BsCkUnsecureTextareaField, BsCkTextareaField, BsStringField}
-import code.lib.{WithUrl, SortableModel, BaseModel, RogueMetaRecord}
+import code.lib._
+import code.lib.field.{BsCkTextareaField, BsCkUnsecureTextareaField, BsStringField, FileField}
+import code.lib.{BaseModel, RogueMetaRecord, SortableModel, WithUrl}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.MongoRecord
 import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField, ObjectIdRefListField}
 import net.liftweb.record.field.EnumNameField
+import net.liftweb.json.JsonDSL._
 
 class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] with BaseModel[Network] with SortableModel[Network] with WithUrl[Network] {
 
@@ -27,6 +29,13 @@ class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] w
     override def displayName = "Descripción"
   }
 
+  object facebookPhoto extends FileField(this) {
+    override def optional_? = true
+    override def displayName = "Imagen para compartir en facebook"
+    override def toString = {
+      value.fileName.get
+    }
+  }
   object spaces extends ObjectIdRefListField(this, Space) {
     override def displayName = "Espacios conectados"
     val spaces = Space.findAll
@@ -51,7 +60,7 @@ class Network private () extends MongoRecord[Network] with ObjectIdPk[Network] w
 object Network extends Network with RogueMetaRecord[Network] {
   override def collectionName = "main.networks"
   override def fieldOrder =
-    List(name, description, spaces)
+    List(name, description, spaces, facebookPhoto)
 
   override def find(s: String) = {
     println("KEY:"+s)
@@ -62,6 +71,15 @@ object Network extends Network with RogueMetaRecord[Network] {
 
   def findByUrl(url: String): Box[Network] = {
     Network.where(_.url eqs url).fetch(1).headOption
+  }
+
+  def updateElasticSearch(network: Network) = {
+    ElasticSearch.mongoindexSave(
+      ElasticSearch.elasticSearchPath ++ List(s"network_${network.id.get}"),
+      ("url" -> Site.red.calcHref(network)) ~
+      ("name" -> network.name.get) ~
+      ("content" -> network.description.asHtml.text)
+    )
   }
 }
 

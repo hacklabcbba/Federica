@@ -2,15 +2,16 @@ package code.model
 
 import code.config.Site
 import code.lib.field._
-import code.lib.{SortableModel, BaseModel, RogueMetaRecord}
+import code.lib._
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.SHtml
 import net.liftweb.mongodb.record.{BsonMetaRecord, BsonRecord, MongoRecord}
 import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefField}
 import net.liftweb.record.field._
 import net.liftweb.util.FieldError
+import net.liftweb.json.JsonDSL._
 
-import scala.xml.{Text, Elem}
+import scala.xml.{Elem, Text}
 
 
 class Area private () extends MongoRecord[Area] with ObjectIdPk[Area] with BaseModel[Area] with SortableModel[Area] {
@@ -28,6 +29,14 @@ class Area private () extends MongoRecord[Area] with ObjectIdPk[Area] with BaseM
 
   object photo1 extends FileField(this) {
     override def displayName = "Foto"
+    override def toString = {
+      value.fileName.get
+    }
+  }
+
+  object facebookPhoto extends FileField(this) {
+    override def optional_? = true
+    override def displayName = "Imagen para compartir en facebook"
     override def toString = {
       value.fileName.get
     }
@@ -104,7 +113,7 @@ object Area extends Area with RogueMetaRecord[Area] {
   override def collectionName = "main.areas"
   override def fieldOrder = List(
     name, responsible, email, phone,
-    photo1, photo2, officeHoursBegins,
+    photo1, photo2, facebookPhoto, officeHoursBegins,
     officeHoursEnds, url, isPublished,
     order, description, group)
 
@@ -114,6 +123,15 @@ object Area extends Area with RogueMetaRecord[Area] {
 
   def findByUrl(url: String): Box[Area] = {
     Area.where(_.url eqs url).fetch(1).headOption
+  }
+
+  def updateElasticSearch(area: Area) = {
+    ElasticSearch.mongoindexSave(
+      ElasticSearch.elasticSearchPath ++ List(s"area_${area.id.get}"),
+      ("url" -> Site.area.calcHref(area)) ~
+      ("name" -> area.name.get) ~
+      ("content" -> area.description.asHtml.text)
+    )
   }
 }
 

@@ -4,13 +4,14 @@ package model
 import code.config.Site
 import code.lib.field._
 import code.lib.js.Bootstrap
-import code.lib.{WithUrl, BaseModel, RogueMetaRecord}
+import code.lib._
 import net.liftweb.common.Box
 import net.liftweb.http.js.JsCmds.RedirectTo
-import net.liftweb.http.{IdMemoizeTransform, SHtml, S}
+import net.liftweb.http.{IdMemoizeTransform, S, SHtml}
 import net.liftweb.mongodb.record.MongoRecord
-import net.liftweb.mongodb.record.field.{ObjectIdRefListField, ObjectIdPk}
-import net.liftweb.util.{Helpers, CssSel}
+import net.liftweb.mongodb.record.field.{ObjectIdPk, ObjectIdRefListField}
+import net.liftweb.util.{CssSel, Helpers}
+import net.liftweb.json.JsonDSL._
 
 import scala.xml.NodeSeq
 import Helpers._
@@ -34,6 +35,14 @@ class Page private () extends MongoRecord[Page] with ObjectIdPk[Page] with BaseM
 
   object widgets extends ObjectIdRefListField(this, Widget) {
     override def shouldDisplay_? = false
+  }
+
+  object facebookPhoto extends FileField(this) {
+    override def optional_? = true
+    override def displayName = "Imagen para compartir en facebook"
+    override def toString = {
+      value.fileName.get
+    }
   }
 
   override def template: NodeSeq = S.runTemplate(List("backend" , "record", "page-form")).openOr(<div>Template not found</div>)
@@ -84,6 +93,15 @@ class Page private () extends MongoRecord[Page] with ObjectIdPk[Page] with BaseM
     </div>
   }
 
+  def updateElasticSearch(page: Page) = {
+    ElasticSearch.mongoindexSave(
+      ElasticSearch.elasticSearchPath ++ List(s"page_${page.id.get}"),
+      ("url" -> Site.pagina.calcHref(page)) ~
+      ("name" -> page.name.get) ~
+      ("content" -> page.body.asHtml.text)
+    )
+  }
+
   def urlString: String = Site.pagina.calcHref(this)
 
   override def toString = name.get
@@ -91,7 +109,7 @@ class Page private () extends MongoRecord[Page] with ObjectIdPk[Page] with BaseM
 
 object Page extends Page with RogueMetaRecord[Page] {
   override def collectionName = "page.pages"
-  override def fieldOrder = List(name, body)
+  override def fieldOrder = List(name, body, facebookPhoto)
 
   def findByUrl(url: String): Box[Page] = {
     Page.where(_.url eqs url).fetch().headOption

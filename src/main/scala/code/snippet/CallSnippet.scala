@@ -5,7 +5,7 @@ import code.model._
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.{S, Templates}
 import net.liftweb.util.Helpers._
-import net.liftweb.util.{CssSel, Helpers}
+import net.liftweb.util.{CssSel, Helpers, Props}
 
 import scala.xml.{NodeSeq, Text}
 
@@ -31,6 +31,23 @@ object CallSnippet extends ListSnippet[Call] {
       "data-name=deadline *" #> call.deadline.toString &
       "data-name=file [href]" #> (if (call.file.get.fileId.get.nonEmpty) call.file.url else Site.convocatoria.calcHref(call))
     })
+  }
+
+  def facebookHeaders(in: NodeSeq) = {
+    Site.convocatoria.currentValue match {
+      case Full(call) =>
+        <meta property="og:title" content={call.name.get} /> ++
+        <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
+        <meta property="og:description" content={call.description.asHtmlCutted(250).text} /> ++
+        (if(call.facebookPhoto.get.fileId.get.isEmpty)
+          NodeSeq.Empty
+        else
+          <meta property="og:image" content={call.facebookPhoto.fullUrl} />
+        ) ++
+        <meta property="og:type" content="article" />
+      case _ =>
+        NodeSeq.Empty
+    }
   }
 
   def renderViewFrontEnd: CssSel = {
