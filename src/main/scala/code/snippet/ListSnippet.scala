@@ -56,6 +56,10 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
         meta.findAll(query, sortColumn, Skip(S.param("iDisplayStart").dmap(0)(_.toInt)), Limit(10))
       case Empty =>
         meta.findAll
+      case Failure(msg ,_ , _) =>
+        S.error(msg)
+        Nil
+
     }
   }
 
@@ -74,6 +78,9 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
         meta.findAll(query)
       case Empty =>
         meta.findAll
+      case Failure(msg ,_ , _) =>
+        S.error(msg)
+        Nil
     }
   }
 
@@ -84,11 +91,8 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
       item <- items
     } yield {
       var indice = -1
-      var result: List[(String, String)] = for {
-        field <- listFields
-      } yield {
-        indice = indice + 1
-        (indice.toString, item.fieldByName(field.name).dmap("")(_.toString))
+      var result: List[(String, String)] = listFields.zipWithIndex.collect{
+        case (x, i) => (i.toString, item.fieldByName(x.name).dmap("")(_.toString))
       }
       val id = "rowid_" + item.fieldByName(listFields.headOption.fold("")(_.name)).dmap("")(_.toString).replace(" ", "_")
       result = result ::: List(("DT_RowId", id)) ::: Nil
@@ -102,17 +106,6 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
   def jsonOptions: List[(String, String)] = List(("iDisplayLength", "10"), ("bLengthChange", "false"), ("iDisplayLength", "10"))
 
   def idOpt = Some(Helpers.nextFuncName)
-
-  def sortOrder = S.param("asc") match {
-    case e: EmptyBox => -1
-    case b: Box[String] => if (b.get.equalsIgnoreCase("true")) 1 else -1
-  }
-
-  //override def count = items.size
-
-  //override def itemsPerPage = 10
-
-  //override def page = meta.findAll(_, sortOrder, itemsPerPage, (curPage * itemsPerPage))
 
   def render = {
 
@@ -194,6 +187,12 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
           }
         }
       }.apply(template)
+  }
+
+  def facebookHeaders(in: NodeSeq) = {
+      <meta property="og:title" content="Example content" /> ++
+        <meta property="og:description" content="Example description" /> ++
+        <meta property="og:type" content="article" />
   }
 
   def selectItem(selected: Boolean, item: BaseRecord): JsCmd = {
@@ -287,65 +286,8 @@ trait SortableSnippet[BaseRecord <: MongoRecord[BaseRecord] with SortableModel[B
       }.apply(template)
   }
 
-  def facebookHeaders(in: NodeSeq) = {
-      <meta property="og:title" content="Example content" /> ++
-      <meta property="og:description" content="Example description" /> ++
-      <meta property="og:type" content="article" />
-  }
-
   def updateOrderValue(json: JValue): JsCmd
 }
-
-/*trait AjaxPaginatorSnippet[T] extends PaginatorSnippet[T] {
-  private lazy val pagMemo = SHtml.idMemoize(ignored => super.paginate _)
-
-  def rerender = pagMemo.setHtml()
-
-  override def paginate(ns: NodeSeq): NodeSeq = pagMemo(ns)
-
-  override def pageXml(newFirst: Long, ns: NodeSeq): NodeSeq =
-    if (first == newFirst || newFirst < 0 || newFirst >= count)
-      ns
-    else
-      SHtml.a(() => { _first = newFirst; rerender }, ns)
-}
-
-trait AjaxSortedPaginatorSnippet[T, C] extends SortedPaginator[T, C]
-  with AjaxPaginatorSnippet[T] {
-  def sortPrefix = "sort"
-
-  override def rerender = sortMemo.setHtml() & super.rerender
-  private lazy val sortMemo = SHtml.idMemoize(ignored => _sortColumns _)
-
-  def sortColumns(ns: NodeSeq) = sortMemo(ns)
-
-  private def _sortColumns(xhtml: NodeSeq): NodeSeq = {
-    val result = bind(sortPrefix, xhtml,
-      headers.zipWithIndex.map {
-        case ((binding, _), colIndex) =>
-          FuncBindParam(binding, (ns: NodeSeq) => SHtml.a(() => { sort
-            = sortedBy(colIndex); rerender }, ns))
-      }: _*)
-    result
-  }
-}
-
-trait AjaxSortedMongoPaginatorSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends AjaxSortedPaginatorSnippet[BaseRecord, String] {
-
-  lazy val memo = SHtml.idMemoize(ignored => renderIt _)
-
-  def renderIt(in: NodeSeq): NodeSeq
-
-  override def rerender = memo.setHtml() & super.rerender
-
-  def render(html: NodeSeq): NodeSeq = memo(html)
-
-  def list = {
-    ".list" #> page.render _ &
-    ".pagination" #> pag.paginate _ &
-    ".headers" #> pag.sortColumns _
-  }
-}*/
 
 object CrudSnippet extends SnippetHelper {
   private def serve(snip: BaseModel[_] => NodeSeq): NodeSeq =

@@ -41,7 +41,7 @@ object PageSnippet extends ListSnippet[Page] {
       }.apply(template)
   }
 
-  def facebookHeaders(in: NodeSeq) = {
+  override def facebookHeaders(in: NodeSeq) = {
     Site.pagina.currentValue match {
       case Full(page) =>
         <meta property="og:title" content={page.name.get} /> ++
