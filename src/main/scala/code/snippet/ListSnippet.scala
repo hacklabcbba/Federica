@@ -8,14 +8,14 @@ import net.liftmodules.extras.SnippetHelper
 import net.liftweb.common.{Box, Empty, EmptyBox, Failure, Full}
 import net.liftweb.http.S.{SFuncHolder, _}
 import net.liftweb.http.js.JE.{JsRaw, JsVar}
-import net.liftweb.http.js.JsCmd
+import net.liftweb.http.js.{JE, JsCmd}
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.http._
 import net.liftweb.json.JsonAST.JValue
 import net.liftweb.mongodb.{Limit, Skip}
 import net.liftweb.mongodb.record.{MongoMetaRecord, MongoRecord}
 import net.liftweb.record.Field
-import net.liftweb.util.Helpers
+import net.liftweb.util.{CssSel, Helpers}
 import net.liftweb.util.Helpers._
 import _root_.net.liftweb.json.JsonDSL._
 import _root_.net.liftweb.json._
@@ -36,6 +36,8 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
 
   def template: NodeSeq = Templates(List("templates-hidden", "backend", "listing-table")) openOr Text("Missing template")
 
+  def templateTable: NodeSeq = Templates(List("templates-hidden", "backend", "data-table")) openOr Text("Missing template")
+
   def listFields: List[Field[_, BaseRecord]] = meta.fieldOrder
 
   val title: String
@@ -45,7 +47,6 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
       case Full(p) =>
         val orClause: BasicDBList = new BasicDBList
         val condition: DBObject = new BasicDBObject("$regex", p)
-        val sortColumn: DBObject = new BasicDBObject("name", 1)
         for{
           field <- listFields
         } yield {
@@ -53,13 +54,39 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
           orClause.add(newDBObject)
         }
         val query: DBObject = new BasicDBObject("$or", orClause)
-        meta.findAll(query, sortColumn, Skip(S.param("iDisplayStart").dmap(0)(_.toInt)), Limit(10))
+        sortOrder match {
+          case Some(sort) =>
+            meta.findAll(query, sort, Skip(S.param("iDisplayStart").dmap(0)(_.toInt)), Limit(10))
+          case _ =>
+            meta.findAll(query, Skip(S.param("iDisplayStart").dmap(0)(_.toInt)), Limit(10))
+        }
+
       case Empty =>
         meta.findAll
       case Failure(msg ,_ , _) =>
         S.error(msg)
         Nil
 
+    }
+  }
+
+  def sortOrder: Option[DBObject] = {
+    (S.param("iSortCol_0"), S.param("sSortDir_0")) match {
+      case (Full(column), Full(order))=>
+        listFields.lift(column.toInt) match {
+          case Some(field) if(order.trim != "") =>
+            val sort = {
+              if(order == "asc")
+                1
+              else
+                -1
+            }
+            Full(new BasicDBObject(field.name, sort))
+          case _ =>
+            Empty
+        }
+      case _ =>
+        Empty
     }
   }
 
@@ -94,7 +121,7 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
       var result: List[(String, String)] = listFields.zipWithIndex.collect{
         case (x, i) => (i.toString, item.fieldByName(x.name).dmap("")(_.toString))
       }
-      val id = "rowid_" + item.fieldByName(listFields.headOption.fold("")(_.name)).dmap("")(_.toString).replace(" ", "_")
+      val id = item.fieldByName("_id").dmap("")(_.toString).replace(" ", "_")
       result = result ::: List(("DT_RowId", id)) ::: Nil
       result
     }
@@ -103,7 +130,7 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
 
   }
 
-  def jsonOptions: List[(String, String)] = List(("iDisplayLength", "10"), ("bLengthChange", "false"), ("iDisplayLength", "10"))
+  def jsonOptions: List[(String, String)] = List(("iDisplayLength", "10"), ("bLengthChange", "false"))
 
   def idOpt = Some(Helpers.nextFuncName)
 
@@ -113,7 +140,19 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
       {
         "data-name=title *" #> title &
         "data-name=add-item [href]" #> addUrl &
-        "data-name=remove-item [onclick]" #> SHtml.ajaxInvoke(() => Noop) &
+        "data-name=edit [onclick]" #> SHtml.jsonCall(JE.Call("getSelected"), (res: JValue) => {
+          getListOfItemsSelected(res).headOption match {
+            case Some(item) =>
+              RedirectTo(itemEditUrl(item))
+            case _ =>
+              Noop
+          }
+        }) &
+        "data-name=delete [onclick]" #> SHtml.jsonCall(JE.Call("getSelected"), (res: JValue) => {
+          deletedItems.remove()
+          deletedItems.set(getListOfItemsSelected(res))
+          deleteItemsJsCmd
+        }) &
         "#datas" #> {
 
           val f = (ignore: String) => {
@@ -161,12 +200,49 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
               ("sAjaxSource", where.encJs) ::
               Nil ::: jsonOptions
 
-            val json = jqOptions.map(t => t._1 + ":" + t._2).mkString("{", ",", "}")
+            val json = jqOptions.map(t => t._1 + ":" + t._2).mkString("{", ",", ", rowCallback: " +
+              " function( row, data ) { " +
+              "if ( $.inArray(data.DT_RowId, selected) !== -1 ) {" +
+              "$(row).addClass('selected');}}" +
+              "}")
             val datatableOptions = JsRaw(json)
 
             val onLoad = JsRaw("""
+              var selected = [];
+
+              function getSelected(){
+                return selected;
+              }
+
               $(document).ready(function() {
               $("#""" + id + """").dataTable(""" + datatableOptions.toJsCmd + """);
+              $("#""" + id + """ tbody").on('click', 'tr', function () {
+
+                var id = this.id;
+                var index = $.inArray(id, selected);
+                if ( index === -1 ) {
+                    selected.push( id );
+                } else {
+                    selected.splice( index, 1 );
+                }
+
+                $(this).toggleClass('selected');
+                console.log("selected: ", selected.length);
+                if(selected.length > 0){
+                  console.log("entro");
+                  if(selected.length == 1){
+                    $("#edit").attr("disabled", false);
+                    $("#delete").attr("disabled", false);
+                    console.log("selected " , selected[0]);
+                  } else if(selected.length > 1) {
+                    $("#delete").attr("disabled", false);
+                    $("#edit").attr("disabled", true);
+                  } else {
+                    $("#edit").attr("disabled", true);
+                    $("#delete").attr("disabled", true);
+                  }
+                }
+              } );
             });""")
 
             <table id={ id }>
@@ -187,6 +263,15 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
           }
         }
       }.apply(template)
+  }
+
+  def getListOfItemsSelected(jArray: JValue): List[BaseRecord] = {
+    jArray.children.map(obj => obj match {
+      case (objJson: JString) =>
+        meta.find(objJson.values)
+      case _ =>
+        Empty
+    }).flatten
   }
 
   def facebookHeaders(in: NodeSeq) = {
