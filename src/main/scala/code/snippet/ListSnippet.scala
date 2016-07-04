@@ -117,7 +117,6 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
     val rows: List[List[(String, String)]] = for {
       item <- items
     } yield {
-      var indice = -1
       var result: List[(String, String)] = listFields.zipWithIndex.collect{
         case (x, i) => (i.toString, item.fieldByName(x.name).dmap("")(_.toString))
       }
