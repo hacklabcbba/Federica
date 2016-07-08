@@ -62,7 +62,13 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
         }
 
       case Empty =>
-        meta.findAll
+        sortOrder match {
+          case Some(sort) =>
+            val query: DBObject = new BasicDBObject()
+            meta.findAll(query, sort, Skip(S.param("iDisplayStart").dmap(0)(_.toInt)), Limit(10))
+          case _ =>
+            meta.findAll
+        }
       case Failure(msg ,_ , _) =>
         S.error(msg)
         Nil
@@ -73,20 +79,34 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
   def sortOrder: Option[DBObject] = {
     (S.param("iSortCol_0"), S.param("sSortDir_0")) match {
       case (Full(column), Full(order))=>
-        listFields.lift(column.toInt) match {
-          case Some(field) if(order.trim != "") =>
-            val sort = {
-              if(order == "asc")
-                1
-              else
-                -1
+        toInt(column) match {
+          case Some(number) =>
+            listFields.lift(number) match {
+              case Some(field) if order.trim != "" =>
+                val sort = {
+                  if (order == "asc")
+                    1
+                  else
+                    -1
+                }
+                Full(new BasicDBObject(field.name, sort))
+              case _ =>
+                Empty
             }
-            Full(new BasicDBObject(field.name, sort))
-          case _ =>
+          case None =>
             Empty
         }
+
       case _ =>
         Empty
+    }
+  }
+
+  def toInt(s: String): Option[Int] = {
+    try {
+      Some(s.toInt)
+    } catch {
+      case e: Exception => None
     }
   }
 
@@ -199,7 +219,19 @@ trait ListSnippet[BaseRecord <: MongoRecord[BaseRecord]] extends SnippetHelper {
               ("sAjaxSource", where.encJs) ::
               Nil ::: jsonOptions
 
-            val json = jqOptions.map(t => t._1 + ":" + t._2).mkString("{", ",", ", rowCallback: " +
+            val json = jqOptions.map(t => t._1 + ":" + t._2).mkString("{", ",", ", language : {" +
+              "processing: 'Procesando', " +
+              "search: 'Filtrar:', " +
+              "emptyTable: 'No existe registros', " +
+              "info: 'Mostrando desde el _START_ al _END_ de _TOTAL_ entradas.', " +
+              "paginate: { " +
+              "first: 'Primero', " +
+              "previous: 'Previo', " +
+              "next: 'Siguiente', " +
+              "last: 'Ultimo', " +
+              "}" +
+              "}," +
+              " rowCallback: " +
               " function( row, data ) { " +
               "if ( $.inArray(data.DT_RowId, selected) !== -1 ) {" +
               "$(row).addClass('selected');}}" +
