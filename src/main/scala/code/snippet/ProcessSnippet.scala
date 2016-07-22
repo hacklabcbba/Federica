@@ -12,10 +12,9 @@ import Helpers._
 import net.liftweb.common.{Empty, Full, Loggable}
 import net.liftweb.http.S
 import net.liftweb.http.js.JsCmds._
-
 import scala.xml.NodeSeq
 
-object ProcessSnippet extends SortableSnippet[Process] {
+object ProcessSnippet extends ListSnippet[Process] {
 
   val meta = Process
 

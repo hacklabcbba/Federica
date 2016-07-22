@@ -189,7 +189,7 @@ object BlogSnippet extends ListSnippet[BlogPost] with PaginatorSnippet[BlogPost]
     }
   }
 
-  def facebookHeaders(in: NodeSeq) = {
+  override def facebookHeaders(in: NodeSeq) = {
     Site.entradaBlog.currentValue match {
       case Full(post) =>
         <meta property="og:title" content={post.name.get} /> ++

@@ -11,10 +11,9 @@ import Helpers._
 import net.liftweb.common.{Empty, Full}
 import net.liftweb.http.S
 import net.liftweb.http.js.JsCmds._
-
 import scala.xml.NodeSeq
 
-object ProgramSnippet extends SortableSnippet[Program] {
+object ProgramSnippet extends ListSnippet[Program] {
 
   val meta = Program
 

@@ -12,10 +12,9 @@ import net.liftweb.util.{CssSel, Helpers, Props}
 import Helpers._
 import net.liftweb.http.S
 import net.liftweb.http.js.JsCmds._
-
 import scala.xml.NodeSeq
 
-object NetworkSnippet extends SortableSnippet[Network] {
+object NetworkSnippet extends ListSnippet[Network] {
 
   val meta = Network
 

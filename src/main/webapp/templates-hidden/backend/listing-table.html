@@ -8,49 +8,50 @@
                 <li>
                     <a data-name="add-item" href="#" class="btn black">Nuevo</a>
                 </li>
-                <!--<li><a href="#" class="btn ">Edit</a></li>
-                <li><a href="#" class="btn ">Delete</a></li>
-                <li>
-                    <div class="btn-group" role="group">
-                        <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Status
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Publish</a></li>
-                            <li><a href="#">Unpublish</a></li>
-                        </ul>
-                    </div>
-                </li>-->
+                <li><a href="#" id="edit" data-name="edit" class="btn" disabled="true">Editar</a></li>
+                <li><a href="#" id="delete" data-name="delete" class="btn" disabled="true">Eliminar</a></li>
             </ul>
         </header>
-        <div>
-            <table class="table table-listitems" id="dataTable">
-                <thead>
-                <tr>
-                    <th class="text-center"><input type="checkbox"/></th>
-                    <th data-name="column-name" class="text-center">#</th>
-                    <th>&nbsp;</th>
-                </tr>
-                </thead>
-                <tbody id="items">
-                <tr data-name="items">
-                    <td class="text-center">
-                        <input type="checkbox"/>
-                    </td>
-                    <td data-name="column-data" class="text-center">
-                        1
-                    </td>
-                    <td>
-                        <ul class="list-unstyled list-inline option-list text-center">
-                            <li><a href="#" data-name="remove-item" class="black border-circle delete"><i class="fa fa-trash"></i><span class="hide">Editar</span></a></li>
-                            <li><a href="#" data-name="edit-item" class="black border-circle edit"><i class="fa fa-pencil"></i></a></li>
-                        </ul>
-                    </td>
-                </tr>
-                </tbody>
-
-            </table>
+    <div>
+        <div id="datas"></div>
         </div>
     </div>
 </main>
+
+<div>
+    <table class="table table-listitems">
+        <thead>
+        <tr>
+            <th class="text-center"><input type="checkbox"/></th>
+            <th width="20%" class="lift:ListSnippet.paginate"><sort:firstName>FirstName</sort:firstName></th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-name="items">
+            <td class="text-center">
+                <input type="checkbox"/>
+            </td>
+            <td data-name="column-data" class="text-center">
+                1
+            </td>
+            <td>
+                <ul class="list-unstyled list-inline option-list text-center">
+                    <li><a href="#" data-name="remove-item" class="black border-circle delete"><i class="fa fa-trash"></i><span class="hide">Editar</span></a></li>
+                    <li><a href="#" data-name="edit-item" class="black border-circle edit"><i class="fa fa-pencil"></i></a></li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+    <div>
+        <lift:ListSnippet.paginate>
+            <p>
+                <nav:records></nav:records>
+            </p>
+            <nav:first></nav:first> | <nav:prev></nav:prev> | <nav:allpages></nav:allpages> |   <nav:next>     </nav:next> | <nav:last></nav:last>
+        </lift:ListSnippet.paginate>
+    </div>
+</div>
+

@@ -13,10 +13,9 @@ import net.liftmodules.extras.SnippetHelper
 import net.liftweb.common.{Empty, Full}
 import net.liftweb.http.{S, SHtml}
 import net.liftweb.http.js.JsCmds._
-
 import scala.xml.NodeSeq
 
-object RoomSnippet extends SortableSnippet[Room] with SnippetHelper {
+object RoomSnippet extends ListSnippet[Room] with SnippetHelper {
 
   val meta = Room
 

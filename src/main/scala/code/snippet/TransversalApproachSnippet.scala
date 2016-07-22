@@ -15,7 +15,7 @@ import net.liftweb.util.{CssSel, Helpers, Props}
 
 import scala.xml.NodeSeq
 
-object TransversalApproachSnippet extends SortableSnippet[TransversalApproach] {
+object TransversalApproachSnippet extends ListSnippet[TransversalApproach] {
 
   val meta = TransversalApproach
 

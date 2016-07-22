@@ -33,7 +33,7 @@ object CallSnippet extends ListSnippet[Call] {
     })
   }
 
-  def facebookHeaders(in: NodeSeq) = {
+  override def facebookHeaders(in: NodeSeq) = {
     Site.convocatoria.currentValue match {
       case Full(call) =>
         <meta property="og:title" content={call.name.get} /> ++

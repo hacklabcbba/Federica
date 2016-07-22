@@ -10,7 +10,7 @@ import net.liftweb.util.Helpers
 import Helpers._
 import net.liftweb.http.js.JsCmds._
 
-object EquipmentSnippet extends SortableSnippet[Equipment] {
+object EquipmentSnippet extends ListSnippet[Equipment] {
 
   val meta = Equipment
 

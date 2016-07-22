@@ -14,7 +14,7 @@ import net.liftweb.http.S
 
 import scala.xml.NodeSeq
 
-object AreaSnippet extends SortableSnippet[Area] {
+object AreaSnippet extends ListSnippet[Area] {
 
   val meta = Area
 

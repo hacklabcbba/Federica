@@ -16,7 +16,7 @@ import net.liftweb.util.{CssSel, Helpers, Props}
 
 import scala.xml.NodeSeq
 
-object ActionLineSnippet extends SortableSnippet[ActionLine] {
+object ActionLineSnippet extends ListSnippet[ActionLine] {
 
   val meta = ActionLine
 
