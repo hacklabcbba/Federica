@@ -34,9 +34,10 @@ object BuildSettings {
       sourceGenerators in Compile <+= buildInfo,
 
       // less
-      (LessKeys.filter in (Compile, LessKeys.less)) := "*styles.less",
+      (LessKeys.filter in (Compile, LessKeys.less)) := "styles.less",
       (LessKeys.mini in (Compile, LessKeys.less)) := true,
-
+      (sourceDirectory in (Compile, LessKeys.less)) <<= (sourceDirectory in Compile)(_ / "webapp" / "styles"),
+      (resourceManaged in (Compile, LessKeys.less)) <<= (crossTarget in Compile)(_ / "resource_managed" / "main" / "stylesheets"),
       // closure
       (ClosureKeys.prettyPrint in (Compile, ClosureKeys.closure)) := true,
 

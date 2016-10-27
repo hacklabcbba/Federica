@@ -1,3 +1,5 @@
+# vim temporary files
+*.swp
 # use glob syntax.
 syntax: glob
 *.ser
