@@ -1,5 +1,29 @@
 <div data-lift="surround?with=base-wrap-backend;at=content">
     <div class="col-md-12" ng-app="EventApp">
+        <div ng-show='loading' class='on-loading'>
+          <img src="/images/ajax-loader.gif" width="25" height="25" />
+        </div>
+        <script>
+          $(document).ready(function () {
+            $('#terms-agreement').modal({
+              keyboard: false,
+              backdrop: false
+            });
+
+            $('#button-ok').hide().click(function () {
+                  $('#terms-agreement').modal('hide');
+            });
+            $('#terms-agreement input').click (function () {
+              if ($(this).prop('checked')) {
+                $('#button-ok').fadeIn();
+              } else {
+                $('#button-ok').fadeOut();
+              }
+            })
+
+
+          });
+        </script>
         <div class="notifications margin-bottom-xs ">
         </div>
         <header class="page-header">
@@ -9,6 +33,46 @@
         </header>
 
         <div id="event-wizard" ng-controller="EventController">
+
+            <div id='terms-agreement' class='modal fade' tabindex='-1' role='dialog'>
+              <div class='modal-dialog' role='document'>
+                <div class='modal-content'>
+                  <div class='modal-header'>
+                    <h3>
+                      Importante
+                    </h3>
+                  </div>
+                  <div class='modal-body'>
+                    <p>La solicitud de un evento en el Proyecto mARTadero no implica su automática aprobación.
+                    </p>
+                    <p>
+                    Ten en cuenta que: 
+                    <ul>
+                      <li>
+                        Una vez realizada la solicitud para por la evaluación de la coordinación de área.
+                      </li>
+                      <li>
+                        En caso de ser aprobada se revisará la cotización que realizará el sistema y los datos que hayas ingresado por si hubiese alguna corrección pertinente.
+                      </li>
+                    </ul>
+                    </p>
+                    <p class='text-center'>
+                       <label>
+                         <input type='checkbox'>
+                         He leído y entendido ésta información
+                       </label>
+                    </p>
+                    <p class='text-center'>
+                      <a id='button-ok' type='button' ng-click='myFunc()' class='btn btn-primary'>
+                        Continuar
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
             <div class="navbar wizard-nav">
                 <div class="navbar-inner">
                     <ul class="nav nav-pills">
