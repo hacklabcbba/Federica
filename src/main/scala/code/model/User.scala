@@ -373,7 +373,7 @@ object User extends User with ProtoAuthUserMeta[User] with RogueMetaRecord[User]
 
     val msgTxt =
       """"
-        |Haz olvidado tu contraseña?
+        |Has olvidado tu contraseña?
         |Para recuperar tu contraseña debes hacer click en el siguiente enlace o copiar y pegar en tu navegador web.
         |%s
       """.format(tokenUrl).stripMargin

@@ -155,7 +155,7 @@ object Site extends Locs {
     TemplateBox(() => Templates("linea-de-accion" :: Nil)) >>
     Hidden
 
-  val lineasDeAccion = MenuLoc(Menu.i("Lineas de acción ") / "lineas-de-accion" submenus(lineaDeAccion))
+  val lineasDeAccion = MenuLoc(Menu.i("Líneas de acción ") / "lineas-de-accion" submenus(lineaDeAccion))
 
   val enfoqueTransversal =  Menu.param[TransversalApproach](
     "Ver Enfoque Transversal", "Ver Enfoque Transversal",
@@ -195,7 +195,7 @@ object Site extends Locs {
   val convocatorias = MenuLoc(Menu.i("Convocatorias") / "convocatorias" submenus(convocatoria))
 
   val pagina =  Menu.param[Page](
-    "Ver Pagina", "Ver Pagina",
+    "Ver Página", "Ver Pagina",
     Page.findByUrl,
     s => s.url.get) / "pagina" / * >>
     TemplateBox(() => Templates("pagina" :: Nil)) >>
@@ -220,7 +220,7 @@ object Site extends Locs {
       // La Ubre Amarga
       Menu.i("La Ubre Amarga2") / "la-ubre-amarga2" >> RightMenuGroup,
       // Agrupacion Artesanal Kuska
-      Menu.i("Agrupacion Artesanal Kuska") / "agrupacion-artesanal-kuska" >> RightMenuGroup,
+      Menu.i("Agrupación Artesanal Kuska") / "agrupacion-artesanal-kuska" >> RightMenuGroup,
       // Breaking the Floor
       Menu.i("Breaking The Floor - Escuela de Break Dance") / "breaking-the-floor" >> RightMenuGroup,
       // Pi Producciones
@@ -329,7 +329,7 @@ object Site extends Locs {
     backendWidgetAdd, backendWidgetEdit))
 
 
-  val backendMenus = MenuLoc(Menu.i("Menus") / "backend" / "menus" >>
+  val backendMenus = MenuLoc(Menu.i("Menús") / "backend" / "menus" >>
     TemplateBox(() => Templates("backend" :: "menus" :: Nil)) >>
     User.HasRolesOrPermissions(List(SuperAdmin), List(Menus, Apariencia)))
 
@@ -349,7 +349,7 @@ object Site extends Locs {
     TemplateBox(() => Templates("backend" :: "record" :: "pages-form-page" :: Nil)) >>
     Hidden
 
-  val backendPages = MenuLoc(Menu.i("Paginas") / "backend" / "pages" >>
+  val backendPages = MenuLoc(Menu.i("Páginas") / "backend" / "pages" >>
     TemplateBox(() => Templates("backend" :: "pages" :: "index" :: Nil)) >>
     User.HasRolesOrPermissions(List(SuperAdmin), List(Widgets, Apariencia)) >> LeftMenuGroup submenus(
     backendPageAdd, backendPageEdit))
@@ -481,7 +481,7 @@ object Site extends Locs {
     backendProcessAdd, backendProcessEdit))
 
   val backendActionLineAdd = Menu.param[ActionLine](
-    "Agregar linea de acción", "Agregar linea de acción",
+    "Agregar línea de acción", "Agregar linea de acción",
     s => Full(ActionLine.createRecord),
     s => "new") / "backend" / "actionlines" / "add" / * >>
     User.HasRolesOrPermissions(List(SuperAdmin), List(LineasDeAccion, Organizacion)) >>
@@ -489,14 +489,14 @@ object Site extends Locs {
     Hidden
 
   val backendActionLineEdit = Menu.param[ActionLine](
-    "Editar linea de acción", "Editar linea de acción",
+    "Editar línea de acción", "Editar linea de acción",
     ActionLine.find,
     s => s.id.get.toString) / "backend" / "actionlines" / "edit" / * >>
     User.HasRolesOrPermissions(List(SuperAdmin), List(LineasDeAccion, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "record" :: "form-page" :: Nil)) >>
     Hidden
 
-  val backendActionLines = MenuLoc(Menu.i("Lineas de acción") / "backend" / "actionlines" >>
+  val backendActionLines = MenuLoc(Menu.i("Líneas de acción") / "backend" / "actionlines" >>
     User.HasRolesOrPermissions(List(SuperAdmin), List(LineasDeAccion, Organizacion)) >>
     TemplateBox(() => Templates("backend" :: "actionlines" :: "index" :: Nil)) submenus(
     backendActionLineAdd, backendActionLineEdit))

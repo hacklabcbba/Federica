@@ -29,6 +29,8 @@ object RoomSnippet extends ListSnippet[Room] with SnippetHelper {
 
   override def listFields = List(meta.code, meta.name, meta.isBookable, meta.isBookableShift)
 
+  override def items: List[Room] = meta.findAll.sortBy(_.name.get)
+
 
   def renderFrontEnd: CssSel = {
     "data-name=space" #> items.map(room => {
