@@ -85,6 +85,7 @@ class Room private() extends Resource[Room] {
     }
 
     private def regularForm = {
+
       Area.findAll.foldLeft(NodeSeq.Empty){ case (node, area) => {
         val cost = this.value.find(cost => cost.area.get == area.id.get).getOrElse{
           val c = Cost.createRecord.area(area.id.get)
@@ -92,130 +93,134 @@ class Room private() extends Resource[Room] {
           c
         }
         node ++
-          <div class="row">
-            <div class="col-md-6"><h5>{area.name.get}</h5></div>
-            <div class="col-md-3">C.S.</div>
-            <div class="col-md-3">S.S.</div>
-          </div> ++
-          <div class="row">
-            <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Coordinador de área</label>
-              <div class="col-md-3">
-                {cost.costCSAreaCoord.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
+          <div class="section-costs"> {  
+            <div class="row">
+              <div class="col-md-6"><h5>{area.name.get}</h5></div>
+              <div class="col-md-3">C.S.</div>
+              <div class="col-md-3">S.S.</div>
+            </div> ++
+            <div class="row">
+              <div class="form-group margin-bottom-xs">
+                <label data-name="label" class="control-label col-md-6" for="email_id">Coordinador de área</label>
+                <div class="col-md-3">
+                  {cost.costCSAreaCoord.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+                <div class="col-md-3">
+                  {cost.costSSAreaCoord.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
               </div>
-              <div class="col-md-3">
-                {cost.costSSAreaCoord.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
+            </div> ++
+            <div class="row">
+              <div class="form-group margin-bottom-xs">
+                <label data-name="label" class="control-label col-md-6" for="email_id">Asociado</label>
+                <div class="col-md-3">
+                  {cost.costCSAssociate.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+                <div class="col-md-3">
+                  {cost.costSSAssociate.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+              </div>
+            </div> ++
+            <div class="row">
+              <div class="form-group margin-bottom-xs">
+                <label data-name="label" class="control-label col-md-6" for="email_id">Artista nacional emergente / internacional autogestionado</label>
+                <div class="col-md-3">
+                  {cost.costCSNewArtist.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+                <div class="col-md-3">
+                  {cost.costSSNewArtist.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+              </div>
+            </div> ++
+            <div class="row">
+              <div class="form-group margin-bottom-xs">
+                <label data-name="label" class="control-label col-md-6" for="email_id">Artista nacional e internacional consolidado</label>
+                <div class="col-md-3">
+                  {cost.costCSArtist.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+                <div class="col-md-3">
+                  {cost.costSSArtist.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+              </div>
+            </div> ++
+            <div class="row">
+              <div class="form-group margin-bottom-xs">
+                <label data-name="label" class="control-label col-md-6" for="email_id">Organización de Gestión Cultural</label>
+                <div class="col-md-3">
+                  {cost.costCSInst1.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+                <div class="col-md-3">
+                  {cost.costSSInst1.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+              </div>
+            </div> ++
+            <div class="row">
+              <div class="form-group margin-bottom-xs">
+                <label data-name="label" class="control-label col-md-6" for="email_id">Organización sin fines de lucro</label>
+                <div class="col-md-3">
+                  {cost.costCSInst2.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+                <div class="col-md-3">
+                  {cost.costSSInst2.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+              </div>
+            </div> ++
+            <div class="row">
+              <div class="form-group margin-bottom-xs">
+                <label data-name="label" class="control-label col-md-6" for="email_id">Organización con fines de lucro</label>
+                <div class="col-md-3">
+                  {cost.costCSInst3.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+                <div class="col-md-3">
+                  {cost.costSSInst3.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
               </div>
             </div>
-          </div> ++
-          <div class="row">
-            <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Asociado</label>
-              <div class="col-md-3">
-                {cost.costCSAssociate.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-              <div class="col-md-3">
-                {cost.costSSAssociate.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-            </div>
-          </div> ++
-          <div class="row">
-            <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Artista nacional emergente / internacional autogestionado</label>
-              <div class="col-md-3">
-                {cost.costCSNewArtist.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-              <div class="col-md-3">
-                {cost.costSSNewArtist.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-            </div>
-          </div> ++
-          <div class="row">
-            <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Artista nacional e internacional consolidado</label>
-              <div class="col-md-3">
-                {cost.costCSArtist.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-              <div class="col-md-3">
-                {cost.costSSArtist.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-            </div>
-          </div> ++
-          <div class="row">
-            <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Organización de Gestión Cultural</label>
-              <div class="col-md-3">
-                {cost.costCSInst1.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-              <div class="col-md-3">
-                {cost.costSSInst1.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-            </div>
-          </div> ++
-          <div class="row">
-            <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Organización sin fines de lucro</label>
-              <div class="col-md-3">
-                {cost.costCSInst2.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-              <div class="col-md-3">
-                {cost.costSSInst2.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-            </div>
-          </div> ++
-          <div class="row">
-            <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Organización con fines de lucro</label>
-              <div class="col-md-3">
-                {cost.costCSInst3.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-              <div class="col-md-3">
-                {cost.costSSInst3.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-            </div>
-          </div>
+         
+          } </div>
+
       }}
     }
 
@@ -227,62 +232,65 @@ class Room private() extends Resource[Room] {
           c
         }
         node ++
-          <div class="row">
-            <div class="col-md-6"><h5>{area.name.get}</h5></div>
-            <div class="col-md-3">Becado</div>
-            <div class="col-md-3">Autogestionado</div>
-          </div> ++
-          <div class="row">
-            <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Categoría A</label>
-              <div class="col-md-3">
-                {cost.costBecadoCatA.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
+          <div class="section-costs"> {  
+            <div class="row">
+              <div class="col-md-6"><h5>{area.name.get}</h5></div>
+              <div class="col-md-3">Becado</div>
+              <div class="col-md-3">Autogestionado</div>
+            </div> ++
+            <div class="row">
+              <div class="form-group margin-bottom-xs">
+                <label data-name="label" class="control-label col-md-6" for="email_id">Categoría A</label>
+                <div class="col-md-3">
+                  {cost.costBecadoCatA.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+                <div class="col-md-3">
+                  {cost.costAutogestionadoCatA.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
               </div>
-              <div class="col-md-3">
-                {cost.costAutogestionadoCatA.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
+            </div> ++
+            <div class="row">
+              <div class="form-group margin-bottom-xs">
+                <label data-name="label" class="control-label col-md-6" for="email_id">Categoría B</label>
+                <div class="col-md-3">
+                  {cost.costBecadoCatB.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+                <div class="col-md-3">
+                  {cost.costAutogestionadoCatB.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+              </div>
+            </div> ++
+            <div class="row">
+              <div class="form-group margin-bottom-xs">
+                <label data-name="label" class="control-label col-md-6" for="email_id">Categoría C</label>
+                <div class="col-md-3">
+                  {cost.costBecadoCatC.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+                <div class="col-md-3">
+                  {cost.costAutogestionadoCatC.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
               </div>
             </div>
-          </div> ++
-          <div class="row">
-            <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Categoría B</label>
-              <div class="col-md-3">
-                {cost.costBecadoCatB.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-              <div class="col-md-3">
-                {cost.costAutogestionadoCatB.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-            </div>
-          </div> ++
-          <div class="row">
-            <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Categoría C</label>
-              <div class="col-md-3">
-                {cost.costBecadoCatC.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-              <div class="col-md-3">
-                {cost.costAutogestionadoCatC.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-            </div>
-          </div>
+
+          } </div>
       }}
     }
 
@@ -306,130 +314,133 @@ class Room private() extends Resource[Room] {
           c
         }
         node ++
-          <div class="row">
-            <div class="col-md-6"><h5>{program.name.get}</h5></div>
-            <div class="col-md-3">C.S.</div>
-            <div class="col-md-3">S.S.</div>
-          </div> ++
-          <div class="row">
-            <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Coordinador de área</label>
-              <div class="col-md-3">
-                {cost.costCSAreaCoord.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
+          <div class="section-costs">  {
+            <div class="row">
+              <div class="col-md-6"><h5>{program.name.get}</h5></div>
+              <div class="col-md-3">C.S.</div>
+              <div class="col-md-3">S.S.</div>
+            </div> ++
+            <div class="row">
+              <div class="form-group margin-bottom-xs">
+                <label data-name="label" class="control-label col-md-6" for="email_id">Coordinador de área</label>
+                <div class="col-md-3">
+                  {cost.costCSAreaCoord.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+                <div class="col-md-3">
+                  {cost.costSSAreaCoord.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
               </div>
-              <div class="col-md-3">
-                {cost.costSSAreaCoord.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
+            </div> ++
+            <div class="row">
+              <div class="form-group margin-bottom-xs">
+                <label data-name="label" class="control-label col-md-6" for="email_id">Asociado</label>
+                <div class="col-md-3">
+                  {cost.costCSAssociate.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+                <div class="col-md-3">
+                  {cost.costSSAssociate.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+              </div>
+            </div> ++
+            <div class="row">
+              <div class="form-group margin-bottom-xs">
+                <label data-name="label" class="control-label col-md-6" for="email_id">Artista nacional emergente / internacional autogestionado</label>
+                <div class="col-md-3">
+                  {cost.costCSNewArtist.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+                <div class="col-md-3">
+                  {cost.costSSNewArtist.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+              </div>
+            </div> ++
+            <div class="row">
+              <div class="form-group margin-bottom-xs">
+                <label data-name="label" class="control-label col-md-6" for="email_id">Artista nacional e internacional consolidado</label>
+                <div class="col-md-3">
+                  {cost.costCSArtist.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+                <div class="col-md-3">
+                  {cost.costSSArtist.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+              </div>
+            </div> ++
+            <div class="row">
+              <div class="form-group margin-bottom-xs">
+                <label data-name="label" class="control-label col-md-6" for="email_id">Organización de Gestión Cultural</label>
+                <div class="col-md-3">
+                  {cost.costCSInst1.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+                <div class="col-md-3">
+                  {cost.costSSInst1.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+              </div>
+            </div> ++
+            <div class="row">
+              <div class="form-group margin-bottom-xs">
+                <label data-name="label" class="control-label col-md-6" for="email_id">Organización sin fines de lucro</label>
+                <div class="col-md-3">
+                  {cost.costCSInst2.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+                <div class="col-md-3">
+                  {cost.costSSInst2.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+              </div>
+            </div> ++
+            <div class="row">
+              <div class="form-group margin-bottom-xs">
+                <label data-name="label" class="control-label col-md-6" for="email_id">Organización con fines de lucro</label>
+                <div class="col-md-3">
+                  {cost.costCSInst3.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+                <div class="col-md-3">
+                  {cost.costSSInst3.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
               </div>
             </div>
-          </div> ++
-          <div class="row">
-            <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Asociado</label>
-              <div class="col-md-3">
-                {cost.costCSAssociate.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-              <div class="col-md-3">
-                {cost.costSSAssociate.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-            </div>
-          </div> ++
-          <div class="row">
-            <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Artista nacional emergente / internacional autogestionado</label>
-              <div class="col-md-3">
-                {cost.costCSNewArtist.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-              <div class="col-md-3">
-                {cost.costSSNewArtist.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-            </div>
-          </div> ++
-          <div class="row">
-            <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Artista nacional e internacional consolidado</label>
-              <div class="col-md-3">
-                {cost.costCSArtist.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-              <div class="col-md-3">
-                {cost.costSSArtist.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-            </div>
-          </div> ++
-          <div class="row">
-            <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Organización de Gestión Cultural</label>
-              <div class="col-md-3">
-                {cost.costCSInst1.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-              <div class="col-md-3">
-                {cost.costSSInst1.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-            </div>
-          </div> ++
-          <div class="row">
-            <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Organización sin fines de lucro</label>
-              <div class="col-md-3">
-                {cost.costCSInst2.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-              <div class="col-md-3">
-                {cost.costSSInst2.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-            </div>
-          </div> ++
-          <div class="row">
-            <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Organización con fines de lucro</label>
-              <div class="col-md-3">
-                {cost.costCSInst3.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-              <div class="col-md-3">
-                {cost.costSSInst3.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-            </div>
-          </div>
+
+          } </div>
       }}
     }
 
@@ -441,62 +452,66 @@ class Room private() extends Resource[Room] {
           c
         }
         node ++
-          <div class="row">
-            <div class="col-md-6"><h5>{program.name.get}</h5></div>
-            <div class="col-md-3">Becado</div>
-            <div class="col-md-3">Autogestionado</div>
-          </div> ++
-          <div class="row">
-            <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Categoría A</label>
-              <div class="col-md-3">
-                {cost.costBecadoCatA.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
+          <div class="section-costs">  {
+            <div class="row">
+              <div class="col-md-6"><h5>{program.name.get}</h5></div>
+              <div class="col-md-3">Becado</div>
+              <div class="col-md-3">Autogestionado</div>
+            </div> ++
+            <div class="row">
+              <div class="form-group margin-bottom-xs">
+                <label data-name="label" class="control-label col-md-6" for="email_id">Categoría A</label>
+                <div class="col-md-3">
+                  {cost.costBecadoCatA.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+                <div class="col-md-3">
+                  {cost.costAutogestionadoCatA.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
               </div>
-              <div class="col-md-3">
-                {cost.costAutogestionadoCatA.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
+            </div> ++
+            <div class="row">
+              <div class="form-group margin-bottom-xs">
+                <label data-name="label" class="control-label col-md-6" for="email_id">Categoría B</label>
+                <div class="col-md-3">
+                  {cost.costBecadoCatB.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+                <div class="col-md-3">
+                  {cost.costAutogestionadoCatB.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+              </div>
+            </div> ++
+            <div class="row">
+              <div class="form-group margin-bottom-xs">
+                <label data-name="label" class="control-label col-md-6" for="email_id">Categoría C</label>
+                <div class="col-md-3">
+                  {cost.costBecadoCatC.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
+                <div class="col-md-3">
+                  {cost.costAutogestionadoCatC.toForm openOr NodeSeq.Empty}
+                  <span class="input-group-addon">
+                    Bs.
+                  </span>
+                </div>
               </div>
             </div>
-          </div> ++
-          <div class="row">
-            <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Categoría B</label>
-              <div class="col-md-3">
-                {cost.costBecadoCatB.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-              <div class="col-md-3">
-                {cost.costAutogestionadoCatB.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-            </div>
-          </div> ++
-          <div class="row">
-            <div class="form-group margin-bottom-xs">
-              <label data-name="label" class="control-label col-md-6" for="email_id">Categoría C</label>
-              <div class="col-md-3">
-                {cost.costBecadoCatC.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-              <div class="col-md-3">
-                {cost.costAutogestionadoCatC.toForm openOr NodeSeq.Empty}
-                <span class="input-group-addon">
-                  Bs.
-                </span>
-              </div>
-            </div>
-          </div>
+            
+          } </div>
+
       }}
     }
 

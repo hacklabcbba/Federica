@@ -11,3 +11,8 @@ object ProductionOnly {
     if (Props.productionMode) in
     else NodeSeq.Empty
 }
+
+object NotInProduction {
+  def render(in: NodeSeq): NodeSeq = if (Props.productionMode) NodeSeq.Empty else in
+}
+
