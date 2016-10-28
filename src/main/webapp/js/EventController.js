@@ -1,9 +1,15 @@
 angular.module('EventApp', ['federica.event', 'ui.bootstrap'])
+  
   .controller('EventController', function ($scope, $log, EventService) {
+  $scope.loading = true;
   $scope.rooms = [];
   $scope.event = {};
   $scope.currentTab = 'rooms';
   $scope.shifts = ['Mañana', 'Tarde', 'Noche'];
+
+  var endLoadingCounter = 0;
+
+  
 
   $scope.switchRoom = function(room) {
     if (_.includes($scope.event.rooms, room)) {
@@ -152,12 +158,29 @@ angular.module('EventApp', ['federica.event', 'ui.bootstrap'])
 
       return '';
     };
+    $scope.myFunc = function() {
+      console.log ("Continuing... Loading Event");
+      EventService.fetchEvent().then(function(response) {
+        $scope.event = response;
+        endLoading();
+        
+      });
+      EventService.listRooms().then(function(response) {
+        $scope.rooms = response;
+        endLoading();
+      });
+    };
 
   //init
-  EventService.fetchEvent().then(function(response) {
-    $scope.event = response;
-  });
-  EventService.listRooms().then(function(response) {
-    $scope.rooms = response;
-  });
+  //
+  //
+  
+
+  function endLoading () {
+    endLoadingCounter++;
+    if (endLoadingCounter >= 2 ) {
+      $scope.loading = false;
+    }
+  }
 });
+

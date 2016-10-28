@@ -340,7 +340,11 @@ object UserLogin extends Loggable with SnippetHelper {
                 User.logUserIn(user, true)
                 if (remember) User.createExtSession(user.id.get)
                 else ExtSession.deleteExtCookie()
-                RedirectTo("/")
+
+                if ((user.roles.get contains "Usuario") && !(referer contains "login"))
+                  RedirectTo(referer);
+                else
+                  RedirectTo("/dashboard")
               } else {
                 S.error("login_err", "Aun falta validar esta cuenta. Porfavor revise su correo electronico para terminar el proceso.")
                 Noop
