@@ -1,8 +1,5 @@
 <div data-lift="surround?with=base-wrap-backend;at=content">
     <div class="col-md-12" ng-app="EventApp">
-        <div ng-show='loading' class='on-loading'>
-          <img src="/images/ajax-loader.gif" width="25" height="25" />
-        </div>
         <script>
           $(document).ready(function () {
             $('#terms-agreement').modal({
@@ -33,6 +30,9 @@
         </header>
 
         <div id="event-wizard" ng-controller="EventController">
+            <div ng-show='loading' class='on-loading'>
+              <img src="/images/ajax-loader.gif" width="25" height="25" />
+            </div>
 
             <div id='terms-agreement' class='modal fade' tabindex='-1' role='dialog'>
               <div class='modal-dialog' role='document'>
