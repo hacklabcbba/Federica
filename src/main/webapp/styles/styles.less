@@ -21,3 +21,38 @@ form .section-costs {
   left: 45%;
   top:45%;
 }
+
+#image-viewer{
+  .modal-dialog {
+    width: 80%;
+    .modal-content {
+      background-color: rgba(0,0,0,0.85);
+      box-shadow: none;
+      border: none;
+
+      .modal-header {
+        border: none;
+        .open-external {
+          font-size: 2em;
+          color: #fff;
+          opacity: 1;
+          transition: 1s;
+          &:hover {
+            color: #fff;
+            opacity: 0.85;
+          }
+        }
+        .close {
+          font-size: 2em;
+          color: #fff;
+          opacity: 1;
+          transition: 1s;
+          &:hover {
+            color: #fff;
+            opacity: 0.85;
+          }
+        }
+      }
+    }
+  }
+}

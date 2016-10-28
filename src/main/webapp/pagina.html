@@ -18,12 +18,28 @@
                             }
                         }
                     }
+
+                    $(document).ready(function () {
+                      /*
+                       *TODO: The editor add an hs.expand function to onclick event. This single sentence
+                       *only remove that action, in order to prevent an Not found Error
+                       */
+                      $('.main-content a').attr('onclick', '');
+
+                      $('.main-content img').click(function (e) {
+                        if ($(this).parent().is('a')) {
+                          $('#image-viewer #img-tag').attr('src', $(this).parent().attr('href'));
+                          $('#image-viewer #a-tag').attr('href', $(this).parent().attr('href'));
+                          $('#image-viewer').modal('show');
+                        }
+                        e.preventDefault();
+                      });
+                    });
                 </script>
 
             </header>
             <div class="row">
                 <div class="col-md-8 main-content" data-name="page-content">
-
                 </div>
                 <div class="col-md-4 side">
                     <div data-name="page-widgets"></div>
@@ -31,4 +47,21 @@
             </div>
         </div>
     </main>
+    <div id='image-viewer' class='modal fade' tabindex='-1' role='dialog'>
+      <div class='modal-dialog' role='document'>
+        <div class='modal-content'>
+          <div class='modal-header'>
+              <a id='a-tag' href='#' class='open-external' target='_blank' alt='Open Externally'>
+                <i class='fa fa-external-link'>
+                </i>
+              </a>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class='modal-body text-center'>
+            <img id='img-tag' class='img-responsive' />
+          </div>
+        </div>
+      </div>
+    </div>
+
 </div>
