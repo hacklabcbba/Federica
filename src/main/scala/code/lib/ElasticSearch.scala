@@ -152,6 +152,10 @@ object ElasticSearch extends Logger {
 
   def updateAllIndeces() = {
 
+    Program.findAll.foreach(p => {
+      Program.updateElasticSearch(p)
+    })
+
     Event.findAll.foreach(e => {
       Event.updateElasticSearch(e)
     })

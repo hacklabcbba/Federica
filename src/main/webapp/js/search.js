@@ -10,6 +10,7 @@
         $scope.searchTmp = ServerParams.search;
         $scope.searchText = ServerParams.search;
         $scope.host = ServerParams.host;
+        $scope.message = ServerParams.message;
 
         $scope.findIndex = function(id, array){
             for(var i = 0; i < array.length; i += 1) {
@@ -33,7 +34,7 @@
         $scope.fetchItems = function(page) {
             $scope.currentPage = page;
             ServerFuncs.fetchItems({
-                page: $scope.currentPage, limit: $scope.limit, search: $scope.searchText
+                page: $scope.currentPage, limit: $scope.limit, search: $scope.searchText, message: $scope.message
             });
         };
 
@@ -50,6 +51,7 @@
             $scope.$apply(function() {
                 $scope.count = data.count;
                 $scope.items = data.items;
+                $scope.message = data.message;
             });
             var texts = $scope.searchText.split(" ");
             for(var i = 0; i < texts.length; i += 1) {

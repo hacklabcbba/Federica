@@ -5,6 +5,7 @@ package event
 import code.config.{DefaultRoles, Site}
 import code.lib.field._
 import code.lib.js.Bootstrap
+import code.model.event.Activity
 import code.lib.{BaseModel, ElasticSearch, Helper, RogueMetaRecord}
 import code.model.resource.Room
 import net.liftweb.common.{Box, Full}
@@ -17,7 +18,7 @@ import net.liftweb.mongodb.record.field._
 import net.liftweb.record.field._
 import net.liftweb.util.Helpers._
 import org.bson.types.ObjectId
-
+import scala.collection.immutable.Stream.Empty
 import scala.xml.{Elem, NodeSeq}
 import net.liftweb.json.JsonDSL._
 
@@ -429,6 +430,14 @@ class Event private() extends MongoRecord[Event] with ObjectIdPk[Event] with Bas
     }
   }
 
+  object facebookPhoto extends FileField(this) {
+    override def optional_? = true
+    override def displayName = "Imagen para compartir en facebook"
+    override def toString = {
+      value.fileName.get
+    }
+  }
+
   object residenciaNorte extends BsIntField(this, 0) {
     override def displayName = "Residencias NORTE - Nº de personas. (Máximo 14)"
     override def toForm = super.toForm.map(s => <div id="residenciaNorte_div">{s}</div>)
@@ -489,7 +498,7 @@ object Event extends Event with RogueMetaRecord[Event] {
     name, eventKind, requirements, destinedTo, area, transversalArea,  program, actionLines, process, values, country,
     eventNumber, isOutstanding, organizer, handlers, collaborators, supports, transversalApproach,
     description, hours, costInfo, quote,
-    image, isLogoEnabled, applicantType,
+    image, facebookPhoto, isLogoEnabled, applicantType,
     activities, pressRoom, specificRequirements, residenciaNorte, residenciaSud, status, rooms)
 
   def findLastEventsByUser(user: Box[User]): List[Event] = {
@@ -515,10 +524,113 @@ object Event extends Event with RogueMetaRecord[Event] {
       .orderDesc(_.id).fetch(3)
   }
 
+  def findLastFourEventsByFilter: List[Event] = {
+    Event.where(_.status eqs StatusType.Approved)
+      .andOpt(getAreaValue)(_.area eqs _.id.get)
+      .andOpt(getTransversalAreaValue)(_.transversalArea eqs _.id.get)
+      .andOpt(getProgramValue)(_.program eqs _.id.get)
+      .andOpt(getActionLineValue)(_.actionLines contains _.id.get)
+      .andOpt(getProcessValue)(_.process eqs _.id.get)
+      .andOpt(getMainValue)(_.values contains _.id.get)
+      .andOpt(getApproachValue)(_.transversalApproach eqs _.id.get)
+      .orderDesc(_.id).fetch(4)
+  }
+
+  def getActionLineValue: Option[ActionLine] = {
+    Helper.getParameter.headOption match {
+      case Some((p: String, v: String)) if(p == "lineaAccion") =>
+        ActionLine.where(_.name eqs v).fetch().headOption
+      case _ =>
+        None
+    }
+  }
+
+  def getApproachValue: Option[TransversalApproach] = {
+    Helper.getParameter.headOption match {
+      case Some((p: String, v: String)) if(p == "enfoque") =>
+        TransversalApproach.where(_.name eqs v).fetch().headOption
+      case _ =>
+        None
+    }
+  }
+
+  def getMainValue: Option[Value] = {
+    Helper.getParameter.headOption match {
+      case Some((p: String, v: String)) if(p == "principio") =>
+        Value.where(_.name eqs v).fetch().headOption
+      case _ =>
+        None
+    }
+  }
+
+  def getProcessValue: Option[Process] = {
+    Helper.getParameter.headOption match {
+      case Some((p: String, v: String)) if(p == "proceso") =>
+        Process.where(_.name eqs v).fetch().headOption
+      case _ =>
+        None
+    }
+  }
+
+  def getProgramValue: Option[Program] = {
+    Helper.getParameter.headOption match {
+      case Some((p: String, v: String)) if(p == "programa") =>
+        Program.where(_.name eqs v).fetch().headOption
+      case _ =>
+        None
+    }
+  }
+
+  def getAreaValue: Option[Area] = {
+    Helper.getParameter.headOption match {
+      case Some((p: String, v: String)) if(p == "area") =>
+        Area.where(_.name eqs v).fetch().headOption
+      case _ =>
+        None
+    }
+  }
+
+  def getTransversalAreaValue: Option[TransversalArea] = {
+    Helper.getParameter.headOption match {
+      case Some((p: String, v: String)) if(p == "areaT") =>
+        TransversalArea.where(_.name eqs v).fetch().headOption
+      case _ =>
+        None
+    }
+  }
+
+  def findAreas: List[Area] = {
+    Event.distinct(_.area).map(Area.find(_)).flatten
+  }
+
+  def findAreasTransversal: List[TransversalArea] = {
+    Event.distinct(_.transversalArea).map(TransversalArea.find(_)).flatten
+  }
+
+  def findApproach: List[TransversalApproach] = {
+    Event.distinct(_.transversalApproach).map(TransversalApproach.find(_)).flatten
+  }
+
+  def findValues: List[Value] = {
+    Event.values.get.distinct.map(Value.find(_)).flatten
+  }
+
+  def findProcess: List[Process] = {
+    Event.distinct(_.process).map(Process.find(_)).flatten
+  }
+
+  def findPrograms: List[Program] = {
+    Event.distinct(_.program).map(Program.find(_)).flatten
+  }
+
+  def findActionLines: List[ActionLine] = {
+    Event.actionLines.get.distinct.map(ActionLine.find(_)).flatten
+  }
+
   def updateElasticSearch(event: Event) = {
     ElasticSearch.mongoindexSave(
       ElasticSearch.elasticSearchPath ++ List(s"event_${event.id.get}"),
-      ("url" -> Site.frontendEvents.fullUrl) ~
+      ("url" -> Site.frontendEvent.calcHref(event)) ~
       ("name" -> event.name.get) ~
       ("content" -> event.description.asHtml.text)
     )

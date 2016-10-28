@@ -1,6 +1,7 @@
 package code.snippet
 
 import code.config.Site
+import code.lib.Helper
 import code.model._
 import code.model.event.Event
 import code.model.resource.Room
@@ -9,10 +10,11 @@ import net.liftmodules.ng.Angular._
 import net.liftweb.common.{Failure, Full}
 import net.liftweb.json.JsonAST.{JArray, JValue}
 import net.liftweb.util.Helpers._
-import net.liftweb.util.{CssSel, Helpers}
+import net.liftweb.util.{CssSel, Helpers, Props}
 import net.liftweb.common.{Box, Full}
 import net.liftweb.http.{S, Templates}
 
+import scala.collection.immutable.Stream.Empty
 import scala.xml.{NodeSeq, Text}
 
 object PendingEventSnippet extends ListSnippet[Event] with SnippetHelper {
@@ -28,13 +30,6 @@ object PendingEventSnippet extends ListSnippet[Event] with SnippetHelper {
   def itemEditUrl(inst: Event): String = Site.backendEventEdit.toLoc.calcHref(inst)
 
   override def listFields = List(meta.name)
-
-  def renderFrontEnd: CssSel = {
-    "data-name=area" #> meta.findAll.map(event => {
-      "data-name=name *" #> event.name.get &
-      "data-name=description *" #> event.description.asHtml
-    })
-  }
 
   def form: CssSel = {
     (for {
@@ -61,9 +56,122 @@ object EventSnippet extends ListSnippet[Event] {
   override def listFields = List(meta.name, meta.status)
 
   def renderFrontEnd: CssSel = {
-    "data-name=area" #> meta.findAll.map(event => {
+    "data-name=event" #> meta.findAll.map(event => {
       "data-name=name *" #> event.name.get &
-      "data-name=description *" #> event.description.asHtml
+      "data-name=description *" #> event.description.asHtml &
+      "data-name=name [href]" #> Site.frontendEvent.calcHref(event) &
+      {
+        event.image.valueBox match {
+          case Full(image) =>
+            val imageSrc = image.fileId.get
+            "data-name=image [src]" #> s"/image/$imageSrc"
+          case _ =>
+            "data-name=image *" #> NodeSeq.Empty
+        }
+      }
+    })
+  }
+
+  def facebookHeaders(in: NodeSeq) = {
+    Site.frontendEvent.currentValue match {
+      case Full(event) =>
+          <meta property="og:title" content={event.name.get} /> ++
+            <meta property="og:url" content={Props.get("default.host", "http://localhost:8080") + S.uri} /> ++
+            <meta property="og:description" content={event.description.asHtmlCutted(250).text} /> ++
+          (if(event.facebookPhoto.get.fileId.get.isEmpty)
+            NodeSeq.Empty
+          else
+              <meta property="og:image" content={event.facebookPhoto.fullUrl} />
+            ) ++
+            <meta property="og:type" content="article" />
+      case _ =>
+        NodeSeq.Empty
+    }
+  }
+
+  def renderView: CssSel = {
+    for{
+      event <- Site.frontendEvent.currentValue
+    } yield {
+      "data-name=name *" #> event.name.get &
+      "data-name=days *" #> event.activities.get.map(_.date.toString).mkString(",") &
+      "data-name=cost *" #> ("Costo: " + event.costInfo.get.toString) &
+      "data-name=hours *" #> ("Hora: " + event.hours.get) &
+      "data-name=description *" #> event.description.asHtml &
+      {
+        event.image.valueBox match {
+          case Full(image) =>
+            val imageSrc = image.fileId.get
+            "data-name=image [src]" #> s"/image/$imageSrc"
+          case _ =>
+            "data-name=image *" #> NodeSeq.Empty
+        }
+      }
+    }
+  }
+
+  def renderAgenda: CssSel = {
+    val parameter = Helper.getParameter.headOption.fold("")(_._1)
+    val value = Helper.getParameter.headOption.fold("")(_._2)
+    "data-name=event" #> meta.findAll.map(event => {
+      "data-name=name *" #> event.name.get &
+      "data-name=name [href]" #> Site.frontendEvent.calcHref(event)
+    }) &
+    "data-name=events" #> meta.findLastFourEventsByFilter.map(event => {
+      "data-name=name *" #> event.name.get &
+      "data-name=description *" #> event.description.asHtml &
+      "data-name=name [href]" #> Site.frontendEvent.calcHref(event) &
+      "data-name=days *" #> event.activities.get.map(_.date.toString).mkString(",") &
+      "data-name=hours *" #> ("Hora: " + event.hours.get) &
+      "data-name=cost *" #> ("Costo: " + event.costInfo.get.toString) &
+      {
+        event.image.valueBox match {
+          case Full(image) =>
+            val imageSrc = image.fileId.get
+            "data-name=image [src]" #> s"/image/$imageSrc"
+          case _ =>
+            "data-name=image *" #> NodeSeq.Empty
+        }
+      }
+    }) &
+    "data-name=all" #> {
+      "li [class+]" #> (if (value.isEmpty && parameter.isEmpty) "active" else "") &
+      "a [href]" #> Site.agenda.fullUrl
+    } &
+    "data-name=areas" #> meta.findAreas.map(area => {
+      "li [class+]" #> (if ((parameter == "area") && (value == area.name.get)) "active" else "") &
+      "a [href]" #> s"${Site.agenda.fullUrl}?area=${area.name.get}" &
+      "a *" #> area.name.get
+    }) &
+    "data-name=areasT" #> meta.findAreasTransversal.map(area => {
+      "li [class+]" #> (if ((parameter == "areaT") && (value == area.name.get)) "active" else "") &
+      "a [href]" #> s"${Site.agenda.fullUrl}?areaT=${area.name.get}" &
+      "a *" #> area.name.get
+    }) &
+    "data-name=program" #> meta.findPrograms.map(program => {
+      "li [class+]" #> (if ((parameter == "programa") && (value == program.name.get)) "active" else "") &
+      "a [href]" #> s"${Site.agenda.fullUrl}?programa=${program.name.get}" &
+      "a *" #> program.name.get
+    }) &
+    "data-name=actionLine" #> meta.findActionLines.map(action => {
+      "li [class+]" #> (if ((parameter == "lineaAccion") && (value == action.name.get)) "active" else "") &
+      "a [href]" #> s"${Site.agenda.fullUrl}?lineaAccion=${action.name.get}" &
+      "a *" #> action.name.get
+    }) &
+    "data-name=process" #> meta.findProcess.map(process => {
+      "li [class+]" #> (if ((parameter == "proceso") && (value == process.name.get)) "active" else "") &
+      "a [href]" #> s"${Site.agenda.fullUrl}?proceso=${process.name.get}" &
+      "a *" #> process.name.get
+    }) &
+    "data-name=value" #> meta.findValues.map(mValue => {
+      "li [class+]" #> (if ((parameter == "principio") && (value == mValue.name.get)) "active" else "") &
+      "a [href]" #> s"${Site.agenda.fullUrl}?principio=${mValue.name.get}" &
+      "a *" #> mValue.name.get
+    }) &
+    "data-name=transversalAproach" #> meta.findApproach.map(approach => {
+      "li [class+]" #> (if ((parameter == "enfoque") && (value == approach.name.get)) "active" else "") &
+      "a [href]" #> s"${Site.agenda.fullUrl}?enfoque=${approach.name.get}" &
+      "a *" #> approach.name.get
     })
   }
 
@@ -88,6 +196,7 @@ object EventSnippet extends ListSnippet[Event] {
         "data-name=title-module" #> title &
         "data-name=events" #> listEvents.map(event => {
           "data-name=title *" #> event.name.get &
+          "data-name=title [href]" #> Site.frontendEvent.calcHref(event) &
           "data-name=days *" #> event.activities.get.map(_.date.toString).mkString(",") &
           {
             event.image.valueBox match {

@@ -60,7 +60,12 @@ object SearchPageSnippet extends SnippetHelper with Logger {
               })
             }
 
-            val ret = Full(("count" -> cnt) ~ ("items" -> items.openOr(Nil)))
+            val ret = if(cnt > 0) {
+              Full(("count" -> cnt) ~ ("items" -> items.openOr(Nil)))
+            } else {
+              Full(("count" -> 0) ~ ("message" -> "¡Ups! Parece que no hay ningún resultado con tu búsqueda, sigue intentándolo."))
+            }
+
             NgBroadcast("search", "after-fetch-items", Full(ret))
           }
         )

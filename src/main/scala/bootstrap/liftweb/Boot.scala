@@ -48,7 +48,7 @@ class Boot extends Loggable {
     SmtpMailer.init
 
     //Elasticsearch
-    //ElasticSearch.updateAllIndeces
+    ElasticSearch.updateAllIndeces
 
     // where to search snippet
     LiftRules.addToPackages("code")
