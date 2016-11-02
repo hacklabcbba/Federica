@@ -281,7 +281,7 @@ object UserRegister extends ReCaptcha with SnippetHelper {
       newUser.username(newUser.email.get)
       if(validateCaptcha.isDefined){
         // invalid captcha error message
-        S.error("captchaError", "Invalid captcha")
+        S.error("captchaError", "Error en el captcha. Vuelva a intentarlo")
         reloadCaptcha
       } else {
         newUser.validate match {
@@ -292,12 +292,26 @@ object UserRegister extends ReCaptcha with SnippetHelper {
               User.sendEmailConfirmation(newUser)
               RedirectTo("/", () => S.notice("Un correo electronico ha sido enviado a su cuenta con instrucciones para acceder."))
             } else {
-              S.error("register_err", "Las contraseñas no coinciden")
+              S.error("password_err", "Las contraseñas no coinciden")
               Noop
             }
           case error: List[FieldError] =>
-            S.error(error)
-            Noop
+            error.foreach ( el => {
+              el match {
+                case email_id => 
+                  S.error("email_err", email_id.msg)
+                case name_id => 
+                  S.error("name_err", name_id.msg)
+                case lastName_id => 
+                  S.error("lastName_err", lastName_id.msg)
+                case _ => 
+                  S.error("register_err", "Sorry. Something else went wrong")
+              }
+            })
+            if((pwd != repeatPwd) ||  pwd.trim.isEmpty) {
+              S.error("password_err", "Vuelva a reingresar su contraseña")
+              Noop
+            }
         }
       }
     }

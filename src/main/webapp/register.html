@@ -38,6 +38,7 @@
                                     <label class="col-md-12 control-label ">Correo electrónico</label>
                                     <div data-name="email" placeholder="Introduce tu email"  type="email" />
                                 </div>
+                                <span data-alertid="email_err" form-alert=""></span>
                                 <div class="form-group margin-bottom-xs">
                                     <label class="col-md-12 control-label ">Contraseña</label>
                                     <div class="col-md-12"><input class="form-control input-lg" data-name="password" placeholder="" type="password"></div>
@@ -46,9 +47,11 @@
                                     <label class="col-md-12 control-label ">Confirmar contraseña</label>
                                     <div class="col-md-12"><input class="form-control input-lg" data-name="repeatPwd" placeholder="" type="password"></div>
                                 </div>
+                                <span data-alertid="password_err" form-alert=""></span>
                             </div>
                             <h4>Comprueba que no eres un robot</h4>
-                            <span class="lift:Msg?id=captchaError&errorClass=error">error</span> <span id="captcha"></span>
+                            <!--<span class="lift:Msg?id=captchaError&errorClass=error">error</span> <span id="captcha"></span>-->
+                            <span data-alertid="captchaError" form-alert=""></span>
                             <div data-name="captcha"></div>
                             <span id="ajax-loader" style="display: none;">
                                 <img src="/images/ajax-loader.gif" width="25" height="25" />
